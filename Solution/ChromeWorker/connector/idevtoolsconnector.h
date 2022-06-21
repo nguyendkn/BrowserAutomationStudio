@@ -30,6 +30,9 @@ class IDevToolsConnector
             Connected
         } ConnectionState = NotStarted;
 
+        // Configuration
+        void ResetProxy(const std::string& ParentProcessId);
+
     public:
         // Paint
         virtual char* GetPaintData() = 0;

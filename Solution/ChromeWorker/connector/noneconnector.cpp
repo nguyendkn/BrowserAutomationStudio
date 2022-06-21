@@ -110,6 +110,11 @@ void NoneConnector::CloseBrowser()
 
 Async NoneConnector::CreateTab(const std::string& Url, bool IsInstant, bool IsDelayed, const std::string& Referrer, int Timeout)
 {
+    if(!GlobalState.IsProxySet)
+    {
+        ResetProxy(GlobalState.ParentProcessId);
+        GlobalState.IsProxySet = true;
+    }
     return ActionStub(Timeout);
 }
 
@@ -168,6 +173,11 @@ void NoneConnector::EnableBackgroundMode()
 
 Async NoneConnector::Load(const std::string& Url, bool IsInstant, const std::string& Referrer, int Timeout)
 {
+    if(!GlobalState.IsProxySet)
+    {
+        ResetProxy(GlobalState.ParentProcessId);
+        GlobalState.IsProxySet = true;
+    }
     return ActionStub(Timeout);
 }
 

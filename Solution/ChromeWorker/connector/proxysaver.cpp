@@ -1,5 +1,6 @@
 #include "proxysaver.h"
 #include "replaceall.h"
+#include <windows.h>
 #include <fstream>
 #include "md5.h"
 #include "aes.h"
@@ -42,6 +43,7 @@ std::string ProxySaver::Generate(const std::string& Server, int Port, bool IsHtt
 
 void ProxySaver::Save(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password, const std::string &Path)
 {
+    DeleteFileA(Path.c_str());
     try
     {
         std::ofstream outfile(Path, std::ios::binary);

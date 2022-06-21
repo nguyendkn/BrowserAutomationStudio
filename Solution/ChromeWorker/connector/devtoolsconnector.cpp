@@ -17,25 +17,6 @@
 using namespace std::placeholders;
 using namespace std::chrono;
 
-void DevToolsConnector::ResetProxy(const std::string& ParentProcessId)
-{
-    //Create folder if needed
-    std::string Folder(std::string("Worker/chrome/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-
-    //Path of file to write
-    std::string Path = Folder + std::string("/s");
-
-    //Delete file
-    DeleteFileA(Path.c_str());
-
-    //Generate proxy data
-    GlobalState.ProxySaver->Reset(Path);
-}
-
-
 void DevToolsConnector::Initialize
 (
         std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,

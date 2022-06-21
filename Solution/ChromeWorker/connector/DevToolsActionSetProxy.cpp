@@ -30,7 +30,6 @@ void DevToolsActionSetProxy::Run()
     std::string Path = Folder + std::string("/s");
 
     //Stop new reqeusts from being send
-    DeleteFileA(Path.c_str());
     GlobalState->ProxySaver->Save("127.0.0.1", 0, true, std::string(), std::string(), Path);
 
     //Wait 3 seconds
@@ -116,8 +115,6 @@ void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const s
 
                 std::string Password = Params["password"].String;
                 Params.erase("password");
-
-                DeleteFileA(Path.c_str());
 
                 //Generate proxy data
                 GlobalState->ProxySaver->Save(Server, Port, IsHttp, Login, Password, Path);

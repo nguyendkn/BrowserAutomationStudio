@@ -81,7 +81,7 @@ void NoneConnector::Timer()
 {
     if (ConnectionState == Connected) return;
 
-    for (auto f:OnBrowserCreated)
+    for (auto f : OnBrowserCreated)
     {
         f();
     }

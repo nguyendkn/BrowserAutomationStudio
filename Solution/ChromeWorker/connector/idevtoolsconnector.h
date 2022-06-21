@@ -18,7 +18,8 @@ class IDevToolsConnector
         DevToolsActionFactory ActionsFactory;
 
         // Connection
-        enum {
+        enum
+        {
             WaitingForAutoconnectEnable,
             WaitingForDownloadsEnable,
             WaitingForBrowserEndpoint,
@@ -28,6 +29,7 @@ class IDevToolsConnector
             NotStarted,
             Connected
         } ConnectionState = NotStarted;
+
     public:
         // Paint
         virtual char* GetPaintData() = 0;
@@ -46,14 +48,14 @@ class IDevToolsConnector
         std::vector<std::function<void()> > OnPaint;
         std::vector<std::function<void()> > OnResize;
         std::vector<std::function<void()> > OnScroll;
-        std::vector<std::function<void(std::string)> > OnRequestStart;
-        std::vector<std::function<void(std::string)> > OnRequestStop;
-        std::vector<std::function<void()> > OnLoadStart;
         std::vector<std::function<void()> > OnLoadStop;
-        std::vector<std::function<void(std::string)> > OnAddressChanged;
-        std::vector<std::function<void(std::string)> > OnNativeDialog;
-        std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
+        std::vector<std::function<void()> > OnLoadStart;
         std::vector<std::function<void()> > OnBrowserCreated;
+        std::vector<std::function<void(std::string)> > OnRequestStop;
+        std::vector<std::function<void(std::string)> > OnRequestStart;
+        std::vector<std::function<void(std::string)> > OnNativeDialog;
+        std::vector<std::function<void(std::string)> > OnAddressChanged;
+        std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
         std::vector<std::function<void(std::string)> > OnRequestDataMain;
         std::vector<std::function<void(std::string)> > OnRequestDataAdditional;
         std::vector<std::function<void(std::string&, std::string&)> > OnMessage;
@@ -80,12 +82,12 @@ class IDevToolsConnector
         virtual void CloseBrowser() = 0;
 
         // Tabs
-        virtual Async GetTabsList(int Timeout = -1) = 0;
         virtual Async CreateTab(const std::string& Url, bool IsInstant = false, bool IsDelayed = false, const std::string& Referrer = std::string(), int Timeout = -1) = 0;
         virtual Async SwitchToTab(int Index, int Timeout = -1) = 0;
         virtual Async CloseTab(int Index, int Timeout = -1) = 0;
-        virtual int GetTabNumber() = 0;
+        virtual Async GetTabsList(int Timeout = -1) = 0;
         virtual int GetCurrentTabIndex() = 0;
+        virtual int GetTabNumber() = 0;
 
         // Rendering
         virtual Async ResetDeviceScaleFactor(float DeviceScaleFactor, int Timeout = -1) = 0;
@@ -143,14 +145,14 @@ class IDevToolsConnector
         virtual void SetPromptResult(const std::string& PromptResult) = 0;
 
         // Downloads
-        virtual Async AllowDownloads(int Timeout = -1) = 0;
         virtual Async RestrictDownloads(int Timeout = -1) = 0;
-        virtual bool IsFileDownloadReady() = 0;
+        virtual Async AllowDownloads(int Timeout = -1) = 0;
         virtual std::string GetDownloadedFilePath() = 0;
+        virtual bool IsFileDownloadReady() = 0;
 
         // Popups
-        virtual void AllowPopups() = 0;
         virtual void RestrictPopups() = 0;
+        virtual void AllowPopups() = 0;
 
         // Cookies
         virtual Async RestoreCookies(const std::string& Cookies, int Timeout = -1) = 0;

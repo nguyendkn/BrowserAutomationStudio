@@ -10,6 +10,8 @@
 
 class NoneConnector : public IDevToolsConnector
 {
+    private:
+        Async ActionStub(int Timeout = -1);
     public:
         char* GetPaintData();
         int GetPaintWidth();

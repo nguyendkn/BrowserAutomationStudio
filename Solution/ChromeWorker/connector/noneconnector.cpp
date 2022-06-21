@@ -27,22 +27,12 @@ char* NoneConnector::GetPaintData()
     return data.data();
 }
 
-int NoneConnector::GetPaintWidth()
-{
-    return 0;
-}
-
 int NoneConnector::GetPaintHeight()
 {
     return 0;
 }
 
-int NoneConnector::GetWidth()
-{
-    return 0;
-}
-
-int NoneConnector::GetHeight()
+int NoneConnector::GetPaintWidth()
 {
     return 0;
 }
@@ -57,24 +47,14 @@ int NoneConnector::GetScrollY()
     return 0;
 }
 
-void NoneConnector::SetProfilePath(const std::wstring& Path)
+int NoneConnector::GetHeight()
 {
+    return 0;
 }
 
-void NoneConnector::SetExtensionList(const std::vector<std::wstring>& Extensions)
+int NoneConnector::GetWidth()
 {
-}
-
-void NoneConnector::OpenDevTools()
-{
-}
-
-void NoneConnector::InspectAt(int X, int Y)
-{
-}
-
-void NoneConnector::StartProcess()
-{
+    return 0;
 }
 
 void NoneConnector::Timer()
@@ -89,23 +69,63 @@ void NoneConnector::Timer()
     ConnectionState = Connected;
 }
 
+void NoneConnector::SetProfilePath(const std::wstring& Path)
+{
+}
+
+void NoneConnector::SetExtensionList(const std::vector<std::wstring>& Extensions)
+{
+}
+
+bool NoneConnector::InterruptAction(int ActionUniqueId)
+{
+    return true;
+}
+
+void NoneConnector::StartProcess()
+{
+}
+
+void NoneConnector::OpenDevTools()
+{
+}
+
+void NoneConnector::InspectAt(int X, int Y)
+{
+}
+
+Async NoneConnector::Reset(int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+bool NoneConnector::IsLoading()
+{
+    return false;
+}
+
+void NoneConnector::CloseBrowser()
+{
+}
+
+Async NoneConnector::CreateTab(const std::string& Url, bool IsInstant, bool IsDelayed, const std::string& Referrer, int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::SwitchToTab(int Index, int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::CloseTab(int Index, int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
 Async NoneConnector::GetTabsList(int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::GetCurrentUrl(int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-int NoneConnector::GetTabNumber()
-{
-    return 0;
+    return ActionStub(Timeout);
 }
 
 int NoneConnector::GetCurrentTabIndex()
@@ -113,189 +133,84 @@ int NoneConnector::GetCurrentTabIndex()
     return -1;
 }
 
-Async NoneConnector::GetBrowserSize(int Timeout)
+int NoneConnector::GetTabNumber()
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::ResizeBrowser(int Width, int Height, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return 0;
 }
 
 Async NoneConnector::ResetDeviceScaleFactor(float DeviceScaleFactor, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 Async NoneConnector::Screenshot(int X, int Y, int Width, int Height, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
-void NoneConnector::EnableBackgroundMode()
+Async NoneConnector::StartScreenCast(int Timeout)
 {
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::StopScreenCast(int Timeout)
+{
+    return ActionStub(Timeout);
 }
 
 void NoneConnector::DisableBackgroundMode()
 {
 }
 
-Async NoneConnector::StartScreenCast(int Timeout)
+void NoneConnector::EnableBackgroundMode()
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::StopScreenCast(int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
 }
 
 Async NoneConnector::Load(const std::string& Url, bool IsInstant, const std::string& Referrer, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 Async NoneConnector::Reload(bool IsInstant, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, const std::string Login, const std::string Password, int Timeout)
-{
-    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += GlobalState.ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-    std::string Path = Folder + std::string("/s");
-    GlobalState.ProxySaver->Save(Server, Port, IsHttp, Login, Password, Path);
-
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::GetHistory(int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::SetUserAgentData(const std::string& Data, const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 Async NoneConnector::NavigateBack(bool IsInstant, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 Async NoneConnector::NavigateForward(bool IsInstant, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
-Async NoneConnector::CreateTab(const std::string& Url, bool IsInstant, bool IsDelayed, const std::string& Referrer, int Timeout)
+Async NoneConnector::GetCurrentUrl(int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::SwitchToTab(int Index, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::CloseTab(int Index, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-void NoneConnector::CloseBrowser()
-{
-}
-
-Async NoneConnector::SetStartupScript(const std::string& Script, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::ExecuteJavascript(const std::string& Script, const std::string& Variables, const std::string& ElementPath, bool ScrollToElement, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-Async NoneConnector::Inspect(int X, int Y, int Position, int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 Async NoneConnector::SetRequestsRestrictions(const std::vector<std::pair<bool, std::string> >& Rules, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 Async NoneConnector::SetHttpAuth(const std::string& UserName, const std::string& Password, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 void NoneConnector::SetCacheMasks(const std::vector<std::pair<bool, std::string> >& Rules)
 {
 }
 
-std::string NoneConnector::GetAllCacheData(const std::string& Mask)
+std::string NoneConnector::GetSingleCacheData(const std::string& Mask, bool IsBase64)
 {
     return std::string();
 }
 
-std::string NoneConnector::GetSingleCacheData(const std::string& Mask, bool IsBase64)
+std::string NoneConnector::GetAllCacheData(const std::string& Mask)
 {
     return std::string();
 }
@@ -319,24 +234,51 @@ bool NoneConnector::IsURLLoaded(const std::string& UrlPattern)
     return false;
 }
 
-void NoneConnector::Focus()
+Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, const std::string Login, const std::string Password, int Timeout)
 {
+    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
+    CreateDirectoryA(Folder.c_str(), NULL);
+    Folder += GlobalState.ParentProcessId;
+    CreateDirectoryA(Folder.c_str(), NULL);
+    std::string Path = Folder + std::string("/s");
+    GlobalState.ProxySaver->Save(Server, Port, IsHttp, Login, Password, Path);
+
+    return ActionStub(Timeout);
 }
 
-std::vector<std::pair<std::string, std::string>> NoneConnector::GetExtensionList()
+Async NoneConnector::GetHistory(int Timeout)
 {
-    return std::vector<std::pair<std::string, std::string>>{};
+    return ActionStub(Timeout);
 }
 
-void NoneConnector::TriggerExtensionButton(const std::string ExtensionIdOrNamePart)
+Async NoneConnector::SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
 {
+    return ActionStub(Timeout);
 }
 
-Async NoneConnector::StartDragFile(const std::string& Path, int Timeout)
+Async NoneConnector::SetUserAgentData(const std::string& Data, const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::GetBrowserSize(int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::ResizeBrowser(int Width, int Height, int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::SetStartupScript(const std::string& Script, int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::ExecuteJavascript(const std::string& Script, const std::string& Variables, const std::string& ElementPath, bool ScrollToElement, int Timeout)
+{
+    return ActionStub(Timeout);
 }
 
 void NoneConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button, int MousePressed, int KeyboardPresses, int ClickCount)
@@ -359,21 +301,13 @@ void NoneConnector::KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM 
 {
 }
 
-bool NoneConnector::IsLoading()
+void NoneConnector::Focus()
 {
-    return false;
 }
 
-Async NoneConnector::Reset(int Timeout)
+Async NoneConnector::Inspect(int X, int Y, int Position, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
-bool NoneConnector::InterruptAction(int ActionUniqueId)
-{
-    return true;
+    return ActionStub(Timeout);
 }
 
 void NoneConnector::SetOpenFileDialogResult(const std::string& Result)
@@ -388,28 +322,24 @@ void NoneConnector::SetPromptResult(const std::string& PromptResult)
 {
 }
 
-Async NoneConnector::AllowDownloads(int Timeout)
-{
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
-}
-
 Async NoneConnector::RestrictDownloads(int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
-bool NoneConnector::IsFileDownloadReady()
+Async NoneConnector::AllowDownloads(int Timeout)
 {
-    return true;
+    return ActionStub(Timeout);
 }
 
 std::string NoneConnector::GetDownloadedFilePath()
 {
     return std::string();
+}
+
+bool NoneConnector::IsFileDownloadReady()
+{
+    return true;
 }
 
 void NoneConnector::RestrictPopups()
@@ -422,12 +352,29 @@ void NoneConnector::AllowPopups()
 
 Async NoneConnector::RestoreCookies(const std::string& Cookies, int Timeout)
 {
-    std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
-    NewAction->SetTimeout(Timeout);
-    return NewAction->GetResult();
+    return ActionStub(Timeout);
 }
 
 Async NoneConnector::SaveCookies(int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+void NoneConnector::TriggerExtensionButton(const std::string ExtensionIdOrNamePart)
+{
+}
+
+std::vector<std::pair<std::string, std::string>> NoneConnector::GetExtensionList()
+{
+    return std::vector<std::pair<std::string, std::string>>{};
+}
+
+Async NoneConnector::StartDragFile(const std::string& Path, int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
+Async NoneConnector::ActionStub(int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction(ActionsFactory.Create("Empty", &GlobalState));
     NewAction->SetTimeout(Timeout);

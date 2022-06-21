@@ -860,7 +860,6 @@ OTHER_FILES += \
     scripts/engine/worker/pop3client.js \
     scripts/engine/common/html_parser.js \
     scripts/engine/common/rss_parser.js \
-    scripts/engine/worker/imapclient.js \
     text/apilist.txt \
     scripts/engine/common/memory.js \
     scripts/engine/multiworker/properties.js \

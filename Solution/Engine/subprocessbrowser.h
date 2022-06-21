@@ -117,6 +117,7 @@ namespace BrowserAutomationStudioFramework
         bool GetManualBrowserControl();
 
         void ResetSettings();
+        QString GetBrowserProcessId();
         QString GetBrowserUniqueId();
 
         void ResetProxy();

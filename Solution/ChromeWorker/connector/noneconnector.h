@@ -13,13 +13,18 @@ class NoneConnector : public IDevToolsConnector
     private:
         Async ActionStub(int Timeout = -1);
     public:
+        // Paint
         char* GetPaintData();
-        int GetPaintWidth();
         int GetPaintHeight();
-        int GetWidth();
-        int GetHeight();
+        int GetPaintWidth();
+
+        // Scroll
         int GetScrollX();
         int GetScrollY();
+
+        // Viewport
+        int GetHeight();
+        int GetWidth();
 
         void Timer();
 
@@ -38,28 +43,28 @@ class NoneConnector : public IDevToolsConnector
         void OpenDevTools();
         void InspectAt(int X, int Y);
 
-        //Browser life cycle
+        // Browser life cycle
         Async Reset(int Timeout = -1);
         bool IsLoading();
         void CloseBrowser();
 
-        //Tabs
-        Async GetTabsList(int Timeout = -1);
+        // Tabs
         Async CreateTab(const std::string& Url, bool IsInstant = false, bool IsDelayed = false, const std::string& Referrer = std::string(), int Timeout = -1);
         Async SwitchToTab(int Index, int Timeout = -1);
         Async CloseTab(int Index, int Timeout = -1);
-        int GetTabNumber();
+        Async GetTabsList(int Timeout = -1);
         int GetCurrentTabIndex();
+        int GetTabNumber();
 
-        //Rendering
+        // Rendering
+        Async ResetDeviceScaleFactor(float DeviceScaleFactor, int Timeout = -1);
         Async Screenshot(int X, int Y, int Width, int Height, int Timeout = -1);
         Async StartScreenCast(int Timeout = -1);
         Async StopScreenCast(int Timeout = -1);
-        void EnableBackgroundMode();
         void DisableBackgroundMode();
-        Async ResetDeviceScaleFactor(float DeviceScaleFactor, int Timeout = -1);
+        void EnableBackgroundMode();
 
-        //Network
+        // Network
         Async Load(const std::string& Url, bool IsInstant = false, const std::string& Referrer = std::string(), int Timeout = -1);
         Async Reload(bool IsInstant = false, int Timeout = -1);
         Async NavigateBack(bool IsInstant = false, int Timeout = -1);
@@ -68,8 +73,7 @@ class NoneConnector : public IDevToolsConnector
         Async SetRequestsRestrictions(const std::vector<std::pair<bool, std::string> >& Rules, int Timeout = -1);
         Async SetHttpAuth(const std::string& UserName, const std::string& Password, int Timeout = -1);
 
-
-        //Cache
+        // Cache
         void SetCacheMasks(const std::vector<std::pair<bool, std::string> >& Rules);
         std::string GetSingleCacheData(const std::string& Mask, bool IsBase64);
         std::string GetAllCacheData(const std::string& Mask);
@@ -83,15 +87,15 @@ class NoneConnector : public IDevToolsConnector
         Async SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout = -1);
         Async SetUserAgentData(const std::string& Data, const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout = -1);
 
-        //Size
+        // Size
         Async GetBrowserSize(int Timeout = -1);
         Async ResizeBrowser(int Width, int Height, int Timeout = -1);
 
-        //Javascript
+        // Javascript
         Async SetStartupScript(const std::string& Script, int Timeout = -1);
         Async ExecuteJavascript(const std::string& Script, const std::string& Variables = std::string(), const std::string& ElementPath = std::string(), bool ScrollToElement = false, int Timeout = -1);
 
-        //Inputs
+        // Inputs
         void Mouse(MouseEvent Event, int X, int Y, MouseButton Button = MouseButtonLeft, int MousePressed = MouseButtonNone, int KeyboardPresses = KeyboardModifiersNone, int ClickCount = 1);
         void Wheel(int X, int Y, bool IsUp, int Delta = 100, int MousePressed = MouseButtonNone, int KeyboardPresses = KeyboardModifiersNone);
         void Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX = 11.5, double RadiusY = 11.5, double RotationAngle = 0.0, double Pressure = 1.0);
@@ -99,33 +103,33 @@ class NoneConnector : public IDevToolsConnector
         void KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM NativeVirtualKeyCode, int KeyboardPresses = KeyboardModifiersNone);
         void Focus();
 
-        //Interacting with elements
+        // Interacting with elements
         Async Inspect(int X, int Y, int Position = 0, int Timeout = -1);
 
-        //Dialogs
+        // Dialogs
         void SetOpenFileDialogResult(const std::string& Result);
         void SetOpenFileDialogManualMode(bool IsManual);
         void SetPromptResult(const std::string& PromptResult);
 
-        //Downloads
-        Async AllowDownloads(int Timeout = -1);
+        // Downloads
         Async RestrictDownloads(int Timeout = -1);
-        bool IsFileDownloadReady();
+        Async AllowDownloads(int Timeout = -1);
         std::string GetDownloadedFilePath();
+        bool IsFileDownloadReady();
 
-        //Popups
-        void AllowPopups();
+        // Popups
         void RestrictPopups();
+        void AllowPopups();
 
-        //Cookies
+        // Cookies
         Async RestoreCookies(const std::string& Cookies, int Timeout = -1);
         Async SaveCookies(int Timeout = -1);
 
-        //Extensions
+        // Extensions
         void TriggerExtensionButton(const std::string ExtensionIdOrNamePart);
         std::vector<std::pair<std::string, std::string> > GetExtensionList();
 
-        //Drag and drop
+        // Drag and drop
         Async StartDragFile(const std::string& Path, int Timeout = -1);
 };
 

@@ -15,7 +15,7 @@
 #include "sharedmemoryipc.h"
 #include "browsersettingssaver.h"
 #include "browsercontextmenu.h"
-#include "devtoolsconnector.h"
+#include "idevtoolsconnector.h"
 #include "resultmanager.h"
 
 
@@ -137,7 +137,7 @@ public:
     BrowserContextMenu _BrowserContextMenu;
 
 
-    DevToolsConnector *Connector = 0;
+    IDevToolsConnector *Connector = 0;
     ResultManager *Results = 0;
 
 };

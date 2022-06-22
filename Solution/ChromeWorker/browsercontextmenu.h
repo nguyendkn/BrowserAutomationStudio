@@ -4,7 +4,7 @@
 #include <windows.h>
 #include "include/cef_app.h"
 #include "include/cef_client.h"
-#include "devtoolsconnector.h"
+#include "idevtoolsconnector.h"
 
 
 class SourceSaver: public CefStringVisitor
@@ -59,12 +59,12 @@ public:
 
     void Show(HWND hwnd, int X, int Y, bool IsLink, bool IsMedia, bool IsEdit, const std::string& LinkUrl, const std::string& MediaUrl, const std::string& CurrentUrl, const std::string& SelectedText, bool CanGoBack, bool CanGoForward);
     void ShowMenu(HWND hwnd, POINT& p, bool IsRecord, bool CanGoBack, bool CanGoForward, const std::vector<std::pair<std::string, std::string> >& Extensions);
-    void Process(HWND hwnd, int Command, DevToolsConnector* Connector, const std::string& UniqueProcessId);
-    void OnFind(DevToolsConnector* Connector, LPFINDREPLACE Data);
+    void Process(HWND hwnd, int Command, IDevToolsConnector* Connector, const std::string& UniqueProcessId);
+    void OnFind(IDevToolsConnector* Connector, LPFINDREPLACE Data);
     void ShowFindDialog(HWND hwnd);
 
 private:
-    void Input(DevToolsConnector* Connector, const std::string Text);
+    void Input(IDevToolsConnector* Connector, const std::string Text);
     void SetClipboard(const std::string& Text);
 
 

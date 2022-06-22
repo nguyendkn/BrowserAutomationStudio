@@ -1,12 +1,12 @@
 #ifndef DEVTOOLSCONNECTOR_H
 #define DEVTOOLSCONNECTOR_H
 
+#include "idevtoolsconnector.h"
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
 #include <map>
 #include <memory>
 #include "idevtoolsaction.h"
-#include "devtoolsactionfactory.h"
 #include "ActionSaver.h"
 #include "JsonParser.h"
 #include "JsonSerializer.h"
@@ -16,18 +16,16 @@
 #include "sharedmemoryipc.h"
 #include "chromeprocesslauncher.h"
 
-class DevToolsConnector
+class DevToolsConnector : public IDevToolsConnector
 {
     KeyboardEmulation EmulateKeyboard;
 
     std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory;
     std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory;
-    DevToolsGlobalState GlobalState;
 
     JsonParser Parser;
     JsonSerializer Serializer;
 
-    DevToolsActionFactory ActionsFactory;
     ActionSaver ActionsSaver;
 
     std::vector<std::shared_ptr<IDevToolsAction> > Actions;
@@ -50,16 +48,6 @@ class DevToolsConnector
 
     //Connection data
 
-    enum{
-        WaitingForBrowserClose,
-        NotStarted,
-        WaitingForBrowserEndpoint,
-        WaitingForWebsocket,
-        WaitingForAutoconnectEnable,
-        WaitingForDownloadsEnable,
-        WaitingFirstTab,
-        Connected
-    }ConnectionState = NotStarted;
     std::string Endpoint;
 
     bool WasBrowserCreationEvent = false;
@@ -120,7 +108,6 @@ class DevToolsConnector
     void PaintNotify();
     void ParseNewTabReferrer(const std::string& NewTabReferrer);
     void CheckIfTabsNeedsToLoadFirstUrl(std::shared_ptr<TabData> Tab);
-    void ResetProxy(const std::string& ParentProcessId);
     //https://source.chromium.org/chromium/chromium/src/+/master:content/browser/devtools/devtools_video_consumer.cc;drc=267e9d603200302cd937cc5b788f044186a1b8c6;l=25
     void SetMinCapturePeriod(int MinCapturePeriod);
 
@@ -130,21 +117,6 @@ class DevToolsConnector
 
     public:
 
-        std::vector<std::function<void()> > OnPaint;
-        std::vector<std::function<void()> > OnResize;
-        std::vector<std::function<void()> > OnScroll;
-        std::vector<std::function<void(std::string)> > OnRequestStart;
-        std::vector<std::function<void(std::string)> > OnRequestStop;
-        std::vector<std::function<void()> > OnLoadStart;
-        std::vector<std::function<void()> > OnLoadStop;
-        std::vector<std::function<void(std::string)> > OnAddressChanged;
-        std::vector<std::function<void(std::string)> > OnNativeDialog;
-        std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
-        std::vector<std::function<void()> > OnBrowserCreated;
-        std::vector<std::function<void(std::string)> > OnRequestDataMain;
-        std::vector<std::function<void(std::string)> > OnRequestDataAdditional;
-
-
         char* GetPaintData();
         int GetPaintWidth();
         int GetPaintHeight();
@@ -152,8 +124,6 @@ class DevToolsConnector
         int GetHeight();
         int GetScrollX();
         int GetScrollY();
-
-        std::vector<std::function<void(std::string&, std::string&)> > OnMessage;
 
         void Timer();
 
@@ -261,7 +231,6 @@ class DevToolsConnector
 
         //Drag and drop
         Async StartDragFile(const std::string& Path, int Timeout = -1);
-
 };
 
 #endif // DEVTOOLSCONNECTOR_H

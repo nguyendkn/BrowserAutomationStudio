@@ -246,6 +246,8 @@ bool NoneConnector::IsURLLoaded(const std::string& UrlPattern)
 
 Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, const std::string Login, const std::string Password, int Timeout)
 {
+    GlobalState.IsProxySet = true;
+
     std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
     CreateDirectoryA(Folder.c_str(), NULL);
     Folder += GlobalState.ParentProcessId;

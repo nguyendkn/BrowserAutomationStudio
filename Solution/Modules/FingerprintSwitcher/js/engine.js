@@ -438,6 +438,10 @@ function BrowserAutomationStudio_ApplyFingerprint()
 				{
 					var Key = Keys[i]
 					var Value = FINGERPRINT_JSON["audio_properties"][Key]
+					try
+					{
+						Settings["Fingerprints.Audio." + Key] = Value.toString()
+					}catch(e){FINGERPRINT_USERAGENT = ""}
 					if(Value)
 					{
 						if(Key == "BaseAudioContextSampleRate")

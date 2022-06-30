@@ -1523,10 +1523,6 @@
             _WebInterfaceTasks.CurrentIdChanged(execute_next_id)
           });
 
-          this.on("change:isexecutionaborting", (_, value) => {
-            if (!value) requestUpdate();
-          });
-
           this.on("change:isscriptexecuting", (_, value) => {
             log.info(`The script has been ${value ? "started" : "completed"}`);
             _Inspector.wait(value);
@@ -1541,15 +1537,16 @@
             if (!value) requestUpdate();
           });
 
-          const requestUpdate = () => {
+          const requestUpdate = () => _.defer(() => {
             if (!this.get("isexecutionaborting")) {
               if (VariablesUpdateSkip) {
                 VariablesUpdateSkip = false;
                 return BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
               }
-              BrowserAutomationStudio_AskForVariablesUpdate();
+              return BrowserAutomationStudio_AskForVariablesUpdate();
             }
-          };
+            this.once("change:isexecutionaborting", (_, value) => value && requestUpdate());
+          });
         }  
     });
     var TaskCollection = Backbone.Collection.extend({
@@ -1671,8 +1668,7 @@
 
       moveexecutionpointfast: function(event)
       {
-        if(_GobalModel.get("isscriptexecuting"))
-            return;
+        if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
         var task = FindTaskById(parseInt($(event.target).closest("*[data-index]").attr("task-id")));
 
@@ -2105,19 +2101,15 @@
 
       play: function(event)
       {
-        if($("#play").hasClass("actionbuttongray"))
-        {
+        if ($("#play").hasClass("actionbuttongray")) {
           event.preventDefault();
           return;
         }
-        this.model.set("isscriptexecuting", true)
-        if(!this.model.get("istaskexecuting"))
-        {
-          SendTask()
+        this.model.set("isscriptexecuting", true);
+        if (!this.model.get("istaskexecuting") && !this.model.get("isexecutionaborting")) {
+          SendTask();
         }
       },
-
-
 
       UpdateInsertDataInterface: function()
       {
@@ -3495,8 +3487,7 @@
 
       MoveExecutionPointHere: function()
       {
-          if(_GobalModel.get("isscriptexecuting"))
-            return;
+          if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
           var task = this.collection.at(this.currentTargetId);
           if(task)
@@ -6898,13 +6889,6 @@
         res += "\n"
         return {index:index,res:res};
     }
-
-
-
-    
-
-    
   </script>
-
 </body>
 </html>

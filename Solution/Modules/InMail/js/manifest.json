@@ -819,7 +819,7 @@
 		"If debug is enabled, all queries and their results will be displayed in the log.": {"ru":"Если отладка включена, все запросы и их результаты будут выводится в лог."}
 	},
 	"major_version": 1,
-	"minor_version": 0,
+	"minor_version": 1,
 	"modules": [
 	],
 	"name": "InMail"

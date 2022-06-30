@@ -282,8 +282,16 @@ _InMail.imap = _InMail.assignApi(function(config){
 		return str;
 	};
 	
-	this.parse = function(str){
+	this.parse = function(str, expectedType){
 		str = api.delUpdateData(str).trim(); //Delete update data when mailbox changes
+		if(str.indexOf('\n') > -1){ //Delete other data not related to the current request
+			var list = str.split(/\r?\n/);
+			if(!_is_nilb(expectedType)){
+				str = list[0];
+			}else{
+				str = list.filter(function(ell){return _starts_with(ell.toLowerCase(), '* ' + expectedType)})[0] || list[0];
+			};
+		};
 		
 		var m = /^\* (?:(OK|NO|BAD|BYE|FLAGS|ID|LIST|XLIST|LSUB|SEARCH|STATUS|CAPABILITY|NAMESPACE|PREAUTH|SORT|THREAD|ESEARCH|QUOTA|QUOTAROOT)|(\d+) (EXPUNGE|FETCH|RECENT|EXISTS))(?:(?: \[([^\]]+)\])?(?: (.+))?)?$/i.exec(str);
 		
@@ -299,7 +307,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 	};
 	
 	this.parseSearch = function(str){
-		var info = api.parse(str);
+		var info = api.parse(str, 'search');
 		if(info.text){
 			var regSearchModseq = /^(.+) \(MODSEQ (.+?)\)$/i;
 			if(info.type === 'search' && regSearchModseq.test(info.text)){
@@ -640,7 +648,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, box: "", timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
-		var info = api.parse(resp);
+		var info = api.parse(resp, 'status');
 		
 		var r = api.parseExpr(info.text);
 		var attrs = {};
@@ -690,7 +698,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 				continue;
 			};
 			
-			var info = api.parse(line);
+			var info = api.parse(line, 'list');
 			
 			var r = api.parseExpr(info.text);
 			
@@ -1030,7 +1038,7 @@ _InMail.imap = _InMail.assignApi(function(config){
 		_call_function(api.makeRequest, {query: cmd, box: box, isUTF8: info.hasUTF8, timeout: timeout, maxTime: maxTime})!
 		var resp = _result_function();
 		
-		var info = api.parse(resp);
+		var info = api.parse(resp, 'esearch');
 		
 		var r = api.parseExpr(info.text.toUpperCase().replace('UID', ''));
 		var attrs = {};
@@ -1654,9 +1662,17 @@ _InMail.imap = _InMail.assignApi(function(config){
 					})!
 				})!
 				_if(attachnames || attachments, function(){
-					var filtered = parts.filter(function(p){return p.disposition && p.disposition.type && ['inline', 'attachment'].indexOf(p.disposition.type.toLowerCase()) > -1 && p.disposition.params && p.disposition.params.filename});
+					var filtered = parts.filter(function(p){return p.disposition && p.disposition.type && ['inline', 'attachment'].indexOf(p.disposition.type.toLowerCase()) > -1});
 					if(attachnames){
-						message.attachnames = filtered.map(function(p){return p.disposition.params.filename});
+						message.attachnames = filtered.map(function(p){
+							var filename = '';
+							if(p.disposition.params && p.disposition.params.filename){
+								filename = p.disposition.params.filename;
+							}else if(p.params && p.params.name){
+								filename = p.params.name;
+							};
+							return filename;
+						});
 					};
 					_if(attachments, function(){
 						message.attachments = [];
@@ -1682,7 +1698,13 @@ _InMail.imap = _InMail.assignApi(function(config){
 								};
 								for(var part_index in parts){
 									var part = parts[part_index];
-									if(mask.test(part.disposition.params.filename) === match && ids.indexOf(part.partID) < 0){
+									var filename = '';
+									if(part.disposition.params && part.disposition.params.filename){
+										filename = part.disposition.params.filename;
+									}else if(part.params && part.params.name){
+										filename = part.params.name;
+									};
+									if(mask.test(filename) === match && ids.indexOf(part.partID) < 0){
 										maskFiltered.push(part);
 										ids.push(part.partID);
 									};
@@ -1696,11 +1718,17 @@ _InMail.imap = _InMail.assignApi(function(config){
 								_break();
 							};
 							var part = _cycle_param("parts")[part_index];
+							var filename = '';
+							if(part.disposition.params && part.disposition.params.filename){
+								filename = part.disposition.params.filename;
+							}else if(part.params && part.params.name){
+								filename = part.params.name;
+							};
 							var randomFile = api.randStr() + '.file';
 							_call_function(api.getPartData, {uid: attrs.uid, part: part, markSeen: markSeen, saveToFile: randomFile, box: box, timeout: timeout, maxTime: maxTime})!
 							var randomFileDir = JSON.parse(native("filesystem", "fileinfo", randomFile)).directory;
 							message.attachments.push({
-								name: part.disposition.params.filename,
+								name: filename,
 								type: part.type + '/' + part.subtype,
 								path: randomFileDir + '/' + randomFile
 							});

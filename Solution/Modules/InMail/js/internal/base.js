@@ -77,7 +77,11 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			if(timeout && maxTime){
 				var timeLeft = maxTime - Date.now();
-				options["CURLOPT_TIMEOUT_MS"] = timeout < 60000 ? timeout : (timeLeft < 60000 ? 60000 : timeLeft);
+				var requestTimeout = timeout < 60000 ? timeout : (timeLeft < 60000 ? 60000 : timeLeft);
+				options["CURLOPT_TIMEOUT_MS"] = requestTimeout;
+				if(requestTimeout > 60000){
+					general_timeout_next(requestTimeout + 5000);
+				};
 			};
 			
 			options["CURLOPT_CUSTOMREQUEST"] = _is_nil(query) ? "" : query.trim();

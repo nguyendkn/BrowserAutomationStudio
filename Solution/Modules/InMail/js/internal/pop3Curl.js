@@ -486,8 +486,13 @@ _InMail.pop3 = _InMail.assignApi(function(config){
 							if(attachnames || attachments){
 								for(var part_index in bodyData){
 									var part = bodyData[part_index];
-									if(part.headers["content-disposition"] && ['inline', 'attachment'].indexOf(part.headers["content-disposition"].type) > -1 && part.headers["content-disposition"].params && part.headers["content-disposition"].params.filename){
-										var filename = part.headers["content-disposition"].params.filename;
+									if(part.headers["content-disposition"] && ['inline', 'attachment'].indexOf(part.headers["content-disposition"].type) > -1){
+										var filename = '';
+										if(part.headers["content-disposition"].params && part.headers["content-disposition"].params.filename){
+											filename = part.headers["content-disposition"].params.filename;
+										}else if(part.headers["content-type"].params && part.headers["content-type"].params.name){
+											filename = part.headers["content-type"].params.name;
+										};
 										if(attachnames){
 											message.attachnames.push(filename);
 										};

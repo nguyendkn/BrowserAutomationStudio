@@ -4,7 +4,7 @@
 void IDevToolsConnector::ResetProxy(const std::string& ParentProcessId)
 {
   // Create folder if needed
-  std::string Folder(std::string("Worker/chrome/t/"));
+  std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
   CreateDirectoryA(Folder.c_str(), NULL);
   Folder += ParentProcessId;
   CreateDirectoryA(Folder.c_str(), NULL);

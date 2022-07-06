@@ -27,10 +27,8 @@ void DevToolsActionSetProxy::Run()
     Folder += GlobalState->ParentProcessId;
     CreateDirectoryA(Folder.c_str(), NULL);
 
-    std::string Path = Folder + std::string("/s");
-
     //Stop new reqeusts from being send
-    GlobalState->ProxySaver->Save("127.0.0.1", 0, true, std::string(), std::string(), Path);
+    GlobalState->ProxySaver->Save("127.0.0.1", 0, true, std::string(), std::string(), Folder + std::string("/s"));
 
     //Wait 3 seconds
     FinishActionTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 3000;
@@ -96,10 +94,6 @@ void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const s
                 Folder += GlobalState->ParentProcessId;
                 CreateDirectoryA(Folder.c_str(), NULL);
 
-                //Path of file to write
-                std::string Path = Folder + std::string("/s");
-                std::string ResetPath = Folder + std::string("/r");
-
                 //Parse params
                 std::string Server = Params["server"].String;
                 Params.erase("server");
@@ -117,7 +111,7 @@ void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const s
                 Params.erase("password");
 
                 //Generate proxy data
-                GlobalState->ProxySaver->Save(Server, Port, IsHttp, Login, Password, Path);
+                GlobalState->ProxySaver->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
 
                 FinishActionTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 500;
                 WaitingForSetProxy = true;

@@ -252,8 +252,8 @@ Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, c
     CreateDirectoryA(Folder.c_str(), NULL);
     Folder += GlobalState.ParentProcessId;
     CreateDirectoryA(Folder.c_str(), NULL);
-    std::string Path = Folder + std::string("/s");
-    GlobalState.ProxySaver->Save(Server, Port, IsHttp, Login, Password, Path);
+
+    GlobalState.ProxySaver->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
 
     return ActionStub(Timeout);
 }

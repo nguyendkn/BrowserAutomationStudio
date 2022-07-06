@@ -450,6 +450,8 @@ function BrowserAutomationStudio_ApplyFingerprint()
 							Key = "maxChannelCount"
 						else if(Key == "AudioContextBaseLatency")
 							Key = "baseLatency"
+						else if(Key == "AudioContextOutputLatency")
+							Key = "outputLatency"
 						else
 							Key = ""
 						if(Key.length > 0)

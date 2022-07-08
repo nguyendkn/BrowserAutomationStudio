@@ -131,7 +131,7 @@ function SET_CAPMONSTER_TASK(task)
 function BAS_CapmonsterUpdateImage()
 {
 	_if(BAS_SolveRecaptcha_Method == "capmonsterimage", function(){
-   		cache_get_base64("recaptcha/api2/payload")!
+   		cache_get_base64("recaptcha/*/payload")!
 
    		var image_id = native("imageprocessing","load",_result())
    		var image_size = native("imageprocessing","getsize",image_id)
@@ -244,7 +244,7 @@ function Reload_Recaptcha()
 	cache_data_clear()!
 	mouse(LEFT + LEFT_RECAPTCHA_RELOAD_BUTTON + 12, TOP + TOP_RECAPTCHA_RELOAD_BUTTON + 12)!
 
-	wait_load("recaptcha/api2/payload")!
+	wait_load("recaptcha/*/payload")!
 }
 
 
@@ -305,9 +305,9 @@ function BAS_SolveRecaptcha()
 	  capmonster(BAS_SolveRecaptcha_Rucaptcha)
 	}
 	_if(BAS_SolveRecaptcha_Method == "capmonsterimage" || BAS_SolveRecaptcha_Method == "capmonsteraudio"  || BAS_SolveRecaptcha_Method == "capmonster", function(){
-	  cache_allow("recaptcha/api2/payload")!
+	  cache_allow("recaptcha/*/payload")!
 	})!
-	cache_allow("recaptcha/api2/userverify")!
+	cache_allow("recaptcha/*/userverify")!
 
 
 	BAS_SolveRecaptcha_Path().script("document.getElementById('rc-imageselect') != null")!
@@ -405,6 +405,8 @@ function BAS_SolveRecaptcha()
 		
 			_switch_http_client_internal()
 			var task = {"websiteURL":NEWAPI_URL,"websiteKey":NEWAPI_DATA_SITEKEY}
+			if(NEWAPI_DATA_S)
+				task["enterprisePayload"] = NEWAPI_DATA_S
 			if(typeof(BAS_SolveRecaptcha_SendProxy) == "boolean" && BAS_SolveRecaptcha_SendProxy && _PROXY["server"].length > 0)
 			{
 				task["type"] = "NoCaptchaTask";
@@ -510,7 +512,7 @@ function BAS_SolveRecaptcha()
 	       if(_iterator() > 60)
 	          fail("Recaptcha frame load timeout")
 	        
-          	  get_element_selector(RECAPTCHA_PREFIX_FIRST_FRAME).script("(function(){var el = Array.prototype.slice.call(document.getElementsByTagName('iframe')).find(function(el){return(el.src.indexOf('api2/bframe')>=0 && getComputedStyle(el)['visibility'] == 'visible')});if(el){el=el['name']}else{el=''};return el;})()")!
+          	  get_element_selector(RECAPTCHA_PREFIX_FIRST_FRAME).script("(function(){var el = Array.prototype.slice.call(document.getElementsByTagName('iframe')).find(function(el){return((el.src.indexOf('api2/bframe')>=0 || el.src.indexOf('enterprise/bframe')>=0) && getComputedStyle(el)['visibility'] == 'visible')});if(el){el=el['name']}else{el=''};return el;})()")!
           	  if(_result().length>0)
           	  {
 				RECAPTCHA_PREFIX_SECOND_FRAME = RECAPTCHA_PREFIX + ">CSS>iframe[name=\"" + _result() + "\"]" + ">FRAME> >CSS> body"
@@ -518,9 +520,9 @@ function BAS_SolveRecaptcha()
 				_break()
           	  }
 
-          	  is_load("recaptcha/api2/userverify")!
+          	  is_load("recaptcha/*/userverify")!
               _if(_result(),function(){
-            	cache_get_string("recaptcha/api2/userverify")!
+            	cache_get_string("recaptcha/*/userverify")!
             	RECAPTCHA2_SOLVED = _result().indexOf('"bgdata"') < 0
             	_break(2)
 
@@ -569,9 +571,9 @@ function BAS_SolveRecaptcha()
 	              _break()
 	            }
 
-	            is_load("recaptcha/api2/userverify")!
+	            is_load("recaptcha/*/userverify")!
 	            _if(_result(),function(){
-	            	cache_get_string("recaptcha/api2/userverify")!
+	            	cache_get_string("recaptcha/*/userverify")!
 	            	RECAPTCHA2_SOLVED = _result().indexOf('"bgdata"') < 0
 	            	_break(2)
 
@@ -637,7 +639,7 @@ function BAS_SolveRecaptcha()
 	         if(_iterator() > 60)
 	            fail("Recaptcha type detection timeout")
 	          
-	            is_load("recaptcha/api2/payload")!
+	            is_load("recaptcha/*/payload")!
 
 	            if(_result())
 	            {
@@ -654,7 +656,7 @@ function BAS_SolveRecaptcha()
 
 
 	      _if(RECAPTCHA2_TYPE == "audio", function(){
-	        cache_get_base64("recaptcha/api2/payload")!
+	        cache_get_base64("recaptcha/*/payload")!
 	        solver_property("capmonster","CapMonsterModule","ZennoLab.AudioReCaptcha")
 	        solve_base64("capmonster", _result())!
 
@@ -735,9 +737,9 @@ function BAS_SolveRecaptcha()
 	            _break()
 	          }
 
-	          is_load("recaptcha/api2/userverify")!
+	          is_load("recaptcha/*/userverify")!
               _if(_result(),function(){
-            	cache_get_string("recaptcha/api2/userverify")!
+            	cache_get_string("recaptcha/*/userverify")!
             	RECAPTCHA2_SOLVED = _result().indexOf('"bgdata"') < 0
             	_break(2)
 
@@ -769,7 +771,7 @@ function BAS_SolveRecaptcha()
 	      get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME).script("window.getComputedStyle(document.getElementsByClassName('rc-imageselect-incorrect-response')[0])['display']")!
 	      _if(_result() != "none" && !RECAPTCHA2_SOLVED, function(){
 	        solver_failed()
-	        wait_load("recaptcha/api2/payload")!
+	        wait_load("recaptcha/*/payload")!
 	      })!
 	        
 
@@ -779,7 +781,7 @@ function BAS_SolveRecaptcha()
 
 	      _if(RECAPTCHA2_FIRST_TIME, function(){
 	        RECAPTCHA2_FIRST_TIME = false
-	        wait_load("recaptcha/api2/payload")!
+	        wait_load("recaptcha/*/payload")!
 
 	      })!
 
@@ -952,7 +954,7 @@ function BAS_SolveRecaptcha()
 	          
 	        get_element_selector(RECAPTCHA_PREFIX_SECOND_FRAME).script("document.getElementsByClassName('rc-imageselect-tileselected').length")!
 	        _if(RECAPTCHA2_TOTAL_SELECTED == parseInt(_result()), function(){
-				wait_load("recaptcha/api2/payload")!
+				wait_load("recaptcha/*/payload")!
 
 				CAPTCHA_TYPE_DYNAMIC = true
 				_call(BAS_CapmonsterUpdateImage,null)!

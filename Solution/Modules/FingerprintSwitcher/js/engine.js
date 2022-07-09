@@ -61,8 +61,10 @@ function BrowserAutomationStudio_GetFingerprint()
 		q += "&time_limit=" + encodeURIComponent(FINGERPRINT_JSON.time_limit)	
 
 	FINGERPRINT_JSON.additional = {}
+	FINGERPRINT_JSON.additional.was_simplified_perfect_canvas_request = false
 	FINGERPRINT_JSON.additional.api_url = null
 	FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false
+	FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request = false
 	FINGERPRINT_JSON.additional.server_type_is_post_data = false
 	FINGERPRINT_JSON.additional.final_fingerprint_valid = false
 	FINGERPRINT_JSON.additional.dynamic_perfect_canvas = typeof(FINGERPRINT_JSON.dynamic_perfect_canvas) == "string" && FINGERPRINT_JSON.dynamic_perfect_canvas == "true"
@@ -82,18 +84,21 @@ function BrowserAutomationStudio_GetFingerprint()
 			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
 			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
 			FINGERPRINT_JSON.additional.api_url = "https://customcanvas.bablosoft.com/prepare"
+			FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request = false;
 		}else if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
 		{
 			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
 			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
 			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
 			FINGERPRINT_JSON.additional.api_url = "https://customfingerprints.bablosoft.com/prepare"
+			FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request = false;
 		}else
 		{
 			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
 			FINGERPRINT_JSON.additional.server_type_is_post_data = false;
 			FINGERPRINT_JSON.additional.status_url = "https://customcanvas.bablosoft.com/status"
 			FINGERPRINT_JSON.additional.api_url = "https://customfingerprints.bablosoft.com/prepare"
+			FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request = false;
 		}
 	}else if(FINGERPRINT_JSON.perfectcanvas_request.length > 0)
 	{
@@ -103,6 +108,7 @@ function BrowserAutomationStudio_GetFingerprint()
 			FINGERPRINT_JSON.additional.server_type_is_post_data = true;
 			FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com:4443/status"
 			FINGERPRINT_JSON.additional.api_url = "https://canvas.bablosoft.com:4443/prepare"
+			FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request = false;
 		}else
 		{
 			FINGERPRINT_JSON.additional.server_type_is_perfect_canvas = false;
@@ -110,6 +116,7 @@ function BrowserAutomationStudio_GetFingerprint()
 			FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com:4443/status"
 			FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
 			q += "&returnpc=true"
+			FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request = true;
 		}
 	}else
 	{
@@ -118,6 +125,7 @@ function BrowserAutomationStudio_GetFingerprint()
 		FINGERPRINT_JSON.additional.status_url = "https://canvas.bablosoft.com:4443/status"
 		FINGERPRINT_JSON.additional.api_url = "https://fingerprints.bablosoft.com/prepare"
 		q += "&returnpc=true"
+		FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request = false;
 	}
 
 	FINGERPRINT_JSON.additional.api_url += q
@@ -207,16 +215,27 @@ function BrowserAutomationStudio_GetFingerprint()
 				fail("Query limit reached")
 
 			_if_else(FINGERPRINT_JSON.additional.server_type_is_post_data, function(){
-				http_client_post(FINGERPRINT_JSON.additional.api_url, ["data", FINGERPRINT_JSON.perfectcanvas_request], {"content-type":"custom/" + ("application/octet-stream"), "encoding":("UTF-8"), "method":("POST"),headers:("Accept-Encoding: gzip, deflate")})!
+				var post_data = FINGERPRINT_JSON.perfectcanvas_request
+				if(FINGERPRINT_JSON.additional.can_use_simplified_perfect_canvas_request && !FINGERPRINT_JSON.additional.was_simplified_perfect_canvas_request)
+				{
+					FINGERPRINT_JSON.additional.was_simplified_perfect_canvas_request = true
+					post_data = ScriptWorker.PreparePerfectCanvasRequest(FINGERPRINT_JSON.perfectcanvas_request)
+				}
+				http_client_post(FINGERPRINT_JSON.additional.api_url, ["data", post_data], {"content-type":"custom/" + ("application/octet-stream"), "encoding":("UTF-8"), "method":("POST"),headers:("Accept-Encoding: gzip, deflate")})!
 			}, function(){
 				http_client_get2(FINGERPRINT_JSON.additional.api_url,{method:("GET"),headers:("Accept-Encoding: gzip, deflate")})!
 			})!
 
 			var json = http_client_content()
+			var instantretry = false
 	
 			try
 			{
 				var json_parsed = JSON.parse(json)
+				if(typeof(json_parsed["instantretry"]) == "boolean")
+				{
+					instantretry = json_parsed["instantretry"]
+				}
 				if(!json_parsed["trylater"])
 				{
 					FINGERPRINT_JSON.additional.final_fingerprint_valid = json_parsed.valid
@@ -224,8 +243,11 @@ function BrowserAutomationStudio_GetFingerprint()
 					_break()
 				}
 			}catch(e){}
-	
-			sleep(20000)!
+
+			_if(!instantretry, function(){
+				sleep(20000)!
+			})!
+			
 		})!  
 	})!
 

@@ -1,5 +1,5 @@
-_SMS.getServiceApi = function(data){
-	var services = {
+_SMS.getServices = function(){
+	return {
 		"sms-activate.org": {
 			api: this.SmsActivateApi,
 			config: {
@@ -27,7 +27,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-activate.ru", "sms-activate", "smsactivate"]
 		},
 		"smshub.org": {
 			api: this.SmsActivateApi,
@@ -54,7 +55,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["smshub"]
 		},
 		"5sim.net": {
 			api: this.SmsActivateApi,
@@ -82,7 +84,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["5sim"]
 		},
 		"365sms.ru": {
 			api: this.SmsActivateApi,
@@ -104,7 +107,8 @@ _SMS.getServiceApi = function(data){
 						type: 'service'
 					}
 				]
-			}
+			},
+			aliases: ["365sms"]
 		},
 		"sms-man.ru": {
 			api: this.SmsActivateApi,
@@ -134,7 +138,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-man", "smsman"]
 		},
 		"activation.pw": {
 			api: this.SmsActivateApi,
@@ -162,7 +167,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["activationpw", "activation"]
 		},
 		"getsms.online": {
 			api: this.SmsActivateApi,
@@ -190,7 +196,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["getsms"]
 		},
 		"cheapsms.ru": {
 			api: this.SmsActivateApi,
@@ -218,7 +225,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["cheapsms"]
 		},
 		"smsvk.net": {
 			api: this.SmsActivateApi,
@@ -246,7 +254,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["smsvk"]
 		},
 		"smscode.me": {
 			api: this.SmsActivateApi,
@@ -274,7 +283,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms.kopeechka.store", "kopeechka", "smscodeme", "smscode"]
 		},
 		"sms-reg.com": {
 			api: this.SmsRegApi,
@@ -303,7 +313,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-reg", "smsreg"]
 		},
 		"smspva.com": {
 			api: this.SmsPvaApi,
@@ -330,7 +341,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["smspva"]
 		},
 		"simsms.org": {
 			api: this.SmsPvaApi,
@@ -357,7 +369,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["simsms"]
 		},
 		"onlinesim.ru": {
 			api: this.OnlineSimApi,
@@ -386,7 +399,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["onlinesim"]
 		},
 		"sms-acktiwator.ru": {
 			api: this.SmsAcktiwatorApi,
@@ -415,7 +429,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-acktiwator", "smsacktiwator"]
 		},
 		"vak-sms.com": {
 			api: this.VakSmsApi,
@@ -444,7 +459,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["vak-sms", "vaksms"]
 		},
 		"give-sms.com": {
 			api: this.GiveSmsApi,
@@ -471,27 +487,34 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["give-sms", "givesms"]
 		}
 	};
+};
+_SMS.getServiceApi = function(data){
+	var services = this.getServices();
 	var service = data.service;
 	if(!services.hasOwnProperty(service)){
 		die(_K=="ru" ? ('Сервиса ' + service + ' нет в списке доступных') : (service + ' service is not in the list of available'), true);
 	};
 	var obj = services[service];
 	try{
-		return new obj.api(obj.config, data);
+		return (new obj.api(obj.config, data));
 	}catch(e){
 		die(_K=="ru" ? ('Класс сервиса ' + service + ' поврежден или отсутствует') : ('Class of service ' + service + ' is corrupted or missing'), true);
 	};
 };
 _SMS.getBasicName = function(service){
-	var aliases = {
-		"sms-activate.ru": "sms-activate.org",
-		"sms.kopeechka.store": "smscode.me"
+	service = service.toLowerCase();
+	var services = this.getServices();
+	if(services.hasOwnProperty(service)){
+		return service;
 	};
-	if(aliases.hasOwnProperty(service)){
-		return aliases[service];
+	for(var name in services){
+		if(services[name].aliases && services[name].aliases.indexOf(service) > -1){
+			return name;
+		};
 	};
 	return service;
 };

@@ -34,7 +34,7 @@ _SMS.getServices = function(){
 			api: this.SmsActivateApi,
 			config: {
 				name: 'SMSHUB',
-				url: 'https://smshub.org',
+				url: 'http://smshub.org',
 				supportedMethods: [
 					'getNumbersCount'
 				],

@@ -18,8 +18,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"CURLOPT_USERNAME": api.config.username,
 			"CURLOPT_PASSWORD": api.config.password,
 			"CURLOPT_USE_SSL": api.config.encrypt=="none" ? 0 : 3,
-			"CURLOPT_SSL_VERIFYPEER": false,
-			"CURLOPT_LOGIN_OPTIONS": 'AUTH=PLAIN'
+			"CURLOPT_SSL_VERIFYPEER": false
 		};
 		
 		this.setProxy = function(proxy){

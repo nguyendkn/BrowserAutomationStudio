@@ -1545,7 +1545,7 @@
               }
               return BrowserAutomationStudio_AskForVariablesUpdate();
             }
-            this.once("change:isexecutionaborting", (_, value) => value && requestUpdate());
+            this.once("change:isexecutionaborting", (_, value) => value || requestUpdate());
           });
         }  
     });

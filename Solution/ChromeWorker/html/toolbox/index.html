@@ -9902,6 +9902,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "executefunctioninseveralthreads": _.template($('#executefunctioninseveralthreads').html())
           _MACRO_INSERT_TEMPLATES_
         }
+        this.model.bind('change:state', (_, state) => {
+          if (state === 'main') _Router.navigate('');
+        });
         this.model.bind('change', this.render, this);
 
         try{

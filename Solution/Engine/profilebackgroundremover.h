@@ -19,7 +19,7 @@ class ENGINESHARED_EXPORT ProfileBackgroundRemover : public QObject
 
 public:
     explicit ProfileBackgroundRemover(QObject *parent = nullptr);
-    void Run();
+    void Run(bool immediate = false);
 private slots:
     void Timer();
 signals:

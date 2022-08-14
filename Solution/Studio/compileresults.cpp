@@ -192,6 +192,13 @@ void CompileResults::Submit()
         {
             QDomElement ProjectElement = Document.documentElement();
 
+            //Remove InterfaceState tag
+            QDomElement InterfaceStateElement = ProjectElement.firstChildElement("InterfaceState");
+            QDomNode InterfaceStateTextElement = InterfaceStateElement.firstChild();
+            QDomNode NewInterfaceStateTextElement = Document.createTextNode(QString());
+            InterfaceStateElement.replaceChild(NewInterfaceStateTextElement, InterfaceStateTextElement);
+
+
             //Preprocess script start
             QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
             QDomNode ScriptTextElement = ScriptElement.firstChild();

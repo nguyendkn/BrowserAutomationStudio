@@ -53,7 +53,6 @@ SOURCES += main.cpp \
     connector/noneconnector.cpp \
     connector/devtoolsconnector.cpp \
     connector/proxysaver.cpp \
-    connector/idevtoolsconnector.cpp \
     connector/emoji.cpp \
     connector/idevtoolsaction.cpp \
     connector/rawcpphttpclient.cpp \

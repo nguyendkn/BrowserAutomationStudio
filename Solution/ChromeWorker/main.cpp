@@ -2035,8 +2035,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     {
         DeinstallWidevine(Settings.Profile());
     }
-    auto WorkerCommandLine = ParseWorkerCommandLine();
-    if (std::any_of(WorkerCommandLine.begin(), WorkerCommandLine.end(), [](const std::pair<std::string, std::string> &p) { return p.first == std::string("--mock-connector"); }))
+    if(HasWorkerArgument("--mock-connector"))
     {
         // Initialize dummy connector.
         Data->Connector = new NoneConnector();

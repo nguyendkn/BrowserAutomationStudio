@@ -72,3 +72,15 @@ std::vector<std::pair<std::string, std::string>> ParseCommandLine(const std::str
 
     return Res;
 }
+
+bool HasWorkerArgument(const std::string& Argument)
+{
+    for(std::pair<std::string, std::string> pair : ParseWorkerCommandLine())
+    {
+        if(pair.first == Argument)
+        {
+            return true;
+        }
+    }
+    return false;
+}

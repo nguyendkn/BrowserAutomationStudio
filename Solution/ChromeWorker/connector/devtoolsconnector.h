@@ -6,6 +6,7 @@
 #include "ISimpleHttpClientFactory.h"
 #include <map>
 #include <memory>
+#include "devtoolsactionfactory.h
 #include "idevtoolsaction.h"
 #include "ActionSaver.h"
 #include "JsonParser.h"

@@ -18,6 +18,7 @@ class NoneConnector : public IDevToolsConnector
         DevToolsActionFactory ActionsFactory;
 
         Async ActionStub(int Timeout = -1);
+
         void ResetProxy(const std::string& ParentProcessId);
     public:
         // Paint

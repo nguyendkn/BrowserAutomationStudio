@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 #include "idevtoolsaction.h"
-#include "devtoolsactionfactory.h
+#include "devtoolsactionfactory.h"
 #include "ActionSaver.h"
 #include "JsonParser.h"
 #include "JsonSerializer.h"

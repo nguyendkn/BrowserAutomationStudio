@@ -11,12 +11,6 @@
 class IDevToolsConnector
 {
     protected:
-        // State
-        DevToolsGlobalState GlobalState;
-
-        // Factory
-        DevToolsActionFactory ActionsFactory;
-
         // Connection
         enum
         {

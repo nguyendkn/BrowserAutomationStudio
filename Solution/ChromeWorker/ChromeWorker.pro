@@ -50,7 +50,6 @@ SOURCES += main.cpp \
     connector/devtoolsactionstartdragfile.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
     connector/devtoolsconnector.cpp \
-    connector/idevtoolsconnector.cpp \
     connector/proxysaver.cpp \
     connector/emoji.cpp \
     connector/idevtoolsaction.cpp \

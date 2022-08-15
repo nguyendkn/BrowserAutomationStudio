@@ -28,7 +28,6 @@
 #include "fileutils.h"
 #include "prepareurladressbar.h"
 #include "proxyconfigreplace.h"
-#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include "ipcsimple.h"

@@ -219,7 +219,6 @@ HEADERS += \
     connector/devtoolsconnector.h \
     connector/idevtoolsconnector.h \
     connector/proxysaver.h \
-    connector/idevtoolsconnector.h \
     connector/emoji.h \
     connector/idevtoolsaction.h \
     connector/rawcpphttpclient.h \

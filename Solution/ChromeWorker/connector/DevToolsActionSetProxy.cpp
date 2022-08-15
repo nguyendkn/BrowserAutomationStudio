@@ -22,12 +22,8 @@ void DevToolsActionSetProxy::Run()
     WaitingForResetAllConnections = false;
     WaitingForStopNetworkActivity = false;
 
-    std::string Folder(GlobalState->ChromeExecutableLocation + std::string("/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += GlobalState->ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-
     //Stop new reqeusts from being send
+    std::string Folder = GlobalState->ProxySaver->CreateFolder(GlobalState->ChromeExecutableLocation, GlobalState->ParentProcessId);
     GlobalState->ProxySaver->Save("127.0.0.1", 0, true, std::string(), std::string(), Folder + std::string("/s"));
 
     //Wait 3 seconds
@@ -89,11 +85,6 @@ void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const s
                 WaitingForResetAllConnections = false;
                 WaitingForStopNetworkActivity = false;
 
-                std::string Folder(GlobalState->ChromeExecutableLocation + std::string("/t/"));
-                CreateDirectoryA(Folder.c_str(), NULL);
-                Folder += GlobalState->ParentProcessId;
-                CreateDirectoryA(Folder.c_str(), NULL);
-
                 //Parse params
                 std::string Server = Params["server"].String;
                 Params.erase("server");
@@ -111,6 +102,7 @@ void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const s
                 Params.erase("password");
 
                 //Generate proxy data
+                std::string Folder = GlobalState->ProxySaver->CreateFolder(GlobalState->ChromeExecutableLocation, GlobalState->ParentProcessId);
                 GlobalState->ProxySaver->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
 
                 FinishActionTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 500;

@@ -6,14 +6,8 @@ using namespace std::placeholders;
 
 void NoneConnector::ResetProxy(const std::string& ParentProcessId)
 {
-    // Create folder if needed
-    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-
     // Generate proxy data
-    GlobalState.ProxySaver->Reset(Folder + std::string("/s"));
+    GlobalState.ProxySaver->Reset(GlobalState.ProxySaver->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId) + std::string("/s"));
 }
 
 void NoneConnector::Initialize(
@@ -260,11 +254,7 @@ Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, c
 {
     GlobalState.IsProxySet = true;
 
-    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += GlobalState.ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-
+    std::string Folder = GlobalState.ProxySaver->CreateFolder(GlobalState.ChromeExecutableLocation, GlobalState.ParentProcessId);
     GlobalState.ProxySaver->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
 
     return ActionStub(Timeout);

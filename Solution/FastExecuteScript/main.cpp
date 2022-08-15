@@ -6,6 +6,7 @@
 #include <curl/curl.h>
 #include <QSslSocket>
 #include <openssl/ssl.h>
+#include <QSettings>
 #include <QThread>
 #include <QtGlobal>
 #include "mongodatabaseconnector.h"
@@ -197,7 +198,8 @@ int main(int argc, char *argv[])
     qDebug()<<"Start 100";
     w->Start();
     qDebug()<<"Start 200";
-    (new ProfileBackgroundRemover())->Run();
+    QSettings Settings("settings.ini", QSettings::IniFormat);
+    (new ProfileBackgroundRemover())->Run(Settings.value("RunProfileRemoverImmediately", false).toBool());
     qDebug()<<"Start 201";
     int res = a.exec();
     qDebug()<<"Start 300";

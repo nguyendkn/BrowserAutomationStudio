@@ -223,7 +223,8 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--noerrdialogs");
     CommandLine += std::wstring(L" ");
 
-
+    CommandLine += std::wstring(std::wstring(L"--window-position=0,0"));
+    CommandLine += std::wstring(L" ");
 
     CommandLine += std::wstring(L"--disable-smooth-scrolling");
     CommandLine += std::wstring(L" ");

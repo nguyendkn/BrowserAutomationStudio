@@ -300,12 +300,12 @@ namespace BrowserAutomationStudioFramework
         void PrepareFunctionResultSignal();
         void BrowserExtensioRequireFinishedSignal();
     public slots:
+        QString PreparePerfectCanvasRequest(const QString& PerfectCanvasRequest);
         QString PickResources();
         QString GetEmbeddedApiErrorString();
         QString GetEmbeddedVariablesList();
         bool GetEmbeddedExecutingApiCode();
         void RequireRequestDone(QString Id, QString Filename, bool IsFailure);
-
 
         void WebInterfaceEval(const QString& Script);
         void OnWaiterStarted();

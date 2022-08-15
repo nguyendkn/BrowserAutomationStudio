@@ -188,6 +188,13 @@ void CompileResults::Submit()
         if(Document.setContent(DataRaw, false))
         {
             QDomElement ProjectElement = Document.documentElement();
+
+            //Remove InterfaceState tag
+            QDomElement InterfaceStateElement = ProjectElement.firstChildElement("InterfaceState");
+            QDomNode InterfaceStateTextElement = InterfaceStateElement.firstChild();
+            QDomNode NewInterfaceStateTextElement = Document.createTextNode(QString());
+            InterfaceStateElement.replaceChild(NewInterfaceStateTextElement, InterfaceStateTextElement);
+
             QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
             QDomNode ScriptTextElement = ScriptElement.firstChild();
             QString Script = ScriptTextElement.toText().data();

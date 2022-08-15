@@ -18,6 +18,12 @@
 
 class DevToolsConnector : public IDevToolsConnector
 {
+    // State
+    DevToolsGlobalState GlobalState;
+
+    // Factory
+    DevToolsActionFactory ActionsFactory;
+
     KeyboardEmulation EmulateKeyboard;
 
     std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory;

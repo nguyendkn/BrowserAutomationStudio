@@ -218,6 +218,7 @@ HEADERS += \
     connector/devtoolsactionempty.h \
     connector/noneconnector.h \
     connector/devtoolsconnector.h \
+    connector/idevtoolsconnector.h \
     connector/proxysaver.h \
     connector/idevtoolsconnector.h \
     connector/emoji.h \

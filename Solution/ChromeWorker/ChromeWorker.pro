@@ -51,6 +51,7 @@ SOURCES += main.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
     connector/devtoolsconnector.cpp \
     connector/idevtoolsconnector.cpp \
+    connector/proxysaver.cpp \
     connector/emoji.cpp \
     connector/idevtoolsaction.cpp \
     connector/rawcpphttpclient.cpp \
@@ -214,6 +215,7 @@ HEADERS += \
     connector/devtoolsactionwebsocketquery.h \
     connector/devtoolsconnector.h \
     connector/idevtoolsconnector.h \
+    connector/proxysaver.h \
     connector/emoji.h \
     connector/idevtoolsaction.h \
     connector/rawcpphttpclient.h \

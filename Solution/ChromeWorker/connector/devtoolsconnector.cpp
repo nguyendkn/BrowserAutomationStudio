@@ -30,6 +30,8 @@ void DevToolsConnector::Initialize
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
     this->WebSocketClientFactory = WebSocketClientFactory;
 
+    GlobalState.ProxySaver.reset(new ProxySaver());
+
     ISimpleHttpClient * HttpClient = this->SimpleHttpClientFactory->Create();
     HttpClient->GlobalActivate();
     delete HttpClient;
@@ -221,7 +223,8 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--noerrdialogs");
     CommandLine += std::wstring(L" ");
 
-
+    CommandLine += std::wstring(std::wstring(L"--window-position=0,0"));
+    CommandLine += std::wstring(L" ");
 
     CommandLine += std::wstring(L"--disable-smooth-scrolling");
     CommandLine += std::wstring(L" ");
@@ -3118,4 +3121,3 @@ Async DevToolsConnector::SaveCookies(int Timeout)
     InsertAction(NewAction);
     return NewAction->GetResult();
 }
-

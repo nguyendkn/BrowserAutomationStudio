@@ -19,20 +19,16 @@
 
 class DevToolsConnector : public IDevToolsConnector
 {
-    // State
-    DevToolsGlobalState GlobalState;
-
-    // Factory
-    DevToolsActionFactory ActionsFactory;
-
     KeyboardEmulation EmulateKeyboard;
 
     std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory;
     std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory;
+    DevToolsGlobalState GlobalState;
 
     JsonParser Parser;
     JsonSerializer Serializer;
 
+    DevToolsActionFactory ActionsFactory;
     ActionSaver ActionsSaver;
 
     std::vector<std::shared_ptr<IDevToolsAction> > Actions;

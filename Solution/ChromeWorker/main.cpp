@@ -2032,7 +2032,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     {
         DeinstallWidevine(Settings.Profile());
     }
-    Data->Connector = new DevToolsConnector();
+    if(HasWorkerArgument("--mock-connector"))
+    {
+        // Initialize dummy connector.
+        Data->Connector = new DevToolsConnector();
+    }else
+    {
+        // Initialize default connector.
+        Data->Connector = new DevToolsConnector();
+    }
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
     Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));

@@ -1,6 +1,6 @@
 _SMS.SmsActivateApi.prototype.getRawCountry = function(country){
 	var countries = {
-		"sms-activate.ru": {
+		"sms-activate.org": {
 			"Any": "",
 			"RU": "0",
 			"KZ": "2",

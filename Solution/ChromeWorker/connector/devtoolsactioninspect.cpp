@@ -52,73 +52,8 @@ std::string DevToolsActionInspect::Javascript(const std::string& Script)
     return Res;
 }
 
-void DevToolsActionInspect::ParseFrameCandidates(const std::string& FrameMessage, const std::string ParentFrameId)
-{
-    std::string CurrentParentFrameId = ParentFrameId;
-    if(ParentFrameId.empty())
-    {
-        CurrentParentFrameId = GetStringFromJson(LastMessage, "frameTree.frame.id");
-    }else
-    {
-        CurrentParentFrameId = ParentFrameId;
-    }
-    FrameCandidates.clear();
-    picojson::value MessageValue;
-    picojson::parse(MessageValue, FrameMessage);
-    picojson::object Obj = MessageValue.get<picojson::object>();
-    ParseFrameCandidatesIteration(Obj, CurrentParentFrameId);
-}
-
-void DevToolsActionInspect::ParseFrameCandidatesIteration(picojson::object& Obj, const std::string ParentFrameId)
-{
-    for (picojson::object::iterator it = Obj.begin(); it != Obj.end(); it++)
-    {
-        if(it->first == "frame" && it->second.is<picojson::object>())
-        {
-            picojson::object FrameObject = it->second.get<picojson::object>();
-            if(FrameObject["parentId"].is<std::string>() && FrameObject["id"].is<std::string>() && ParentFrameId == FrameObject["parentId"].get<std::string>())
-            {
-                FrameCandidates.push_back(FrameObject["id"].get<std::string>());
-            }
-        }else if (it->first == "childFrames" && it->second.is<picojson::array>())
-        {
-            picojson::array FrameList = it->second.get<picojson::array>();
-            for(picojson::value& Value: FrameList)
-            {
-                if (Value.is<picojson::object>())
-                {
-                    ParseFrameCandidatesIteration(Value.get<picojson::object>(), ParentFrameId);
-                }
-            }
-        }else if (it->second.is<picojson::object>())
-        {
-            ParseFrameCandidatesIteration(it->second.get<picojson::object>(), ParentFrameId);
-        }
-
-    }
-}
-
 void DevToolsActionInspect::Next()
 {
-    if (RequestType == FrameSearchGetFrameList)
-    {
-        ParseFrameCandidates(LastMessage, CurrentFrame);
-        RequestType = FrameSearchGetFrameId;
-    }
-
-    if (RequestType == FrameSearchGetFrameIdResult)
-    {
-        int CandidateNodeId = GetFloatFromJson(LastMessage, "backendNodeId");
-        if(CurrentNodeId == CandidateNodeId && GlobalState->FrameIdToContextId.count(CurrentFrameCandidate) > 0)
-        {
-            CurrentFrame = CurrentFrameCandidate;
-            CurrentContextId = GlobalState->FrameIdToContextId[CurrentFrameCandidate];
-            RequestType = Initial;
-            Next();
-            return;
-        }
-        RequestType = FrameSearchGetFrameId;
-    }
 
     if(RequestType == FrameSearchEvaluate)
     {
@@ -134,39 +69,34 @@ void DevToolsActionInspect::Next()
             std::map<std::string, Variant> CurrentParams;
             CurrentParams["objectId"] = Variant(CurrentLoaderId);
             RequestType = FrameSearchGetNodeId;
-            SendWebSocket("DOM.describeNode", CurrentParams);
+            SendWebSocket("DOM.describeNode", CurrentParams, CurrentFrameSessionId);
         }
         return;
     } else if(RequestType == FrameSearchGetNodeId)
     {
-        CurrentNodeId = GetFloatFromJson(LastMessage, "node.backendNodeId");
+        //Save previous session id to release object on parent frame
+        std::string CurrentFrameSessionIdCopy = CurrentFrameSessionId;
+
+        //Get information about frame
+        std::string CurrentFrame = GetStringFromJson(LastMessage, "node.frameId");
+        CurrentContextId = GlobalState->FrameIdToContextId[CurrentFrame];
+        for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
+        {
+            if(Frame->FrameId == CurrentFrame)
+            {
+                CurrentFrameSessionId = Frame->TabId;
+            }
+        }
+
         RequestType = FrameSearchReleaseObject;
         std::map<std::string, Variant> CurrentParams;
         CurrentParams["objectId"] = Variant(CurrentLoaderId);
-        SendWebSocket("Runtime.releaseObject", CurrentParams);
+        SendWebSocket("Runtime.releaseObject", CurrentParams, CurrentFrameSessionIdCopy);
         return;
     } else if(RequestType == FrameSearchReleaseObject)
     {
-        RequestType = FrameSearchGetFrameList;
-        std::map<std::string, Variant> CurrentParams;
-        SendWebSocket("Page.getFrameTree", CurrentParams);
-        return;
-    } else if(RequestType == FrameSearchGetFrameId)
-    {
-        if(FrameCandidates.empty())
-        {
-            Result->Fail("Failed to find frame", "NoFrame");
-            State = Finished;
-
-            return;
-        }
-        CurrentFrameCandidate = FrameCandidates.at(0);
-        FrameCandidates.erase(FrameCandidates.begin());
-
-        RequestType = FrameSearchGetFrameIdResult;
-        std::map<std::string, Variant> CurrentParams;
-        CurrentParams["frameId"] = Variant(CurrentFrameCandidate);
-        SendWebSocket("DOM.getFrameOwner", CurrentParams);
+        RequestType = Initial;
+        Next();
         return;
     } else if(RequestType == InspectPosition)
     {
@@ -257,7 +187,7 @@ void DevToolsActionInspect::Next()
             CurrentParams["expression"] = Variant(Script);
             CurrentParams["replMode"] = Variant(true);
 
-            SendWebSocket("Runtime.evaluate", CurrentParams);
+            SendWebSocket("Runtime.evaluate", CurrentParams, CurrentFrameSessionId);
         }
 
     }else if(RequestType == Initial)
@@ -275,7 +205,7 @@ void DevToolsActionInspect::Next()
         CurrentParams["expression"] = Variant(Script);
         CurrentParams["replMode"] = Variant(true);
 
-        SendWebSocket("Runtime.evaluate", CurrentParams);
+        SendWebSocket("Runtime.evaluate", CurrentParams, CurrentFrameSessionId);
     }
 
 

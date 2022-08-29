@@ -1,12 +1,27 @@
 #include "ActionSaver.h"
 
 
-std::vector<std::shared_ptr<IDevToolsAction> > ActionSaver::GetActions()
+std::vector<std::shared_ptr<IDevToolsAction> > ActionSaver::GetActions(bool IsFrame)
 {
 	std::vector<std::shared_ptr<IDevToolsAction> > Result;
 	for(std::shared_ptr<IDevToolsAction> Action : Actions)
 	{
-		Result.push_back(CloneAction(Action));
+        bool NeedToAdd = false;
+        if(IsFrame)
+        {
+            if(Action->IsNeedToRunForAllActiveFrames())
+            {
+                NeedToAdd = true;
+            }
+        }else
+        {
+            NeedToAdd = true;
+        }
+
+        if(NeedToAdd)
+        {
+            Result.push_back(CloneAction(Action));
+        }
 	}
 	return Result;
 }

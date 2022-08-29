@@ -19,6 +19,9 @@ struct BrowserSettingsSaver
     std::string UserAgent;
     std::string UserAgentDataBase64;
 
+    std::vector<std::pair<bool, std::string> > RequestMask;
+    std::string StartupScript;
+
     //Record mode
     bool IsRecord;
 

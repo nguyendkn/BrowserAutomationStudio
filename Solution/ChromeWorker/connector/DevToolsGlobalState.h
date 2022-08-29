@@ -22,8 +22,6 @@ struct TabData
         WaitingForRuntimeEnable,
         WaitingForDragAndDropInit,
         WaitingForNetworkEnable,
-        WaitingForSettingStartupScript,
-        WaitingForPageReloadForFirstTab,
         WaitingForExecutingSavedActions,
         Connected
     }ConnectionState = NotStarted;
@@ -38,6 +36,12 @@ struct TabData
 
     bool IsWaitingForFirstUrl = false;
     std::string FirstUrl;
+
+    enum
+    {
+        TabType,
+        FrameType
+    }TargetType = TabType;
 };
 
 struct StartupScriptItem
@@ -69,6 +73,7 @@ struct DevToolsGlobalState
     std::vector<StartupScriptItem> StartupScriptIds;
     std::map<std::string, int> FrameIdToContextId;
     std::vector<std::shared_ptr<TabData> > Tabs;
+    std::vector<std::shared_ptr<TabData> > Frames;
 
     int ScrollX = -1;
     int ScrollY = -1;

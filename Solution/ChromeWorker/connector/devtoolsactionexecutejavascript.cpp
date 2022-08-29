@@ -10,15 +10,12 @@ void DevToolsActionExecuteJavascript::Run()
     Variables.clear();
     InitialVariables.clear();
     LastMessage.clear();
-    RemoteObjectId.clear();
     CurrentLoaderId.clear();
     CurrentPrefix.clear();
-    CurrentNodeId = -1;
     CurrentContextId = -1;
-    LocalObjectId.clear();
-    CurrentFrame.clear();
-    FrameCandidates.clear();
-    CurrentFrameCandidate.clear();
+    CurrentFrameSessionId = "CurrentTab";
+    NextContextId = -1;
+    NextFrameSessionId = "CurrentTab";
     ScrollDataWasObtained = false;
     IsDoingScrollRequest = false;
     IsDoingScroll = false;
@@ -107,7 +104,34 @@ bool DevToolsActionExecuteJavascript::Evaluate(std::map<std::string, Variant>& P
     }
 
     CurrentExecutionTabId = TabId;
-    SendWebSocket("Runtime.evaluate", Params);
+
+    //Using frame in separate process, check if it still exsist
+    if(CurrentFrameSessionId != "CurrentTab")
+    {
+        bool FrameExists = false;
+        for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
+        {
+            if(Frame->TabId == CurrentFrameSessionId)
+            {
+                FrameExists = true;
+                break;
+            }
+        }
+
+        if(!FrameExists)
+        {
+            //In case if frame is destroyed, Runtime.evaluate request will never return.
+            //Therefore timeout will occur, in order to avoid that, error will be returned immediately.
+            Result->Fail("Frame is destroyed", "FrameDestroyed");
+            State = Finished;
+            return true;
+        }
+
+        CurrentExecutionTabId = CurrentFrameSessionId;
+
+    }
+
+    SendWebSocket("Runtime.evaluate", Params, CurrentFrameSessionId);
     return false;
 }
 
@@ -167,51 +191,6 @@ std::string DevToolsActionExecuteJavascript::Javascript(const std::string& Scrip
     return Res;
 }
 
-void DevToolsActionExecuteJavascript::ParseFrameCandidates(const std::string& FrameMessage, const std::string ParentFrameId)
-{
-    std::string CurrentParentFrameId = ParentFrameId;
-    if(ParentFrameId.empty())
-    {
-        CurrentParentFrameId = GetStringFromJson(LastMessage, "frameTree.frame.id");
-    }else
-    {
-        CurrentParentFrameId = ParentFrameId;
-    }
-    FrameCandidates.clear();
-    picojson::value MessageValue;
-    picojson::parse(MessageValue, FrameMessage);
-    picojson::object Obj = MessageValue.get<picojson::object>();
-    ParseFrameCandidatesIteration(Obj, CurrentParentFrameId);
-}
-
-void DevToolsActionExecuteJavascript::ParseFrameCandidatesIteration(picojson::object& Obj, const std::string ParentFrameId)
-{
-    for (picojson::object::iterator it = Obj.begin(); it != Obj.end(); it++)
-    {
-        if(it->first == "frame" && it->second.is<picojson::object>())
-        {
-            picojson::object FrameObject = it->second.get<picojson::object>();
-            if(FrameObject["parentId"].is<std::string>() && FrameObject["id"].is<std::string>() && ParentFrameId == FrameObject["parentId"].get<std::string>())
-            {
-                FrameCandidates.push_back(FrameObject["id"].get<std::string>());
-            }
-        }else if (it->first == "childFrames" && it->second.is<picojson::array>())
-        {
-            picojson::array FrameList = it->second.get<picojson::array>();
-            for(picojson::value& Value: FrameList)
-            {
-                if (Value.is<picojson::object>())
-                {
-                    ParseFrameCandidatesIteration(Value.get<picojson::object>(), ParentFrameId);
-                }
-            }
-        }else if (it->second.is<picojson::object>())
-        {
-            ParseFrameCandidatesIteration(it->second.get<picojson::object>(), ParentFrameId);
-        }
-
-    }
-}
 
 void DevToolsActionExecuteJavascript::Next()
 {
@@ -254,25 +233,6 @@ void DevToolsActionExecuteJavascript::Next()
 
     if(!LastMessage.empty())
     {
-        if (RequestType == FrameSearchGetFrameList)
-        {
-            ParseFrameCandidates(LastMessage, CurrentFrame);
-            RequestType = FrameSearchGetFrameId;
-        }
-        if (RequestType == FrameSearchGetFrameIdResult)
-        {
-            int CandidateNodeId = GetFloatFromJson(LastMessage, "backendNodeId");
-            if(CurrentNodeId == CandidateNodeId && GlobalState->FrameIdToContextId.count(CurrentFrameCandidate) > 0)
-            {
-                CurrentFrame = CurrentFrameCandidate;
-                CurrentContextId = GlobalState->FrameIdToContextId[CurrentFrameCandidate];
-                RequestType = NodeSearch;
-                Next();
-                return;
-            }
-            RequestType = FrameSearchGetFrameId;
-        }
-
         if(RequestType == FrameSearchEvaluate)
         {
             CurrentLoaderId = GetStringFromJson(LastMessage, "result.objectId", "BAS_NOT_FOUND");
@@ -287,16 +247,27 @@ void DevToolsActionExecuteJavascript::Next()
                 std::map<std::string, Variant> CurrentParams;
                 CurrentParams["objectId"] = Variant(CurrentLoaderId);
                 RequestType = FrameSearchGetNodeId;
-                SendWebSocket("DOM.describeNode", CurrentParams);
+                SendWebSocket("DOM.describeNode", CurrentParams, CurrentFrameSessionId);
             }
             return;
         } else if(RequestType == FrameSearchGetNodeId)
         {
-            CurrentNodeId = GetFloatFromJson(LastMessage, "node.backendNodeId");
+            //Get information about frame
+            std::string CurrentFrame = GetStringFromJson(LastMessage, "node.frameId");
+            NextContextId = GlobalState->FrameIdToContextId[CurrentFrame];
+            NextFrameSessionId = CurrentFrameSessionId;
+            for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
+            {
+                if(Frame->FrameId == CurrentFrame)
+                {
+                    NextFrameSessionId = Frame->TabId;
+                }
+            }
+
             RequestType = FrameSearchReleaseObject;
             std::map<std::string, Variant> CurrentParams;
             CurrentParams["objectId"] = Variant(CurrentLoaderId);
-            SendWebSocket("Runtime.releaseObject", CurrentParams);
+            SendWebSocket("Runtime.releaseObject", CurrentParams, CurrentFrameSessionId);
             return;
         } else if(RequestType == FrameSearchReleaseObject)
         {
@@ -313,9 +284,10 @@ void DevToolsActionExecuteJavascript::Next()
                 return;
             } else
             {
-                RequestType = FrameSearchGetFrameList;
-                std::map<std::string, Variant> CurrentParams;
-                SendWebSocket("Page.getFrameTree", CurrentParams);
+                RequestType = NodeSearch;
+                CurrentContextId = NextContextId;
+                CurrentFrameSessionId = NextFrameSessionId;
+                Next();
                 return;
             }
         } else if(RequestType == FrameSearchGetPosition)
@@ -330,27 +302,11 @@ void DevToolsActionExecuteJavascript::Next()
             {
                 PositionX += GetFloatFromJson(ResponseMessage, "left");
                 PositionY += GetFloatFromJson(ResponseMessage, "top");
-                RequestType = FrameSearchGetFrameList;
-                std::map<std::string, Variant> CurrentParams;
-                SendWebSocket("Page.getFrameTree", CurrentParams);
+                RequestType = NodeSearch;
+                CurrentContextId = NextContextId;
+                CurrentFrameSessionId = NextFrameSessionId;
+                Next();
             }
-            return;
-        } else if(RequestType == FrameSearchGetFrameId)
-        {
-            if(FrameCandidates.empty())
-            {
-                Result->Fail("Failed to find frame", "NoFrame");
-                State = Finished;
-                
-                return;
-            }
-            CurrentFrameCandidate = FrameCandidates.at(0);
-            FrameCandidates.erase(FrameCandidates.begin());
-            
-            RequestType = FrameSearchGetFrameIdResult;
-            std::map<std::string, Variant> CurrentParams;
-            CurrentParams["frameId"] = Variant(CurrentFrameCandidate);
-            SendWebSocket("DOM.getFrameOwner", CurrentParams);
             return;
         }
     }

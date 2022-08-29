@@ -11,7 +11,7 @@ class ActionSaver
 	public:
 		std::shared_ptr<IDevToolsAction> CloneAction(std::shared_ptr<IDevToolsAction> OriginalAction);
 		void ProcessAction(std::shared_ptr<IDevToolsAction> Action);
-		std::vector<std::shared_ptr<IDevToolsAction> > GetActions();
+        std::vector<std::shared_ptr<IDevToolsAction> > GetActions(bool IsFrame);
 
 };
 

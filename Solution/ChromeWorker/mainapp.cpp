@@ -902,12 +902,9 @@ void MainApp::SetStartupScriptCallback(const std::string& value,const std::strin
         it->second.Set(value, target);
     }
 
-    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
-    Data->Results->ProcessResult(Result);
-    Result->Then([this](AsyncResult* Result)
-    {
-        this->SendTextResponce("<SetStartupScript></SetStartupScript>");
-    });
+    UpdateBrowserData(Data);
+
+    SendTextResponce("<SetStartupScript></SetStartupScript>");
 
 }
 
@@ -1928,12 +1925,9 @@ void MainApp::RecaptchaV3ListCallback(const std::string& value)
 {
     Data->_RecaptchaV3List = value;
 
-    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
-    Data->Results->ProcessResult(Result);
-    Result->Then([this](AsyncResult* Result)
-    {
-        this->SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
-    });
+    UpdateBrowserData(Data);
+
+    SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
 }
 
 void MainApp::ClickExtensionButton(const std::string& id)
@@ -2107,6 +2101,7 @@ void MainApp::AddRequestMaskAllowCallback(const std::string& value)
     data.first = true;
     data.second = value;
     Data->_RequestMask.push_back(data);
+    UpdateBrowserData(Data);
 
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
@@ -2122,6 +2117,7 @@ void MainApp::AddRequestMaskDenyCallback(const std::string& value)
     data.first = false;
     data.second = value;
     Data->_RequestMask.push_back(data);
+    UpdateBrowserData(Data);
 
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
@@ -2173,7 +2169,7 @@ void MainApp::RestrictDownloads()
 void MainApp::ClearRequestMaskCallback()
 {
     Data->_RequestMask.clear();
-
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2200,6 +2196,7 @@ void MainApp::ClearAllCallback()
     Data->Connector->ClearNetworkData();
 
     Data->_RequestMask.clear();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2213,6 +2210,7 @@ void MainApp::ClearMasksCallback()
     Data->_CacheMask.clear();
     Data->Connector->SetCacheMasks(Data->_CacheMask);
     Data->_RequestMask.clear();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)

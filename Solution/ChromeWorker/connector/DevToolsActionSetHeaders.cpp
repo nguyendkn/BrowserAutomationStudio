@@ -23,6 +23,11 @@ bool DevToolsActionSetHeaders::IsNeedToRunForAllActiveTabs()
     return true;
 }
 
+bool DevToolsActionSetHeaders::IsNeedToRunForAllActiveFrames()
+{
+    return true;
+}
+
 void DevToolsActionSetHeaders::OnTabSwitching()
 {
 

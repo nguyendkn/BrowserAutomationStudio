@@ -30,15 +30,10 @@ class DevToolsActionInspect :	public IDevToolsAction
     int y_with_padding;
 
     std::string LastMessage;
-    std::string RemoteObjectId;
     std::string CurrentLoaderId;
     std::vector<std::pair<std::string, std::string> > CurrentPrefix;
-    int CurrentNodeId = -1;
     int CurrentContextId = -1;
-    std::string LocalObjectId;
-    std::string CurrentFrame;
-    std::vector<std::string> FrameCandidates;
-    std::string CurrentFrameCandidate;
+    std::string CurrentFrameSessionId = "CurrentTab";
     bool ScrollDataWasObtained = false;
     bool IsDoingScrollRequest = false;
     int PositionX = 0;
@@ -50,14 +45,9 @@ class DevToolsActionInspect :	public IDevToolsAction
         FrameSearchGetNodeId,
         FrameSearchReleaseObject,
         FrameSearchGetPosition,
-        FrameSearchGetFrameList,
-        FrameSearchGetFrameId,
-        FrameSearchGetFrameIdResult,
         JavascriptExecution
     }RequestType = Initial;
     void Next();
-    void ParseFrameCandidates(const std::string& FrameMessage, const std::string ParentFrameId);
-    void ParseFrameCandidatesIteration(picojson::object& Obj, const std::string ParentFrameId);
     std::string Javascript(const std::string& Script);
     std::string PrepareResult();
 public:

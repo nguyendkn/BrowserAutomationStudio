@@ -99,6 +99,7 @@ class IDevToolsAction
         virtual ActionSaverBehavior GetActionSaverBehavior();
         virtual bool FilterActionSaver(std::shared_ptr<IDevToolsAction> Action);
         virtual bool IsNeedToRunForAllActiveTabs();
+        virtual bool IsNeedToRunForAllActiveFrames();
         virtual void OnTabCreation();
         virtual void OnTabSwitching();
         virtual void OnRunnningForAllRunActiveTab();

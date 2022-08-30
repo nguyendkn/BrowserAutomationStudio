@@ -2159,6 +2159,22 @@ Async DevToolsConnector::GetHistory(int Timeout)
     return NewAction->GetResult();
 }
 
+Async DevToolsConnector::Sleep(int TimeMilliseconds, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    std::map<std::string, Variant> Params;
+    Params["time"] = Variant(TimeMilliseconds);
+
+    NewAction.reset(ActionsFactory.Create("Sleep", &GlobalState));
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+
 Async DevToolsConnector::SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;

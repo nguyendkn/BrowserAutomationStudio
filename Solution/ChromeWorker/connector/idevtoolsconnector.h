@@ -161,6 +161,9 @@ class IDevToolsConnector
 
         // Drag and drop
         virtual Async StartDragFile(const std::string& Path, int Timeout = -1) = 0;
+
+        // Helpers
+        virtual Async Sleep(int TimeMilliseconds, int Timeout = -1) = 0;
 };
 
 #endif // IDEVTOOLSCONNECTOR_H

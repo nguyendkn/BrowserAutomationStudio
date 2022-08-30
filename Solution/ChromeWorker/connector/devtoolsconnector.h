@@ -235,6 +235,10 @@ class DevToolsConnector : public IDevToolsConnector
 
         //Drag and drop
         Async StartDragFile(const std::string& Path, int Timeout = -1);
+
+        //Helpers
+        Async Sleep(int TimeMilliseconds, int Timeout = -1);
+
 };
 
 #endif // DEVTOOLSCONNECTOR_H

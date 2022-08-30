@@ -47,6 +47,7 @@ SOURCES += main.cpp \
     connector/devtoolsactionrestorecookies.cpp \
     connector/devtoolsactionsavecookies.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
+    connector/devtoolsactionsleep.cpp \
     connector/devtoolsactionstartdragfile.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
     connector/devtoolsconnector.cpp \
@@ -210,6 +211,7 @@ HEADERS += \
     connector/devtoolsactionrestorecookies.h \
     connector/devtoolsactionsavecookies.h \
     connector/devtoolsactionsetstartupscript.h \
+    connector/devtoolsactionsleep.h \
     connector/devtoolsactionstartdragfile.h \
     connector/devtoolsactionwebsocketquery.h \
     connector/devtoolsconnector.h \

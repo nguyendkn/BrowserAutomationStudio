@@ -904,7 +904,13 @@ void MainApp::SetStartupScriptCallback(const std::string& value,const std::strin
 
     UpdateBrowserData(Data);
 
-    SendTextResponce("<SetStartupScript></SetStartupScript>");
+    Async Result = Data->Connector->Sleep(2000);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<SetStartupScript></SetStartupScript>");
+    });
+
 
 }
 
@@ -1927,7 +1933,14 @@ void MainApp::RecaptchaV3ListCallback(const std::string& value)
 
     UpdateBrowserData(Data);
 
-    SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
+    Async Result = Data->Connector->Sleep(2000);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
+    });
+
+
 }
 
 void MainApp::ClickExtensionButton(const std::string& id)

@@ -265,6 +265,11 @@ Async NoneConnector::GetHistory(int Timeout)
     return ActionStub(Timeout);
 }
 
+Async NoneConnector::Sleep(int TimeMilliseconds, int Timeout)
+{
+    return ActionStub(Timeout);
+}
+
 Async NoneConnector::SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
 {
     return ActionStub(Timeout);

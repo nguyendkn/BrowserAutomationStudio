@@ -27,6 +27,7 @@
 #include "devtoolsactionstartdragfile.h"
 #include "devtoolsactionsleep.h"
 #include "devtoolsactionresetdevicescalefactor.h"
+#include "devtoolsactionempty.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -128,6 +129,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "Sleep")
     {
         Result = new DevToolsActionSleep();
+    }else if(Name == "Empty")
+    {
+        Result = new DevToolsActionEmpty();
     }
 
 
@@ -141,6 +145,7 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
         Result->GetResult()->SetActionUniqueId(UniqueId);
         Result->SetGroupId(Rand());
         Result->SetGlobalState(GlobalState);
+        if (Name == "Empty") Result->Run();
     }
 
     return Result;

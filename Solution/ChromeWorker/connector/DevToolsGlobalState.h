@@ -60,7 +60,7 @@ struct ExtensionInfo
 
 struct DevToolsGlobalState
 {
-    std::shared_ptr<ProxySaver> ProxySaver;
+    std::shared_ptr<ProxySaver> SaveProxy;
     std::shared_ptr<ISimpleHttpClient> HttpClient;
     std::shared_ptr<IWebSocketClient> WebSocketClient;
     std::string TabId;

@@ -20,7 +20,8 @@ using namespace std::chrono;
 void DevToolsConnector::ResetProxy(const std::string& ParentProcessId)
 {
     // Generate proxy data
-    GlobalState.ProxySaver->Reset(GlobalState.ProxySaver->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId) + std::string("/s"));
+    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId);
+    GlobalState.SaveProxy->Reset(Folder + std::string("/s"));
 }
 
 void DevToolsConnector::Initialize
@@ -36,7 +37,7 @@ void DevToolsConnector::Initialize
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
     this->WebSocketClientFactory = WebSocketClientFactory;
 
-    GlobalState.ProxySaver.reset(new ProxySaver());
+    GlobalState.SaveProxy.reset(new ProxySaver());
 
     ISimpleHttpClient * HttpClient = this->SimpleHttpClientFactory->Create();
     HttpClient->GlobalActivate();

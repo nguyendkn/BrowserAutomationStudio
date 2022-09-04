@@ -10,7 +10,7 @@ private:
 
 public:
     void Save(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password, const std::string &Path);
-    std::string ProxySaver::CreateFolder(const std::string& Path, const std::string& ParentProcessId);
+    std::string CreateFolder(const std::string& Path, const std::string& ParentProcessId);
     void Reset(const std::string &Path);
 };
 

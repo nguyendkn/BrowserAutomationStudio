@@ -1,7 +1,7 @@
 #include "resultmanager.h"
 #include "log.h"
 
-void ResultManager::Init(DevToolsConnector *Connector)
+void ResultManager::Init(IDevToolsConnector *Connector)
 {
     this->Connector = Connector;
 }

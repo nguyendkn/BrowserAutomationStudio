@@ -1,6 +1,7 @@
 #ifndef DEVTOOLSCONNECTOR_H
 #define DEVTOOLSCONNECTOR_H
 
+#include "idevtoolsconnector.h"
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
 #include <map>
@@ -16,7 +17,7 @@
 #include "sharedmemoryipc.h"
 #include "chromeprocesslauncher.h"
 
-class DevToolsConnector
+class DevToolsConnector : public IDevToolsConnector
 {
     KeyboardEmulation EmulateKeyboard;
 
@@ -50,16 +51,6 @@ class DevToolsConnector
 
     //Connection data
 
-    enum{
-        WaitingForBrowserClose,
-        NotStarted,
-        WaitingForBrowserEndpoint,
-        WaitingForWebsocket,
-        WaitingForAutoconnectEnable,
-        WaitingForDownloadsEnable,
-        WaitingFirstTab,
-        Connected
-    }ConnectionState = NotStarted;
     std::string Endpoint;
 
     bool WasBrowserCreationEvent = false;
@@ -130,21 +121,6 @@ class DevToolsConnector
 
     public:
 
-        std::vector<std::function<void()> > OnPaint;
-        std::vector<std::function<void()> > OnResize;
-        std::vector<std::function<void()> > OnScroll;
-        std::vector<std::function<void(std::string)> > OnRequestStart;
-        std::vector<std::function<void(std::string)> > OnRequestStop;
-        std::vector<std::function<void()> > OnLoadStart;
-        std::vector<std::function<void()> > OnLoadStop;
-        std::vector<std::function<void(std::string)> > OnAddressChanged;
-        std::vector<std::function<void(std::string)> > OnNativeDialog;
-        std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
-        std::vector<std::function<void()> > OnBrowserCreated;
-        std::vector<std::function<void(std::string)> > OnRequestDataMain;
-        std::vector<std::function<void(std::string)> > OnRequestDataAdditional;
-
-
         char* GetPaintData();
         int GetPaintWidth();
         int GetPaintHeight();
@@ -152,8 +128,6 @@ class DevToolsConnector
         int GetHeight();
         int GetScrollX();
         int GetScrollY();
-
-        std::vector<std::function<void(std::string&, std::string&)> > OnMessage;
 
         void Timer();
 

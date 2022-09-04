@@ -50,6 +50,8 @@ SOURCES += main.cpp \
     connector/devtoolsactionsleep.cpp \
     connector/devtoolsactionstartdragfile.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
+    connector/devtoolsactionempty.cpp \
+    connector/noneconnector.cpp \
     connector/devtoolsconnector.cpp \
     connector/proxysaver.cpp \
     connector/emoji.cpp \
@@ -214,6 +216,8 @@ HEADERS += \
     connector/devtoolsactionsleep.h \
     connector/devtoolsactionstartdragfile.h \
     connector/devtoolsactionwebsocketquery.h \
+    connector/devtoolsactionempty.h \
+    connector/noneconnector.h \
     connector/devtoolsconnector.h \
     connector/idevtoolsconnector.h \
     connector/proxysaver.h \

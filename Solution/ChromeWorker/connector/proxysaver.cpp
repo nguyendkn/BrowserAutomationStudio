@@ -59,6 +59,15 @@ void ProxySaver::Save(const std::string& Server, int Port, bool IsHttp, const st
     }
 }
 
+std::string ProxySaver::CreateFolder(const std::string& Path, const std::string& ParentProcessId)
+{
+    std::string Folder(Path + std::string("/t/"));
+    CreateDirectoryA(Folder.c_str(), NULL);
+    Folder += ParentProcessId;
+    CreateDirectoryA(Folder.c_str(), NULL);
+    return Folder;
+}
+
 void ProxySaver::Reset(const std::string &Path)
 {
     Save(std::string(), 0, true, std::string(), std::string(), Path);

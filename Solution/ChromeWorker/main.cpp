@@ -42,6 +42,7 @@
 #include "base64.h"
 #include "writefile.h"
 #include "popupemulation.h"
+#include "noneconnector.h"
 #include "devtoolsconnector.h"
 
 
@@ -2036,7 +2037,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if(HasWorkerArgument("--mock-connector"))
     {
         // Initialize dummy connector.
-        Data->Connector = new DevToolsConnector();
+        Data->Connector = new NoneConnector();
     }else
     {
         // Initialize default connector.

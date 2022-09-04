@@ -42,6 +42,7 @@
 #include "base64.h"
 #include "writefile.h"
 #include "popupemulation.h"
+#include "devtoolsconnector.h"
 
 
 #if defined(BAS_DEBUG)

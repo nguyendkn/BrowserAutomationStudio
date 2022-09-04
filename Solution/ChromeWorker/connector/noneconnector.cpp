@@ -7,7 +7,8 @@ using namespace std::placeholders;
 void NoneConnector::ResetProxy(const std::string& ParentProcessId)
 {
     // Generate proxy data
-    GlobalState.ProxySaver->Reset(GlobalState.ProxySaver->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId) + std::string("/s"));
+    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId);
+    GlobalState.SaveProxy->Reset(Folder + std::string("/s"));
 }
 
 void NoneConnector::Initialize(
@@ -18,7 +19,7 @@ void NoneConnector::Initialize(
     const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
 )
 {
-    GlobalState.ProxySaver.reset(new ProxySaver());
+    GlobalState.SaveProxy.reset(new ProxySaver());
 
     GlobalState.Port = Port;
     GlobalState.UniqueProcessId = UniqueProcessId;
@@ -254,8 +255,8 @@ Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, c
 {
     GlobalState.IsProxySet = true;
 
-    std::string Folder = GlobalState.ProxySaver->CreateFolder(GlobalState.ChromeExecutableLocation, GlobalState.ParentProcessId);
-    GlobalState.ProxySaver->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
+    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, GlobalState.ParentProcessId);
+    GlobalState.SaveProxy->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
 
     return ActionStub(Timeout);
 }

@@ -743,6 +743,21 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 if(AllObject["params"].contains("backendNodeId") && AllObject["params"].get("backendNodeId").is<double>())
                 {
                     double BackendNodeId = AllObject["params"].get("backendNodeId").get<double>();
+                    std::string TargetId;
+
+                    if(AllObject["params"].contains("frameId"))
+                    {
+                        std::string FrameId = AllObject["params"].get("frameId").get<std::string>();
+                        for(std::shared_ptr<TabData> TabInfo : GlobalState.Frames)
+                        {
+                            if(FrameId == TabInfo->FrameId)
+                            {
+                                TargetId = TabInfo->TabId;
+                                break;
+                            }
+                        }
+                    }
+
 
                     bool IsMultiple = false;
 
@@ -811,7 +826,13 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             CurrentParams["backendNodeId"] = Variant(BackendNodeId);
                             CurrentParams["files"] = Variant(Files);
 
-                            SendWebSocket("DOM.setFileInputFiles", CurrentParams, GlobalState.TabId);
+                            if(TargetId.empty())
+                            {
+                                SendWebSocket("DOM.setFileInputFiles", CurrentParams, GlobalState.TabId);
+                            }else
+                            {
+                                SendWebSocket("DOM.setFileInputFiles", CurrentParams, TargetId);
+                            }
 
                         }
                         return;
@@ -824,6 +845,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                     Params["node_id"] = Variant(BackendNodeId);
                     Params["is_multiple"] = Variant(IsMultiple);
+                    Params["target_id"] = Variant(TargetId);
 
                     NewAction->SetTimeout(-1);
                     NewAction->SetParams(Params);

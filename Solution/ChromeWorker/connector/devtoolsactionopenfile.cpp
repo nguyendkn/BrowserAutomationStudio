@@ -14,6 +14,9 @@ void DevToolsActionOpenFile::Run()
     IsMultiple = Params["is_multiple"].Boolean;
     Params.erase("is_multiple");
 
+    TargetIdForElement = Params["target_id"].String;
+    Params.erase("target_id");
+
     OpenFileDialogIsManual = GlobalState->OpenFileDialogIsManual;
     OpenFileDialogResult = GlobalState->OpenFileDialogResult;
 
@@ -78,7 +81,14 @@ void DevToolsActionOpenFile::OnWebSocketEvent(const std::string& Method, const s
                 CurrentParams["backendNodeId"] = Variant(NodeId);
                 CurrentParams["files"] = Variant(Files);
 
-                SendWebSocket("DOM.setFileInputFiles", CurrentParams);
+
+                if(TargetIdForElement.empty())
+                {
+                    SendWebSocket("DOM.setFileInputFiles", CurrentParams);
+                }else
+                {
+                    SendWebSocket("DOM.setFileInputFiles", CurrentParams, TargetIdForElement);
+                }
 
                 State = Finished;
                 Result->Success();

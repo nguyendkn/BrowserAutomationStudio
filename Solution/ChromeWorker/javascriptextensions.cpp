@@ -43,8 +43,13 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
 
     original_functions = ";_BAS_HIDE(BrowserAutomationStudio_OriginalData) = {"
                             "DocumentQuerySelectorAll: Document.prototype.querySelectorAll,"
+                            "DocumentGetBoundingClientRect: Document.prototype.getBoundingClientRect,"
+
                             "ElementQuerySelectorAll: Element.prototype.querySelectorAll,"
+                            "ElementGetBoundingClientRect: Element.prototype.getBoundingClientRect,"
+
                             "ShadowRootQuerySelectorAll: ShadowRoot.prototype.querySelectorAll,"
+                            "ShadowRootGetBoundingClientRect: ShadowRoot.prototype.getBoundingClientRect,"
 
                             "DocumentQuerySelector: Document.prototype.querySelector,"
                             "ElementQuerySelector: Element.prototype.querySelector,"
@@ -77,6 +82,19 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                          "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ElementQuerySelector'].call(element, selector);"
                      "}"
                 "},"
+                 "getBoundingClientRect: function(element)"
+                 "{"
+                      "if(element instanceof Document)"
+                      "{"
+                          "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['DocumentGetBoundingClientRect'].call(element);"
+                      "}else if(element instanceof ShadowRoot)"
+                      "{"
+                           "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ShadowRootGetBoundingClientRect'].call(element);"
+                      "}else"
+                      "{"
+                          "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ElementGetBoundingClientRect'].call(element);"
+                      "}"
+                 "},"
                 "evaluate: Document.prototype.evaluate"
             "};";
 
@@ -172,7 +190,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "var r = _BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(el);"
                 "var x_with_padding = r.left;"
                 "var y_with_padding = r.top;"
-                "var rect = el.getBoundingClientRect();"
+                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, el);"
                 "var is_frame=false;"
                 "var frame_element=null;"
                 "if(el.tagName.toLowerCase()=='iframe' || el.tagName.toLowerCase()=='frame')"
@@ -513,7 +531,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "var margin = { left: parseInt(style['margin-left']), right: parseInt(style['margin-right']), top: parseInt(style['margin-top']), bottom: parseInt(style['margin-bottom'])};"
         "var padding = { left: parseInt(style['padding-left']), right: parseInt(style['padding-right']), top: parseInt(style['padding-top']), bottom: parseInt(style['padding-bottom'])};"
         "var border = { left: parseInt(style['border-left']), right: parseInt(style['border-right']), top: parseInt(style['border-top']), bottom: parseInt(style['border-bottom']) };"
-        "var rect = element.getBoundingClientRect();"
+        "var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, element);"
         "rect = {left: parseInt(rect.left + padding.left + border.left),right: parseInt(rect.right - padding.right - border.right),top: parseInt(rect.top + padding.top + border.top),bottom: parseInt(rect.bottom  - padding.top - border.top)};"
         "rect.width = rect.right - rect.left;"
         "rect.height = rect.bottom - rect.top;"
@@ -524,7 +542,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "if(el)"
         "{"
             "{"
-                "var rect = el.getBoundingClientRect();"
+                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, el);"
 
                 "var xc = Math.floor(rect.left + rect.width/2);"
                 "var yc = Math.floor(rect.top + rect.height/2);"

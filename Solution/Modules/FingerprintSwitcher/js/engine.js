@@ -829,6 +829,18 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Disable"
 	}
 
+
+	try
+	{
+		if(typeof(FINGERPRINT_JSON["storage"]) == "string")
+		{
+			FINGEPRINT_SETTINGS["Fingerprints.Storage"] = FINGERPRINT_JSON["storage"]
+		}
+	}catch(e)
+	{
+
+	}
+
 	_settings(FINGEPRINT_SETTINGS)!
 
 	

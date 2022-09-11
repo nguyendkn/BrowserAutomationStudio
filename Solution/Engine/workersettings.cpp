@@ -539,126 +539,48 @@ namespace BrowserAutomationStudioFramework
 
          if(object.contains("server"))
          {
-            QString prev = GetProxyServer();
             QString next = object["server"].toString();
-            if(prev != next)
-            {
-                SetProxyServer(next);
-                if(IsMLAReal)
-                {
-                    NeedRestart = true;
-                }else if(IsMLAVirtual)
-                {
-                    NeedToRestartVirtual = true;
-                }else
-                {
-                    NeedSend = true;
-                }
-            }
+            NeedSend = true;
+            SetProxyServer(next);
          }
 
          if(object.contains("Port"))
          {
-            int prev = GetProxyPort();
             int next = object["Port"].toInt();
-            if(prev != next)
-            {
-                SetProxyPort(next);
-                if(IsMLAReal)
-                {
-                    NeedRestart = true;
-                }else if(IsMLAVirtual)
-                {
-                    NeedToRestartVirtual = true;
-                }else
-                {
-                    NeedSend = true;
-                }
-            }
+            NeedSend = true;
+            SetProxyPort(next);
          }
 
 
          if(object.contains("IsHttp"))
          {
-            bool prev = GetProxyIsHttp();
             bool next = object["IsHttp"].toBool();
-            if(prev != next)
-            {
-                SetProxyIsHttp(next);
-                if(IsMLAReal)
-                {
-                    NeedRestart = true;
-                }else if(IsMLAVirtual)
-                {
-                    NeedToRestartVirtual = true;
-                }else
-                {
-                    NeedSend = true;
-                }
-            }
+            NeedSend = true;
+            SetProxyIsHttp(next);
          }
 
 
          if(object.contains("name"))
          {
-            QString prev = GetProxyName();
             QString next = object["name"].toString();
-            if(prev != next)
-            {
-                SetProxyName(next);
-                if(IsMLAReal)
-                {
-                    NeedRestart = true;
-                }else if(IsMLAVirtual)
-                {
-                    NeedToRestartVirtual = true;
-                }else
-                {
-                    NeedSend = true;
-                }
-            }
+            NeedSend = true;
+            SetProxyName(next);
          }
 
 
          if(object.contains("password"))
          {
-            QString prev = GetProxyPassword();
             QString next = object["password"].toString();
-            if(prev != next)
-            {
-                SetProxyPassword(next);
-                if(IsMLAReal)
-                {
-                    NeedRestart = true;
-                }else if(IsMLAVirtual)
-                {
-                    NeedToRestartVirtual = true;
-                }else
-                {
-                    NeedSend = true;
-                }
-            }
+            NeedSend = true;
+            SetProxyPassword(next);
          }
 
 
          if(object.contains("target"))
          {
-            QString prev = GetProxyTarget();
             QString next = object["target"].toString();
-            if(prev != next)
-            {
-                SetProxyTarget(next);
-                if(IsMLAReal)
-                {
-                    NeedRestart = true;
-                }else if(IsMLAVirtual)
-                {
-                    NeedToRestartVirtual = true;
-                }else
-                {
-                    NeedSend = true;
-                }
-            }
+            NeedSend = true;
+            SetProxyTarget(next);
          }
 
          if(!IsMLA && object.contains("IsSafe"))

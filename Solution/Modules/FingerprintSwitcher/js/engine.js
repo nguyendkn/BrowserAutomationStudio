@@ -771,6 +771,17 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	try
 	{
+		if(FINGERPRINT_JSON["systemfonts"])
+			FINGEPRINT_SETTINGS["Fingerprints.SystemFonts"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["systemfonts"]))
+		else
+			FINGEPRINT_SETTINGS["Fingerprints.SystemFonts"] = base64_encode("{}")
+	}catch(e)
+	{
+		FINGEPRINT_SETTINGS["Fingerprints.SystemFonts"] = base64_encode("{}")
+	}
+
+	try
+	{
 		if(FINGERPRINT_JSON["speech"])
 			FINGEPRINT_SETTINGS["Fingerprints.Speech"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["speech"]))
 		else

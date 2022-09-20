@@ -12,6 +12,8 @@
 #include "mongodatabaseconnector.h"
 #include "addavexclusion.h"
 #include "profilebackgroundremover.h"
+#include "devicescalemanager.h"
+
 #if defined(BAS_DEBUG)
     #include "CrashHandler.h"
 #endif
@@ -151,7 +153,12 @@ int main(int argc, char *argv[])
     PanicLogger.SetFileName("panic.txt");
     qDebug()<<"Start 010";
 
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //Support High DPI
+    {
+        DeviceScaleManager Scale;
+        Scale.Autoscale();
+    }
+
     SafeApplication a(argc, argv);
     qDebug()<<"Start 0100";
     /*{

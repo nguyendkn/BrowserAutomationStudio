@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QDir>
 #include <QDirIterator>
+#include "devicescalemanager.h"
 #include "every_cpp.h"
 
 namespace BrowserAutomationStudioFramework
@@ -1124,6 +1125,12 @@ namespace BrowserAutomationStudioFramework
             UniqueProcessId = GetRandomString();
             UpdateFingerprintsSettings();
             res.append(QString("--unique-process-id=") + UniqueProcessId);
+
+            {
+                DeviceScaleManager Scale;
+                QString ScaleFactorParam = QString::number((int)(Scale.GetScaleFactor() * 100.0));
+                res.append(QString("--interface-scale-factor=") + ScaleFactorParam);
+            }
 
             res.append("--Profile");
             QString ActualProfile = GetProfile();

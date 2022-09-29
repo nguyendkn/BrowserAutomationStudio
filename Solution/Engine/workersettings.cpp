@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QDir>
 #include <QDirIterator>
+#include "devicescalemanager.h"
 #include "every_cpp.h"
 
 namespace BrowserAutomationStudioFramework
@@ -539,48 +540,90 @@ namespace BrowserAutomationStudioFramework
 
          if(object.contains("server"))
          {
+            QString prev = GetProxyServer();
             QString next = object["server"].toString();
-            NeedSend = true;
-            SetProxyServer(next);
+            if(prev.isEmpty() && next.isEmpty())
+            {
+                //Skip if both proxies are empty, this could happen during startup
+            }else
+            {
+                NeedSend = true;
+                SetProxyServer(next);
+            }
          }
 
          if(object.contains("Port"))
          {
+            int prev = GetProxyPort();
             int next = object["Port"].toInt();
-            NeedSend = true;
-            SetProxyPort(next);
+            if(prev == 0 && next == 0)
+            {
+                //Skip if both proxies are empty, this could happen during startup
+            }else
+            {
+                NeedSend = true;
+                SetProxyPort(next);
+            }
          }
 
 
          if(object.contains("IsHttp"))
          {
+            bool prev = GetProxyIsHttp();
             bool next = object["IsHttp"].toBool();
-            NeedSend = true;
-            SetProxyIsHttp(next);
+            if(prev == true && next == true)
+            {
+                //Skip if both proxies are empty, this could happen during startup
+            }else
+            {
+                NeedSend = true;
+                SetProxyIsHttp(next);
+            }
          }
 
 
          if(object.contains("name"))
          {
+            QString prev = GetProxyName();
             QString next = object["name"].toString();
-            NeedSend = true;
-            SetProxyName(next);
+            if(prev.isEmpty() && next.isEmpty())
+            {
+                //Skip if both proxies are empty, this could happen during startup
+            }else
+            {
+                NeedSend = true;
+                SetProxyName(next);
+            }
          }
 
 
          if(object.contains("password"))
          {
+            QString prev = GetProxyPassword();
             QString next = object["password"].toString();
-            NeedSend = true;
-            SetProxyPassword(next);
+            if(prev.isEmpty() && next.isEmpty())
+            {
+                //Skip if both proxies are empty, this could happen during startup
+            }else
+            {
+                NeedSend = true;
+                SetProxyPassword(next);
+            }
          }
 
 
          if(object.contains("target"))
          {
+            QString prev = GetProxyTarget();
             QString next = object["target"].toString();
-            NeedSend = true;
-            SetProxyTarget(next);
+            if(prev.isEmpty() && next.isEmpty())
+            {
+                //Skip if both proxies are empty, this could happen during startup
+            }else
+            {
+                NeedSend = true;
+                SetProxyTarget(next);
+            }
          }
 
          if(!IsMLA && object.contains("IsSafe"))
@@ -1124,6 +1167,12 @@ namespace BrowserAutomationStudioFramework
             UniqueProcessId = GetRandomString();
             UpdateFingerprintsSettings();
             res.append(QString("--unique-process-id=") + UniqueProcessId);
+
+            {
+                DeviceScaleManager Scale;
+                QString ScaleFactorParam = QString::number((int)(Scale.GetScaleFactor() * 100.0));
+                res.append(QString("--interface-scale-factor=") + ScaleFactorParam);
+            }
 
             res.append("--Profile");
             QString ActualProfile = GetProfile();

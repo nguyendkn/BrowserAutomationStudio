@@ -1342,6 +1342,12 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             if(AllObject["params"].is<picojson::object>())
             {
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string SessionId;
+                if(AllObject.count("sessionId") > 0)
+                {
+                    SessionId = AllObject["sessionId"].get<std::string>();
+                }
+
                 std::string Result = picojson::value(ResultObject).serialize();
 
                 //Save information about frames and context
@@ -1349,11 +1355,20 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 {
                     std::string FrameId = Parser.GetStringFromJson(Result, "context.auxData.frameId");
 
-                    int ContextId = Parser.GetFloatFromJson(Result, "context.id");
-                    GlobalState.FrameIdToContextId[FrameId] = ContextId;
+                    std::string ContextId = Parser.GetStringFromJson(Result, "context.uniqueId");
+
+                    //WORKER_LOG("!!!!!!!!!!!!!!!!! CREATE ExecutionContexts id = " + FrameId + std::string(", context id = ") + std::string(ContextId) + std::string(", session id = ") + std::string(SessionId));
+
+                    std::shared_ptr<ExecutionContextData> ExecutionContext = std::make_shared<ExecutionContextData>();
+                    ExecutionContext->TabId = SessionId;
+                    ExecutionContext->FrameId = FrameId;
+                    ExecutionContext->ContextId = ContextId;
+
+                    GlobalState.ExecutionContexts.push_back(ExecutionContext);
                 }
 
-                if (Method == "Runtime.executionContextDestroyed")
+		//Don't delete info about removed context
+                /*if (Method == "Runtime.executionContextDestroyed")
                 {
                     int ContextId = Parser.GetFloatFromJson(Result, "executionContextId");
                     for (auto it = GlobalState.FrameIdToContextId.cbegin(); it != GlobalState.FrameIdToContextId.cend(); )
@@ -1367,7 +1382,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             ++it;
                         }
                     }
-                }
+                }*/
 
                 //Send event information to subscribers of OnMessage
 

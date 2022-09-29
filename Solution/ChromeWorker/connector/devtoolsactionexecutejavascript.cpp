@@ -12,9 +12,9 @@ void DevToolsActionExecuteJavascript::Run()
     LastMessage.clear();
     CurrentLoaderId.clear();
     CurrentPrefix.clear();
-    CurrentContextId = -1;
+    CurrentContextId.clear();
     CurrentFrameSessionId = "CurrentTab";
-    NextContextId = -1;
+    NextContextId.clear();
     NextFrameSessionId = "CurrentTab";
     ScrollDataWasObtained = false;
     IsDoingScrollRequest = false;
@@ -253,8 +253,20 @@ void DevToolsActionExecuteJavascript::Next()
         } else if(RequestType == FrameSearchGetNodeId)
         {
             //Get information about frame
+
             std::string CurrentFrame = GetStringFromJson(LastMessage, "node.frameId");
-            NextContextId = GlobalState->FrameIdToContextId[CurrentFrame];
+            /*WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! SEARCHING FOR frame id = ") + CurrentFrame);
+
+            for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
+            {
+                WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! INFO Frames, frame id = ") + Frame->FrameId + std::string(", session id = ") + Frame->TabId);
+            }
+
+            for(std::shared_ptr<ExecutionContextData> ExecutionContext: GlobalState->ExecutionContexts)
+            {
+                WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! INFO ExecutionContexts, frame id = ") + ExecutionContext->FrameId + std::string(", session id = ") + ExecutionContext->TabId + std::string(", context id = ") + ExecutionContext->ContextId);
+            }*/
+
             NextFrameSessionId = CurrentFrameSessionId;
             for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
             {
@@ -263,6 +275,27 @@ void DevToolsActionExecuteJavascript::Next()
                     NextFrameSessionId = Frame->TabId;
                 }
             }
+
+            std::string ResolvedTabId = NextFrameSessionId;
+
+            if(ResolvedTabId == "CurrentTab")
+            {
+                ResolvedTabId = GetDefaultTabId();
+            }
+
+            //WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! RESULT session id = ") + ResolvedTabId);
+
+            NextContextId.clear();
+
+            for(std::shared_ptr<ExecutionContextData> ExecutionContext: GlobalState->ExecutionContexts)
+            {
+                if(ExecutionContext->FrameId == CurrentFrame && ExecutionContext->TabId == ResolvedTabId)
+                {
+                    NextContextId = ExecutionContext->ContextId;
+                }
+            }
+
+            //WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! RESULT context id = ") + NextContextId);
 
             RequestType = FrameSearchReleaseObject;
             std::map<std::string, Variant> CurrentParams;
@@ -277,8 +310,8 @@ void DevToolsActionExecuteJavascript::Next()
                 std::map<std::string, Variant> CurrentParams;
                 std::string Script = std::string("{JSON.stringify(_BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(")));}");
                 CurrentParams["expression"] = Variant(Javascript(Script));
-                if(CurrentContextId >= 0)
-                    CurrentParams["contextId"] = Variant(CurrentContextId);
+                if(!CurrentContextId.empty())
+                    CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
 
                 Evaluate(CurrentParams);
                 return;
@@ -327,8 +360,8 @@ void DevToolsActionExecuteJavascript::Next()
         std::map<std::string, Variant> CurrentParams;
         std::string Script = std::string("{_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(");}");
         CurrentParams["expression"] = Variant(Javascript(Script));
-        if(CurrentContextId >= 0)
-            CurrentParams["contextId"] = Variant(CurrentContextId);
+        if(!CurrentContextId.empty())
+            CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
         
         Evaluate(CurrentParams);
         return;
@@ -341,8 +374,8 @@ void DevToolsActionExecuteJavascript::Next()
         std::map<std::string, Variant> CurrentParams;
         std::string Script = std::string("(function(){var self = null; try{ self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");}catch(e){};if(self)self.scrollIntoViewIfNeeded(true);})();");
         CurrentParams["expression"] = Variant(Javascript(Script));
-        if(CurrentContextId >= 0)
-            CurrentParams["contextId"] = Variant(CurrentContextId);
+        if(!CurrentContextId.empty())
+            CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
 
         Evaluate(CurrentParams);
         return;
@@ -374,8 +407,8 @@ void DevToolsActionExecuteJavascript::Next()
 
     std::map<std::string, Variant> CurrentParams;
 
-    if (CurrentContextId >= 0)
-        CurrentParams["contextId"] = Variant(CurrentContextId);
+    if(!CurrentContextId.empty())
+        CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
     RequestType = JavascriptExecution;
     std::string Script;
 

@@ -79,12 +79,27 @@ void DevToolsActionInspect::Next()
 
         //Get information about frame
         std::string CurrentFrame = GetStringFromJson(LastMessage, "node.frameId");
-        CurrentContextId = GlobalState->FrameIdToContextId[CurrentFrame];
+
         for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
         {
             if(Frame->FrameId == CurrentFrame)
             {
                 CurrentFrameSessionId = Frame->TabId;
+            }
+        }
+
+        std::string ResolvedTabId = CurrentFrameSessionId;
+        if(ResolvedTabId == "CurrentTab")
+        {
+            ResolvedTabId = GetDefaultTabId();
+        }
+
+        CurrentContextId.clear();
+        for(std::shared_ptr<ExecutionContextData> ExecutionContext: GlobalState->ExecutionContexts)
+        {
+            if(ExecutionContext->FrameId == CurrentFrame && ExecutionContext->TabId == ResolvedTabId)
+            {
+                CurrentContextId = ExecutionContext->ContextId;
             }
         }
 
@@ -174,8 +189,8 @@ void DevToolsActionInspect::Next()
             std::map<std::string, Variant> CurrentParams;
             RequestType = FrameSearchEvaluate;
 
-            if (CurrentContextId >= 0)
-                CurrentParams["contextId"] = Variant(CurrentContextId);
+            if(!CurrentContextId.empty())
+                CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
 
             std::string Script;
 
@@ -195,8 +210,8 @@ void DevToolsActionInspect::Next()
         std::map<std::string, Variant> CurrentParams;
         RequestType = InspectPosition;
 
-        if (CurrentContextId >= 0)
-            CurrentParams["contextId"] = Variant(CurrentContextId);
+        if(!CurrentContextId.empty())
+            CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
 
         std::string Script;
 

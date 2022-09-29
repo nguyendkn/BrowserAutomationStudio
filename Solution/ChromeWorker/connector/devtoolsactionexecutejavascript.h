@@ -11,9 +11,9 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     std::string LastMessage;
     std::string CurrentLoaderId;
     std::vector<std::pair<std::string, std::string> > CurrentPrefix;
-    int CurrentContextId = -1;
+    std::string CurrentContextId;
     std::string CurrentFrameSessionId = "CurrentTab";
-    int NextContextId = -1;
+    std::string NextContextId;
     std::string NextFrameSessionId = "CurrentTab";
     bool ScrollDataWasObtained = false;
     bool IsDoingScrollRequest = false;

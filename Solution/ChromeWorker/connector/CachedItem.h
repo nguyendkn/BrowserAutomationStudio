@@ -16,6 +16,7 @@ struct CachedItem
     std::string Error;
     std::string Body;
     std::string Url;
+    std::string TabId;
     int Status = 0;
     long long CreatedAt = 0;
 

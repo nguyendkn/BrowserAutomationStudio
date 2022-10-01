@@ -999,10 +999,16 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             //Request started
             if(AllObject["params"].is<picojson::object>())
             {
+                std::string TabId = GlobalState.TabId;
+                if(AllObject.count("sessionId") > 0)
+                {
+                    TabId = AllObject["sessionId"].get<std::string>();
+                }
+
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
 
-                OnNetworkRequestWillBeSent(Result);
+                OnNetworkRequestWillBeSent(Result, TabId);
 
                 std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
                 for(auto f:OnRequestStart)
@@ -2610,7 +2616,7 @@ void DevToolsConnector::OnDragIntercepted(std::string& DragData)
     Drag(DragEventEnter,GlobalState.CursorX,GlobalState.CursorY);
 }
 
-void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result)
+void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result, std::string& TabId)
 {
     std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
     std::string Url = Parser.GetStringFromJson(Result, "request.url");
@@ -2637,6 +2643,7 @@ void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result)
             Item->IsFinished = false;
             Item->IsError = false;
             Item->Url = Url;
+            Item->TabId = TabId;
 
             std::string PostData = Parser.GetStringFromJson(Result, "request.postData");
             Item->PostData = base64_encode((unsigned char *)PostData.data(), PostData.size());
@@ -2684,7 +2691,7 @@ void DevToolsConnector::OnNetworkLoadingCompleted(std::string& Result, bool HasE
         {
             //Need to get the response body using a separate method.
             std::map<std::string, Variant> Params = { {"requestId", Variant(RequestId)} };
-            int Id = SendWebSocket("Network.getResponseBody", Params, GlobalState.TabId);
+            int Id = SendWebSocket("Network.getResponseBody", Params, Item->TabId);
             GlobalState.CachedRequests[Id] = RequestId;
         }
 

@@ -44,6 +44,13 @@ struct TabData
     }TargetType = TabType;
 };
 
+struct ExecutionContextData
+{
+    std::string TabId;
+    std::string FrameId;
+    std::string ContextId;
+};
+
 struct StartupScriptItem
 {
     std::string ScriptId;
@@ -71,7 +78,7 @@ struct DevToolsGlobalState
     std::string WindowOpenNewTabUrl;
     int Port = -1;
     std::vector<StartupScriptItem> StartupScriptIds;
-    std::map<std::string, int> FrameIdToContextId;
+    std::vector<std::shared_ptr<ExecutionContextData> > ExecutionContexts;
     std::vector<std::shared_ptr<TabData> > Tabs;
     std::vector<std::shared_ptr<TabData> > Frames;
 

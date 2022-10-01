@@ -87,7 +87,7 @@ class DevToolsConnector : public IDevToolsConnector
 
     void OnFetchRequestPaused(std::string& Result);
     void OnFetchAuthRequired(std::string& Result);
-    void OnNetworkRequestWillBeSent(std::string& Result);
+    void OnNetworkRequestWillBeSent(std::string& Result, std::string& TabId);
     void OnDragIntercepted(std::string& DragData);
     void OnNetworkResponseReceived(std::string& Result);
     void OnNetworkLoadingCompleted(std::string& Result, bool HasError);

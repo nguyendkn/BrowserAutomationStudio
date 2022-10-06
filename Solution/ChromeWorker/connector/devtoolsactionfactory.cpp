@@ -26,6 +26,7 @@
 #include "DevToolsActionSetRequestsRestrictions.h"
 #include "devtoolsactionstartdragfile.h"
 #include "devtoolsactionsleep.h"
+#include "devtoolsactiontouch.h"
 #include "devtoolsactionresetdevicescalefactor.h"
 #include "devtoolsactionempty.h"
 #include <random>
@@ -129,6 +130,9 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "Sleep")
     {
         Result = new DevToolsActionSleep();
+    }else if(Name == "Touch")
+    {
+        Result = new DevToolsActionTouch();
     }else if(Name == "Empty")
     {
         Result = new DevToolsActionEmpty();

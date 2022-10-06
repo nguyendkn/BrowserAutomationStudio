@@ -8,6 +8,7 @@
 #include <memory>
 #include <map>
 #include "CachedItem.h"
+#include "framefinder.h"
 
 class IDevToolsAction;
 
@@ -81,6 +82,8 @@ struct DevToolsGlobalState
     std::vector<std::shared_ptr<ExecutionContextData> > ExecutionContexts;
     std::vector<std::shared_ptr<TabData> > Tabs;
     std::vector<std::shared_ptr<TabData> > Frames;
+
+    FrameFinder FindFrames;
 
     int ScrollX = -1;
     int ScrollY = -1;

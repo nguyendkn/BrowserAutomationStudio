@@ -349,7 +349,7 @@ void DevToolsConnector::OnBrowserEndpointObtained(bool IsSuccess,int StatusCode,
             Endpoint.replace(start_pos, ReplaceFrom.length(), ReplaceTo);
             start_pos += ReplaceTo.length();
         }
-        
+
         GlobalState.WebSocketClient.reset(this->WebSocketClientFactory->Create());
 
         GlobalState.WebSocketClient->OnConnected.push_back(std::bind(&DevToolsConnector::OnWebSocketConnected, this, _1));
@@ -460,7 +460,7 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         Tab->CurrentWebsocketActionId = 0;
 
         std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
-        
+
         if(ConnectionState != WaitingFirstTab)
         {
             //Creating new tab, need to execute actions
@@ -586,10 +586,10 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             GlobalState.SwitchToTabId = SwitchTabAfterCloseCurrentTabId;
             GlobalState.SwitchToTabFrameId = SwitchTabAfterCloseCurrentFrameId;
             GlobalState.SwitchToTabResetSavedActions = true;
-            
+
             return;
         }
-        
+
 
         std::vector<std::shared_ptr<IDevToolsAction> > AllActions = GetAllActions();
 
@@ -615,12 +615,12 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             }
         }
 
-        
+
 
         return;
     }
 
-    //Process incoming events 
+    //Process incoming events
     if(AllObject.count("method") > 0 && AllObject["method"].is<std::string>())
     {
         std::string Method = AllObject["method"].get<std::string>();
@@ -1063,7 +1063,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     f(RequestId);
             }
         }
-        
+
         //Intercept screencast event, replace it with OnPaint event
         if(Method == "Page.screencastFrame")
         {
@@ -1080,7 +1080,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 for(auto f:OnScroll)
                     f();
             }
-        }else if(Method == "Fetch.requestPaused") 
+        }else if(Method == "Fetch.requestPaused")
         {
             if (AllObject["params"].is<picojson::object>())
             {
@@ -1373,7 +1373,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     GlobalState.ExecutionContexts.push_back(ExecutionContext);
                 }
 
-		//Don't delete info about removed context
+        //Don't delete info about removed context
                 /*if (Method == "Runtime.executionContextDestroyed")
                 {
                     int ContextId = Parser.GetFloatFromJson(Result, "executionContextId");
@@ -1829,7 +1829,7 @@ void DevToolsConnector::Timer()
                 ++it;
             }
         }
-        
+
         // Process saved actions
         for(auto const& Tab : GlobalState.Tabs)
         {
@@ -1857,7 +1857,7 @@ void DevToolsConnector::Timer()
                         Action->SetState(IDevToolsAction::Finished);
                     }
                     ++it;
-                    
+
                 }
             }
         }
@@ -1907,7 +1907,7 @@ std::vector<std::shared_ptr<IDevToolsAction> > DevToolsConnector::GetAllActions(
 void DevToolsConnector::InsertAction(std::shared_ptr<IDevToolsAction> Action)
 {
     ActionsSaver.ProcessAction(Action);
-    
+
     //Run this action for each connected tab
     if(Action->IsNeedToRunForAllActiveTabs())
     {
@@ -1984,7 +1984,7 @@ int DevToolsConnector::GetTabNumber()
         if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
         {
             Result++;
-        } 
+        }
     }
     return Result;
 }
@@ -2409,7 +2409,7 @@ Async DevToolsConnector::SetStartupScript(const std::string& Script, int Timeout
     NewAction.reset(ActionsFactory.Create("SetStartupScript", &GlobalState));
 
     Params["source"] = Variant(Script);
-    
+
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);
 
@@ -2914,7 +2914,7 @@ void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button
     Params["buttons"] = Variant(MousePressed);
     Params["button"] = Variant(ButtonName);
     Params["clickCount"] = Variant(ClickCount);
-    
+
     SendWebSocket("Input.dispatchMouseEvent", Params, GlobalState.TabId);
 }
 
@@ -2941,10 +2941,12 @@ void DevToolsConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePress
     SendWebSocket("Input.dispatchMouseEvent", Params, GlobalState.TabId);
 }
 
-void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure)
+Async DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure, int Timeout)
 {
     if(IsInspectAtScheduled)
-        return;
+    {
+        return std::make_shared<AsyncResult>();
+    }
 
     GlobalState.CursorX = X;
     GlobalState.CursorY = Y;
@@ -2960,7 +2962,7 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
         {
             Drag(DragEventOver,X,Y);
         }
-        return;
+        return std::make_shared<AsyncResult>();
     }
 
     std::map<std::string, Variant> Params;
@@ -2975,7 +2977,6 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
     }
 
     Params["type"] = Variant(TypeName);
-    Point["type"] = Variant(TypeName);
     Point["x"] = Variant(X);
     Point["y"] = Variant(Y);
 
@@ -2985,12 +2986,19 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
     Point["force"] = Variant(Pressure);
     Point["id"] = Variant(Id);
 
-    
+
     std::vector<Variant> Points;
     Points.push_back(Variant(Point));
     Params["touchPoints"] = Variant(Points);
-    
-    SendWebSocket("Input.dispatchTouchEvent", Params, GlobalState.TabId);
+
+    std::shared_ptr<IDevToolsAction> NewAction;
+    NewAction.reset(ActionsFactory.Create("Touch", &GlobalState));
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
 }
 
 void DevToolsConnector::Key(KeyEvent Event, const std::string& Char, int KeyboardPresses)
@@ -3044,7 +3052,7 @@ Async DevToolsConnector::Reset(int Timeout)
         Action->GetResult()->Fail("Action is stopped because of reset", "Reset");
     }
     Actions.clear();
-    
+
     //If waiting for other reset action - stop it also
     if(ResetResult)
     {
@@ -3104,7 +3112,7 @@ bool DevToolsConnector::InterruptAction(int ActionUniqueId)
         }
     }
     return IsInterrupted;
-    
+
 }
 
 void DevToolsConnector::SetOpenFileDialogResult(const std::string& Result)

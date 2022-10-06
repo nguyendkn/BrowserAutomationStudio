@@ -35,6 +35,14 @@ std::string DevToolsActionInspect::PrepareResult()
     ResultObject["active"] = Variant(active);
     ResultObject["position"] = Variant(Position);
 
+    //Get info about element frame
+    std::string ResolvedTabId = CurrentFrameSessionId;
+    if(ResolvedTabId == "CurrentTab")
+    {
+        ResolvedTabId = GetDefaultTabId();
+    }
+    ResultObject["tab_id"] = Variant(ResolvedTabId);
+
     return Serializer.SerializeObjectToString(ResultObject);
 }
 

@@ -309,8 +309,9 @@ void NoneConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePressed, 
 {
 }
 
-void NoneConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure)
+Async NoneConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure, int Timeout)
 {
+    return ActionStub(Timeout);
 }
 
 void NoneConnector::Key(KeyEvent Event, const std::string& Char, int KeyboardPresses)

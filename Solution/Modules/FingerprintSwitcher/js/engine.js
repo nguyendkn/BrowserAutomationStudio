@@ -842,7 +842,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGEPRINT_SETTINGS["Fingerprints.Heap"] = FINGERPRINT_JSON["heap"]
 		}
 		else
-		{
+			{
 			FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Disable"
 		}
 
@@ -850,7 +850,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	{
 		FINGEPRINT_SETTINGS["Fingerprints.Feature.FingerprintsMemory"] = "Disable"
 	}
-
+		
 
 	try
 	{
@@ -859,8 +859,26 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGEPRINT_SETTINGS["Fingerprints.Storage"] = FINGERPRINT_JSON["storage"]
 		}
 	}catch(e)
-	{
+		{
 
+	}
+
+	try
+	{
+		if(typeof(FINGERPRINT_JSON["hls"]) == "boolean")
+		{
+			if(FINGERPRINT_JSON["hls"])
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.IsHLSEnabled"] = "Enable"
+			}else
+			{
+				FINGEPRINT_SETTINGS["Fingerprints.IsHLSEnabled"] = "Disable"
+			}
+		}
+
+	}catch(e)
+	{
+		
 	}
 
 	_settings(FINGEPRINT_SETTINGS)!

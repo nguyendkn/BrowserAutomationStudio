@@ -22,11 +22,11 @@ function FTP_ReadFile(){
 	VAR_FTP_NODE_PARAMETERS = [file_path, base64, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("ReadFileSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("ReadFileSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("ReadFileFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("ReadFileFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
@@ -43,11 +43,11 @@ function FTP_WriteFile(){
 	VAR_FTP_NODE_PARAMETERS = [file_path, value, ending_symbol, base64, append, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("WriteFileSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("WriteFileSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("WriteFileFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("WriteFileFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Download(){
@@ -60,11 +60,11 @@ function FTP_Download(){
     VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, verify_checksums, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT, _FTP_PROTOCOL];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("DownloadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("DownloadSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("DownloadFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("DownloadFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 };
 function FTP_Upload(){
@@ -77,11 +77,11 @@ function FTP_Upload(){
     VAR_FTP_NODE_PARAMETERS = [file_path, destination_path, verify_checksums, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT, _FTP_PROTOCOL];
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("UploadSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("UploadSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("UploadFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("UploadFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 };
 function FTP_CheckExist(){
@@ -92,11 +92,11 @@ function FTP_CheckExist(){
 	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("CheckExistSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CheckExistSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("CheckExistFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CheckExistFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
@@ -109,11 +109,11 @@ function FTP_GetInfo() {
     VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 
     _if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH", function(){
-        _embedded("GetInfoSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("GetInfoSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _if(_FTP_PROTOCOL=="FTP", function(){
-        _embedded("GetInfoFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+        _embedded("GetInfoFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
     })!
 
     _function_return(VAR_FTP_NODE_PARAMETERS);
@@ -127,11 +127,11 @@ function FTP_Create(){
 	VAR_FTP_NODE_PARAMETERS = [file_path, file_type, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("CreateSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CreateSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("CreateFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CreateFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Delete(){
@@ -142,11 +142,11 @@ function FTP_Delete(){
 	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("DeleteSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("DeleteSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("DeleteFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("DeleteFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Move(){
@@ -158,11 +158,11 @@ function FTP_Move(){
 	VAR_FTP_NODE_PARAMETERS = [file_path, new_file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("MoveSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("MoveSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("MoveFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("MoveFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Copy(){
@@ -174,11 +174,11 @@ function FTP_Copy(){
 	VAR_FTP_NODE_PARAMETERS = [file_path, copy_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("CopySFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CopySFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("CopyFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("CopyFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 };
 function FTP_Search(){
@@ -193,11 +193,11 @@ function FTP_Search(){
 	VAR_FTP_NODE_PARAMETERS = [folder_path, mask, recursive, search_files, search_folders, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
 	_if(_FTP_PROTOCOL=="SFTP" || _FTP_PROTOCOL=="SSH",function(){
-		_embedded("SearchSFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("SearchSFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_if(_FTP_PROTOCOL=="FTP",function(){
-		_embedded("SearchFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+		_embedded("SearchFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
@@ -238,7 +238,7 @@ function FTP_RunCommand(){
 	
 	VAR_FTP_NODE_PARAMETERS = [сommand, wait_finish, pty, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
-	_embedded("RunCommandSSH", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+	_embedded("RunCommandSSH", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
 }
@@ -254,13 +254,13 @@ function FTP_CalculateChecksum(){
 	
 	VAR_FTP_NODE_PARAMETERS = [file_path, _FTP_CONNECTION_ID, _FTP_CONFIG, _FTP_CONNECTION_TIMEOUT];
 	
-	_embedded("CalculateChecksumSSH", "Node", "12.18.3", "FTP_NODE_PARAMETERS", timeout)!
+	_embedded("CalculateChecksumSSH", "Node", "18.10.0", "FTP_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_FTP_NODE_PARAMETERS);
 };
 function FTP_Close(){
 	VAR_FTP_NODE_PARAMETERS = _FTP_CONNECTION_ID;
-	_embedded("CloseFTP", "Node", "12.18.3", "FTP_NODE_PARAMETERS", 60000)!
+	_embedded("CloseFTP", "Node", "18.10.0", "FTP_NODE_PARAMETERS", 60000)!
 };
 function FTP_CheckProtocol(){
 	if(_FTP_PROTOCOL!="SFTP" && _FTP_PROTOCOL!="SSH" && _FTP_PROTOCOL!="FTP"){

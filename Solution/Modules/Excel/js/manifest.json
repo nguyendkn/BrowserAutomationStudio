@@ -709,245 +709,245 @@
             "DataName": "ExcelUtil",
             "DataType": 1,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_name, sheet_index, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    workbook.sheet(sheet_name) ? \"\" : (sheet_index===\"\" ? (exist ? workbook.addSheet(sheet_name) : workbook.sheet(0).name(sheet_name)) : workbook.addSheet(sheet_name, sheet_index));\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n    file.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_AddSheet",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, new_sheet_name, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    sync ? util.check_writable(file_path) : \"\";\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    sheet.name(new_sheet_name);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_RenameSheet",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, cell_address, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var cell = sheet.cell(cell_address);\r\n    var number_format = cell.style(\"numberFormat\");\r\n    var value = cell.value();\r\n    value = (typeof value==\"undefined\") ? \"\" : (value instanceof RichText ? value.text() : (value.error ? \"\" : value));\r\n    [[XLSX_NODE_PARAMETERS]] = (value!==\"\" && (number_format==date_format || util.fmt_is_date(number_format))) ? [util.number_to_date(value).toString(), true] : [value, false];\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, data, sync] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, convert, format] = data;\r\ndata = convert ? util.convert(data) : data;\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var cell = sheet.cell(cell_address);\r\n    cell.value(data);\r\n    if(format){\r\n        cell.style(\"numberFormat\", format);\r\n    };\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_WriteToCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, data, sync] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, convert, format] = data;\r\ndata = util.format_data(data, convert);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var cell = sheet.cell(\"A1\");\r\n    cell.value(data);\r\n    if(format){\r\n        cell.style(\"numberFormat\", format);\r\n    };\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_WriteToSheet",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_row, to_row, data_format, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var results = [];\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var endCell = usedRange.endCell();\r\n        var endColumn = endCell.columnNumber();\r\n        var endRow = endCell.rowNumber();\r\n        from_row = from_row===0 ? endRow : (from_row===\"\" ? 1 : from_row);\r\n        to_row = (to_row===0 || to_row===\"\") ? endRow : to_row;\r\n        results = sheet.range(from_row, 1, to_row, endColumn);\r\n    };\r\n    [[XLSX_NODE_PARAMETERS]] = util.format_results(results, data_format, date_format, ((to_row===0 || to_row===\"\") ? true : false), true);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadRows",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_row, data, sync] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, convert, format] = data;\r\ndata = util.format_data(data, convert);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        usedRange = usedRange.value();\r\n        for(var i = (usedRange.length-1); i > -1; i--){\r\n            if(usedRange[i].filter(function(ell){return ell!==\"\" && ell!==null && typeof ell!==\"undefined\"}).length==0){\r\n                delete usedRange[i];\r\n            };\r\n        };\r\n        var busy_rows = Object.keys(usedRange).map(Number);\r\n        var first_row = busy_rows.slice().shift() + 1 || 0;\r\n        var last_row = busy_rows.slice().pop() + 1 || 0;\r\n        if(from_row===0 || from_row===\"\"){\r\n            last_row++;\r\n            var cell = sheet.cell(\"A\" + last_row);\r\n            cell.value(data);\r\n            if(format){\r\n                cell.style(\"numberFormat\", format);\r\n            };\r\n        }else{\r\n            var new_rows_count = data.length;\r\n            var from_row_i = from_row - 1;\r\n            var to_row = from_row_i + new_rows_count;\r\n            var rows_not_busy = true;\r\n            for(var i = from_row_i; i < to_row; i++){\r\n                if(busy_rows.indexOf(i) > -1){\r\n                    rows_not_busy = false;\r\n                    break;\r\n                };\r\n            };\r\n            if(last_row<from_row || from_row<first_row || rows_not_busy){\r\n                var cell = sheet.cell(\"A\" + from_row);\r\n                cell.value(data);\r\n                if(format){\r\n                    cell.style(\"numberFormat\", format);\r\n                };\r\n            }else{\r\n                last_row++;\r\n                var cell = sheet.cell(\"A\" + last_row);\r\n                cell.value(data);\r\n                if(format){\r\n                    cell.style(\"numberFormat\", format);\r\n                };\r\n                var ready_data = sheet._rows.splice(last_row, new_rows_count);\r\n                sheet._rows.splice(from_row, 0, ...ready_data);\r\n                sheet._rows.map(function(row, index){\r\n                    row._node.attributes.r = index;\r\n                    return row;\r\n                });\r\n            };\r\n        };\r\n    }else{\r\n        var cell = sheet.cell(\"A\" + (from_row===0 || from_row===\"\" ?  1 : from_row));\r\n        cell.value(data);\r\n        if(format){\r\n            cell.style(\"numberFormat\", format);\r\n        };\r\n    };\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_InsertRows",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_row, to_row, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\ntry{\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        sync ? util.check_writable(file_path) : \"\";\r\n        var sheet = workbook.sheet(sheet_index_or_name);\r\n        if(sheet){\r\n            var usedRange = sheet.usedRange();\r\n            if(usedRange){\r\n                var endCell = usedRange.endCell();\r\n                var endRow = endCell.rowNumber();\r\n                from_row = from_row===0 ? endRow : (from_row===\"\" ? 1 : from_row);\r\n                if(to_row===0 || to_row===\"\"){\r\n                    sheet._rows.splice(from_row);\r\n                }else{\r\n                    var count = (to_row-from_row)+1;\r\n                    sheet._rows.splice(from_row, count);\r\n                };\r\n                sheet._rows.map(function(row, index){\r\n                    row._node.attributes.r = index;\r\n                    return row;\r\n                });\r\n                sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n            };\r\n        };\r\n    };\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_DeleteRows",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, data_format, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var results = sheet.range(from_cell, to_cell);\r\n    [[XLSX_NODE_PARAMETERS]] = util.format_results(results, data_format, date_format)\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\ntry{\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        sync ? util.check_writable(file_path) : \"\";\r\n        var sheet = workbook.sheet(sheet_index_or_name);\r\n        if(sheet){\r\n            var cell = sheet.cell(cell_address);\r\n            if(cell){\r\n                cell.clear();\r\n                sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n            };\r\n        };\r\n    };\r\n    file.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ClearCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\ntry{\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        sync ? util.check_writable(file_path) : \"\";\r\n        var sheet = workbook.sheet(sheet_index_or_name);\r\n        if(sheet){\r\n            var range = sheet.range(from_cell, to_cell);\r\n            if(range){\r\n                range.clear();\r\n                sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n            };\r\n        };\r\n    };\r\n    file.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ClearCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, contains] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\ntry{\r\n    var list = [];\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        var sheet = workbook.sheet(sheet_index_or_name);\r\n        if(sheet){\r\n            if(isNaN(contains)){\r\n                list = sheet.find(contains).map(function(cell){return (cell.columnNumber()-1) + \"*\" + (cell.rowNumber()-1)});\r\n            }else{\r\n                var usedRange = sheet.usedRange();\r\n                if(usedRange){\r\n                    usedRange.forEach(function(cell){\r\n                        var value = (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value());\r\n                        String(value).indexOf(contains) > -1 ? list.push((cell.columnNumber()-1) + \"*\" + (cell.rowNumber()-1)) : \"\";\r\n                    });\r\n                };\r\n            };\r\n        };\r\n    };\r\n    [[XLSX_NODE_PARAMETERS]] = list.filter(function(address, index){return list.indexOf(address)===index});\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_FindCells",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var formula = sheet.cell(cell_address).formula();\r\n    [[XLSX_NODE_PARAMETERS]] = (typeof formula==\"undefined\") ? \"\" : formula;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_GetFormulaFromCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, formula, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(cell_address).formula(formula);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetFormulaToCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, style_name] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var style_value = sheet.cell(cell_address).style(style_name);\r\n    [[XLSX_NODE_PARAMETERS]] = (typeof style_value==\"undefined\") ? \"\" : style_value;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_GetCellStyle",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar file_path = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    [[XLSX_NODE_PARAMETERS]] = util.get_sheets(workbook);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_GetSheetsList",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, styles_name_list] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var styles_object = sheet.cell(cell_address).style(styles_name_list);\r\n    [[XLSX_NODE_PARAMETERS]] = styles_object ? styles_object : {};\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_GetCellStyles",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, style_name, style_value, sync] = [[XLSX_NODE_PARAMETERS]];\r\nstyle_value = util.convert(style_value);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(cell_address).style(style_name, style_value);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetStyleToCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, cell_address, styles, sync] = [[XLSX_NODE_PARAMETERS]];\r\nstyles = (typeof styles==\"object\") ? styles : JSON.parse(styles);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.cell(cell_address).style(styles);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetStylesToCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, style_name, style_value, sync] = [[XLSX_NODE_PARAMETERS]];\r\nstyle_value = util.convert(style_value);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.range(from_cell, to_cell).style(style_name, style_value);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetStyleToCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, styles, sync] = [[XLSX_NODE_PARAMETERS]];\r\nstyles = (typeof styles==\"object\") ? styles : JSON.parse(styles);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.range(from_cell, to_cell).style(styles);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetStylesToCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var count = 0;\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var endCell = usedRange.endCell();\r\n        var endColumn = endCell.columnNumber();\r\n        var endRow = endCell.rowNumber();\r\n        var results = sheet.range(1, 1, endRow, endColumn);\r\n        count = util.format_results(results, \"Count\", \"\", true, false, false);\r\n    };\r\n    [[XLSX_NODE_PARAMETERS]] = count;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_CountRows",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nconst RichText = require('xlsx-Populate').RichText;\r\nvar [file_path, sheet_index_or_name, contains] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\ntry{\r\n    var found_cell = [\"\", \"\", \"\"];\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        if(sheet_index_or_name!==\"\"){\r\n            var sheet = workbook.sheet(sheet_index_or_name);\r\n            var cells = [];\r\n            if(sheet){\r\n                if(isNaN(contains)){\r\n                    cells = sheet.find(contains);\r\n                }else{\r\n                    var usedRange = sheet.usedRange();\r\n                    if(usedRange){\r\n                        usedRange.forEach(function(cell){\r\n                            var value = (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value());\r\n                            String(value).indexOf(contains) > -1 ? cells.push(cell) : \"\";\r\n                        });\r\n                    }else{\r\n                        cells = [];\r\n                    };\r\n                };\r\n            }else{\r\n                cells = [];\r\n            };\r\n            if(cells.length!==0){\r\n                var cell = cells[0];\r\n                found_cell[0] = cell.columnNumber() - 1;\r\n                found_cell[1] = cell.rowNumber() - 1;\r\n                found_cell[2] = sheet_index_or_name;\r\n            };\r\n        }else{\r\n            var sheets = workbook.sheets();\r\n            sheets.some(function(sheet, index){\r\n                var cells = [];\r\n                if(isNaN(contains)){\r\n                    cells = sheet.find(contains);\r\n                }else{\r\n                    var usedRange = sheet.usedRange();\r\n                    if(usedRange){\r\n                        usedRange.forEach(function(cell){\r\n                            var value = (cell.value() instanceof RichText) ? cell.value().text() : (typeof cell.value()===\"object\" ? \"\" : cell.value());\r\n                            String(value).indexOf(contains) > -1 ? cells.push(cell) : \"\";\r\n                        });\r\n                    }else{\r\n                        cells = [];\r\n                    };\r\n                };\r\n                if(cells.length!==0){\r\n                    var cell = cells[0];\r\n                    found_cell[0] = cell.columnNumber() - 1;\r\n                    found_cell[1] = cell.rowNumber() - 1;\r\n                    found_cell[2] = index;\r\n                    return true;\r\n                }else{\r\n                    return false;\r\n                };\r\n            });\r\n        };\r\n    };\r\n    [[XLSX_NODE_PARAMETERS]] = found_cell;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_FindCell",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nconst crypto = require('crypto');\r\n\r\nvar file_path = [[XLSX_NODE_PARAMETERS]];\r\nvar id = crypto.createHash('md5').update(file_path).digest('hex');\r\nawait util.wait_unlock(id);\r\nif(typeof excel_files!=\"undefined\" && typeof excel_files[id]!=\"undefined\"){\r\n    var file = excel_files[id];\r\n    try{\r\n        await file.save(id);\r\n    }catch(err){\r\n        if(typeof file!=\"undefined\"){\r\n            file.unlock();\r\n            file.setTimeout();\r\n        };\r\n        throw err;\r\n    };\r\n};",
             "DataName": "Excel_CloseFile",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\ntry{\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        sync ? util.check_writable(file_path) : \"\";\r\n        if(sheet_index_or_name==-1){\r\n            var changes = false;\r\n            var sheets_list = workbook.sheets();\r\n            for(var sheet of sheets_list){\r\n                var usedRange = sheet.usedRange();\r\n                if(usedRange){\r\n                    usedRange.clear();\r\n                    changes = true;\r\n                };\r\n            };\r\n            changes ? (sync ? await util.save_file(workbook, file_path) : file.enableSave()) : \"\";\r\n        }else{\r\n            var sheet = workbook.sheet(sheet_index_or_name);\r\n            if(sheet){\r\n                var usedRange = sheet.usedRange();\r\n                if(usedRange){\r\n                    usedRange.clear();\r\n                    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n                };\r\n            };\r\n        };\r\n    };\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ClearSheet",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, false);\r\ntry{\r\n    if(exist){\r\n        var workbook = file.workbook;\r\n        sync ? util.check_writable(file_path) : \"\";\r\n        var sheet = workbook.sheet(sheet_index_or_name);\r\n        sheet ? sheet.delete() : \"\";\r\n        sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n    };\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_DeleteSheet",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, new_sheet_index, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    sync ? util.check_writable(file_path) : \"\";\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    new_sheet_index===\"\" ? workbook.moveSheet(sheet) : workbook.moveSheet(sheet, new_sheet_index);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_MoveSheet",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, from_cell, to_cell, data, sync] = [[XLSX_NODE_PARAMETERS]];\r\nvar [data, convert, format] = data;\r\ndata = util.format_data(data, convert);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    var cell_or_range = to_cell===\"\" ? sheet.cell(from_cell) : sheet.range(from_cell, to_cell);\r\n    cell_or_range.value(data);\r\n    if(format){\r\n        cell_or_range.style(\"numberFormat\", format);\r\n    };\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_WriteToCellsRange",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sync] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    if(exist){\r\n        var changes = false;\r\n        var sheets_list = workbook.sheets();\r\n        for(var sheet of sheets_list){\r\n            var usedRange = sheet.usedRange();\r\n            if(usedRange){\r\n                usedRange.clear();\r\n                changes = true;\r\n            };\r\n        };\r\n        changes ? (sync ? await util.save_file(workbook, file_path) : file.enableSave()) : \"\";\r\n    }else{\r\n        sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n    };\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_CreateFile",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, data_format, date_format] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var results = null;\r\n    var usedRange = sheet.usedRange();\r\n    if(usedRange){\r\n        var endCell = usedRange.endCell();\r\n        var endColumn = endCell.columnNumber();\r\n        var endRow = endCell.rowNumber();\r\n        results = sheet.range(1, 1, endRow, endColumn);\r\n    };\r\n    [[XLSX_NODE_PARAMETERS]] = util.format_results(results, data_format, date_format, true, true);\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_ReadSheet",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, column_number_or_name] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var width = sheet.column(column_number_or_name).width();\r\n    [[XLSX_NODE_PARAMETERS]] = typeof width===\"undefined\" ? null : width;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_GetColumnWidth",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, row_number] = [[XLSX_NODE_PARAMETERS]];\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, false, true);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_sheet(workbook, sheet_index_or_name);\r\n    var height = sheet.row(row_number).height();\r\n    [[XLSX_NODE_PARAMETERS]] = typeof height===\"undefined\" ? null : height;\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_GetRowHeight",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, column_number_or_name, width, sync] = [[XLSX_NODE_PARAMETERS]];\r\nwidth = util.convert(width);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.column(column_number_or_name).width(width);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetColumnWidth",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../ExcelUtil\");\r\nvar [file_path, sheet_index_or_name, row_number, height, sync] = [[XLSX_NODE_PARAMETERS]];\r\nheight = util.convert(height);\r\n\r\nvar [file, exist] = await util.create_or_open_file(file_path, true, false);\r\ntry{\r\n    var workbook = file.workbook;\r\n    var sheet = util.get_or_create_sheet(workbook, sheet_index_or_name, exist);\r\n    sheet.row(row_number).height(height);\r\n    sync ? await util.save_file(workbook, file_path) : file.enableSave();\r\n\tfile.setTimeout();\r\n}catch(err){\r\n    file.enableSaveError(err);\r\n    file.setTimeout();\r\n    throw err;\r\n};",
             "DataName": "Excel_SetRowHeight",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         }
     ],
     "engine": [
@@ -962,7 +962,7 @@
     "languages": [
         {
             "Name": "Node",
-            "Version": "12.18.3"
+            "Version": "18.10.0"
         }
     ],
     "localize": {
@@ -1271,7 +1271,7 @@
     "modules": [
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "xlsx-populate",
             "ModuleVersion": "*"
         }

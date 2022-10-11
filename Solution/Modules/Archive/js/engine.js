@@ -8,7 +8,7 @@ function Archive_Unpack(){
 	
 	VAR_ARCHIVE_NODE_PARAMETERS = {archivePath:archivePath, destinationPath:destinationPath, archiveType:archiveType, filesList:filesList, password:password, lang:_K};
 	
-	_embedded("Archive_Unpack", "Node", "12.18.3", "ARCHIVE_NODE_PARAMETERS", timeout)!
+	_embedded("Archive_Unpack", "Node", "18.10.0", "ARCHIVE_NODE_PARAMETERS", timeout)!
 };
 function Archive_ArchiveFolder(){
 	var folderPath = _function_argument("FolderPath");
@@ -18,7 +18,7 @@ function Archive_ArchiveFolder(){
 	
 	VAR_ARCHIVE_NODE_PARAMETERS = {folderPath:folderPath, destinationPath:destinationPath, archiveType:archiveType, lang:_K};
 	
-	_embedded("Archive_ArchiveFolder", "Node", "12.18.3", "ARCHIVE_NODE_PARAMETERS", timeout)!
+	_embedded("Archive_ArchiveFolder", "Node", "18.10.0", "ARCHIVE_NODE_PARAMETERS", timeout)!
 };
 function Archive_ArchiveFiles(){
 	var destinationPath = _function_argument("DestinationPath");
@@ -37,7 +37,7 @@ function Archive_ArchiveFiles(){
 	
 	VAR_ARCHIVE_NODE_PARAMETERS = {filesList:filesList, destinationPath:destinationPath, archiveType:archiveType, lang:_K};
 	
-	_embedded("Archive_ArchiveFiles", "Node", "12.18.3", "ARCHIVE_NODE_PARAMETERS", timeout)!
+	_embedded("Archive_ArchiveFiles", "Node", "18.10.0", "ARCHIVE_NODE_PARAMETERS", timeout)!
 };
 function Archive_GetFileList(){
 	var archivePath = _function_argument("ArchivePath");
@@ -46,7 +46,7 @@ function Archive_GetFileList(){
 	
 	VAR_ARCHIVE_NODE_PARAMETERS = {archivePath:archivePath, archiveType:archiveType, lang:_K};
 	
-	_embedded("Archive_GetFileList", "Node", "12.18.3", "ARCHIVE_NODE_PARAMETERS", timeout)!
+	_embedded("Archive_GetFileList", "Node", "18.10.0", "ARCHIVE_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_ARCHIVE_NODE_PARAMETERS)
 };

@@ -202,7 +202,7 @@ namespace BrowserAutomationStudioFramework
         for(QString& LanguageString:LanguageStrings.split(";"))
         {
             QStringList LanguageSplit = LanguageString.split(",");
-            if(LanguageSplit.length() == 2 && LanguageSplit[0] == QString("Node") && (LanguageSplit[1] == QString("8.6.0") || LanguageSplit[1] == QString("12.18.3")))
+            if(LanguageSplit.length() == 2 && LanguageSplit[0] == QString("Node") && (LanguageSplit[1] == QString("8.6.0") || LanguageSplit[1] == QString("12.18.3") || LanguageSplit[1] == QString("18.10.0")))
             {
                 EmbeddedLanguage l;
                 l.Name = LanguageSplit[0];
@@ -446,7 +446,7 @@ namespace BrowserAutomationStudioFramework
         emit InitializationTitle(DialogTitle);
 
         /* Validation */
-        if(Lang.Name != "Node" || (Lang.Version != "8.6.0" && Lang.Version != "12.18.3"))
+        if(Lang.Name != "Node" || (Lang.Version != "8.6.0" && Lang.Version != "12.18.3" && Lang.Version != "18.10.0"))
         {
             Error(QString(tr("Unknown language or version %1 %2")).arg(Lang.Name).arg(Lang.Version));
             return;

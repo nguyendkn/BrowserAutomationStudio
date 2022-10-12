@@ -42,4 +42,4 @@
 	<div class="tr tooltip-paragraph-fold">Objects can be processed using actions from the "JSON" module.</div>
 	<div class="tr tooltip-paragraph-last-fold">If an error occurred while execute action, the thread will stop with fail message. If you want to continue thread, use "Ignore errors" action.</div>
 </div>
-<%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+<%= _.template($('#back').html())({action:"executeandadd", use_timeout:true, visible:true}) %>

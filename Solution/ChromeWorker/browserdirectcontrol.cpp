@@ -1039,6 +1039,11 @@ void BrowserDirectControl::Key(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void BrowserDirectControl::DoMouseEvent(MouseClickItem Item)
 {
+    if(_BrowserData->IsTouchScreen)
+    {
+        return;
+    }
+
     MouseEvent Event;
     if(Item.IsDownOrUp)
     {

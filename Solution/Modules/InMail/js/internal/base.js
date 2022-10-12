@@ -6,7 +6,11 @@ _InMail.baseApi = function(isCurl, protocol, config){
 	
 	if(isCurl){
 		
-		native("curlwrapper", "easycleanup");
+		this.reset = function(){
+			native("curlwrapper", "easycleanup");
+		};
+		
+		api.reset();
 		
 		this.curlOpts = {
 			"CURLOPT_URL": api.protocol + (api.config.encrypt=="ssl" ? 's' : '') + '://' + api.config.host,
@@ -22,14 +26,14 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			api.curlOpts["CURLOPT_PROXY"] = (proxy.type=="socks5" ? "socks5h" : proxy.type) + '://' + proxy.host + ':' + proxy.port;
 			api.curlOpts["CURLOPT_PROXYUSERNAME"] = _is_nilb(proxy.username) ? "" : proxy.username;
 			api.curlOpts["CURLOPT_PROXYPASSWORD"] = _is_nilb(proxy.password) ? "" : proxy.password;
-			native("curlwrapper", "easycleanup");
+			api.reset();
 		};
 		
 		this.clearProxy = function(){
 			delete api.curlOpts["CURLOPT_PROXY"];
 			delete api.curlOpts["CURLOPT_PROXYUSERNAME"];
 			delete api.curlOpts["CURLOPT_PROXYPASSWORD"];
-			native("curlwrapper", "easycleanup");
+			api.reset();
 		};
 		
 		this.setConnectTimeout = function(ms){
@@ -49,6 +53,8 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			var query = _function_argument("query");
 			var isFetch = _avoid_nilb(_function_argument("isFetch"), false);
 			var noBody = _avoid_nilb(_function_argument("noBody"), false);
+			var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+			var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 			
 			var options = {};
 			
@@ -69,11 +75,16 @@ _InMail.baseApi = function(isCurl, protocol, config){
 				options["CURLOPT_NOBODY"] = false;
 			};
 			
+			if(timeout && maxTime){
+				var timeLeft = maxTime - Date.now();
+				options["CURLOPT_TIMEOUT_MS"] = timeout < 60000 ? timeout : (timeLeft < 60000 ? 60000 : timeLeft);
+			};
+			
 			options["CURLOPT_CUSTOMREQUEST"] = _is_nil(query) ? "" : query.trim();
 			
 			_InMail.log(api.protocol + ' ' + (_K=="ru" ? 'запрос' : 'request') + ': «‎' + query + '», url: «‎' + options["CURLOPT_URL"] + '»');
 			
-			_call_function(api.wrapper, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.timeout || 5 * 60 * 1000)})!
+			_call_function(api.wrapper, {write_to_string: true, options: options, trace: true, is_fetch: isFetch, save_session: true, timeout: (api.resetTimeout || 5 * 60 * 1000)})!
 			var resp = _result_function();
 			
 			resp.code = resp.code.replace('CURLE_', '');
@@ -111,7 +122,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 					};
 				};
 				
-				_InMail.error(resp.code + ' - ' + error, null, api.cutAction());
+				api.errorHandler(resp.code, error);
 			};
 		};
 	
@@ -119,7 +130,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			encoding = encoding.toLowerCase();
 			var resp = JSON.parse(native("curlwrapper", "decoder", JSON.stringify({charset: charset, encoding: encoding, data: data})));
 			if(!resp.success){
-				_InMail.error('FAIL_DECODE - ' + resp.error, null, api.cutAction());
+				api.errorHandler('FAIL_DECODE', resp.error);
 			};
 			return resp.result;
 		};
@@ -130,6 +141,8 @@ _InMail.baseApi = function(isCurl, protocol, config){
 					.toString()
 					// remove spaces between mime encoded words
 					.replace(/(=\?[^?]+\?[QqBb]\?[^?]*\?=)\s+(?==\?[^?]+\?[QqBb]\?[^?]*\?=)/g, '$1')
+					// convert all underscores to spaces
+					.replace(/[_\s]/g, ' ')
 					// decode words
 					.replace(/=\?([\w_\-*]+)\?([QqBb])\?([^?]*)\?=/g, function(m, charset, encoding, text){return api.decoder(charset, encoding, text) || text})
 			);
@@ -255,8 +268,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			var result = '';
 			if(encoding === 'base64'){
-				data = data.trim().split('\r\n').join('');
-				result = api.decoder(charset, 'b', data);
+				result = data.trim().split('\r\n').join('');
+				if(!saveToFile){
+					result = api.decoder(charset, 'b', result);
+				};
 			}else if(encoding === 'quoted-printable'){
 				result = api.decoder(charset, 'q', data);
 			}else if(['7bit', '7bits'].indexOf(encoding) > -1){
@@ -271,7 +286,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			};
 			
 			if(saveToFile){
-				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:false, append:false}));
+				native("filesystem", "writefile", JSON.stringify({path:saveToFile, value:result, base64:(encoding === 'base64'), append:false}));
 			}else{
 				return result;
 			};
@@ -438,6 +453,10 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"FAILED_PARSE": {
 				"ru": 'Не удалось распарсить результат: "' + data + '"',
 				"en": 'Failed to parse result: "' + data + '"'
+			},
+			"OPERATION_TIMEDOUT": {
+				"ru": "Превышено максимальное время выполнения действия.",
+				"en": "The maximum execution time for the action has been exceeded."
 			}
 		};
 		
@@ -446,7 +465,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 		
 		if(_is_nilb(errorObj)){
 			if(error!=data && !_is_nilb(data)){
-				message += ", " + data;
+				message += " - " + data;
 			};
 		}else{
 			message += " - " + errorObj[_K];;

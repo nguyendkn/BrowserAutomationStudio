@@ -10,6 +10,7 @@ class DevToolsActionOpenFile : public IDevToolsAction
     double NodeId = 0.0;
     bool OpenFileDialogIsManual = false;
     std::string OpenFileDialogResult;
+    std::string TargetIdForElement;
     bool IsMultiple = false;
 public:
     virtual void Run();

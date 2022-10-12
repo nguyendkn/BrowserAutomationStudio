@@ -3718,4 +3718,57 @@ namespace BrowserAutomationStudioFramework
         return QString::fromUtf8(ResArray);
     }
 
+    QString ScriptWorker::PreparePerfectCanvasRequest(const QString& PerfectCanvasRequest)
+    {
+        if(PerfectCanvasRequest.startsWith("Ids:"))
+            return PerfectCanvasRequest;
+
+        if(PerfectCanvasRequest.size() <= 64)
+            return PerfectCanvasRequest;
+
+        QString Compressed = PerfectCanvasRequest.mid(64);
+
+        QByteArray ResultData = QByteArray::fromHex(Compressed.toUtf8());
+        //Append data size
+        QByteArray DataSizeBytes;
+        DataSizeBytes.resize(4);
+        unsigned int DataSize = ResultData.size();
+        qToBigEndian<unsigned int>(DataSize,(unsigned char *)DataSizeBytes.data());
+
+        ResultData.prepend(DataSizeBytes);
+        ResultData = qUncompress(ResultData);
+        QString ResultString = QString::fromUtf8(ResultData);
+
+        QJsonParseError err;
+        QJsonDocument Document = QJsonDocument::fromJson(ResultString.toUtf8(), &err);
+        if(err.error || !Document.isArray())
+        {
+            return PerfectCanvasRequest;
+        }
+
+        QStringList ResultList;
+
+        QJsonArray ResultJsonData = Document.array();
+
+        for(QJsonValue Value: ResultJsonData)
+        {
+            if(Value.isObject())
+            {
+                QJsonObject ItemObject = Value.toObject();
+
+                if(ItemObject.contains("id"))
+                {
+                    QJsonValue IdObject = ItemObject["id"];
+
+                    if(IdObject.isString())
+                    {
+                        ResultList.append(IdObject.toString());
+                    }
+                }
+            }
+        }
+
+        return QString("Ids:") + ResultList.join(",");
+    }
+
 }

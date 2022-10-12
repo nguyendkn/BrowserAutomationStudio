@@ -215,6 +215,7 @@
 			$("#UseHumanLikeMouseMoves").prop("checked",json["emulatemouse"])
 			$('.language-switch[data-lang="Node"][data-version="8.6.0"]').prop("checked",json["languages"].indexOf("Node,8.6.0")>=0)
 			$('.language-switch[data-lang="Node"][data-version="12.18.3"]').prop("checked",json["languages"].indexOf("Node,12.18.3")>=0)
+			$('.language-switch[data-lang="Node"][data-version="18.10.0"]').prop("checked",json["languages"].indexOf("Node,18.10.0")>=0)
 
 			if(json["languages"].indexOf("Node,8.6.0")>=0)
 			{
@@ -223,6 +224,10 @@
 			if(json["languages"].indexOf("Node,12.18.3")>=0)
 			{
 				$('.language-panel[data-lang="Node"][data-version="12.18.3"]').show()
+			}
+			if(json["languages"].indexOf("Node,18.10.0")>=0)
+			{
+				$('.language-panel[data-lang="Node"][data-version="18.10.0"]').show()
 			}
 			var modules = json["modules"].split(";")
 			modules.forEach((module) => {
@@ -271,6 +276,7 @@
 				$('.language-panel').hide()
 				$('[data-lang="Node"][data-version="8.6.0"][data-is-modules="true"]').html("")
 				$('[data-lang="Node"][data-version="12.18.3"][data-is-modules="true"]').html("")
+				$('[data-lang="Node"][data-version="18.10.0"][data-is-modules="true"]').html("")
 
 				UpdateInterfaceVisibility();
 
@@ -345,6 +351,32 @@
 	<div id="no-languages" class="no-lang tr">Started without embedded languages.</div>
 
 	<span id="all-languages">
+
+		<div class="container">
+			<div class="checkbox text-center">
+				<label>
+				  <input type="checkbox" class="language-switch" data-lang="Node" data-version="18.10.0"> <span class="tr">Node.js v18.10.0</span>
+				</label>
+			</div>
+		</div>
+
+
+		<span class="language-panel" data-lang="Node" data-version="18.10.0" style="display:none">
+
+			<div class="container" >
+				<div class="text-center" style="margin-top:12px;margin-bottom:12px;" data-lang="Node" data-version="18.10.0" data-is-modules="true" >
+
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="text-center">
+					<a class="btn btn-sm btn-success tr" href="#" data-lang="Node" data-version="18.10.0" data-is-add-modules="true"  >+ Add npm module</a>	
+				</div>
+			</div>
+		</span>
+
+		<hr>
 
 
 		<div class="container">

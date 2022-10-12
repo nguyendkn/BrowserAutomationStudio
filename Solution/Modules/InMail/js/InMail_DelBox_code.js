@@ -1,1 +1,1 @@
-_call_function(_InMail.delBox, {name: (<%= name %>)})!
+_call_function(_InMail.delBox, {name: (<%= name %>), timeout: (<%= timeout_value() || 60000 %>)})!

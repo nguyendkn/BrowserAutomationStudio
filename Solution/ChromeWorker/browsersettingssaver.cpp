@@ -11,6 +11,22 @@ void BrowserSettingsSaver::Save()
         std::ofstream outfile(FilePath);
         if(outfile.is_open())
         {
+            std::string RequestMaskString;
+
+            picojson::value::array RequestMaskJson;
+            for (const std::pair<bool, std::string>& Mask: RequestMask)
+            {
+                picojson::value::object MaskJson;
+                MaskJson["allow"] = picojson::value(Mask.first);
+                MaskJson["data"] = picojson::value(Mask.second);
+                RequestMaskJson.push_back(picojson::value(MaskJson));
+            }
+
+            RequestMaskString = picojson::value(RequestMaskJson).serialize();
+
+            outfile<<"RequestMasks="<<base64_encode((unsigned char const *)RequestMaskString.data(),RequestMaskString.size())<<std::endl;
+
+
             std::string Language;
             if(!Languages.empty())
                 Language = Languages[0];
@@ -61,6 +77,8 @@ void BrowserSettingsSaver::Save()
 
 
             outfile<<"AdditionalHeaders="<<base64_encode((unsigned char const *)AdditionalHeaders.data(),AdditionalHeaders.size())<<std::endl;
+
+            outfile<<"StartupScript="<<base64_encode((unsigned char const *)StartupScript.data(),StartupScript.size())<<std::endl;
 
             outfile<<"LocaleName="<<Language<<std::endl;
 

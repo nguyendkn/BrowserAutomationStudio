@@ -16,6 +16,11 @@ bool DevToolsActionSetRequestsRestrictions::IsNeedToRunForAllActiveTabs()
     return true;
 }
 
+bool DevToolsActionSetRequestsRestrictions::IsNeedToRunForAllActiveFrames()
+{
+    return true;
+}
+
 void DevToolsActionSetRequestsRestrictions::OnTabSwitching()
 {
 

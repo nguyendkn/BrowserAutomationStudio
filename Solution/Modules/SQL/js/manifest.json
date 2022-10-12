@@ -256,63 +256,63 @@
             "DataName": "UtilSQL",
             "DataType": 1,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, query, query_type, data_format] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\nvar [query_sql, query_parameterize, query_replacements] = query;\r\n\r\nvar options = {type:query_type};\r\nif(query_parameterize){\r\n    options.replacements = util.restore_dates(query_replacements);\r\n};\r\nif(debug){\r\n    options.logging = BAS_CONSOLE_LOG;\r\n};\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var results = await sequelize.query(query_sql, options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    if(query_type==\"RAW\"){\r\n        results = (results[0]==null || typeof results[0]==\"undefined\") ? \"\" : results[0];\r\n    };\r\n    [[SQL_NODE_PARAMETERS]] = query_type==\"SELECT\" ? [util.format_results(results, data_format), data_format, query_type] : [results, data_format, query_type];\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_Query",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "var id = [[SQL_NODE_PARAMETERS]];\r\n\r\nif(typeof sql_connections!=\"undefined\" && typeof sql_connections[id]!=\"undefined\"){\r\n    var dialects = Object.keys(sql_connections[id]);\r\n    for(var dialect of dialects){\r\n        sql_connections[id][dialect].close();\r\n    };\r\n};",
             "DataName": "SQL_Close",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, where, included_columns, excluded_columns, order, offset, limit, data_format] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\nvar [where, where_parameterize, where_replacements] = where;\r\n\r\nif(where_parameterize){\r\n    replacements = util.restore_dates(where_replacements);\r\n    where = util.format(where, replacements, config.dialect);\r\n};\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(where!==\"\"){\r\n        if(typeof where==\"object\"){\r\n            options.where = where;\r\n        }else{\r\n            options.where = sequelize.literal(where);\r\n        };\r\n    };\r\n    if(included_columns!==\"\" && excluded_columns==\"\"){\r\n        options.attributes = included_columns;\r\n    };\r\n    if(excluded_columns!==\"\"){\r\n        options.attributes = {exclude:excluded_columns};\r\n    };\r\n    if(order!==\"\"){\r\n        options.order = order;\r\n    };\r\n    if(offset!==\"\"){\r\n        options.offset = offset;\r\n    };\r\n    if(limit!==\"\"){\r\n        options.limit = limit;\r\n    };\r\n    var results = await model.findAll(options);\r\n    results = results.map(function(row){return row.get()});\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    [[SQL_NODE_PARAMETERS]] = [util.format_results(results, data_format), data_format];\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_SelectRecords",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, where, limit] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\nvar [where, where_parameterize, where_replacements] = where;\r\n\r\nif(where_parameterize){\r\n    replacements = util.restore_dates(where_replacements);\r\n    where = util.format(where, replacements, config.dialect);\r\n};\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(typeof where==\"object\"){\r\n        options.where = where;\r\n    }else{\r\n        options.where = sequelize.literal(where);\r\n    };\r\n    if(limit!==\"\"){\r\n        options.limit = limit;\r\n    };\r\n    var results = await model.destroy(options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_DeleteRecords",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, values, convert, where, fields, limit] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\nvar [where, where_parameterize, where_replacements] = where;\r\n\r\nif(where_parameterize){\r\n    replacements = util.restore_dates(where_replacements);\r\n    where = util.format(where, replacements, config.dialect);\r\n};\r\n\r\nvalues = util.restore_dates_in_object(values, convert);\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(typeof where==\"object\"){\r\n        options.where = where;\r\n    }else{\r\n        options.where = sequelize.literal(where);\r\n    };\r\n    if(fields!==\"\"){\r\n        options.fields = fields;\r\n    };\r\n    if(limit!==\"\"){\r\n        options.limit = limit;\r\n    };\r\n    var results = await model.update(values, options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_UpdateRecords",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, fields, data, convert] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(fields!==\"\"){\r\n        options.fields = fields;\r\n        data = util.format_data(data, fields, convert);\r\n    }else{\r\n        data = util.format_data(data, sql.fields, convert);\r\n    };\r\n    var results = await model.bulkCreate(data, options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_InsertMultipleRecords",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, where] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\nvar [where, where_parameterize, where_replacements] = where;\r\n\r\nif(where_parameterize){\r\n    replacements = util.restore_dates(where_replacements);\r\n    where = util.format(where, replacements, config.dialect);\r\n};\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var sequelize = sql.sequelize;\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(where!==\"\"){\r\n        if(typeof where==\"object\"){\r\n            options.where = where;\r\n        }else{\r\n            options.where = sequelize.literal(where);\r\n        };\r\n    };\r\n    var results = await model.count(options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    [[SQL_NODE_PARAMETERS]] = results;\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_CountRecords",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilSQL\");\r\n\r\nvar [config, table, fields, data, convert, idFieldName] = [[SQL_NODE_PARAMETERS]];\r\nvar {id, timeout, debug} = config;\r\n\r\nvar sql = await util.connect_sql(config);\r\ntry{\r\n    var model = await util.get_model(sql, table, debug);\r\n    var options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(fields!==\"\"){\r\n        options.fields = fields;\r\n        data = util.format_data(data, fields, convert);\r\n    }else{\r\n        data = util.format_data(data, sql.fields, convert);\r\n    };\r\n    var result = await model.create(data[0], options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(result));\r\n    };\r\n    if(idFieldName){\r\n        [[SQL_NODE_PARAMETERS]] = result[idFieldName] || null;\r\n    };\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
             "DataName": "SQL_InsertRecord",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         }
     ],
     "engine": [
@@ -327,7 +327,7 @@
     "languages": [
         {
             "Name": "Node",
-            "Version": "12.18.3"
+            "Version": "18.10.0"
         }
     ],
     "localize": {
@@ -510,43 +510,43 @@
     "modules": [
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "sequelize",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "mysql2",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "mariadb",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "tedious",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "pg",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "pg-hstore",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "sqlite3-offline",
             "ModuleVersion": "*"
         }

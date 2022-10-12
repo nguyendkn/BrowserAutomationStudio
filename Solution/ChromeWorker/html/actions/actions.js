@@ -748,48 +748,6 @@ _A = {
       },
       "group":"waiters"
    },
-   "emailsettings":{  
-      "name":"Configure",
-      "description":"Configure email settings",
-      "template":"{{Host}}",
-      "group":"email"
-   },
-   "emailproxy":{  
-      "name":"Email Proxy",
-      "description":"Configure email proxy",
-      "template":"{{ProxyText}}",
-      "group":"email"
-   },
-   "emaillength":{  
-      "name":"Messages Length",
-      "description":"Get messages length",
-      "template":"{{Save}}",
-      "group":"email"
-   },
-   "emailsearchfirst":{  
-      "name":"Search First",
-      "description":"Search for first message",
-      "template":"{{Save}}",
-      "group":"email"
-   },
-   "emailsearchall":{  
-      "name":"Search All",
-      "description":"Search for all messages",
-      "template":"{{Save}}",
-      "group":"email"
-   },
-   "emailpull":{  
-      "name":"Get Message",
-      "description":"Pull message",
-      "template":"{{Save}}",
-      "group":"email"
-   },
-   "emailremove":{  
-      "name":"Remove Message",
-      "description":"Remove message",
-      "template":"{{Save}}",
-      "group":"email"
-   },
    "httpclientproxy":{  
       "name":"HTTP-Client Proxy",
       "description":"Set proxy for http client",
@@ -1213,7 +1171,6 @@ _AL =
    "Load " : {"ru": "Загрузить "},
    "Wait while element ": {"ru": "Ждать пока элемент "},
    " appear on page": {"ru": " появится на странице"},
-   "Email Proxy": {"ru": "Почта Прокси"},
    "HTTP-Client Proxy": {"ru": "HTTP-Клиент Прокси"},
    "HTTP-Client Reset": {"ru": "HTTP-Клиент Сброс"},
    "HTTP-Client Set Header": {"ru": "HTTP-Клиент Установить Заголовок"},
@@ -1317,12 +1274,6 @@ _AL =
    "Wait Css" : {"ru": "Ждать css"},
    "Wait File Download" : {"ru": "Ждать Загрузки Файла"},
    "Sleep" : {"ru": "Спать"},
-   "Configure" : {"ru": "Настроить"},
-   "Messages Length" : {"ru": "Количество писем"},
-   "Search First" : {"ru": "Найти письмо"},
-   "Search All" : {"ru": "Найти все письма"},
-   "Get Message" : {"ru": "Получить сообщение"},
-   "Remove Message" : {"ru": "Удалить сообщение"},
 
    "Get" : {"ru": "Get запрос"},
    "Post" : {"ru": "Post запрос"},

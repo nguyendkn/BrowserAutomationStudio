@@ -444,7 +444,13 @@ namespace BrowserAutomationStudioFramework
 
     QString NodeConnector::GetExecutableLocationForMain()
     {
-        return QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("lib") + QDir::separator() + QString("main.js"));
+        if(LanguageVersion == "18.10.0")
+        {
+            return QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("app") + QDir::separator() + QString("lib") + QDir::separator() + QString("main.js"));
+        }else
+        {
+            return QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("lib") + QDir::separator() + QString("main.js"));
+        }
     }
 
     bool NodeConnector::IsX64()
@@ -660,7 +666,14 @@ namespace BrowserAutomationStudioFramework
 
         if(!Suffix.isEmpty())
         {
-            QString NodePath = QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr"));
+            QString NodePath;
+            if(LanguageVersion == "18.10.0")
+            {
+                NodePath = QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("app"));
+            }else
+            {
+                NodePath = QDir::cleanPath(QString("e") + QDir::separator() + GetLanguageSettingsHash() + QString(".") + Suffix + QDir::separator() + QString("distr"));
+            }
             if(!DeleteFunctionsAndFiles(NodePath))
             {
                 LOG(QString("Failed to delete function files").arg(NodePath));
@@ -808,11 +821,21 @@ namespace BrowserAutomationStudioFramework
         QJsonDocument document;
         document.setObject(object);
 
-        QFile FileJson(QString("e/cache.%1/distr/package.json").arg(Suffix));
+        QString FileJsonPath;
+
+        if(LanguageVersion == "18.10.0")
+        {
+            FileJsonPath = QString("e/cache.%1/distr/app/package.json").arg(Suffix);
+        }else
+        {
+            FileJsonPath = QString("e/cache.%1/distr/package.json").arg(Suffix);
+        }
+
+        QFile FileJson(FileJsonPath);
         if(!FileJson.open(QIODevice::WriteOnly))
         {
-            LOG(QString("Failed to write to json file %1. Maybe damaged archive?").arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
-            FinalizeInstall(true,QString(tr("Failed to write to json file %1")).arg(A(QString("e/cache.%1/distr/package.json").arg(Suffix))));
+            LOG(QString("Failed to write to json file %1. Maybe damaged archive?").arg(A(FileJsonPath)));
+            FinalizeInstall(true,QString(tr("Failed to write to json file %1")).arg(A(FileJsonPath)));
             return;
         }
         LOG(QString("package.json file content ") + document.toJson());
@@ -830,12 +853,27 @@ namespace BrowserAutomationStudioFramework
         connect(NpmInstallProcess.data(),SIGNAL(finished(int)),this,SLOT(NpmInstalled(int)));
         connect(NpmInstallProcess.data(),SIGNAL(errorOccurred(QProcess::ProcessError)),this,SLOT(FailedToStartNpm(QProcess::ProcessError)));
         QStringList params;
-        params.append("node_modules\\npm\\bin\\npm-cli.js");
+        if(LanguageVersion == "18.10.0")
+        {
+            params.append("..\\node_modules\\npm\\bin\\npm-cli.js");
+        }else
+        {
+            params.append("node_modules\\npm\\bin\\npm-cli.js");
+        }
         params.append("install");
         params.append("--loglevel");
         params.append("verbose");
 
-        QString WorkingDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"))).absoluteFilePath();
+        QString WorkingDir;
+
+        if(LanguageVersion == "18.10.0")
+        {
+            WorkingDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("app"))).absoluteFilePath();
+        }else
+        {
+            WorkingDir = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"))).absoluteFilePath();
+        }
+
         QString NpmPath = QFileInfo(QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("node.exe"))).absoluteFilePath();
         LOG(QString("npm install with %1").arg(NpmPath));
         LOGINTERFACE(tr("Installing npm modules ... "));
@@ -890,7 +928,15 @@ namespace BrowserAutomationStudioFramework
             return;
         }
 
-        QString NodePath = QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"));
+        QString NodePath;
+        if(LanguageVersion == "18.10.0")
+        {
+            NodePath = QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr") + QDir::separator() + QString("app"));
+        }else
+        {
+            NodePath = QDir::cleanPath(QString("e") + QDir::separator() + QString("cache.") + Suffix + QDir::separator() + QString("distr"));
+        }
+
         if(!DeleteFunctionsAndFiles(NodePath))
         {
             LOG(QString("Failed to delete function files"));

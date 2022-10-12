@@ -3,10 +3,12 @@
 
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
+#include "proxysaver.h"
 #include "RequestRestriction.h"
 #include <memory>
 #include <map>
 #include "CachedItem.h"
+#include "framefinder.h"
 
 class IDevToolsAction;
 
@@ -21,8 +23,6 @@ struct TabData
         WaitingForRuntimeEnable,
         WaitingForDragAndDropInit,
         WaitingForNetworkEnable,
-        WaitingForSettingStartupScript,
-        WaitingForPageReloadForFirstTab,
         WaitingForExecutingSavedActions,
         Connected
     }ConnectionState = NotStarted;
@@ -37,6 +37,19 @@ struct TabData
 
     bool IsWaitingForFirstUrl = false;
     std::string FirstUrl;
+
+    enum
+    {
+        TabType,
+        FrameType
+    }TargetType = TabType;
+};
+
+struct ExecutionContextData
+{
+    std::string TabId;
+    std::string FrameId;
+    std::string ContextId;
 };
 
 struct StartupScriptItem
@@ -55,6 +68,7 @@ struct ExtensionInfo
 
 struct DevToolsGlobalState
 {
+    std::shared_ptr<ProxySaver> SaveProxy;
     std::shared_ptr<ISimpleHttpClient> HttpClient;
     std::shared_ptr<IWebSocketClient> WebSocketClient;
     std::string TabId;
@@ -65,8 +79,11 @@ struct DevToolsGlobalState
     std::string WindowOpenNewTabUrl;
     int Port = -1;
     std::vector<StartupScriptItem> StartupScriptIds;
-    std::map<std::string, int> FrameIdToContextId;
+    std::vector<std::shared_ptr<ExecutionContextData> > ExecutionContexts;
     std::vector<std::shared_ptr<TabData> > Tabs;
+    std::vector<std::shared_ptr<TabData> > Frames;
+
+    FrameFinder FindFrames;
 
     int ScrollX = -1;
     int ScrollY = -1;

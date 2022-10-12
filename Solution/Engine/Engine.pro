@@ -30,8 +30,10 @@ SOURCES += engine.cpp \
     avoidendlessloop.cpp \
     browserextensionmanager.cpp \
     checkscript.cpp \
+    devicescalemanager.cpp \
     ibrowserextensionmanager.cpp \
     icheckscript.cpp \
+    idevicescalemanager.cpp \
     imodulecreator.cpp \
     modulecreatewizard.cpp \
     modulecreator.cpp \
@@ -388,9 +390,11 @@ HEADERS += engine.h\
     avoidendlessloop.h \
     browserextensionmanager.h \
     checkscript.h \
+    devicescalemanager.h \
         engine_global.h \
     ibrowserextensionmanager.h \
     icheckscript.h \
+    idevicescalemanager.h \
     imodulecreator.h \
     modulecreatewizard.h \
     modulecreator.h \
@@ -860,7 +864,6 @@ OTHER_FILES += \
     scripts/engine/worker/pop3client.js \
     scripts/engine/common/html_parser.js \
     scripts/engine/common/rss_parser.js \
-    scripts/engine/worker/imapclient.js \
     text/apilist.txt \
     scripts/engine/common/memory.js \
     scripts/engine/multiworker/properties.js \
@@ -889,7 +892,8 @@ LIBS += -lqscintilla2
 Release:LIBS += -llibmimetic
 Debug:LIBS += -llibmimetic_d
 
-win32:LIBS += -lws2_32 -liconv -llibcurl -lzlib -lShell32 -luser32 -lAdvapi32
+win32:LIBS += -lws2_32 -liconv -llibcurl -lzlib -lShell32 -luser32 -lAdvapi32 -lgdi32
+
 
 QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
 

@@ -39,7 +39,7 @@ struct InspectResult
   bool isimage = false;
   std::string imagedata;
   FrameInspectResult FrameData;
-  void Paint(HDC hdc, HFONT InspectFont, bool ShowText, bool SimplifiedText, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop);
+  void Paint(HDC hdc, int TextSize, HFONT InspectFont, bool ShowText, bool SimplifiedText, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop);
   std::string Serialize();
 
 };

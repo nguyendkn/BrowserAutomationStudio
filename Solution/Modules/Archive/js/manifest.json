@@ -99,35 +99,35 @@
             "DataName": "UtilArchive",
             "DataType": 1,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilArchive\");\r\nlet {folderPath, destinationPath, archiveType, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    folderPath = util.normalizePath(folderPath);\r\n    let folderInfo = util.getPathInfo(folderPath, true, true);\r\n    archiveType = util.getArchiveType(['zip','7z'], archiveType, destinationPath);\r\n    destinationPath = destinationPath ? destinationPath : `${folderPath}.${archiveType}`;\r\n    destinationPath = util.normalizePath(destinationPath);\r\n\r\n    util.ensureDirectoryExistence(destinationPath);\r\n\r\n    await (new Promise((resolve, reject) => {\r\n        if(archiveType === 'zip'){\r\n            const archiver = require('archiver');\r\n            const {createWriteStream} = require('fs');\r\n\r\n            let archive = archiver('zip').directory(folderPath, folderInfo.base);\r\n            archive.on('error', reject);\r\n            let writeStream = archive.pipe(createWriteStream(destinationPath));\r\n            writeStream.on('error', reject);\r\n            writeStream.on('close', resolve);\r\n            archive.finalize();\r\n        };\r\n\r\n        if(archiveType === '7z'){\r\n            const seven = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let deleteOld = seven.delete(destinationPath, '*', {$bin: sevenBin});\r\n            deleteOld.on(\"error\", reject);\r\n            let addStream = seven.add(destinationPath, folderPath, {$bin: sevenBin, overwrite: 'a', charset: 'UTF-8'});\r\n            addStream.on(\"error\", reject);\r\n            addStream.on('end', resolve);\r\n        };\r\n    }));\r\n}catch(err){\r\n    let message = err.message || err;\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось заархивировать папку\" : \"Failed to archive folder\"}, ${message}`;\r\n};",
             "DataName": "Archive_ArchiveFolder",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilArchive\");\r\nlet {archivePath, archiveType, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    archivePath = util.normalizePath(archivePath);\r\n    let archiveInfo = util.getPathInfo(archivePath, false, true);\r\n    archiveType = util.getArchiveType(['zip','rar','7z'], archiveType, archivePath);\r\n    let filesList = [];\r\n\r\n    if(['zip','7z'].includes(archiveType)){\r\n        await (new Promise((resolve, reject) => {\r\n            const {list} = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let listStream = list(archivePath, {$bin: sevenBin, charset: 'UTF-8'});\r\n            listStream.on(\"error\", reject);\r\n            listStream.on('data', function(data){\r\n                filesList.push(data.file);\r\n            });\r\n            listStream.on('end', resolve);\r\n        }));\r\n    };\r\n\r\n    if(archiveType === 'rar'){\r\n        const {list} = require('unrar-promise');\r\n\r\n        filesList = (await list(archivePath)).map(function(file){\r\n            let split = file.split(\"\\\\\");\r\n            return (split.slice(-1)[0].length === 0 ? split.slice(0, -1) : split).join(\"/\");\r\n        });\r\n    };\r\n\r\n    [[ARCHIVE_NODE_PARAMETERS]] = filesList.sort();\r\n}catch(err){\r\n    let message = err.message || err;\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось получить список файлов из архива\" : \"Failed to get the list of files from the archive\"}, ${message}`;\r\n};",
             "DataName": "Archive_GetFileList",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilArchive\");\r\nlet {filesList, destinationPath, archiveType, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    destinationPath = util.normalizePath(destinationPath);\r\n    archiveType = util.getArchiveType(['zip','7z'], archiveType, destinationPath);\r\n    filesList = filesList.map(function(path){return util.normalizePath(path)});\r\n\r\n    util.ensureDirectoryExistence(destinationPath);\r\n\r\n    await (new Promise((resolve, reject) => {\r\n        if(archiveType === 'zip'){\r\n            const archiver = require('archiver');\r\n            const {statSync, createWriteStream} = require('fs');\r\n            \r\n            let archive = archiver('zip');\r\n            archive.on('error', reject);\r\n            filesList.forEach(function(path){\r\n                let pathInfo = util.getPathInfo(path, false, true);\r\n                if(statSync(path).isDirectory()){\r\n                    archive.directory(path, pathInfo.base);\r\n                }else{\r\n                    archive.file(path, {name: pathInfo.base});\r\n                };\r\n            });\r\n            let writeStream = archive.pipe(createWriteStream(destinationPath));\r\n            writeStream.on('error', reject);\r\n            writeStream.on('close', resolve);\r\n            archive.finalize();\r\n        };\r\n\r\n        if(archiveType === '7z'){\r\n            const seven = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let deleteOld = seven.delete(destinationPath, '*', {$bin: sevenBin});\r\n            deleteOld.on(\"error\", reject);\r\n            let addStream = seven.add(destinationPath, filesList, {$bin: sevenBin, overwrite: 'a', charset: 'UTF-8'});\r\n            addStream.on(\"error\", reject);\r\n            addStream.on('end', resolve);\r\n        };\r\n    }));\r\n}catch(err){\r\n    let message = err.message || err;\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось заархивировать файлы\" : \"Failed to archive files\"}, ${message}`;\r\n};",
             "DataName": "Archive_ArchiveFiles",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilArchive\");\r\nlet {archivePath, destinationPath, archiveType, filesList, password, lang} = [[ARCHIVE_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    archivePath = util.normalizePath(archivePath);\r\n    let archiveInfo = util.getPathInfo(archivePath, false, true);\r\n    archiveType = util.getArchiveType(['zip','rar','7z'], archiveType, archivePath);\r\n    destinationPath = destinationPath ? destinationPath : archiveInfo.dir;\r\n    destinationPath = util.normalizePath(destinationPath);\r\n    let unpackAll = filesList.length < 1;\r\n    filesList = unpackAll ? [] : filesList.map(function(file){return util.normalizePath(file, archiveType === 'rar', false)});\r\n    password = password ? password : undefined;\r\n\r\n    util.ensureDirectoryExistence(destinationPath);\r\n\r\n    if(['zip','7z'].includes(archiveType)){\r\n        await (new Promise((resolve, reject) => {\r\n            const {extractFull} = require('node-7z');\r\n            const sevenBin = require('7zip-bin').path7za;\r\n\r\n            let extractStream = extractFull(archivePath, destinationPath, {$bin: sevenBin, charset: 'UTF-8', overwrite: 'a', password: password, $cherryPick: filesList});\r\n            extractStream.on(\"error\", reject);\r\n            extractStream.on('end', resolve);\r\n        }));\r\n    };\r\n\r\n    if(archiveType === 'rar'){\r\n        const {unrar} = require('unrar-promise');\r\n\r\n        await unrar(archivePath, destinationPath, {filter({path, type}){return unpackAll || filesList.includes(path)}, overwrite: true, password: password});\r\n    };\r\n}catch(err){\r\n    let message = err.message || err;\r\n    if(message.includes('Wrong password') || message.includes('unrar: parse failed')){\r\n        message = `${util.lang==\"ru\" ? \"не удалось расшифровать файлы\" : \"failed to decrypt files\"}, `;\r\n        if(password){\r\n            message += util.lang==\"ru\" ? \"указан неверный пароль\" : \"specified incorrect password\";\r\n        }else{\r\n            message += util.lang==\"ru\" ? \"требуется пароль\" : \"password required\";\r\n        };\r\n    };\r\n    throw `[Archive] : ${util.lang==\"ru\" ? \"Не удалось распаковать архив\" : \"Failed to unpack archive\"}, ${message}`;\r\n};",
             "DataName": "Archive_Unpack",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         }
     ],
     "engine": [
@@ -142,7 +142,7 @@
     "languages": [
         {
             "Name": "Node",
-            "Version": "12.18.3"
+            "Version": "18.10.0"
         }
     ],
     "localize": {
@@ -207,25 +207,25 @@
     "modules": [
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "archiver",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "unrar-promise",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "node-7z",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "7zip-bin",
             "ModuleVersion": "*"
         }

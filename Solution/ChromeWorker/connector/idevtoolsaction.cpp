@@ -183,6 +183,11 @@ bool IDevToolsAction::IsNeedToRunForAllActiveTabs()
     return false;
 }
 
+bool IDevToolsAction::IsNeedToRunForAllActiveFrames()
+{
+    return false;
+}
+
 void IDevToolsAction::OnTabCreation()
 {
     Run();

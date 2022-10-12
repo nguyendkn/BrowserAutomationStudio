@@ -43,7 +43,6 @@
         <file>scripts/engine/worker/debug.js</file>
         <file>scripts/engine/common/html_parser.js</file>
         <file>scripts/engine/common/rss_parser.js</file>
-        <file>scripts/engine/worker/imapclient.js</file>
         <file>images/invalid.png</file>
         <file>images/advanced.png</file>
         <file>text/apilist.txt</file>

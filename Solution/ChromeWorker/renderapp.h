@@ -16,6 +16,7 @@ class RenderApp: public CefApp, public CefRenderProcessHandler
     int Zoom;
     std::string ApplicationEngineVersion;
     std::string ScriptEngineVersion;
+    std::string InterfaceState;
     std::string Lang;
     std::string Jscode;
     std::string UniqueProcessId;

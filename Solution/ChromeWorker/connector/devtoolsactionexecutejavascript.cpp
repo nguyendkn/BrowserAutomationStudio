@@ -10,15 +10,12 @@ void DevToolsActionExecuteJavascript::Run()
     Variables.clear();
     InitialVariables.clear();
     LastMessage.clear();
-    RemoteObjectId.clear();
     CurrentLoaderId.clear();
     CurrentPrefix.clear();
-    CurrentNodeId = -1;
-    CurrentContextId = -1;
-    LocalObjectId.clear();
-    CurrentFrame.clear();
-    FrameCandidates.clear();
-    CurrentFrameCandidate.clear();
+    CurrentContextId.clear();
+    CurrentFrameSessionId = "CurrentTab";
+    NextContextId.clear();
+    NextFrameSessionId = "CurrentTab";
     ScrollDataWasObtained = false;
     IsDoingScrollRequest = false;
     IsDoingScroll = false;
@@ -77,6 +74,8 @@ void DevToolsActionExecuteJavascript::Run()
 
     Result->SetResult(InitialVariables);
 
+    SubscribbedEvents.push_back("Target.detachedFromTarget");
+
     LastMessage.clear();
     Next();
 
@@ -104,7 +103,35 @@ bool DevToolsActionExecuteJavascript::Evaluate(std::map<std::string, Variant>& P
         return true;
     }
 
-    SendWebSocket("Runtime.evaluate", Params);
+    CurrentExecutionTabId = TabId;
+
+    //Using frame in separate process, check if it still exsist
+    if(CurrentFrameSessionId != "CurrentTab")
+    {
+        bool FrameExists = false;
+        for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
+        {
+            if(Frame->TabId == CurrentFrameSessionId)
+            {
+                FrameExists = true;
+                break;
+            }
+        }
+
+        if(!FrameExists)
+        {
+            //In case if frame is destroyed, Runtime.evaluate request will never return.
+            //Therefore timeout will occur, in order to avoid that, error will be returned immediately.
+            Result->Fail("Frame is destroyed", "FrameDestroyed");
+            State = Finished;
+            return true;
+        }
+
+        CurrentExecutionTabId = CurrentFrameSessionId;
+
+    }
+
+    SendWebSocket("Runtime.evaluate", Params, CurrentFrameSessionId);
     return false;
 }
 
@@ -164,111 +191,49 @@ std::string DevToolsActionExecuteJavascript::Javascript(const std::string& Scrip
     return Res;
 }
 
-void DevToolsActionExecuteJavascript::ParseFrameCandidates(const std::string& FrameMessage, const std::string ParentFrameId)
-{
-    std::string CurrentParentFrameId = ParentFrameId;
-    if(ParentFrameId.empty())
-    {
-        CurrentParentFrameId = GetStringFromJson(LastMessage, "frameTree.frame.id");
-    }else
-    {
-        CurrentParentFrameId = ParentFrameId;
-    }
-    FrameCandidates.clear();
-    picojson::value MessageValue;
-    picojson::parse(MessageValue, FrameMessage);
-    picojson::object Obj = MessageValue.get<picojson::object>();
-    ParseFrameCandidatesIteration(Obj, CurrentParentFrameId);
-}
-
-void DevToolsActionExecuteJavascript::ParseFrameCandidatesIteration(picojson::object& Obj, const std::string ParentFrameId)
-{
-    for (picojson::object::iterator it = Obj.begin(); it != Obj.end(); it++)
-    {
-        if(it->first == "frame" && it->second.is<picojson::object>())
-        {
-            picojson::object FrameObject = it->second.get<picojson::object>();
-            if(FrameObject["parentId"].is<std::string>() && FrameObject["id"].is<std::string>() && ParentFrameId == FrameObject["parentId"].get<std::string>())
-            {
-                FrameCandidates.push_back(FrameObject["id"].get<std::string>());
-            }
-        }else if (it->first == "childFrames" && it->second.is<picojson::array>())
-        {
-            picojson::array FrameList = it->second.get<picojson::array>();
-            for(picojson::value& Value: FrameList)
-            {
-                if (Value.is<picojson::object>())
-                {
-                    ParseFrameCandidatesIteration(Value.get<picojson::object>(), ParentFrameId);
-                }
-            }
-        }else if (it->second.is<picojson::object>())
-        {
-            ParseFrameCandidatesIteration(it->second.get<picojson::object>(), ParentFrameId);
-        }
-
-    }
-}
 
 void DevToolsActionExecuteJavascript::Next()
 {
-    if(!LastMessage.empty())
+    if(RequestType == JavascriptExecution)
     {
-        if (RequestType == FrameSearchGetFrameList)
+        if(GetStringFromJson(LastMessage, "result.subtype") == "error")
         {
-            ParseFrameCandidates(LastMessage, CurrentFrame);
-            RequestType = FrameSearchGetFrameId;
-        }
-        if (RequestType == FrameSearchGetFrameIdResult)
-        {
-            int CandidateNodeId = GetFloatFromJson(LastMessage, "backendNodeId");
-            if(CurrentNodeId == CandidateNodeId && GlobalState->FrameIdToContextId.count(CurrentFrameCandidate) > 0)
-            {
-                CurrentFrame = CurrentFrameCandidate;
-                CurrentContextId = GlobalState->FrameIdToContextId[CurrentFrameCandidate];
-                RequestType = NodeSearch;
-                Next();
-                return;
-            }
-            RequestType = FrameSearchGetFrameId;
-        }
-
-        if(RequestType == JavascriptExecution)
-        {
-            if(GetStringFromJson(LastMessage, "result.subtype") == "error")
-            {
-                std::string ErrorString = GetStringFromJson(LastMessage, "result.description");
-                picojson::object Object;
-                Object["is_success"] = picojson::value(false);
-                Object["error"] = picojson::value(ErrorString);
-                Object["variables"] = picojson::value(InitialVariables);
-                Result->SetRawData(picojson::value(Object).serialize());
-                Result->Fail(ErrorString, "JsError");
-                State = Finished;
-                return;
-            }else if(GetStringFromJson(LastMessage,"result.value","BAS_NOT_FOUND") != "BAS_NOT_FOUND")
-            {
-                LastMessage = GetStringFromJson(LastMessage, "result.value");
-                Result->SetRawData(LastMessage);
-                if(GetStringFromJson(LastMessage, "variables", "BAS_NOT_FOUND") != "BAS_NOT_FOUND")
-                {
-                    if(GetBooleanFromJson(LastMessage, "is_success"))
-                    {
-                        Result->Success(GetStringFromJson(LastMessage, "variables"));
-                    } else
-                    {
-                        Result->Fail(GetStringFromJson(LastMessage, "error"), "JsError", GetStringFromJson(LastMessage, "variables"));
-                    }
-                    State = Finished;
-                    return;
-                }
-            }
-            
-            Result->Fail("Unknown response", "UnknownResponse");
+            std::string ErrorString = GetStringFromJson(LastMessage, "result.description");
+            picojson::object Object;
+            Object["is_success"] = picojson::value(false);
+            Object["error"] = picojson::value(ErrorString);
+            Object["variables"] = picojson::value(InitialVariables);
+            Result->SetRawData(picojson::value(Object).serialize());
+            Result->Fail(ErrorString, "JsError");
             State = Finished;
             return;
+        }else if(GetStringFromJson(LastMessage,"result.value","BAS_NOT_FOUND") != "BAS_NOT_FOUND")
+        {
+            LastMessage = GetStringFromJson(LastMessage, "result.value");
+            Result->SetRawData(LastMessage);
+            if(GetStringFromJson(LastMessage, "variables", "BAS_NOT_FOUND") != "BAS_NOT_FOUND")
+            {
+                if(GetBooleanFromJson(LastMessage, "is_success"))
+                {
+                    Result->Success(GetStringFromJson(LastMessage, "variables"));
+                } else
+                {
+                    Result->Fail(GetStringFromJson(LastMessage, "error"), "JsError", GetStringFromJson(LastMessage, "variables"));
+                }
+                State = Finished;
+                return;
+            }
+        }
 
-        }else if(RequestType == FrameSearchEvaluate)
+        Result->Fail("Unknown response", "UnknownResponse");
+        State = Finished;
+        return;
+
+    }
+
+    if(!LastMessage.empty())
+    {
+        if(RequestType == FrameSearchEvaluate)
         {
             CurrentLoaderId = GetStringFromJson(LastMessage, "result.objectId", "BAS_NOT_FOUND");
             if(CurrentLoaderId == "BAS_NOT_FOUND")
@@ -282,16 +247,60 @@ void DevToolsActionExecuteJavascript::Next()
                 std::map<std::string, Variant> CurrentParams;
                 CurrentParams["objectId"] = Variant(CurrentLoaderId);
                 RequestType = FrameSearchGetNodeId;
-                SendWebSocket("DOM.describeNode", CurrentParams);
+                SendWebSocket("DOM.describeNode", CurrentParams, CurrentFrameSessionId);
             }
             return;
         } else if(RequestType == FrameSearchGetNodeId)
         {
-            CurrentNodeId = GetFloatFromJson(LastMessage, "node.backendNodeId");
+            //Get information about frame
+
+            std::string CurrentFrame = GetStringFromJson(LastMessage, "node.frameId");
+            /*WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! SEARCHING FOR frame id = ") + CurrentFrame);
+
+            for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
+            {
+                WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! INFO Frames, frame id = ") + Frame->FrameId + std::string(", session id = ") + Frame->TabId);
+            }
+
+            for(std::shared_ptr<ExecutionContextData> ExecutionContext: GlobalState->ExecutionContexts)
+            {
+                WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! INFO ExecutionContexts, frame id = ") + ExecutionContext->FrameId + std::string(", session id = ") + ExecutionContext->TabId + std::string(", context id = ") + ExecutionContext->ContextId);
+            }*/
+
+            NextFrameSessionId = CurrentFrameSessionId;
+            for(std::shared_ptr<TabData> Frame: GlobalState->Frames)
+            {
+                if(Frame->FrameId == CurrentFrame)
+                {
+                    NextFrameSessionId = Frame->TabId;
+                }
+            }
+
+            std::string ResolvedTabId = NextFrameSessionId;
+
+            if(ResolvedTabId == "CurrentTab")
+            {
+                ResolvedTabId = GetDefaultTabId();
+            }
+
+            //WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! RESULT session id = ") + ResolvedTabId);
+
+            NextContextId.clear();
+
+            for(std::shared_ptr<ExecutionContextData> ExecutionContext: GlobalState->ExecutionContexts)
+            {
+                if(ExecutionContext->FrameId == CurrentFrame && ExecutionContext->TabId == ResolvedTabId)
+                {
+                    NextContextId = ExecutionContext->ContextId;
+                }
+            }
+
+            //WORKER_LOG(std::string("!!!!!!!!!!!!!!!!! RESULT context id = ") + NextContextId);
+
             RequestType = FrameSearchReleaseObject;
             std::map<std::string, Variant> CurrentParams;
             CurrentParams["objectId"] = Variant(CurrentLoaderId);
-            SendWebSocket("Runtime.releaseObject", CurrentParams);
+            SendWebSocket("Runtime.releaseObject", CurrentParams, CurrentFrameSessionId);
             return;
         } else if(RequestType == FrameSearchReleaseObject)
         {
@@ -301,16 +310,17 @@ void DevToolsActionExecuteJavascript::Next()
                 std::map<std::string, Variant> CurrentParams;
                 std::string Script = std::string("{JSON.stringify(_BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(")));}");
                 CurrentParams["expression"] = Variant(Javascript(Script));
-                if(CurrentContextId >= 0)
-                    CurrentParams["contextId"] = Variant(CurrentContextId);
+                if(!CurrentContextId.empty())
+                    CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
 
                 Evaluate(CurrentParams);
                 return;
             } else
             {
-                RequestType = FrameSearchGetFrameList;
-                std::map<std::string, Variant> CurrentParams;
-                SendWebSocket("Page.getFrameTree", CurrentParams);
+                RequestType = NodeSearch;
+                CurrentContextId = NextContextId;
+                CurrentFrameSessionId = NextFrameSessionId;
+                Next();
                 return;
             }
         } else if(RequestType == FrameSearchGetPosition)
@@ -325,27 +335,11 @@ void DevToolsActionExecuteJavascript::Next()
             {
                 PositionX += GetFloatFromJson(ResponseMessage, "left");
                 PositionY += GetFloatFromJson(ResponseMessage, "top");
-                RequestType = FrameSearchGetFrameList;
-                std::map<std::string, Variant> CurrentParams;
-                SendWebSocket("Page.getFrameTree", CurrentParams);
+                RequestType = NodeSearch;
+                CurrentContextId = NextContextId;
+                CurrentFrameSessionId = NextFrameSessionId;
+                Next();
             }
-            return;
-        } else if(RequestType == FrameSearchGetFrameId)
-        {
-            if(FrameCandidates.empty())
-            {
-                Result->Fail("Failed to find frame", "NoFrame");
-                State = Finished;
-                
-                return;
-            }
-            CurrentFrameCandidate = FrameCandidates.at(0);
-            FrameCandidates.erase(FrameCandidates.begin());
-            
-            RequestType = FrameSearchGetFrameIdResult;
-            std::map<std::string, Variant> CurrentParams;
-            CurrentParams["frameId"] = Variant(CurrentFrameCandidate);
-            SendWebSocket("DOM.getFrameOwner", CurrentParams);
             return;
         }
     }
@@ -366,8 +360,8 @@ void DevToolsActionExecuteJavascript::Next()
         std::map<std::string, Variant> CurrentParams;
         std::string Script = std::string("{_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(");}");
         CurrentParams["expression"] = Variant(Javascript(Script));
-        if(CurrentContextId >= 0)
-            CurrentParams["contextId"] = Variant(CurrentContextId);
+        if(!CurrentContextId.empty())
+            CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
         
         Evaluate(CurrentParams);
         return;
@@ -380,8 +374,8 @@ void DevToolsActionExecuteJavascript::Next()
         std::map<std::string, Variant> CurrentParams;
         std::string Script = std::string("(function(){var self = null; try{ self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");}catch(e){};if(self)self.scrollIntoViewIfNeeded(true);})();");
         CurrentParams["expression"] = Variant(Javascript(Script));
-        if(CurrentContextId >= 0)
-            CurrentParams["contextId"] = Variant(CurrentContextId);
+        if(!CurrentContextId.empty())
+            CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
 
         Evaluate(CurrentParams);
         return;
@@ -413,8 +407,8 @@ void DevToolsActionExecuteJavascript::Next()
 
     std::map<std::string, Variant> CurrentParams;
 
-    if (CurrentContextId >= 0)
-        CurrentParams["contextId"] = Variant(CurrentContextId);
+    if(!CurrentContextId.empty())
+        CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
     RequestType = JavascriptExecution;
     std::string Script;
 
@@ -484,7 +478,17 @@ void DevToolsActionExecuteJavascript::Next()
 
 void DevToolsActionExecuteJavascript::OnWebSocketMessage(const std::string& Message, const std::string& Error)
 {
+    CurrentExecutionTabId.clear();
     LastMessage = Message;
     Next();
 }
 
+void DevToolsActionExecuteJavascript::OnWebSocketEvent(const std::string& Method, const std::string& Message)
+{
+    if(Method == "Target.detachedFromTarget" && !CurrentExecutionTabId.empty() && CurrentExecutionTabId == GetStringFromJson(Message, "sessionId"))
+    {
+        //In case if tab is destroyed after Runtime.evaluate is sent and no answer has been returned yet, return error.
+        Result->Fail("Tab is destroyed", "TabDestroyed");
+        State = Finished;
+    }
+}

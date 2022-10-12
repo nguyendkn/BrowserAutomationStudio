@@ -79,7 +79,7 @@ void BrowserContextMenu::Show(HWND hwnd, int X, int Y, bool IsLink, bool IsMedia
     AppendMenu(hMenu, Enabled, IdGetPageSource, Translate::Tr(L"Get page source").c_str());
     AppendMenu(hMenu, Enabled, IdSavePageAs, Translate::Tr(L"Save page as").c_str());
     AppendMenu(hMenu, Enabled, IdOpenDeveloperTools, Translate::Tr(L"Open developer tools").c_str());
-    //AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
+    AppendMenu(hMenu, Enabled, IdInspectElement, Translate::Tr(L"Inspect element").c_str());
 
 
     if(IsLink)
@@ -140,7 +140,7 @@ void SourceSaver::Visit(const CefString& string)
     ShellExecute(0, 0, L"source.txt", 0, 0 , SW_SHOW );
 }
 
-void BrowserContextMenu::Input(DevToolsConnector* Connector, const std::string Text)
+void BrowserContextMenu::Input(IDevToolsConnector* Connector, const std::string Text)
 {
     std::string TextCurrent = Text;
     KeyState State;
@@ -172,7 +172,7 @@ void BrowserContextMenu::SetClipboard(const std::string& Text)
     }
 }
 
-void BrowserContextMenu::OnFind(DevToolsConnector* Connector, LPFINDREPLACE Data)
+void BrowserContextMenu::OnFind(IDevToolsConnector* Connector, LPFINDREPLACE Data)
 {
     if(Data->Flags & FR_DIALOGTERM)
     {
@@ -227,7 +227,7 @@ void BrowserContextMenu::ShowFindDialog(HWND hwnd)
     find_hwnd_ = FindText(&find_state_);
 }
 
-void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Connector, const std::string& UniqueProcessId)
+void BrowserContextMenu::Process(HWND hwnd, int Command, IDevToolsConnector* Connector, const std::string& UniqueProcessId)
 {
     
     if(Command == IdBackward)
@@ -252,6 +252,9 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, DevToolsConnector* Conn
     }else if(Command == IdOpenDeveloperTools)
     {
         Connector->OpenDevTools();
+    }else if(Command == IdInspectElement)
+    {
+        Connector->InspectAt(LastClickX, LastClickY);
     }else if(Command == IdCopyLinkLocation)
     {
         SetClipboard(Url);

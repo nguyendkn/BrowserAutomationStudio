@@ -15,7 +15,7 @@
 #include "sharedmemoryipc.h"
 #include "browsersettingssaver.h"
 #include "browsercontextmenu.h"
-#include "devtoolsconnector.h"
+#include "idevtoolsconnector.h"
 #include "resultmanager.h"
 
 
@@ -67,8 +67,10 @@ public:
     std::atomic_int HeightAll;
     std::atomic_int ScrollX;
     std::atomic_int ScrollY;
-    std::atomic_int CursorX;
-    std::atomic_int CursorY;
+    int CursorX;
+    int CursorY;
+    int DirectControlOrAutomationCursorX;
+    int DirectControlOrAutomationCursorY;
     double DeviceScaleFactor = 1.0;
     std::atomic_bool IsRecord;
     std::atomic_bool IsRecordHttp;
@@ -83,6 +85,7 @@ public:
     std::string BrowserCode;
     ModulesDataList _UnusedModulesData;
     MultiSelectData _MultiSelectData;
+    std::atomic_bool IsProxySet;
 
     //Touch
     std::atomic_bool IsTouchScreen;
@@ -134,7 +137,7 @@ public:
     BrowserContextMenu _BrowserContextMenu;
 
 
-    DevToolsConnector *Connector = 0;
+    IDevToolsConnector *Connector = 0;
     ResultManager *Results = 0;
 
 };

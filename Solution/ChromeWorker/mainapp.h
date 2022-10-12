@@ -26,13 +26,14 @@
 #include "handlersmanager.h"
 #include "postmanager.h"
 #include "imagefinder.h"
-#include "cefrequest2action.h"
+#include "devtoolsrequest2action.h"
 #include "fingerprintdetector.h"
 #include "notificationmanager.h"
 #include "browserdirectcontrol.h"
 #include "ipcsimple.h"
 #include "donothingcallback.h"
 #include "emptyrequestcontexthandler.h"
+#include "popupemulation.h"
 
 
 
@@ -72,8 +73,9 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
     bool IsLastCommandNull;
     BrowserData *Data;
+    PopupEmulation *_PopupEmulation = 0;
     PostManager *_PostManager;
-    CefReqest2Action *_CefReqest2Action;
+    DevToolsReqest2Action *_DevToolsReqest2Action;
     settings* Settings;
     int ScrollX;
     int ScrollY;
@@ -186,8 +188,9 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     ImageFinder _ImageFinder;
     MainLayout *Layout;
 
-    std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData, ApplicationEngineVersion, ScriptEngineVersion;
-    bool IsInterfaceInitialSent;
+    std::string Code, Schema, Resources, AdditionalResources, Variables, GlobalVariables, Functions, Labels, EmbeddedData, ApplicationEngineVersion, ScriptEngineVersion, InterfaceState;
+    bool IsScenarioInterfaceInitialSent;
+    bool IsToolboxInterfaceInitialSent;
     bool ResourcesChanged;
     void UpdateScrolls(std::string& data);
     void HandleMainBrowserEvents();
@@ -203,6 +206,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
 
 public:
     MainApp();
+    void WriteBrowserData();
     BrowserDirectControl * DirectControl();
     void UpdateManualControl(bool NoFocus = false);
     void DirectControlAddAction(const std::string& Script);
@@ -217,8 +221,9 @@ public:
     void UpdateWindowPositionWithParent();
     void SetData(BrowserData *Data);
     void SetPostManager(PostManager *_PostManager);
-    void SetCefReqest2Action(CefReqest2Action *_CefReqest2Action);
-    CefReqest2Action * GetCefReqest2Action();
+    void SetPopupEmulation(PopupEmulation *_PopupEmulation);
+    void SetDevToolsReqest2Action(DevToolsReqest2Action *_DevToolsReqest2Action);
+    DevToolsReqest2Action * GetDevToolsReqest2Action();
     void SetSettings(settings *Settings);
     void SetLayout(MainLayout *Layout);
     BrowserData * GetData();
@@ -278,6 +283,7 @@ public:
     void RecaptchaV3ListCallback(const std::string& value);
     void ClickExtensionButton(const std::string& id);
     void SetOpenFileNameCallback(const std::string& value);
+    void SetComboboxIndexCallback(int Index);
     void DragFileCallback(const std::string& value);
     void SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id);
     void RunTaskCallback(const std::string& function_name,const std::string& params,const std::string& result_id);
@@ -328,10 +334,12 @@ public:
     void ElementCommandCallback(const ElementCommand &Command);
     void ClearElementCommand();
 
-    void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version);
+    void SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & interface_state, const std::string & script_engine_version, const std::string & application_engine_version);
     void SetResourceCallback(const std::string & resources);
     void SetInitialStateCallback(const std::string & lang);
+    void RequestVariablesResultCallback(const std::string & data);
     void DebugVariablesResultCallback(const std::string & data);
+    void DebugCallstackResultCallback(const std::string & data);
 
     void MouseClickCallback(int x, int y);
     void MouseClickUpCallback(int x, int y);
@@ -368,6 +376,8 @@ public:
     void UploadStart();
     void ComboboxOpened();
     void StartRequest(CefRefPtr<CefRequest> Request);
+    void OnRequestDataMain(std::string RequestData);
+    void OnRequestDataAdditional(std::string RequestData);
     void CursorChanged(int Type);
     void ProcessMessage(CefRefPtr<CefBrowser> browser, CefProcessId source_process, CefRefPtr<CefProcessMessage> message, bool* is_processed);
     void NewMainBrowserContextCreated(int BrowserId, bool IsMain);
@@ -441,6 +451,7 @@ public:
     void OnScroll();
     void OnRequestStart(std::string RequestId);
     void OnRequestStop(std::string RequestId);
+    void OnRecordHttpData(std::string Script);
     void OnLoadStart();
     void OnLoadStop();
     void OnAddressChanged(std::string Url);

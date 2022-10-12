@@ -24,7 +24,11 @@
 #include "devtoolsactionsavecookies.h"
 #include "devtoolsactionrestorecookies.h"
 #include "DevToolsActionSetRequestsRestrictions.h"
+#include "devtoolsactionstartdragfile.h"
+#include "devtoolsactionsleep.h"
+#include "devtoolsactiontouch.h"
 #include "devtoolsactionresetdevicescalefactor.h"
+#include "devtoolsactionempty.h"
 #include <random>
 
 int DevToolsActionFactory::Rand()
@@ -120,7 +124,20 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
     }else if(Name == "ResetDeviceScaleFactor")
     {
         Result = new DevToolsActionResetDeviceScaleFactor();
+    }else if(Name == "StartDragFile")
+    {
+        Result = new DevToolsActionStartDragFile();
+    }else if(Name == "Sleep")
+    {
+        Result = new DevToolsActionSleep();
+    }else if(Name == "Touch")
+    {
+        Result = new DevToolsActionTouch();
+    }else if(Name == "Empty")
+    {
+        Result = new DevToolsActionEmpty();
     }
+
 
 
     if(Result)
@@ -132,6 +149,7 @@ IDevToolsAction* DevToolsActionFactory::Create(const std::string& Name, DevTools
         Result->GetResult()->SetActionUniqueId(UniqueId);
         Result->SetGroupId(Rand());
         Result->SetGlobalState(GlobalState);
+        if (Name == "Empty") Result->Run();
     }
 
     return Result;

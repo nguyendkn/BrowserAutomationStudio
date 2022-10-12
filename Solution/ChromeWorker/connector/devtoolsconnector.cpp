@@ -19,31 +19,10 @@ using namespace std::chrono;
 
 void DevToolsConnector::ResetProxy(const std::string& ParentProcessId)
 {
-    //Create folder if needed
-    std::string Folder(std::string("Worker/chrome/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-
-    //Path of file to write
-    std::string Path = Folder + std::string("/s");
-
-    //Generate proxy data
-    std::string Data = std::string("\x4d\x43\x23\x23\x01\x01\x01\x01\x73\x6f\x63\x6b\x73\x63\x61\x70\x36\x34\x2e\x63\x6f\x6d\x23\xa5\x68\xe4\xb4\x0d\xb4\x06\xfd\x29\xdb\x14\x9b\xe3\x56\x3b\xb1\x29\x00\x00\x00\x9f\x1d\x56\x48\xcf\x61\x27\xd7\xfc\x8d\x18\x4e\x89\xfd\x2e\x59\x72\x11\x95\xa4\x89\xcb\x7f\xe6\xc4\x44\x06\xd8\xf8\xc2\xd1\x8a\xd6\x18\xb7\x8f\xdb\xda\x48\x41\xd7\x23\x4d\x43\x00", 88);
-
-    //Delete file
-    DeleteFileA(Path.c_str());
-
-    //Write it again
-    std::ofstream outfile(Path, std::ios::binary);
-    if(outfile.is_open())
-    {
-        outfile<<Data;
-    }
-    outfile.flush();
-    outfile.close();
+    // Generate proxy data
+    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId);
+    GlobalState.SaveProxy->Reset(Folder + std::string("/s"));
 }
-
 
 void DevToolsConnector::Initialize
 (
@@ -57,6 +36,8 @@ void DevToolsConnector::Initialize
     this->CommandLineAdditional = CommandLineAdditional;
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
     this->WebSocketClientFactory = WebSocketClientFactory;
+
+    GlobalState.SaveProxy.reset(new ProxySaver());
 
     ISimpleHttpClient * HttpClient = this->SimpleHttpClientFactory->Create();
     HttpClient->GlobalActivate();
@@ -124,7 +105,7 @@ void DevToolsConnector::SetExtensionList(const std::vector<std::wstring>& Extens
     this->Extensions = Extensions;
 }
 
-void DevToolsConnector::OpenDevTools()
+void DevToolsConnector::OpenDevToolsInternal(bool IsInspect)
 {
     std::wstring PageId;
 
@@ -140,17 +121,85 @@ void DevToolsConnector::OpenDevTools()
         }
     }
 
+    std::wstring IsInspectorString;
+
+    if(IsInspect)
+    {
+        IsInspectorString = L"inspect=true&";
+    }
+
     if(!PageId.empty())
     {
+        std::wstring ChromePath = GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation));
+        std::wstring WorkerPath = ChromePath + std::wstring(L"/worker.exe");
+
+
+
         std::wstring Url =
                 std::wstring(L"http://127.0.0.1:")
                 + std::to_wstring(GlobalState.Port)
-                + std::wstring(L"/devtools/inspector.html?ws=127.0.0.1:")
+                + std::wstring(L"/devtools/inspector.html?") + IsInspectorString + std::wstring(L"ws=127.0.0.1:")
                 + std::to_wstring(GlobalState.Port)
                 + std::wstring(L"/devtools/page/")
                 + PageId;
-        ShellExecute(0, 0, Url.c_str(), 0, 0 , SW_SHOW );
+
+        std::wstring CommandLine;
+
+        CommandLine += std::wstring(L"--no-proxy-server");
+        CommandLine += std::wstring(L" ");
+
+        /*CommandLine += std::wstring(L"--disable-site-isolation-trials");
+        CommandLine += std::wstring(L" ");*/
+
+        CommandLine += std::wstring(L"--no-sandbox");
+        CommandLine += std::wstring(L" ");
+
+        /*CommandLine += std::wstring(L"--force-device-scale-factor=1");
+        CommandLine += std::wstring(L" ");*/
+
+        CommandLine += std::wstring(L"--noerrdialogs");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--disable-smooth-scrolling");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(L"--bas-force-visible-window");
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(std::wstring(L"--window-size=800,600"));
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += std::wstring(std::wstring(L"--window-position=0,0"));
+        CommandLine += std::wstring(L" ");
+
+        CommandLine += Url;
+
+        ShellExecute(0, 0, WorkerPath.c_str(), CommandLine.c_str(), ChromePath.c_str(), SW_SHOW );
     }
+}
+
+void DevToolsConnector::OpenDevTools()
+{
+    OpenDevToolsInternal(false);
+}
+
+void DevToolsConnector::InspectAt(int X, int Y)
+{
+    OpenDevToolsInternal(true);
+
+    IsInspectAtScheduled = true;
+    InspectAtTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 5000;
+    InspectAtX = X;
+    InspectAtY = Y;
+}
+
+void DevToolsConnector::InspectAtFinalize()
+{
+    IsInspectAtScheduled = false;
+    InspectAtTime = 0;
+    Mouse(MouseEventMove, InspectAtX, InspectAtY);
+    Mouse(MouseEventDown, InspectAtX, InspectAtY);
+    Mouse(MouseEventUp, InspectAtX, InspectAtY);
 }
 
 void DevToolsConnector::StartProcess()
@@ -168,8 +217,8 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--no-proxy-server");
     CommandLine += std::wstring(L" ");
 
-    CommandLine += std::wstring(L"--disable-site-isolation-trials");
-    CommandLine += std::wstring(L" ");
+    /*CommandLine += std::wstring(L"--disable-site-isolation-trials");
+    CommandLine += std::wstring(L" ");*/
 
     //Temporary disable sandboxing, otherwise render process can't access filesystem and therefore obtain fingerprint data.
     CommandLine += std::wstring(L"--no-sandbox");
@@ -181,7 +230,8 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--noerrdialogs");
     CommandLine += std::wstring(L" ");
 
-
+    CommandLine += std::wstring(std::wstring(L"--window-position=0,0"));
+    CommandLine += std::wstring(L" ");
 
     CommandLine += std::wstring(L"--disable-smooth-scrolling");
     CommandLine += std::wstring(L" ");
@@ -299,7 +349,7 @@ void DevToolsConnector::OnBrowserEndpointObtained(bool IsSuccess,int StatusCode,
             Endpoint.replace(start_pos, ReplaceFrom.length(), ReplaceTo);
             start_pos += ReplaceTo.length();
         }
-        
+
         GlobalState.WebSocketClient.reset(this->WebSocketClientFactory->Create());
 
         GlobalState.WebSocketClient->OnConnected.push_back(std::bind(&DevToolsConnector::OnWebSocketConnected, this, _1));
@@ -386,24 +436,6 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         SendWebSocket("Target.attachToTarget", Params, std::string());
     }else if(Tab->ConnectionState == TabData::WaitingForAttachment)
     {
-        Tab->ConnectionState = TabData::WaitingForSettingStartupScript;
-        std::map<std::string, Variant> Params;
-        Params["source"] = Variant(GlobalState.ConstantStartupScript);
-        Tab->CurrentWebsocketActionId = SendWebSocket("Page.addScriptToEvaluateOnNewDocument", Params, Tab->TabId);
-    } else if(Tab->ConnectionState == TabData::WaitingForSettingStartupScript)
-    {
-        Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
-
-        if(ConnectionState != WaitingFirstTab)
-        {
-            ProcessTabConnection(Tab);
-            return;
-        }
-        std::map<std::string, Variant> Params;
-        Params["expression"] = Variant(GlobalState.ConstantStartupScript + std::string(";0;"));
-        Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.evaluate", Params, Tab->TabId);
-    }else if(Tab->ConnectionState == TabData::WaitingForPageReloadForFirstTab)
-    {
         Tab->ConnectionState = TabData::WaitingForPageEnable;
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Page.enable", Params, Tab->TabId);
@@ -414,19 +446,25 @@ void DevToolsConnector::ProcessTabConnection(std::shared_ptr<TabData> Tab)
         Tab->CurrentWebsocketActionId = SendWebSocket("Runtime.enable", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForRuntimeEnable)
     {
-        Tab->ConnectionState = TabData::WaitingForNetworkEnable;
+        Tab->ConnectionState = TabData::WaitingForDragAndDropInit;
         std::map<std::string, Variant> Params;
         Tab->CurrentWebsocketActionId = SendWebSocket("Network.enable", Params, Tab->TabId);
+    }else if(Tab->ConnectionState == TabData::WaitingForDragAndDropInit)
+    {
+        Tab->ConnectionState = TabData::WaitingForNetworkEnable;
+        std::map<std::string, Variant> Params;
+        Params["enabled"] = Variant(true);
+        Tab->CurrentWebsocketActionId = SendWebSocket("Input.setInterceptDrags", Params, Tab->TabId);
     } else if(Tab->ConnectionState == TabData::WaitingForNetworkEnable)
     {
         Tab->CurrentWebsocketActionId = 0;
 
         std::vector<std::shared_ptr<IDevToolsAction> > SavedActions;
-        
+
         if(ConnectionState != WaitingFirstTab)
         {
             //Creating new tab, need to execute actions
-            SavedActions = ActionsSaver.GetActions();
+            SavedActions = ActionsSaver.GetActions(Tab->TargetType == TabData::FrameType);
         }
 
         for(std::shared_ptr<IDevToolsAction> Action : SavedActions)
@@ -532,16 +570,26 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             }
         }
 
+        //Connecting to frame
+        for(auto const& Frame : GlobalState.Frames)
+        {
+            if(Frame->CurrentWebsocketActionId == Id)
+            {
+                ProcessTabConnection(Frame);
+                return;
+            }
+        }
+
         //Switching tab after closing current
         if(SwitchTabAfterCloseCurrentActionId == Id && GlobalState.SwitchToTabId.empty() && GlobalState.SwitchToTabFrameId.empty())
         {
             GlobalState.SwitchToTabId = SwitchTabAfterCloseCurrentTabId;
             GlobalState.SwitchToTabFrameId = SwitchTabAfterCloseCurrentFrameId;
             GlobalState.SwitchToTabResetSavedActions = true;
-            
+
             return;
         }
-        
+
 
         std::vector<std::shared_ptr<IDevToolsAction> > AllActions = GetAllActions();
 
@@ -567,12 +615,12 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             }
         }
 
-        
+
 
         return;
     }
 
-    //Process incoming events 
+    //Process incoming events
     if(AllObject.count("method") > 0 && AllObject["method"].is<std::string>())
     {
         std::string Method = AllObject["method"].get<std::string>();
@@ -674,6 +722,10 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                 Params["type"] = Variant(DialogType);
 
+                std::string TabId = Parser.GetStringFromJson(Message, "sessionId");
+                if(!TabId.empty())
+                    Params["session"] = Variant(TabId);
+
                 NewAction->SetTimeout(-1);
                 NewAction->SetParams(Params);
 
@@ -691,6 +743,21 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 if(AllObject["params"].contains("backendNodeId") && AllObject["params"].get("backendNodeId").is<double>())
                 {
                     double BackendNodeId = AllObject["params"].get("backendNodeId").get<double>();
+                    std::string TargetId;
+
+                    if(AllObject["params"].contains("frameId"))
+                    {
+                        std::string FrameId = AllObject["params"].get("frameId").get<std::string>();
+                        for(std::shared_ptr<TabData> TabInfo : GlobalState.Frames)
+                        {
+                            if(FrameId == TabInfo->FrameId)
+                            {
+                                TargetId = TabInfo->TabId;
+                                break;
+                            }
+                        }
+                    }
+
 
                     bool IsMultiple = false;
 
@@ -759,7 +826,13 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             CurrentParams["backendNodeId"] = Variant(BackendNodeId);
                             CurrentParams["files"] = Variant(Files);
 
-                            SendWebSocket("DOM.setFileInputFiles", CurrentParams, GlobalState.TabId);
+                            if(TargetId.empty())
+                            {
+                                SendWebSocket("DOM.setFileInputFiles", CurrentParams, GlobalState.TabId);
+                            }else
+                            {
+                                SendWebSocket("DOM.setFileInputFiles", CurrentParams, TargetId);
+                            }
 
                         }
                         return;
@@ -772,6 +845,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
                     Params["node_id"] = Variant(BackendNodeId);
                     Params["is_multiple"] = Variant(IsMultiple);
+                    Params["target_id"] = Variant(TargetId);
 
                     NewAction->SetTimeout(-1);
                     NewAction->SetParams(Params);
@@ -792,40 +866,67 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
                 std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
-                std::string NewUrl = Parser.GetStringFromJson(Result, "targetInfo.url");
 
-                bool IsChanged = false;
-
-
-                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                bool IsFrame = false;
+                //Check if frame
+                for(auto it = GlobalState.Frames.begin(); it != GlobalState.Frames.end(); )
                 {
-                    if(FrameId == TabInfo->FrameId)
+                    if((*it)->FrameId == FrameId)
                     {
-                        //During chrome extensions initial load real url is replaced with not_exists_url.html#real_url. Real url will be loaded after initialization.
-                        if(TabInfo->IsWaitingForFirstUrl && TabInfo->FirstUrl.empty() && NewUrl.find("chrome-extension://") != std::string::npos && NewUrl.find("not_exists_url.html#") != std::string::npos)
-                        {
-                            //Obtain real url
-                            TabInfo->FirstUrl = ReplaceAll(NewUrl, "not_exists_url.html#", std::string());
-                            CheckIfTabsNeedsToLoadFirstUrl(TabInfo);
-                        }
-                        //If using tabs.create from extension, real url will be replaced with about:blank#replaceurlreal_url. Real url will be loaded after initialization.
-                        if(TabInfo->IsWaitingForFirstUrl && TabInfo->FirstUrl.empty() && NewUrl.find("about:blank#replaceurl") != std::string::npos)
-                        {
-                            //Obtain real url
-                            TabInfo->FirstUrl = ReplaceAll(NewUrl, "about:blank#replaceurl", std::string());
-                            CheckIfTabsNeedsToLoadFirstUrl(TabInfo);
-                        }
-
-                        if(TabInfo->CurrentUrl != NewUrl && GlobalState.TabId == TabInfo->TabId)
-                            IsChanged = true;
-                        TabInfo->CurrentUrl = NewUrl;
+                        IsFrame = true;
+                        break;
+                    } else
+                    {
+                        ++it;
                     }
                 }
 
-                if(IsChanged)
+                if(!IsFrame)
                 {
-                    for(auto f:OnAddressChanged)
-                        f(NewUrl);
+
+                    std::string NewUrl = Parser.GetStringFromJson(Result, "targetInfo.url");
+                    bool Attached = Parser.GetBooleanFromJson(Result, "targetInfo.attached", false);
+
+                    bool IsChanged = false;
+
+                    //During chrome extensions initial load real url is replaced with not_exists_url.html#real_url. Real url will be loaded after initialization.
+                    if(NewUrl.find("chrome-extension://") != std::string::npos && NewUrl.find("not_exists_url.html#") != std::string::npos && !Attached)
+                    {
+                        //Extension popup is created
+                        std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
+                        TabInfo->ConnectionState = TabData::NotStarted;
+                        TabInfo->FrameId = FrameId;
+                        TabInfo->IsWaitingForFirstUrl = true;
+                        //Obtain real url
+                        TabInfo->FirstUrl = ReplaceAll(NewUrl, "not_exists_url.html#", std::string());
+                        GlobalState.Tabs.push_back(TabInfo);
+                        ProcessTabConnection(TabInfo);
+                    }
+
+
+                    for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                    {
+                        if(FrameId == TabInfo->FrameId)
+                        {
+                            //If using tabs.create from extension, real url will be replaced with about:blank#replaceurlreal_url. Real url will be loaded after initialization.
+                            if(TabInfo->IsWaitingForFirstUrl && TabInfo->FirstUrl.empty() && NewUrl.find("about:blank#replaceurl") != std::string::npos)
+                            {
+                                //Obtain real url
+                                TabInfo->FirstUrl = ReplaceAll(NewUrl, "about:blank#replaceurl", std::string());
+                                CheckIfTabsNeedsToLoadFirstUrl(TabInfo);
+                            }
+
+                            if(TabInfo->CurrentUrl != NewUrl && GlobalState.TabId == TabInfo->TabId)
+                                IsChanged = true;
+                            TabInfo->CurrentUrl = NewUrl;
+                        }
+                    }
+
+                    if(IsChanged)
+                    {
+                        for(auto f:OnAddressChanged)
+                            f(NewUrl);
+                    }
                 }
 
             }
@@ -876,19 +977,54 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
 
             }
         }
-        if(Method == "Network.requestWillBeSent")
+        if(Method == "Input.dragIntercepted")
         {
             //Request started
             if(AllObject["params"].is<picojson::object>())
             {
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                if(ResultObject["data"].is<picojson::object>())
+                {
+                    picojson::object DragDataObject = ResultObject["data"].get<picojson::object>();
+
+                    std::string DragData = picojson::value(DragDataObject).serialize();
+
+
+                    OnDragIntercepted(DragData);
+                }
+            }
+        }
+        if(Method == "Network.requestWillBeSent")
+        {
+            //Request started
+            if(AllObject["params"].is<picojson::object>())
+            {
+                std::string TabId = GlobalState.TabId;
+                if(AllObject.count("sessionId") > 0)
+                {
+                    TabId = AllObject["sessionId"].get<std::string>();
+                }
+
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
 
-                OnNetworkRequestWillBeSent(Result);
+                OnNetworkRequestWillBeSent(Result, TabId);
 
                 std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
                 for(auto f:OnRequestStart)
                     f(RequestId);
+            }
+        }
+        if(Method == "Network.requestWillBeSentExtraInfo")
+        {
+            //Additional info
+            if(AllObject["params"].is<picojson::object>())
+            {
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+
+                for(auto f:OnRequestDataAdditional)
+                    f(Result);
             }
         }
         if(Method == "Network.loadingFinished" || Method == "Network.loadingFailed" || Method == "Network.requestServedFromCache" || Method == "Network.responseReceived")
@@ -927,7 +1063,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                     f(RequestId);
             }
         }
-        
+
         //Intercept screencast event, replace it with OnPaint event
         if(Method == "Page.screencastFrame")
         {
@@ -944,7 +1080,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 for(auto f:OnScroll)
                     f();
             }
-        }else if(Method == "Fetch.requestPaused") 
+        }else if(Method == "Fetch.requestPaused")
         {
             if (AllObject["params"].is<picojson::object>())
             {
@@ -952,6 +1088,15 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
                 OnFetchRequestPaused(Result);
+            }
+        }else if(Method == "Fetch.authRequired")
+        {
+            if (AllObject["params"].is<picojson::object>())
+            {
+                //Http auth, this event is generated by using Fetch.enable
+                picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string Result = picojson::value(ResultObject).serialize();
+                OnFetchAuthRequired(Result);
             }
         } else if(Method == "Target.targetCreated")
         {
@@ -967,7 +1112,17 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 if(Url.empty())
                     Url = GlobalState.WindowOpenNewTabUrl;
 
-                if(TypeName == "page")
+                if(TypeName == "iframe")
+                {
+                    //Initialize frame
+                    std::shared_ptr<TabData> FrameInfo = std::make_shared<TabData>();
+                    FrameInfo->TargetType = TabData::FrameType;
+                    FrameInfo->ConnectionState = TabData::NotStarted;
+                    FrameInfo->FrameId = FrameId;
+                    GlobalState.Frames.push_back(FrameInfo);
+                    ProcessTabConnection(FrameInfo);
+
+                }else if(TypeName == "page")
                 {
                     if(!GlobalState.IsPopupsAllowed && ConnectionState == Connected)
                     {
@@ -1044,15 +1199,6 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             GlobalState.SwitchingToDelayedTabIndex = -1;
                         }
                     }
-                }else if(TypeName == "other" && starts_with(Url, "chrome-extension://"))
-                {
-                    //Extension popup is created
-                    std::shared_ptr<TabData> TabInfo = std::make_shared<TabData>();
-                    TabInfo->ConnectionState = TabData::NotStarted;
-                    TabInfo->FrameId = FrameId;
-                    TabInfo->IsWaitingForFirstUrl = true;
-                    GlobalState.Tabs.push_back(TabInfo);
-                    ProcessTabConnection(TabInfo);
                 }else if(TypeName == "background_page")
                 {
                     //Background page for extension has been created, collect info
@@ -1099,18 +1245,27 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                 std::string TabId = Parser.GetStringFromJson(Result, "sessionId");
                 std::string FrameId = Parser.GetStringFromJson(Result, "targetInfo.targetId");
 
-                    for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                for(std::shared_ptr<TabData> TabInfo : GlobalState.Tabs)
+                {
+                    if(FrameId == TabInfo->FrameId)
                     {
-                        if(FrameId == TabInfo->FrameId)
-                        {
-                            TabInfo->TabId = TabId;
-                            GlobalState.SwitchToTabId = TabId;
-                            GlobalState.SwitchToTabFrameId = FrameId;
-                            GlobalState.SwitchToTabResetSavedActions = false;
-                            ProcessTabConnection(TabInfo);
-                        }
+                        TabInfo->TabId = TabId;
+                        GlobalState.SwitchToTabId = TabId;
+                        GlobalState.SwitchToTabFrameId = FrameId;
+                        GlobalState.SwitchToTabResetSavedActions = false;
+                        ProcessTabConnection(TabInfo);
                     }
                 }
+
+                for(std::shared_ptr<TabData> TabInfo : GlobalState.Frames)
+                {
+                    if(FrameId == TabInfo->FrameId)
+                    {
+                        TabInfo->TabId = TabId;
+                        ProcessTabConnection(TabInfo);
+                    }
+                }
+            }
         } else if(Method == "Target.detachedFromTarget")
         {
             //Tab removed, need to update list and switch tab if current tab is closed
@@ -1118,41 +1273,69 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             {
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
                 std::string Result = picojson::value(ResultObject).serialize();
-
                 std::string TabId = Parser.GetStringFromJson(Result, "sessionId");
-                bool IsCurrentTabClosing = TabId == GlobalState.TabId;
-                std::string FirstTabId;
-                std::string FirstFrameId;
-                //Don't start to switch tab if already switching
-                bool EveryTabIsConnected = true;
 
-                for(auto it = GlobalState.Tabs.begin(); it != GlobalState.Tabs.end(); )
+                bool IsFrame = false;
+                //Check if frame detached
+                for(auto it = GlobalState.Frames.begin(); it != GlobalState.Frames.end(); )
                 {
                     if((*it)->TabId == TabId)
                     {
-                        it = GlobalState.Tabs.erase(it);
+                        it = GlobalState.Frames.erase(it);
+                        IsFrame = true;
                     } else
                     {
-                        if((*it)->ConnectionState != TabData::Connected && (*it)->ConnectionState != TabData::Delayed)
-                        {
-                            EveryTabIsConnected = false;
-                        }
-                        if(FirstTabId.empty())
-                        {
-                            FirstTabId = (*it)->TabId;
-                            FirstFrameId = (*it)->FrameId;
-                        }
                         ++it;
                     }
                 }
 
-                if(EveryTabIsConnected && IsCurrentTabClosing && !FirstTabId.empty() && !FirstFrameId.empty())
+                //Fire all events before closing tab
+                std::vector<std::shared_ptr<IDevToolsAction> > AllActions = GetAllActions();
+                for(std::shared_ptr<IDevToolsAction> Action: AllActions)
                 {
-                    std::map<std::string, Variant> CurrentParams;
-                    CurrentParams["targetId"] = Variant(FirstFrameId);
-                    SwitchTabAfterCloseCurrentTabId = FirstTabId;
-                    SwitchTabAfterCloseCurrentFrameId = FirstFrameId;
-                    SwitchTabAfterCloseCurrentActionId = SendWebSocket("Target.activateTarget", CurrentParams, std::string());
+                    std::vector<std::string> SubscribbedEvents = Action->GetSubscribbedEvents();
+                    if(Action->GetState() == IDevToolsAction::Running && std::find(SubscribbedEvents.begin(), SubscribbedEvents.end(), Method) != SubscribbedEvents.end())
+                    {
+                        Action->OnWebSocketEvent(Method, Result);
+                    }
+                }
+
+                if(!IsFrame)
+                {
+                    bool IsCurrentTabClosing = TabId == GlobalState.TabId;
+                    std::string FirstTabId;
+                    std::string FirstFrameId;
+                    //Don't start to switch tab if already switching
+                    bool EveryTabIsConnected = true;
+
+                    for(auto it = GlobalState.Tabs.begin(); it != GlobalState.Tabs.end(); )
+                    {
+                        if((*it)->TabId == TabId)
+                        {
+                            it = GlobalState.Tabs.erase(it);
+                        } else
+                        {
+                            if((*it)->ConnectionState != TabData::Connected && (*it)->ConnectionState != TabData::Delayed)
+                            {
+                                EveryTabIsConnected = false;
+                            }
+                            if(FirstTabId.empty())
+                            {
+                                FirstTabId = (*it)->TabId;
+                                FirstFrameId = (*it)->FrameId;
+                            }
+                            ++it;
+                        }
+                    }
+
+                    if(EveryTabIsConnected && IsCurrentTabClosing && !FirstTabId.empty() && !FirstFrameId.empty())
+                    {
+                        std::map<std::string, Variant> CurrentParams;
+                        CurrentParams["targetId"] = Variant(FirstFrameId);
+                        SwitchTabAfterCloseCurrentTabId = FirstTabId;
+                        SwitchTabAfterCloseCurrentFrameId = FirstFrameId;
+                        SwitchTabAfterCloseCurrentActionId = SendWebSocket("Target.activateTarget", CurrentParams, std::string());
+                    }
                 }
 
             }
@@ -1162,17 +1345,33 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
             if(AllObject["params"].is<picojson::object>())
             {
                 picojson::object ResultObject = AllObject["params"].get<picojson::object>();
+                std::string SessionId;
+                if(AllObject.count("sessionId") > 0)
+                {
+                    SessionId = AllObject["sessionId"].get<std::string>();
+                }
+
                 std::string Result = picojson::value(ResultObject).serialize();
 
                 //Save information about frames and context
-                if (Method == "Runtime.executionContextCreated")
+                if (Method == "Runtime.executionContextCreated" && Parser.GetBooleanFromJson(Result, "context.auxData.isDefault", true))
                 {
                     std::string FrameId = Parser.GetStringFromJson(Result, "context.auxData.frameId");
-                    int ContextId = Parser.GetFloatFromJson(Result, "context.id");
-                    GlobalState.FrameIdToContextId[FrameId] = ContextId;
+
+                    std::string ContextId = Parser.GetStringFromJson(Result, "context.uniqueId");
+
+                    //WORKER_LOG("!!!!!!!!!!!!!!!!! CREATE ExecutionContexts id = " + FrameId + std::string(", context id = ") + std::string(ContextId) + std::string(", session id = ") + std::string(SessionId));
+
+                    std::shared_ptr<ExecutionContextData> ExecutionContext = std::make_shared<ExecutionContextData>();
+                    ExecutionContext->TabId = SessionId;
+                    ExecutionContext->FrameId = FrameId;
+                    ExecutionContext->ContextId = ContextId;
+
+                    GlobalState.ExecutionContexts.push_back(ExecutionContext);
                 }
 
-                if (Method == "Runtime.executionContextDestroyed")
+        //Don't delete info about removed context
+                /*if (Method == "Runtime.executionContextDestroyed")
                 {
                     int ContextId = Parser.GetFloatFromJson(Result, "executionContextId");
                     for (auto it = GlobalState.FrameIdToContextId.cbegin(); it != GlobalState.FrameIdToContextId.cend(); )
@@ -1186,7 +1385,7 @@ void DevToolsConnector::OnWebSocketMessage(std::string& Message)
                             ++it;
                         }
                     }
-                }
+                }*/
 
                 //Send event information to subscribers of OnMessage
 
@@ -1420,7 +1619,7 @@ void DevToolsConnector::Timer()
         {
             if(GlobalState.SwitchToTabResetSavedActions && Tab->ConnectionState == TabData::Connected)
             {
-                Tab->ConnectionState = TabData::WaitingForPageReloadForFirstTab;
+                Tab->ConnectionState = TabData::WaitingForAttachment;
                 Tab->IsSwitchingToTab = true;
                 GlobalState.SwitchToTabResetSavedActions = false;
                 ProcessTabConnection(Tab);
@@ -1441,7 +1640,10 @@ void DevToolsConnector::Timer()
 
                         CurrentParams["url"] = Variant(GlobalState.LoadNextUrl);
                         if(!GlobalState.LoadNextData.empty())
+                        {
                             CurrentParams["referrer"] = Variant(GlobalState.LoadNextData);
+                            CurrentParams["referrerPolicy"] = Variant(std::string("unsafeUrl"));
+                        }
 
                         SendWebSocket("Page.navigate", CurrentParams, GlobalState.SwitchToTabId);
                     }
@@ -1491,6 +1693,12 @@ void DevToolsConnector::Timer()
     }
 
     long long Now = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+
+
+    if(IsInspectAtScheduled && Now > InspectAtTime)
+    {
+        InspectAtFinalize();
+    }
 
     //Process timeout for reset acion
     if(ResetResult)
@@ -1618,7 +1826,7 @@ void DevToolsConnector::Timer()
                 ++it;
             }
         }
-        
+
         // Process saved actions
         for(auto const& Tab : GlobalState.Tabs)
         {
@@ -1646,7 +1854,7 @@ void DevToolsConnector::Timer()
                         Action->SetState(IDevToolsAction::Finished);
                     }
                     ++it;
-                    
+
                 }
             }
         }
@@ -1696,7 +1904,7 @@ std::vector<std::shared_ptr<IDevToolsAction> > DevToolsConnector::GetAllActions(
 void DevToolsConnector::InsertAction(std::shared_ptr<IDevToolsAction> Action)
 {
     ActionsSaver.ProcessAction(Action);
-    
+
     //Run this action for each connected tab
     if(Action->IsNeedToRunForAllActiveTabs())
     {
@@ -1716,15 +1924,12 @@ void DevToolsConnector::InsertAction(std::shared_ptr<IDevToolsAction> Action)
     Actions.push_back(Action);
 }
 
-int DevToolsConnector::SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId)
+std::string DevToolsConnector::GenerateMessage(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId, int &Id)
 {
-    if(!GlobalState.WebSocketClient)
-        return -1;
-
     picojson::value::object Data;
     picojson::value::object ParamsObject = Serializer.SerializeObjectToObject(Params);
 
-    int Id = GenerateId();
+    Id = GenerateId();
 
     Data["id"] = picojson::value((double)Id);
     Data["method"] = picojson::value(Method);
@@ -1735,7 +1940,17 @@ int DevToolsConnector::SendWebSocket(const std::string& Method, const std::map<s
         Data["sessionId"] = picojson::value(SessionId);
     }
 
-    std::string DataString = picojson::value(Data).serialize();
+    return picojson::value(Data).serialize();
+}
+
+int DevToolsConnector::SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId)
+{
+    if(!GlobalState.WebSocketClient)
+        return -1;
+
+    int Id = 0;
+
+    std::string DataString = GenerateMessage(Method, Params, SessionId, Id);
 
     GlobalState.WebSocketClient->Send(DataString);
 
@@ -1766,7 +1981,7 @@ int DevToolsConnector::GetTabNumber()
         if(Tab->ConnectionState == TabData::Connected || Tab->ConnectionState == TabData::Delayed)
         {
             Result++;
-        } 
+        }
     }
     return Result;
 }
@@ -1914,7 +2129,10 @@ Async DevToolsConnector::Load(const std::string& Url, bool IsInstant, const std:
 
     Params["url"] = Variant(std::string(Url));
     if(!Referrer.empty())
+    {
         Params["referrer"] = Variant(std::string(Referrer));
+        Params["referrerPolicy"] = Variant(std::string("unsafeUrl"));
+    }
 
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);
@@ -1975,6 +2193,22 @@ Async DevToolsConnector::GetHistory(int Timeout)
     return NewAction->GetResult();
 }
 
+Async DevToolsConnector::Sleep(int TimeMilliseconds, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+    std::map<std::string, Variant> Params;
+    Params["time"] = Variant(TimeMilliseconds);
+
+    NewAction.reset(ActionsFactory.Create("Sleep", &GlobalState));
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+
 Async DevToolsConnector::SetHeaders(const std::vector<std::pair<std::string, std::string>>& Headers, int Timeout)
 {
     std::shared_ptr<IDevToolsAction> NewAction;
@@ -1986,7 +2220,8 @@ Async DevToolsConnector::SetHeaders(const std::vector<std::pair<std::string, std
 
     for (const auto& Header : Headers)
     {
-        Object[Header.first] = Variant(Header.second);
+        if(Header.first != "Accept-Language" && Header.first != "User-Agent")
+            Object[Header.first] = Variant(Header.second);
     }
 
     Params["headers"] = Variant(Object);
@@ -2171,7 +2406,7 @@ Async DevToolsConnector::SetStartupScript(const std::string& Script, int Timeout
     NewAction.reset(ActionsFactory.Create("SetStartupScript", &GlobalState));
 
     Params["source"] = Variant(Script);
-    
+
     NewAction->SetTimeout(Timeout);
     NewAction->SetParams(Params);
 
@@ -2225,6 +2460,22 @@ Async DevToolsConnector::SetRequestsRestrictions(const std::vector<std::pair<boo
         RuleNative.Mask = Rule.second;
         GlobalState.BlockRequests.push_back(RuleNative);
     }
+
+    std::shared_ptr<IDevToolsAction> NewAction;
+
+    NewAction.reset(ActionsFactory.Create("SetRequestsRestrictions", &GlobalState));
+
+    NewAction->SetTimeout(Timeout);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+Async DevToolsConnector::SetHttpAuth(const std::string& UserName, const std::string& Password, int Timeout)
+{
+    GlobalState.HttpAuthEnabled = true;
+    GlobalState.HttpAuthUserName = UserName;
+    GlobalState.HttpAuthPassword = Password;
 
     std::shared_ptr<IDevToolsAction> NewAction;
 
@@ -2294,6 +2545,37 @@ void DevToolsConnector::ClearNetworkData()
     GlobalState.LoadedUrls.clear();
 }
 
+void DevToolsConnector::OnFetchAuthRequired(std::string& Result)
+{
+    //Send auth response
+    std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
+
+    std::map<std::string, Variant> Params;
+    Params["requestId"] = Variant(RequestId);
+
+    std::map<std::string, Variant> Auth;
+    Auth["username"] = Variant(GlobalState.HttpAuthUserName);
+    Auth["password"] = Variant(GlobalState.HttpAuthPassword);
+    Auth["response"] = Variant(std::string("ProvideCredentials"));
+    Params["authChallengeResponse"] = Variant(Auth);
+
+    SendWebSocket("Fetch.continueWithAuth", Params, GlobalState.TabId);
+
+    //Disable http auth
+
+    GlobalState.HttpAuthUserName.clear();
+    GlobalState.HttpAuthPassword.clear();
+    GlobalState.HttpAuthEnabled = false;
+
+    std::shared_ptr<IDevToolsAction> NewAction;
+
+    NewAction.reset(ActionsFactory.Create("SetRequestsRestrictions", &GlobalState));
+
+    NewAction->SetTimeout(-1);
+
+    InsertAction(NewAction);
+}
+
 void DevToolsConnector::OnFetchRequestPaused(std::string& Result)
 {
     std::string RequestUrl = Parser.GetStringFromJson(Result, "request.url");
@@ -2323,13 +2605,24 @@ void DevToolsConnector::OnFetchRequestPaused(std::string& Result)
 
 }
 
-void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result)
+void DevToolsConnector::OnDragIntercepted(std::string& DragData)
+{
+    GlobalState.DragAndDropIsEnabled = true;
+    GlobalState.DragAndDropData = DragData;
+
+    Drag(DragEventEnter,GlobalState.CursorX,GlobalState.CursorY);
+}
+
+void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result, std::string& TabId)
 {
     std::string RequestId = Parser.GetStringFromJson(Result, "requestId");
     std::string Url = Parser.GetStringFromJson(Result, "request.url");
 
     if (Url.find("data:") == std::string::npos)
     {
+        for(auto f:OnRequestDataMain)
+            f(Result);
+
         bool Allow = false;
 
         for (const auto& CacheMask : GlobalState.CacheCapture)
@@ -2347,6 +2640,7 @@ void DevToolsConnector::OnNetworkRequestWillBeSent(std::string& Result)
             Item->IsFinished = false;
             Item->IsError = false;
             Item->Url = Url;
+            Item->TabId = TabId;
 
             std::string PostData = Parser.GetStringFromJson(Result, "request.postData");
             Item->PostData = base64_encode((unsigned char *)PostData.data(), PostData.size());
@@ -2394,7 +2688,7 @@ void DevToolsConnector::OnNetworkLoadingCompleted(std::string& Result, bool HasE
         {
             //Need to get the response body using a separate method.
             std::map<std::string, Variant> Params = { {"requestId", Variant(RequestId)} };
-            int Id = SendWebSocket("Network.getResponseBody", Params, GlobalState.TabId);
+            int Id = SendWebSocket("Network.getResponseBody", Params, Item->TabId);
             GlobalState.CachedRequests[Id] = RequestId;
         }
 
@@ -2507,8 +2801,86 @@ void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNa
     }
 }
 
+Async DevToolsConnector::StartDragFile(const std::string& Path, int Timeout)
+{
+    std::shared_ptr<IDevToolsAction> NewAction;
+
+    NewAction.reset(ActionsFactory.Create("StartDragFile", &GlobalState));
+
+    std::map<std::string, Variant> Params;
+
+    Params["filename"] = Variant(Path);
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
+}
+
+void DevToolsConnector::Drag(DragEvent Event, int X, int Y, int KeyboardPresses)
+{
+    if(IsInspectAtScheduled)
+        return;
+
+    std::map<std::string, Variant> Params;
+    std::string TypeName;
+
+    if(Event == DragEventEnter)
+    {
+        TypeName = "dragEnter";
+    } else if(Event == DragEventOver)
+    {
+        TypeName = "dragOver";
+    }else if(Event == DragEventDrop)
+    {
+        TypeName = "drop";
+    }else if(Event == DragEventCancel)
+    {
+        TypeName = "dragCancel";
+    }
+
+    Params["type"] = Variant(TypeName);
+    Params["x"] = Variant(X);
+    Params["y"] = Variant(Y);
+    Params["modifiers"] = Variant(KeyboardPresses);
+    Params["data"] = Variant(std::string("BAS_DRAG_DATA"));
+
+    int Id = 0;
+
+    std::string DataString = GenerateMessage("Input.dispatchDragEvent", Params, GlobalState.TabId, Id);
+
+    ReplaceAllInPlace(DataString, "\"BAS_DRAG_DATA\"", GlobalState.DragAndDropData);
+
+    GlobalState.WebSocketClient->Send(DataString);
+
+}
+
+
 void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button, int MousePressed, int KeyboardPresses, int ClickCount)
 {
+    if(IsInspectAtScheduled)
+        return;
+
+    GlobalState.CursorX = X;
+    GlobalState.CursorY = Y;
+
+    if(GlobalState.DragAndDropIsEnabled)
+    {
+        if(Event == MouseEventUp || Event == MouseEventDown)
+        {
+            Drag(DragEventDrop,X,Y);
+            GlobalState.DragAndDropIsEnabled = false;
+            GlobalState.DragAndDropData.clear();
+        } else if(Event == MouseEventMove)
+        {
+            Drag(DragEventOver,X,Y);
+        }
+        return;
+    }
+
+
+
     std::map<std::string, Variant> Params;
     std::string TypeName = "mousePressed";
     if(Event == MouseEventUp)
@@ -2537,12 +2909,18 @@ void DevToolsConnector::Mouse(MouseEvent Event, int X, int Y, MouseButton Button
     Params["buttons"] = Variant(MousePressed);
     Params["button"] = Variant(ButtonName);
     Params["clickCount"] = Variant(ClickCount);
-    
+
     SendWebSocket("Input.dispatchMouseEvent", Params, GlobalState.TabId);
 }
 
 void DevToolsConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePressed, int KeyboardPresses)
 {
+    if(IsInspectAtScheduled)
+        return;
+
+    GlobalState.CursorX = X;
+    GlobalState.CursorY = Y;
+
     std::map<std::string, Variant> Params;
     std::string TypeName = "mouseWheel";
     std::string ButtonName = "none";
@@ -2558,8 +2936,30 @@ void DevToolsConnector::Wheel(int X, int Y, bool IsUp, int Delta, int MousePress
     SendWebSocket("Input.dispatchMouseEvent", Params, GlobalState.TabId);
 }
 
-void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure)
+Async DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX, double RadiusY, double RotationAngle, double Pressure, int Timeout)
 {
+    if(IsInspectAtScheduled)
+    {
+        return std::make_shared<AsyncResult>();
+    }
+
+    GlobalState.CursorX = X;
+    GlobalState.CursorY = Y;
+
+    if(GlobalState.DragAndDropIsEnabled)
+    {
+        if(Event == MouseEventUp || Event == MouseEventDown)
+        {
+            Drag(DragEventDrop,X,Y);
+            GlobalState.DragAndDropIsEnabled = false;
+            GlobalState.DragAndDropData.clear();
+        } else if(Event == MouseEventMove)
+        {
+            Drag(DragEventOver,X,Y);
+        }
+        return std::make_shared<AsyncResult>();
+    }
+
     std::map<std::string, Variant> Params;
     std::map<std::string, Variant> Point;
     std::string TypeName = "touchStart";
@@ -2572,7 +2972,6 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
     }
 
     Params["type"] = Variant(TypeName);
-    Point["type"] = Variant(TypeName);
     Point["x"] = Variant(X);
     Point["y"] = Variant(Y);
 
@@ -2582,16 +2981,26 @@ void DevToolsConnector::Touch(TouchEvent Event, int X, int Y, int Id, double Rad
     Point["force"] = Variant(Pressure);
     Point["id"] = Variant(Id);
 
-    
+
     std::vector<Variant> Points;
     Points.push_back(Variant(Point));
     Params["touchPoints"] = Variant(Points);
-    
-    SendWebSocket("Input.dispatchTouchEvent", Params, GlobalState.TabId);
+
+    std::shared_ptr<IDevToolsAction> NewAction;
+    NewAction.reset(ActionsFactory.Create("Touch", &GlobalState));
+
+    NewAction->SetTimeout(Timeout);
+    NewAction->SetParams(Params);
+
+    InsertAction(NewAction);
+    return NewAction->GetResult();
 }
 
 void DevToolsConnector::Key(KeyEvent Event, const std::string& Char, int KeyboardPresses)
 {
+    if(IsInspectAtScheduled)
+        return;
+
     if(EmulateKeyboard.IsKeyboardCharacter(Char))
     {
         std::map<std::string, Variant> Params = EmulateKeyboard.PrepareKeyboardEvent(Event, Char, KeyboardPresses);
@@ -2608,6 +3017,9 @@ void DevToolsConnector::Key(KeyEvent Event, const std::string& Char, int Keyboar
 
 void DevToolsConnector::KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM NativeVirtualKeyCode, int KeyboardPresses)
 {
+    if(IsInspectAtScheduled)
+        return;
+
     std::map<std::string, Variant> Params = EmulateKeyboard.PrepareRawKeyboardEvent(Event, WindowsVirtualKeyCode, NativeVirtualKeyCode, KeyboardPresses);
     SendWebSocket("Input.dispatchKeyEvent", Params, GlobalState.TabId);
 }
@@ -2635,7 +3047,7 @@ Async DevToolsConnector::Reset(int Timeout)
         Action->GetResult()->Fail("Action is stopped because of reset", "Reset");
     }
     Actions.clear();
-    
+
     //If waiting for other reset action - stop it also
     if(ResetResult)
     {
@@ -2695,7 +3107,7 @@ bool DevToolsConnector::InterruptAction(int ActionUniqueId)
         }
     }
     return IsInterrupted;
-    
+
 }
 
 void DevToolsConnector::SetOpenFileDialogResult(const std::string& Result)
@@ -2831,4 +3243,3 @@ Async DevToolsConnector::SaveCookies(int Timeout)
     InsertAction(NewAction);
     return NewAction->GetResult();
 }
-

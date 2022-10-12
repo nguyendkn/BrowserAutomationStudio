@@ -120,7 +120,7 @@ _L =
 	"If current page is first, this action will load empty page.": {"ru": "Если текущая страница загружена первой, это действие загрузит пустую страницу."},
 	"Previous Page": {"ru": "Предыдущая Страница"},
 	"Combobox.": {"ru": "Выпадающий список."},
-	"In order to automate combobox input you need to use keyboard - start typing option that you want to select and then hit ENTER. Alternatively you can find required option by image.": {"ru": "Чтобы автоматизировать выбор элемента из выпадающего списка, вам нужно использовать клавиатуру - начните набирать ту опцию, которую хотите выбрать, и затем нажмите ENTER. В качестве альтернативы вы можете найти нужный вариант по изображению."},
+	"In order to automate combobox input you need to use keyboard - start typing option that you want to select and then hit ENTER.": {"ru": "Чтобы автоматизировать выбор элемента из выпадающего списка, вам нужно использовать клавиатуру - начните набирать ту опцию, которую хотите выбрать, и затем нажмите ENTER."},
 	"Proxy type will be extracted from proxy line": {"ru": "Тип прокси будет извлечен из строки прокси"},
 	"Parameter name is used to identify parameter, could be any string.": {"ru": "Имя параметра используется для его идентификации, может быть любой строкой."},
 	"Variable which will contain parameter value.": {"ru": "Переменная, которая будет содержать значение параметра."},
@@ -800,7 +800,7 @@ _L =
 	"Use free version" :{"ru": "Использовать бесплатную версию"},
 	"Use pro version" :{"ru": "Использовать pro версию"},
 	"Custom IP information function" :{"ru": "Отдельная функция для получения информации об IP"},
-	"Custom BAS function, which takes IP string as input(&quot;IP&quot; input parameter) and returns JSON with IP information. This parameter is used only if &quot;IP info method&quot; is set to &quot;custom function&quot; value." :{"ru": "Отдельная функция BAS, которая получает строку IP (входной параметр называется &quot;IP&quot;) и возвращает JSON с информацией об IP. Этот параметр используется только в том случае, если для параметра &quot;Метод получения информации о IP&quot; задано значение &quot;custom function&quot;."},
+	"Custom BAS function, which takes IP string as input(&quot;Ip&quot; input parameter) and returns JSON with IP information. This parameter is used only if &quot;IP info method&quot; is set to &quot;custom function&quot; value." :{"ru": "Отдельная функция BAS, которая получает строку IP (входной параметр называется &quot;Ip&quot;) и возвращает JSON с информацией об IP. Этот параметр используется только в том случае, если для параметра &quot;Метод получения информации о IP&quot; задано значение &quot;custom function&quot;."},
 	"JSON example, which must return custom function." :{"ru": "Пример JSON, который должна возвращать функция."},
 	"Key" :{"ru": "Ключ"},
 

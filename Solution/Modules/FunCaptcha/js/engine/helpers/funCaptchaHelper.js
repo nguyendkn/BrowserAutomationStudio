@@ -39,7 +39,7 @@
       const pk = data.filter(function (v) { return v[0] === 'pk' })[0][1];
 
       _call_function(_.script, { element: self.$element(), script: 'location.href' }, function () {
-        _function_return({ subdomainUrl: surl, publicKey: pk, pageUrl: _result_function() });
+        _function_return({ subdomainUrl: decodeURIComponent(surl), publicKey: decodeURIComponent(pk), pageUrl: _result_function() });
       });
     });
   };
@@ -68,12 +68,8 @@
 
       _call_function(self.extractData, {})!
     }, function () {
-      if (_K === 'en') {
-        fail(("Failed to find an element with the specified selector for FunCaptcha solving"));
-      } else {
-        fail("Не удалось найти элемент с указанным селектором для решения FunCaptcha");
-      }
-     })!
+      _function_return(null);
+    })!
   };
 
   solver.helpers.FunCaptchaHelper = FunCaptchaHelper;

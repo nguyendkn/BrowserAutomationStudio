@@ -9,7 +9,6 @@
   <!--   HTML    -->
   <!-- ========= -->
   <div id="multiselect" style="display:none"></div>
-
   <div class="findtoolbox">
     <div class="input-group input-group-sm findcontrol">
       <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
@@ -28,14 +27,10 @@
   <div id="helplabelcontainer" data-toggle="tooltip" data-placement="bottom" data-title="Following button leads to menu with most used actions and example of usage. It is good place to start if you are new to BAS.">
     <button type="button" class="btn btn-default btn-xs" id="movetolabelbutton" onclick="BrowserAutomationStudio_HighlightHelpIsActive = false;$('#HelpCenter').modal();"><i class="fa fa-question-circle text-primary" aria-hidden="true"></i></button>
   </div>
-
   <div id="debugbuttoncontainer">
-    <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_MainView.ToggleVariableInspector()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action."><i class="fa fa-bug" aria-hidden="true"></i></button>
+    <button type="button" class="btn btn-default btn-xs" id="debugbutton" onclick="_Inspector.show()" data-toggle="tooltip" data-placement="auto" data-title="Show variables list. You can create variable with 'Set Variable' action."><i class="fa fa-bug" aria-hidden="true"></i></button>
   </div>
-
-
   <div id="container">
-
    <div id="containerdata" ></div>
 
    <div class="modal" tabindex="-1" role="dialog" id="HelpCenter">
@@ -1061,39 +1056,35 @@
         </div>
       </div>
     </div>
-    <div id="FunctionManagerMain" data-visible="false" class="NotDetailed">
-      
-    </div>
+    <div id="FunctionManagerMain" data-visible="false" class="NotDetailed"></div>
   </div>
 
   <!-- ========= -->
   <!-- TEMPLATES -->
   <!-- ========= -->
   <script type="text/template" id="isscriptexecuting" >
-    
-    <img draggable="false" src="play.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "" %>" id="play"   data-toggle="tooltip" data-placement="bottom" title="<%= tr("Play. Run rest of the script starting from current action.") %>" />
-    <img draggable="false" src="next.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray2" : "" %>" id="stepnext"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Run next action. Only single action will be executed.") %>" />
-    <img draggable="false" src="pause.png" class="action-button <%= (isscriptexecuting) ? "" : ((isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "actionbuttongray2") %>" id="pause" />
+    <img draggable="false" src="icons/play.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "" %>" id="play"   data-toggle="tooltip" data-placement="bottom" title="<%= tr("Play. Run rest of the script starting from current action.") %>" />
+    <img draggable="false" src="icons/next.png" class="action-button <%= (isscriptexecuting || execute_next_id == 1) ? "actionbuttongray2" : "" %>" id="stepnext"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Run next action. Only single action will be executed.") %>" />
+    <img draggable="false" src="icons/pause.png" class="action-button <%= (isscriptexecuting) ? "" : ((isscriptexecuting || execute_next_id == 1) ? "actionbuttongray" : "actionbuttongray2") %>" id="pause" />
   </script>
 
   <script type="text/template" id="selectiontemplate">
     <% _TotalSelected = TotalSelected(); %>
     <div style="float:left;text-align:center;white-space: nowrap" class="halfscreenorall">
-      <img draggable="false" src="undo.png" class="action-button2 <%= (_UndoManager.CanUndo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Undo (Ctrl-Z)") %>" id="action-undo" />
-      <img draggable="false" src="redo.png" class="action-button2 <%= (_UndoManager.CanRedo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Redo (Ctrl-Y)") %>" id="action-redo" />
+      <img draggable="false" src="icons/undo.png" class="action-button2 <%= (_UndoManager.CanUndo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Undo (Ctrl-Z)") %>" id="action-undo" />
+      <img draggable="false" src="icons/redo.png" class="action-button2 <%= (_UndoManager.CanRedo()) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Redo (Ctrl-Y)") %>" id="action-redo" />
 
-      <img draggable="false" src="copy.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Copy (Ctrl-C)") %>" id="action-copy" />
-      <img draggable="false" src="cut.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Cut (Ctrl-X)") %>" id="action-cut" />
-      <img draggable="false" src="paste.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Paste (Ctrl-V)") %>" id="action-paste" />
-      <img draggable="false" src="checkall.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Check All") %>" id="action-checkall" />
-      <img draggable="false" src="uncheckall.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Clear Selection") %>" id="action-uncheckall" />      
+      <img draggable="false" src="icons/copy.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Copy (Ctrl-C)") %>" id="action-copy" />
+      <img draggable="false" src="icons/cut.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Cut (Ctrl-X)") %>" id="action-cut" />
+      <img draggable="false" src="icons/paste.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Paste (Ctrl-V)") %>" id="action-paste" />
+      <img draggable="false" src="icons/checkall.png" class="action-button2" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Check All") %>" id="action-checkall" />
+      <img draggable="false" src="icons/uncheckall.png" class="action-button2 <%= (_TotalSelected > 0) ? "" : "disabled" %>"  data-toggle="tooltip" data-placement="bottom" title="<%= tr("Clear Selection") %>" id="action-uncheckall" />      
     </div>
     <div style="float:left" class="halfscreenorall">
       <div class="centeredonlyifsmall">
         <span class="small"><%= tr("Selected") %></span>: <strong><%= TotalSelected() %></strong>
       </div>
     </div>
-    
   </script>
 
   <script type="text/template" id="main">
@@ -1102,8 +1093,8 @@
         <span id="isscriptexecutingcontainer">
           
         </span>
-        <img draggable="false" src="stop.png" class="action-button" id="stop" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Stop script and exit 'Record' mode.") %>" />
-        <img draggable="false" src="restart.png" class="action-button" id="restart" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Restart script. Script will be stopped and then started again in 'Record' mode.") %>" />
+        <img draggable="false" src="icons/stop.png" class="action-button" id="stop" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Stop script and exit 'Record' mode.") %>" />
+        <img draggable="false" src="icons/restart.png" class="action-button" id="restart" data-toggle="tooltip" data-placement="bottom" title="<%= tr("Restart script. Script will be stopped and then started again in 'Record' mode.") %>" />
 
       </div>
       <div style="float:left" class="halfscreenorall" >
@@ -1164,41 +1155,11 @@
         </div>
       </div>
       <div class="maintoolbox">
-
-        <span id="selectiontemplatecontainer">
-        
-        </span>
-      </div>
-      
-    </div>
-    <div class="bottompannel" >
-      <div class="container-fluid" id="variableinspector" style="<%= (global["show_variable_inspector"]) ? "" : "display:none" %>">
-        <div style="position:absolute;top:9px;right:30px">
-          <a href="#" id="closevariableinspector" class="text-danger"><i class="fa fa-times-circle-o" aria-hidden="true" style="font-size: 150%;background-color: #fafafa;padding: 5px;"></i></a>
-        </div>
-          <div id="pendingnotice" style="<%= (global["show_variable_inspector_pending"]) ? "" : "display:none" %>"><%= tr("Variables will be loaded on next script pause") %></div>
-          <div id="variablelistpending" style="<%= (global["show_variable_inspector_pending"]) ? "display:none" : "" %>">
-            <% var PData = JSON.parse(global["variable_inspector_data"]) %>
-            <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Variables:") %></span></div>
-            <%= JSONTree.create(PData[0]) %>
-            <div class='variableslabelcontainer'><span class='variableslabel'><%= tr("Resources:") %></span></div>
-            <%= JSONTree.create(PData[1]) %>
-          </div>
-      </div>
-      <div style="width:100%" id="functions">
-        <a id="FunctionName" data-toggle="tooltip" data-placement="auto" title="<%= tr("Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.") %>">
-            <%= global.function_name %>
-
-        </a>
-            
+        <span id="selectiontemplatecontainer"></span>
       </div>
     </div>
-
-
-
-    <div class="container-fluid main" style="padding-bottom:<%= (global["show_variable_inspector"]) ? "250px" : "50px" %>" >
-      
-      <div id="paddinfind"> </div>
+    <div class="main" style="padding-bottom: <%= (_Inspector.$el.is(':visible') ? _Inspector.$el.height() : 0) + 50 %>px;">
+      <div id="paddinfind"></div>
       <% for(var indexraw = 0;indexraw<data.length;indexraw++){ %>
         <% var index = indexraw - 1 + index_start;%>
         <% if (indexraw == 0) { index = 0; } %>
@@ -1224,7 +1185,7 @@
 
                   <div id="id7-<%= task.get("id") %>" class="tooltitle <%= prepare_styles(task.dat(),task.get("name") ) %>"> <%= prepare_group(task.dat(),task.get("name"),task.get("id")) %> <%= prepare_title(task.dat(),task.get("name")) %> <span id="id71-<%= task.get("id") %>" class="disablenotice" task-id="<%= task.get("id") %>"><%= (task.get("donotexecuteduringrecord"))? " (" + tr("disabled") + ")" : "" %></span>
 
-                    <img id="id8-<%= task.get("id") %>" class="selected" src="selected.png" style="<%= (!task.get("is_selected")) ? "visibility:hidden" : "" %>"></img>
+                    <img id="id8-<%= task.get("id") %>" class="selected" src="icons/selected.png" style="<%= (!task.get("is_selected")) ? "visibility:hidden" : "" %>"></img>
                   </div>
 
                   <div id="id9-<%= task.get("id") %>" class="titlebody " style="position:relative">
@@ -1307,7 +1268,6 @@
           </div>
         </div>
       <% } %>
-
       <svg id="visualizelabels" style="z-index:-100">
         <defs>
           <marker id="Arrow0" markerWidth="10" markerHeight="10" refX="6" refY="2" orient="auto" markerUnits="strokeWidth">
@@ -1325,10 +1285,29 @@
           <marker id="Arrow4" markerWidth="10" markerHeight="10" refX="6" refY="2" orient="auto" markerUnits="strokeWidth">
             <path d="M0,1 L5,2 L0,3" stroke="#e6bbbb" fill="none"></path>
           </marker>
-          
         </defs>
-
       </svg>
+    </div>
+    <div class="bottompannel">
+      <div id="inspector" style="display: none; height: 300px;" noupdate>
+        <div class="handle" style="background: #dbdbdb; cursor: ns-resize; height: 6px;"></div>
+        <div style="height: calc(100% - 6px); position: relative; display: flex;">
+          <iframe src="inspector/frame/index.html?lang=<%= _K %>" style="border: 0; width: 100%; height: 100%;"></iframe>
+          <div class="loader" style="display: none;">
+            <button type="button" onclick="_Inspector.hide()">
+              <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2.87348 12.2583L3.93414 13.3189L8 9.25305L12.0659 13.3189L13.1265 12.2583L9.06066 8.19239L13.1265 4.12652L12.0659 3.06586L8 7.13173L3.93414 3.06586L2.87348 4.12652L6.93934 8.19239L2.87348 12.2583Z" fill="#606060" />
+              </svg>
+            </button>
+            <span><%= tr('Variables will be loaded on next script pause') %></span>
+          </div>
+        </div>
+      </div>
+      <div id="functions">
+        <a id="FunctionName" title="<%= tr('Current function name. Functions are containers, which holds action list. It helps to group several actions which does same task. For example, there can be function which logins to account, function that checks account balance, etc. It makes your code clear and well organized.') %>">
+          <%= global.function_name %>
+        </a>
+      </div>
     </div>
   </script>
 
@@ -1348,71 +1327,72 @@
       }
   </script>
 
-
-
   <!-- ========= -->
   <!-- Libraries -->
   <!-- ========= -->
-  <script type="text/javascript"> window.Scenario = {}; </script>
-  <script src="jquery-2.1.3.min.js" type="text/javascript"></script>
-  <script src="underscore-min.js" type="text/javascript"></script>
-  <script src="backbone-min.js" type="text/javascript"></script>
+  <script src="jquery-2.1.3.min.js"></script>
+  <script src="underscore-min.js"></script>
+  <script src="backbone-min.js"></script>
   <script src="bootstrap.min.js"></script>
   <script src="context.js"></script>
   <script src="bootbox.min.js"></script>
+  <script src="vendor/resizable/resizable.min.js"></script>
   <script src="vendor/velocity/velocity.min.js"></script>
+  <script src="diff_match_patch_uncompressed.js"></script>
+  <script src="mark.js"></script>
+  <script src="vendor/bootstrap-select/bootstrap-select.min.js"></script>
+  <script src="morphdom.js"></script>
+
+  <!-- ========= -->
+  <!--  Scripts  -->
+  <!-- ========= -->
+  <script>window.App = { Inspector: {}, utils: {} };</script>
   <script src="../actions/actions.js"></script>
+  <script src="utility/logger.js"></script>
+  <script src="utility/utils.js"></script>
   <script src="translate.js"></script>
   <script src="undo.js"></script>
-  <script src="jsontree.js"></script>
-  <script src="diff_match_patch_uncompressed.js"></script>
   <script src="actionfinder.js"></script>
-  <script src="mark.js"></script>
   <script src="multiselect.js"></script>
   <script src="draganddrop.js"></script>
   <script src="updategotos.js"></script>
   <script src="embeddedmodel.js"></script>
-  <script src="vendor/bootstrap-select/bootstrap-select.min.js"></script>
-  <script src="bootstrap-tour.min.js"></script>
-  <script src="tour.js"></script>
   <script src="edgescroll.js"></script>
   <script src="functionmanager.js"></script>
   <script src="webinterfacetasks.js"></script>
   <script src="visualizelabels.js"></script>
   <script src="helpmanager.js"></script>
-  <script src="interact.js"></script>
-  <script src="morphdom.js"></script>
   <script src="updater/internal/backbone.events.js"></script>
   <script src="updater/internal/progressbar.js"></script>
   <script src="updater/internal/translate.js"></script>
   <script src="updater/internal/utils.js"></script>
   <script src="updater/updater.js"></script>
   <script src="moveexecutionpoint.js"></script>
-  
+  <script src="inspector/inspector.js"></script>
+  <script src="inspector/modal.js"></script>
+  <script>_.extend(window.App, Backbone.Events);</script>
 
-  <script type="text/javascript"> _L = $.extend(_L, _AL)</script>
-  <script type="text/javascript"> _MACRO_INSERT_LOCALIZE_ </script>
-  <script type="text/javascript"> _MACRO_INSERT_ACTIONS_ </script>
-
+  <script> _L = $.extend(_L, _AL) </script>
+  <script> _MACRO_INSERT_LOCALIZE_ </script>
+  <script> _MACRO_INSERT_ACTIONS_ </script>
 
   <!-- ========= -->
   <!--   Styles  -->
   <!-- ========= -->
   <link rel="stylesheet" href="bootstrap.min.css">
-  <!--<link rel="stylesheet" href="bootstrap-theme.min.css">-->
-  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="context.standalone.css">
+  <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="font-awesome.min.css">
-  <link rel="stylesheet" href="jsontree.css">
   <link rel="stylesheet" href="vendor/bootstrap-select/bootstrap-select.min.css">
-  <link rel="stylesheet" href="bootstrap-tour.min.css">
   <link rel="stylesheet" href="checkbox.min.css">
+  <link rel="stylesheet" href="inspector/inspector.css">
+  <link rel="stylesheet" href="inspector/modal.css">
   <link rel="stylesheet" href="updater/updater.css">
 
   <!-- =============== -->
   <!-- Javascript code -->
   <!-- =============== -->
-  <script type="text/javascript">
+  <script>
 
     var TaskModel = Backbone.Model.extend({
         defaults: {
@@ -1524,6 +1504,7 @@
             state: "main",
             istaskexecuting: false,
             isscriptexecuting: false,
+            isexecutionaborting: false,
             execute_next_id: 0,
             isstepnextactivated: false,
             insert_index: 0,
@@ -1535,15 +1516,36 @@
             successnumber: 1,
             failnumber: 1,
             function_name: "Main",
-            show_variable_inspector: false,
-            show_variable_inspector_pending: false,
-            variable_inspector_data: "{}",
-            variableinspectorheight: 300
         },
         initialize: function () {  
           this.bind("change:execute_next_id", function(model) {  
             var execute_next_id = model.get("execute_next_id");
             _WebInterfaceTasks.CurrentIdChanged(execute_next_id)
+          });
+
+          this.on("change:isscriptexecuting", (_, value) => {
+            log.info(`The script has been ${value ? "started" : "completed"}`);
+            _Inspector.wait(value);
+
+            if (!value) requestUpdate();
+          });
+
+          this.on("change:istaskexecuting", (_, value) => {
+            log.info(`The task has been ${value ? "started" : "completed"}`);
+            _Inspector.wait(value);
+
+            if (!value) requestUpdate();
+          });
+
+          const requestUpdate = () => _.defer(() => {
+            if (!this.get("isexecutionaborting")) {
+              if (VariablesUpdateSkip) {
+                VariablesUpdateSkip = false;
+                return BrowserAutomationStudio_AskForVariablesUpdateIfNeeded();
+              }
+              return BrowserAutomationStudio_AskForVariablesUpdate();
+            }
+            this.once("change:isexecutionaborting", (_, value) => value || requestUpdate());
           });
         }  
     });
@@ -1603,7 +1605,6 @@
         "click #success-number-edit": "successnumberedit",
         "click #fail-number-edit": "failnumberedit",
         "click #runmode-edit": "runmodeedit",
-        "click #closevariableinspector": "closevariableinspector",
         "click .color-select": "selectcolor"
       },
 
@@ -1667,8 +1668,7 @@
 
       moveexecutionpointfast: function(event)
       {
-        if(_GobalModel.get("isscriptexecuting"))
-            return;
+        if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
         var task = FindTaskById(parseInt($(event.target).closest("*[data-index]").attr("task-id")));
 
@@ -1676,8 +1676,8 @@
         {
           var execute_point_code = GenerateCodeForMovingExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
 
-          _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
-          var second_line = "section_start(\"test\", " + task.get("id") + ")!"
+          _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
+          var second_line = "debug_callstack()!\nsection_start(\"test\", " + task.get("id") + ")!"
           var code = execute_point_code + "\n" + second_line
           BrowserAutomationStudio_Execute(code, false)
         }
@@ -1868,7 +1868,7 @@
           return
         }
 
-        var no_allowed = "print,gc,version,Helper,CsvHelper,HtmlParser,Browser,ScriptWorker,Results1,Results2,Results3,Results4,Results5,Results6,Results7,Results8,Results9,Logger,FactorySolver,EngineRes,ResourceHandlers,Properties,_K,MemoryInfo,ResourceLoader,_template,tr,_L,Cycle,Cycles,_next,_next_or_section,_kill_call_stack,_break,_iterator,_arguments,_do,_repeat,_if,_if_else,_call,_call_section,_result,_set_result,_return,_set_label,_rewind,_goto,_fast_goto,VAR_CYCLE_INDEX,VAR_FOREACH_DATA,LINK_REGEXP,VAR_FOR_EACH_CSS,VAR_FOR_EACH_MATCH,VAR_FOR_EACH_XPATH,IF_ELSE_EXPRESSION,CYCLES,memory_virtual_total,memory_virtual_available,memory_physical_total,memory_physical_available,html_parser_xpath_parse,html_parser_xpath_xml,html_parser_xpath_count,html_parser_xpath_exist,html_parser_xpath_text,html_parser_xpath_xml_list,html_parser_xpath_text_list,_get_function_body,rand,_spintax,proxy_parse,proxy_pack,parse_json,md5,base64_encode,base64_decode,file_read,file_read_base64,file_write,file_write_base64,file_append,file_append_base64,directory_of,directory_create,filename_of,combine_path,encode_string,image_get_dimension,image_central_crop,oauth1_header,csv_parse,csv_generate,date_format,date_format_now,db_date_now,translit,_stop_subscript_execution,fail,die,success,debug_variables,_get_actual_http_client,_switch_http_client_main,_switch_http_client_internal,_switch_http_client,_ensure_http_client,on_http_client_loaded,new_http_client,http_client_set_fail_on_error,http_client_was_error,http_client_error_string,http_client_get,http_client_get2,http_client_download,http_client_solve,http_client_post,http_client_get_no_redirect,http_client_get_no_redirect2,http_client_post_no_redirect,http_client_url,http_client_content,http_client_content_base64,http_client_header,http_client_status,http_client_set_header,http_client_clear_header,http_client_proxy,http_client_set_proxy,http_client_get_cookies,http_client_save_cookies,http_client_restore_cookies,http_client_xpath_parse,http_client_xpath_xml,http_client_xpath_text,http_client_xpath_xml_list,http_client_xpath_text_list,http_client_xpath_count,http_client_xpath_exist,HttpClientIndex,_ensure_pop3_client,new_pop3_client,pop3_client_set_config,pop3_client_proxy,pop3_client_was_error,pop3_client_error_string,pop3_client_set_proxy,pop3_client_pull_messages_length,pop3_client_pull_message,pop3_client_messages_length,pop3_client_body,pop3_client_subject,pop3_client_sender,_ensure_imap_client,new_imap_client,imap_client_set_config,imap_client_set_proxy,imap_client_proxy,imap_client_was_error,imap_client_error_string,imap_client_pull_messages_length,imap_client_messages_length,imap_client_search,imap_client_custom_search,imap_client_search_result,imap_client_pull_message,imap_client_message,imap_custom_query,imap_custom_query_result,imap_custom_query_log,waiter_timeout_next,waiter_nofail_next,wait_url,wait_load,wait_memory,waiter_prepare_frames,waiter_create_css_path,waiter_create_match_path,wait_content_visible,wait_css_visible,wait_content,wait_css,wait_async_load,wait,get_element_selector,wait_element,wait_element_visible,BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT,BROWSERAUTOMATIONSTUDIO_FULL_LOAD_TIMEOUT,BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT_NEXT,BROWSERAUTOMATIONSTUDIO_WAIT_NOFAIL_NEXT,_get_last_record_id,RS,R,RSafe,Refuse,RIsRefused,Reload,RInsert,RSync,RCreate,RTake,RSuccessAll,RFailAll,RDieAll,RInfo,RPick,RPickRandom,RMap,_R,_RKEY,P,PSet,PClear,_ensure_browser_created,_simulate_crush,_settings,new_browser,_mbr,_mar,browser,close_browser,mouse,mouse_up,mouse_down,timezone,geolocation,popupclose,popupselect,render,scroll,_default_move_params,move,_clarify,wait_code,section_end,load,load_instant,open_file_dialog,prompt_result,http_auth_result,screenshot,url,get_cookies,resize,reset,jquery,optimize,save_cookies,restore_cookies,restore_localstorage,page,clear_log,log,log_html,log_success,log_fail,ResultResolve,result,result_html,result_file,css,frame,frame_css,xpath,xpath_all,frame_match,position,match,match_all,all,thread_number,success_number,project_path,fail_number,sleep,script,font_list,onloadjavascript,onloadjavascriptinternal,agent,antigate,rucaptcha,twocaptcha,capmonster,solver_properties_clear,solver_property,dbc,_solver_properties_list,solve,solve_base64,solve_base64_no_fail,solver_failed,progress,progress_value,progress_maximum,suspend,on_fail,clear_on_fail,on_success,clear_on_success,_on_fail,_on_fail_exceed,_on_success_exceed,_finnaly,_clear_on_fail,_on_success,_clear_on_success,_set_max_fail,_set_max_success,DEC,_db_add_record,_db_select_records,_db_delete_records,_db_update_record,_db_add_group,_on_start,native,native_async,general_timeout_next,general_timeout,async_load_timeout,solver_timeout_next,solver_timeout,_preprocess,VAR_WAS_ERROR,VAR_LAST_ERROR,_BAS_SOLVER_PROPERTIES,open_browser,_DEFAULT_MOVE_PARAMS,_set_target,_get_target,_get_network_access_manager,header,header_order,clear_header,proxy,set_proxy,cache_allow,cache_deny,request_allow,request_deny,cache_get_base64,cache_get_string,cache_get_status,cache_clear,cache_data_clear,cache_masks_clear,is_load,get_load_stats,_restrict_popups,_allow_popups,_restrict_downloads,_allow_downloads,_BROWSERAUTOMATIONSTUDIO_TARGET,section_start,_sa,section_insert,_clear_image_data,_set_image_data,_find_image,_image,_wait_image,IMAGE_FINDER,BrowserAutomationStudio_ApplyFingerprint,NumbersParseRecaptcha2,BAS_CapmonsterUpdateImage,BAS_SolveRecaptcha,BAS_CAPMONSTER_IMAGE_ID,_BAS_GETSMSSITECODE,_BAS_PARSEJSONFROMHTTPCLIENT,_sms_ban_thread,_sms_ban_service,_sms_before_request,_BAS_SMSREGAPIREQUEST,_BAS_SMSACTIVATEPIREQUEST,_BAS_SMSPVAREQUEST,_BAS_SMSCONFIRMDATA,_SMS_BAN_THREAD,_SMS_DEBUG,NetworkAccessManager"
+        var no_allowed = "print,gc,version,Helper,CsvHelper,HtmlParser,Browser,ScriptWorker,Results1,Results2,Results3,Results4,Results5,Results6,Results7,Results8,Results9,Logger,FactorySolver,EngineRes,ResourceHandlers,Properties,_K,MemoryInfo,ResourceLoader,_template,tr,_L,Cycle,Cycles,_next,_next_or_section,_kill_call_stack,_break,_iterator,_arguments,_do,_repeat,_if,_if_else,_call,_call_section,_result,_set_result,_return,_set_label,_rewind,_goto,_fast_goto,VAR_CYCLE_INDEX,VAR_FOREACH_DATA,LINK_REGEXP,VAR_FOR_EACH_CSS,VAR_FOR_EACH_MATCH,VAR_FOR_EACH_XPATH,IF_ELSE_EXPRESSION,CYCLES,memory_virtual_total,memory_virtual_available,memory_physical_total,memory_physical_available,html_parser_xpath_parse,html_parser_xpath_xml,html_parser_xpath_count,html_parser_xpath_exist,html_parser_xpath_text,html_parser_xpath_xml_list,html_parser_xpath_text_list,_get_function_body,rand,_spintax,proxy_parse,proxy_pack,parse_json,md5,base64_encode,base64_decode,file_read,file_read_base64,file_write,file_write_base64,file_append,file_append_base64,directory_of,directory_create,filename_of,combine_path,encode_string,image_get_dimension,image_central_crop,oauth1_header,csv_parse,csv_generate,date_format,date_format_now,db_date_now,translit,_stop_subscript_execution,fail,die,success,request_variables,debug_variables,_get_actual_http_client,_switch_http_client_main,_switch_http_client_internal,_switch_http_client,_ensure_http_client,on_http_client_loaded,new_http_client,http_client_set_fail_on_error,http_client_was_error,http_client_error_string,http_client_get,http_client_get2,http_client_download,http_client_solve,http_client_post,http_client_get_no_redirect,http_client_get_no_redirect2,http_client_post_no_redirect,http_client_url,http_client_content,http_client_content_base64,http_client_header,http_client_status,http_client_set_header,http_client_clear_header,http_client_proxy,http_client_set_proxy,http_client_get_cookies,http_client_save_cookies,http_client_restore_cookies,http_client_xpath_parse,http_client_xpath_xml,http_client_xpath_text,http_client_xpath_xml_list,http_client_xpath_text_list,http_client_xpath_count,http_client_xpath_exist,HttpClientIndex,_ensure_pop3_client,new_pop3_client,pop3_client_set_config,pop3_client_proxy,pop3_client_was_error,pop3_client_error_string,pop3_client_set_proxy,pop3_client_pull_messages_length,pop3_client_pull_message,pop3_client_messages_length,pop3_client_body,pop3_client_subject,pop3_client_sender,_ensure_imap_client,new_imap_client,imap_client_set_config,imap_client_set_proxy,imap_client_proxy,imap_client_was_error,imap_client_error_string,imap_client_pull_messages_length,imap_client_messages_length,imap_client_search,imap_client_custom_search,imap_client_search_result,imap_client_pull_message,imap_client_message,imap_custom_query,imap_custom_query_result,imap_custom_query_log,waiter_timeout_next,waiter_nofail_next,wait_url,wait_load,wait_memory,waiter_prepare_frames,waiter_create_css_path,waiter_create_match_path,wait_content_visible,wait_css_visible,wait_content,wait_css,wait_async_load,wait,get_element_selector,wait_element,wait_element_visible,BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT,BROWSERAUTOMATIONSTUDIO_FULL_LOAD_TIMEOUT,BROWSERAUTOMATIONSTUDIO_WAIT_TIMEOUT_NEXT,BROWSERAUTOMATIONSTUDIO_WAIT_NOFAIL_NEXT,_get_last_record_id,RS,R,RSafe,Refuse,RIsRefused,Reload,RInsert,RSync,RCreate,RTake,RSuccessAll,RFailAll,RDieAll,RInfo,RPick,RPickRandom,RMap,_R,_RKEY,P,PSet,PClear,_ensure_browser_created,_simulate_crush,_settings,new_browser,_mbr,_mar,browser,close_browser,mouse,mouse_up,mouse_down,timezone,geolocation,popupclose,popupselect,render,scroll,_default_move_params,move,_clarify,wait_code,section_end,load,load_instant,open_file_dialog,prompt_result,http_auth_result,screenshot,url,get_cookies,resize,reset,jquery,optimize,save_cookies,restore_cookies,restore_localstorage,page,clear_log,log,log_html,log_success,log_fail,ResultResolve,result,result_html,result_file,css,frame,frame_css,xpath,xpath_all,frame_match,position,match,match_all,all,thread_number,success_number,project_path,fail_number,sleep,script,font_list,onloadjavascript,onloadjavascriptinternal,agent,antigate,rucaptcha,twocaptcha,capmonster,solver_properties_clear,solver_property,dbc,_solver_properties_list,solve,solve_base64,solve_base64_no_fail,solver_failed,progress,progress_value,progress_maximum,suspend,on_fail,clear_on_fail,on_success,clear_on_success,_on_fail,_on_fail_exceed,_on_success_exceed,_finnaly,_clear_on_fail,_on_success,_clear_on_success,_set_max_fail,_set_max_success,DEC,_db_add_record,_db_select_records,_db_delete_records,_db_update_record,_db_add_group,_on_start,native,native_async,general_timeout_next,general_timeout,async_load_timeout,solver_timeout_next,solver_timeout,_preprocess,VAR_WAS_ERROR,VAR_LAST_ERROR,_BAS_SOLVER_PROPERTIES,open_browser,_DEFAULT_MOVE_PARAMS,_set_target,_get_target,_get_network_access_manager,header,header_order,clear_header,proxy,set_proxy,cache_allow,cache_deny,request_allow,request_deny,cache_get_base64,cache_get_string,cache_get_status,cache_clear,cache_data_clear,cache_masks_clear,is_load,get_load_stats,_restrict_popups,_allow_popups,_restrict_downloads,_allow_downloads,_BROWSERAUTOMATIONSTUDIO_TARGET,section_start,_sa,section_insert,_clear_image_data,_set_image_data,_find_image,_image,_wait_image,IMAGE_FINDER,BrowserAutomationStudio_ApplyFingerprint,NumbersParseRecaptcha2,BAS_CapmonsterUpdateImage,BAS_SolveRecaptcha,BAS_CAPMONSTER_IMAGE_ID,_BAS_GETSMSSITECODE,_BAS_PARSEJSONFROMHTTPCLIENT,_sms_ban_thread,_sms_ban_service,_sms_before_request,_BAS_SMSREGAPIREQUEST,_BAS_SMSACTIVATEPIREQUEST,_BAS_SMSPVAREQUEST,_BAS_SMSCONFIRMDATA,_SMS_BAN_THREAD,_SMS_DEBUG,NetworkAccessManager"
 
         if(no_allowed.split(",").indexOf(name) >= 0)
         {
@@ -2085,7 +2085,8 @@
           event.preventDefault();
           return;
         }
-        this.model.set("isscriptexecuting", false)
+        this.model.set("isexecutionaborting", true);
+        this.model.set("isscriptexecuting", false);
       },
 
       restart: function()
@@ -2100,19 +2101,15 @@
 
       play: function(event)
       {
-        if($("#play").hasClass("actionbuttongray"))
-        {
+        if ($("#play").hasClass("actionbuttongray")) {
           event.preventDefault();
           return;
         }
-        this.model.set("isscriptexecuting", true)
-        if(!this.model.get("istaskexecuting"))
-        {
-          SendTask()
+        this.model.set("isscriptexecuting", true);
+        if (!this.model.get("istaskexecuting") && !this.model.get("isexecutionaborting")) {
+          SendTask();
         }
       },
-
-
 
       UpdateInsertDataInterface: function()
       {
@@ -2217,11 +2214,11 @@
         
         if(_K == "ru")
         {
-          PasteData =JSON.stringify([{"name":"","code":"/*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/\n          _call(function()\n          {\n          _on_fail(function(){\n          VAR_LAST_ERROR = _result()\n          VAR_ERROR_ID = ScriptWorker.GetCurrentAction()\n          VAR_WAS_ERROR = false\n          _break(1,true)\n          })\n          CYCLES.Current().RemoveLabel(\"function\")\n          section_insert()\n          },null)!","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIgnoreErrors,"donotexecuteduringrecord":false,"is_selected":false,"color":"","is_fold":false,"fd":""},{"name":"","code":"/*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1dBU19FUlJPUl1dIiwiY2xhc3MiOiJleHByZXNzaW9uIn0seyJpZCI6IklmRWxzZSIsInR5cGUiOiJjaGVjayIsImRhdGEiOmZhbHNlfV19*/\n                _if(VAR_WAS_ERROR,function(){\n                section_insert()\n                })!","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIf,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""},{"name":"","code":"/*Dat:eyJzIjoibG9nIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkxvZ1RleHQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6ItCf0YDQvtC40LfQvtGI0LvQsCDQvtGI0LjQsdC60LAgOiBbW0xBU1RfRVJST1JdXSIsImNsYXNzIjoic3RyaW5nIn1dfQ==*/\n      log(\"Произошла ошибка : \" + VAR_LAST_ERROR)","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":IdIf,"id":IdLog,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""}])
+          PasteData =JSON.stringify([{"name":"","code":"/*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/\n          _call(function()\n          {\n          _on_fail(function(){\n          VAR_LAST_ERROR = _result()\n          VAR_ERROR_ID = ScriptWorker.GetCurrentAction()\n          VAR_WAS_ERROR = false\n          _break(1,true)\n          })\n          CYCLES.Current().RemoveLabel(\"function\")\n          section_insert()\n          },null)!","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIgnoreErrors,"donotexecuteduringrecord":false,"is_selected":false,"color":"","is_fold":false,"fd":""},{"name":"","code":`/*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1dBU19FUlJPUl1dIiwiY2xhc3MiOiJleHByZXNzaW9uIn0seyJpZCI6IklmRWxzZSIsInR5cGUiOiJjaGVjayIsImRhdGEiOmZhbHNlfV19*/\n                _set_if_expression("${utf8_to_b64('[[WAS_ERROR]]')}");\n                _if(VAR_WAS_ERROR,function(){\nsection_insert()\n                })!`,"internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIf,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""},{"name":"","code":"/*Dat:eyJzIjoibG9nIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkxvZ1RleHQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6ItCf0YDQvtC40LfQvtGI0LvQsCDQvtGI0LjQsdC60LAgOiBbW0xBU1RfRVJST1JdXSIsImNsYXNzIjoic3RyaW5nIn1dfQ==*/\n      log(\"Произошла ошибка : \" + VAR_LAST_ERROR)","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":IdIf,"id":IdLog,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""}])
         } 
         else
         {
-          PasteData =JSON.stringify([{"name":"","code":"/*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/\n          _call(function()\n          {\n          _on_fail(function(){\n          VAR_LAST_ERROR = _result()\n          VAR_ERROR_ID = ScriptWorker.GetCurrentAction()\n          VAR_WAS_ERROR = false\n          _break(1,true)\n          })\n          CYCLES.Current().RemoveLabel(\"function\")\n          section_insert()\n          },null)!","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIgnoreErrors,"donotexecuteduringrecord":false,"is_selected":false,"color":"","is_fold":false,"fd":""},{"name":"","code":"/*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1dBU19FUlJPUl1dIiwiY2xhc3MiOiJleHByZXNzaW9uIn0seyJpZCI6IklmRWxzZSIsInR5cGUiOiJjaGVjayIsImRhdGEiOmZhbHNlfV19*/\n                _if(VAR_WAS_ERROR,function(){\n                section_insert()\n                })!","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIf,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""},{"name":"","code":"/*Dat:eyJzIjoibG9nIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkxvZ1RleHQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IkVycm9yIG9jY3VycmVkIDogW1tMQVNUX0VSUk9SXV0iLCJjbGFzcyI6InN0cmluZyJ9XX0=*/\n      log(\"Error occurred : \" + VAR_LAST_ERROR)","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":IdIf,"id":IdLog,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""}])
+          PasteData =JSON.stringify([{"name":"","code":"/*Dat:eyJzIjoiaWdub3JlZXJyb3JzIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbXX0=*/\n          _call(function()\n          {\n          _on_fail(function(){\n          VAR_LAST_ERROR = _result()\n          VAR_ERROR_ID = ScriptWorker.GetCurrentAction()\n          VAR_WAS_ERROR = false\n          _break(1,true)\n          })\n          CYCLES.Current().RemoveLabel(\"function\")\n          section_insert()\n          },null)!","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIgnoreErrors,"donotexecuteduringrecord":false,"is_selected":false,"color":"","is_fold":false,"fd":""},{"name":"","code":`/*Dat:eyJzIjoiaWYiLCJ2IjoxLCJmIjpbXSwidXciOiIwIiwidXQiOiIwIiwidXRvIjoiMCIsInVtIjoiMCIsImQiOlt7ImlkIjoiSWZFeHByZXNzaW9uIiwidHlwZSI6ImNvbnN0ciIsImRhdGEiOiJbW1dBU19FUlJPUl1dIiwiY2xhc3MiOiJleHByZXNzaW9uIn0seyJpZCI6IklmRWxzZSIsInR5cGUiOiJjaGVjayIsImRhdGEiOmZhbHNlfV19*/\n                _set_if_expression("${utf8_to_b64('[[WAS_ERROR]]')}");\n                _if(VAR_WAS_ERROR,function(){\nsection_insert()\n                })!`,"internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":0,"id":IdIf,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""},{"name":"","code":"/*Dat:eyJzIjoibG9nIiwidiI6MSwiZiI6W10sInV3IjoiMCIsInV0IjoiMCIsInV0byI6IjAiLCJ1bSI6IjAiLCJkIjpbeyJpZCI6IkxvZ1RleHQiLCJ0eXBlIjoiY29uc3RyIiwiZGF0YSI6IkVycm9yIG9jY3VycmVkIDogW1tMQVNUX0VSUk9SXV0iLCJjbGFzcyI6InN0cmluZyJ9XX0=*/\n      log(\"Error occurred : \" + VAR_LAST_ERROR)","internal_label_id":"","dat_precomputed":null,"search_precomputed":null,"code_precomputed":null,"parentid":IdIf,"id":IdLog,"donotexecuteduringrecord":false,"is_selected":false,"color":"5","is_fold":false,"fd":""}])
         }
 
 
@@ -2342,7 +2339,7 @@
         this.render()
         this.send()
 
-        $('#editmodal').modal('hide');
+        $('#editmodal').data('accept', true).modal('hide');
 
         this.isEdit = false
       },
@@ -2584,7 +2581,6 @@
         
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
 
@@ -2610,7 +2606,6 @@
         
         this.model.set("dontsend",false)
         BrowserAutomationStudio_SaveToUndoManager()
-        BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
         this.send()
         this.render()
 
@@ -3012,35 +3007,6 @@
           })
          $(".taskcontainer .selected").css("visibility","hidden")
          this.RecalculateMargins($(".tool-margin"),"clear")
-      },
-
-      ToggleVariableInspector: function()
-      {
-        var show_variable_inspector = this.model.get("show_variable_inspector")
-        show_variable_inspector = !show_variable_inspector
-
-        this.model.attributes["show_variable_inspector"] = show_variable_inspector
-        
-        if(show_variable_inspector)
-        {
-          $("#variableinspector").show()
-          $(".main").css("padding-bottom",(50 + this.model.attributes["variableinspectorheight"]).toString() + "px")
-          
-          BrowserAutomationStudio_AskForVariablesUpdateOrWait()
-        }else
-        {
-          $(".main").css("padding-bottom","50px")
-          $("#variableinspector").hide()
-        }
-      },
-
-      closevariableinspector: function(event)
-      {
-
-        event.preventDefault();
-        this.model.attributes["show_variable_inspector"] = false
-        $("#variableinspector").hide()
-        $(".main").css("padding-bottom","50px")
       },
 
       Delete: function(is_single){
@@ -3521,16 +3487,15 @@
 
       MoveExecutionPointHere: function()
       {
-          if(_GobalModel.get("isscriptexecuting"))
-            return;
+          if (_GobalModel.get("isscriptexecuting") || _GobalModel.get("istaskexecuting")) return;
 
           var task = this.collection.at(this.currentTargetId);
           if(task)
           {
             var execute_point_code = GenerateCodeForMovingExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
 
-            _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"),task.get("id"))
-            var second_line = "section_start(\"test\", " + task.get("id") + ")!"
+            _WebInterfaceTasks.MovedExecutionPoint(this.model.get("execute_next_id"), task.get("id"))
+            var second_line = "debug_callstack()!\nsection_start(\"test\", " + task.get("id") + ")!"
             var code = execute_point_code + "\n" + second_line
             BrowserAutomationStudio_Execute(code, false)
 
@@ -3617,7 +3582,7 @@
           return;
         }
 
-        this.isEdit = true
+        this.isEdit = VariablesUpdateSkip = true
 
         var task = this.collection.at(this.currentTargetId)
 
@@ -3628,7 +3593,15 @@
         $(".color-select[color-id='" + task.get("color") + "']").addClass("color-select-active")
 
         $("#TaskDontRunWhenRecording").prop('checked', this.collection.at(this.currentTargetId).get("donotexecuteduringrecord"))
-        if (!options.disableModal) $("#editmodal").modal({})
+        if (!options.disableModal) {
+          $("#editmodal").modal().data('accept', false).one('hidden.bs.modal', (event) => {
+            if ((VariablesUpdateSkip = $(event.target).data('accept'))) {
+              log.info(`Task editing has been finished`);
+            } else {
+              log.info(`Task editing has been canceled`);
+            }
+          });
+        }
         var match = code.match(/\/\*Dat\:([^\*]+)\*\//)
         if(match)
         {
@@ -3778,10 +3751,6 @@
       },
 
       render: function(model){
-
-
-
-
         if(_GobalModel.hasChanged("dontsend"))
         {
           return;
@@ -3795,19 +3764,15 @@
 
         if(_GobalModel.hasChanged("execute_next_id"))
         {
-          BrowserAutomationStudio_PreserveVariableInspectorScroll()
             this.rendertaksid();
             this.renderisscriptexecutingcontainer();
-          BrowserAutomationStudio_RestoreVariableInspectorScroll()
           return; 
         }
 
 
         if(_GobalModel.hasChanged("isscriptexecuting"))
         {
-          BrowserAutomationStudio_PreserveVariableInspectorScroll()
           this.renderisscriptexecutingcontainer();
-          BrowserAutomationStudio_RestoreVariableInspectorScroll()
           return;
         }
 
@@ -3826,7 +3791,6 @@
 
 
 
-        BrowserAutomationStudio_PreserveVariableInspectorScroll()
 
 
         var index_start = -1;
@@ -3918,7 +3882,6 @@
         console.log("Cached actions: " + cached_actions + " / " + total_actions + ". Total added: " + total_added + ", total removed: " + total_removed)
 
 
-        BrowserAutomationStudio_RestoreVariableInspectorScroll()
 
 
         _MainView.SetDefaultInsert()
@@ -3931,9 +3894,9 @@
 
         
         //_CacheLoader.Stop()
-
         this.renderisscriptexecutingcontainer();
         this.renderselectiontemplatecontainer();
+        _Inspector.render();
 
         var self = this
 
@@ -3983,36 +3946,33 @@
 
         context.attach('.toolmenuextended', elementmenuextended);
 
-        context.attach('html', [
+        context.attach('.main', [
           {header: tr('Actions')},
 
-          {text: '<img draggable="false" src="copy.png" style="width:14px" /> ' + tr('Copy selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/copy.png" style="width:14px" /> ' + tr('Copy selected'), action: function(e){
                 e.preventDefault();
                 self.Copy()
           }},
-          {text: '<img draggable="false" src="paste.png" style="width:14px" /> ' + tr('Paste selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/paste.png" style="width:14px" /> ' + tr('Paste selected'), action: function(e){
                 e.preventDefault();
                 self.Paste()
           }},
-          {text: '<img draggable="false" src="cut.png" style="width:14px" /> ' + tr('Cut selected'), action: function(e){
+          {text: '<img draggable="false" src="icons/cut.png" style="width:14px" /> ' + tr('Cut selected'), action: function(e){
                 e.preventDefault();
                 self.Cut()
           }},
           {text: tr('Delete selected'), action: function(e){
                 e.preventDefault();
                 self.DeleteSelected()
-
           }},
           {divider:true},
           {text: tr('Enable selected'), action: function(e){
                 e.preventDefault();
                 self.EnableSelected()
-
           }},
           {text: tr('Disable selected'), action: function(e){
                 e.preventDefault();
                 self.DisableSelected()
-
           }},
           {divider:true},
           {text: tr('Set color') + ' <span class="action-color-1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ' + tr('for selected actions'), action: function(e){
@@ -4040,12 +4000,12 @@
               self.SetSelectedColor("")
           }},
           {divider:true},
-          {text: '<img draggable="false" src="checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
+          {text: '<img draggable="false" src="icons/checkall.png" style="width:14px" /> ' + tr('Select all'), action: function(e){
                 e.preventDefault();
                 self.CheckAll()
 
           }},
-          {text: '<img draggable="false" src="uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
+          {text: '<img draggable="false" src="icons/uncheckall.png" style="width:14px" /> ' + tr('Clear selection'), action: function(e){
                 e.preventDefault();
                 self.ClearSelection()
 
@@ -4066,12 +4026,10 @@
           {text: '<i class="fa fa-search" aria-hidden="true"></i> ' + tr('Search'), action: function(e){
                 e.preventDefault();
                 _ActionFinder.Show()
-
           }},
-          {text: '<i class="fa fa-bug" aria-hidden="true"></i> ' + tr('Variable Inspector'), action: function(e){
+          {text: '<i class="fa fa-bug" aria-hidden="true"></i> ' + tr('Variable inspector'), action: function(e){
                 e.preventDefault();
-                self.ToggleVariableInspector()
-
+                _Inspector.show();
           }},
         ]);
 
@@ -4091,62 +4049,9 @@
 
         _VisualizeLabels.Visualize();
 
-        var TotalHeight = $(window).height();
-        var FunctionManagerHeight = $("#functions").outerHeight()
-
-        var H =  _GobalModel.attributes["variableinspectorheight"]
-        if(H > TotalHeight -FunctionManagerHeight - 300)
-          H = TotalHeight -FunctionManagerHeight - 300
-        if(H<100)
-          H = 100
-        $("#variableinspector").css("height",H + "px")
-        if(_GobalModel.attributes["show_variable_inspector"])
-          $(".main").css("padding-bottom",(50 + H).toString() + "px")
-
-
-        interact('#variableinspector')
-          .resizable({
-            // resize from all edges and corners
-            edges: { top: true },
-
-            modifiers: [
-              
-            ],
-
-            inertia: false
-          })
-          .off('resizemove')
-          .on('resizemove', function (event) {
-            var TotalHeight = $(window).height();
-            var FunctionManagerHeight = $("#functions").outerHeight()
-
-            var Y = event.client.y
-            var H = TotalHeight - Y - FunctionManagerHeight
-            if(H > TotalHeight - FunctionManagerHeight - 300)
-              H = TotalHeight - FunctionManagerHeight - 300
-            if(H<100)
-              H = 100
-            $("#variableinspector").css("height",H + "px")
-            $(".main").css("padding-bottom",(50 + H).toString() + "px")
-            _GobalModel.attributes["variableinspectorheight"] = H
-    
-          })
-
-        //_Tour.Start();
-        this.trigger('render');
+        return this.trigger('render');
       }
-
     });
-
-    var Router = Backbone.Router.extend({
-        routes: {
-            "": "main",
-            "!/": "main"
-        }
-    });
-
-
-    var _Router = new Router();
 
     var _TaskCollection = new TaskCollection([/*{name:"Initialize Browser",code:"new_browser()!",id:0},{name:"Load Gmail.com",code:"load(\"gmail.com\")!",id:123},{name:"Load ya.ru",code:"load(\"ya.ru\")!",id:456}*/]);
 
@@ -4168,19 +4073,17 @@
 
     var _HelpManager = new HelpManager()
 
-    //var _Tour = new BrowserAutomationStudio_Tour()
-
     var _EmbeddedModel = new EmbeddedModel()
 
     var _WebInterfaceTasks = new WebInterfaceTasks()
 
     var _VisualizeLabels = new VisualizeLabels()
 
-    var _ActionUpdater = new Scenario.ActionUpdater();
+    var _ActionUpdater = new App.ActionUpdater();
+
+    var _Inspector = new App.Inspector.View();
 
     _MultiSelect.Init()
-
-    Backbone.history.start();
 
     context.init({preventDoubleContext: false});
 
@@ -4208,21 +4111,6 @@
     var BrowserAutomationStudio_DoubleClickTime = 0
 
 
-    function BrowserAutomationStudio_PreserveVariableInspectorScroll()
-    {
-      if(!$("#pendingnotice").is(":visible"))
-      {
-        window.SaveVariablesInspectorScroll = $("#variableinspector").scrollTop()
-      }
-    }
-
-    function BrowserAutomationStudio_RestoreVariableInspectorScroll()
-    {
-      if(typeof(window.SaveVariablesInspectorScroll) != "number" || window.SaveVariablesInspectorScroll < 0)
-          window.SaveVariablesInspectorScroll = 0
-          
-      $("#variableinspector").scrollTop(window.SaveVariablesInspectorScroll)
-    }
 
     /*
          =========
@@ -4344,23 +4232,12 @@
 
     */    
 
-    function BrowserAutomationStudio_HandlersInitialize()
-    {
-      if(BrowserAutomationStudio_HandlerIsInitialized)
-        return
+    function BrowserAutomationStudio_HandlersInitialize() {
+      if (BrowserAutomationStudio_HandlerIsInitialized) return;
 
-      BrowserAutomationStudio_HandlerIsInitialized = true
-
-      //_GobalModel.bind('change', BrowserAutomationStudio_SaveToUndoManager);
-      _TaskCollection.bind('add', BrowserAutomationStudio_SaveToUndoManager);
-      _TaskCollection.bind('change', BrowserAutomationStudio_SaveToUndoManager);
-      _TaskCollection.bind('remove', BrowserAutomationStudio_SaveToUndoManager);  
-
-      _TaskCollection.bind('add', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);
-      _TaskCollection.bind('change', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);
-      _TaskCollection.bind('remove', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);  
-      _TaskCollection.bind('reset', BrowserAutomationStudio_AskForVariablesUpdateIfNeeded);  
-      
+      BrowserAutomationStudio_HandlerIsInitialized = true;
+      _TaskCollection.on('add change remove', () => BrowserAutomationStudio_SaveToUndoManager());
+      _TaskCollection.on('add change remove reset', () => BrowserAutomationStudio_AskForVariablesUpdateIfNeeded());
     }
 
     /*
@@ -5449,9 +5326,10 @@
 
     }
 
-    var VariablesListPrev = []
-    var VariablesUpdateTakesPlace = false
-    var VariablesNeedRefresh = false
+    var VariablesUpdateRequested = false;
+    var VariablesUpdateNeeded = false;
+    var VariablesUpdateSkip = false;
+    var VariablesListPrev = [];
 
     function BrowserAutomationStudio_Play()
     {
@@ -5652,69 +5530,57 @@
       }
     }
 
+    function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded() {
+      if (_GobalModel.get('dontsend')) return;
 
-    function BrowserAutomationStudio_AskForVariablesUpdateIfNeeded()
-    {
-      if(_GobalModel.get("dontsend"))
-          return
+      const variables = BrowserAutomationStudio_GetVariablesList();
 
-      if(JSON.stringify(VariablesListPrev) != JSON.stringify(BrowserAutomationStudio_GetVariablesList()))
-        BrowserAutomationStudio_AskForVariablesUpdateOrWait()
-    }
-
-    function BrowserAutomationStudio_AskForVariablesUpdateOrWait()
-    {
-        if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
-        {
-          BrowserAutomationStudio_AskForVariablesUpdate()
-        }else
-        {
-          if(_GobalModel.get("show_variable_inspector"))
-          {
-            BrowserAutomationStudio_PreserveVariableInspectorScroll();
-            _GobalModel.attributes['show_variable_inspector_pending'] = true
-            $("#pendingnotice").show()
-            $("#variablelistpending").hide()
-          }
-        }
-    }
-
-    function BrowserAutomationStudio_AskForVariablesUpdate()
-    {
-
-      if(!_GobalModel.get("show_variable_inspector"))
-        return
-
-      if(VariablesUpdateTakesPlace)
-      {
-        VariablesNeedRefresh = true
-        return
+      if (_.isEqual(variables, VariablesListPrev)) {
+        return log.info('Skipping a non-strict variables update - variables haven’t changed yet');
       }
-      
-      VariablesUpdateTakesPlace = true
 
-      VariablesListPrev = BrowserAutomationStudio_GetVariablesList()
-      variables = JSON.stringify(VariablesListPrev)
-      VariablesNeedRefresh = false
-      BrowserAutomationStudio_Execute("debug_variables(" + variables + ")!" + "\n" + "section_start(\"test\",-3)!", false)
+      if (_GobalModel.get('isscriptexecuting')) {
+        return log.info('Skipping a non-strict variables update - the script is still running');
+      }
+
+      if (_GobalModel.get('istaskexecuting')) {
+        return log.info('Skipping a non-strict variables update - the task is still running');
+      }
+
+      BrowserAutomationStudio_AskForVariablesUpdate();
     }
 
+    function BrowserAutomationStudio_AskForVariablesUpdate() {
+      if (VariablesUpdateRequested) {
+        log.info('Request to update variables has already been sent');
+        VariablesUpdateNeeded = true;
+        return;
+      }
 
-    function BrowserAutomationStudio_UpdateVariablesResult(data)
-    {
-      _GobalModel.attributes["variable_inspector_data"] = data
-      var ParsedData = JSON.parse(data)
+      VariablesListPrev = BrowserAutomationStudio_GetVariablesList();
+      VariablesUpdateRequested = true;
+      VariablesUpdateNeeded = false;
 
-      BrowserAutomationStudio_PreserveVariableInspectorScroll()      
+      log.info('Request to update the list of variables', VariablesListPrev);
+      BrowserAutomationStudio_Execute(`debug_variables(${JSON.stringify(VariablesListPrev)})!\nsection_start("test", -3)!`, false, true);
+    }
 
-      $("#variablelistpending").html(
-        "<div class='variableslabelcontainer'><span class='variableslabel tr'>" + tr("Variables:") + "</span></div>"
-        + JSONTree.create(ParsedData[0])
-        + "<div class='variableslabelcontainer'><span class='variableslabel tr'>" + tr("Resources:") + "</span></div>"
-        + JSONTree.create(ParsedData[1])
-      )
+    function BrowserAutomationStudio_RequestVariablesResult(data) {
+      App.trigger('variablesRequest', App.utils.parseJSON(data));
+    }
 
-      BrowserAutomationStudio_RestoreVariableInspectorScroll()
+    function BrowserAutomationStudio_UpdateVariablesResult(data) {
+      if (VariablesUpdateRequested) {
+        VariablesUpdateRequested = false;
+        VariablesUpdateNeeded = false;
+      }
+      log.info('Received an update for variables');
+      _Inspector.send({ type: 'update', payload: App.utils.parseJSON(data) });
+    }
+
+    function BrowserAutomationStudio_UpdateCallstackResult(data) {
+      log.info('Received an update for callstack');
+      _Inspector.send({ type: 'update', payload: App.utils.parseJSON(data) });
     }
 
     var IsChangedUsed = false
@@ -5749,10 +5615,8 @@
     
     function BrowserAutomationStudio_EditCancel()
     {
-      $('#editmodal').modal('hide');
+      $('#editmodal').data('accept', false).modal('hide');
     }
-
-
   
     function BrowserAutomationStudio_AddTask(Name, Code, Id, DontInterrupt, DontSendToDetector)
     {
@@ -5814,7 +5678,7 @@
           {
             _MainView.taskeditcustom(Name,Code,donotexecuteduringrecord)
             _ActionUpdater.model.trigger('toolbox.editSuccess');
-            $('#editmodal').modal('hide');
+            $('#editmodal').data('accept', true).modal('hide');
             return
           }
         }
@@ -5908,8 +5772,8 @@
     {
       if(Id == -3)
       {
-        VariablesUpdateTakesPlace = false
-        if(VariablesNeedRefresh)
+        VariablesUpdateRequested = false
+        if(VariablesUpdateNeeded)
           BrowserAutomationStudio_AskForVariablesUpdate()
         return
       }
@@ -5992,18 +5856,6 @@
       }else
         _GobalModel.set("istaskexecuting",false)
 
-      if(!_GobalModel.get("isscriptexecuting") && !_GobalModel.get("istaskexecuting"))
-      {
-        if(_GobalModel.get("show_variable_inspector"))
-        {
-          _GobalModel.attributes['show_variable_inspector_pending'] = false
-          $("#pendingnotice").hide()
-          $("#variablelistpending").show()
-          BrowserAutomationStudio_RestoreVariableInspectorScroll()
-        }
-        BrowserAutomationStudio_AskForVariablesUpdate()
-      }
-
       if(typeof(Id) != "undefined")
       {
         if(Id == 0) 
@@ -6019,7 +5871,32 @@
         BrowserAutomationStudio_FocusActionFast(parseInt(_NewInsertId))
         _NewInsertId = null
       }*/
-        
+      _GobalModel.set("isexecutionaborting", false);
+    }
+
+    function BrowserAutomationStudio_PreserveInterfaceState() {
+      const state = JSON.stringify({
+        inspector: {
+          visible: _Inspector.$el.is(':visible'),
+          height: _Inspector.$el.css('height'),
+        },
+      });
+
+      BrowserAutomationStudio_SaveInterfaceState(state);
+    }
+
+    function BrowserAutomationStudio_LoadInterfaceState(state) {
+      _.attempt(() => {
+        const { inspector } = JSON.parse(state);
+
+        if (inspector.visible) {
+          _Inspector.$el.show();
+        } else {
+          _Inspector.$el.hide();
+        }
+
+        _Inspector.$el.css('height', inspector.height);
+      });
     }
 
     function BrowserAutomationStudio_FinishedBackup(fullPath) {
@@ -7012,13 +6889,6 @@
         res += "\n"
         return {index:index,res:res};
     }
-
-
-
-    
-
-    
   </script>
-
 </body>
 </html>

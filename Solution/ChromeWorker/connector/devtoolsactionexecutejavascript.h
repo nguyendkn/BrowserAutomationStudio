@@ -9,15 +9,12 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     std::string Variables;
     std::string InitialVariables;
     std::string LastMessage;
-    std::string RemoteObjectId;
     std::string CurrentLoaderId;
     std::vector<std::pair<std::string, std::string> > CurrentPrefix;
-    int CurrentNodeId = -1;
-    int CurrentContextId = -1;
-    std::string LocalObjectId;
-    std::string CurrentFrame;
-    std::vector<std::string> FrameCandidates;
-    std::string CurrentFrameCandidate;
+    std::string CurrentContextId;
+    std::string CurrentFrameSessionId = "CurrentTab";
+    std::string NextContextId;
+    std::string NextFrameSessionId = "CurrentTab";
     bool ScrollDataWasObtained = false;
     bool IsDoingScrollRequest = false;
     bool IsDoingScroll = false;
@@ -26,20 +23,16 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
     bool DoScroll = false;
     int PositionX = 0;
     int PositionY = 0;
+    std::string CurrentExecutionTabId;
     enum {
         NodeSearch,
         FrameSearchEvaluate,
         FrameSearchGetNodeId,
         FrameSearchReleaseObject,
         FrameSearchGetPosition,
-        FrameSearchGetFrameList,
-        FrameSearchGetFrameId,
-        FrameSearchGetFrameIdResult,
         JavascriptExecution
     }RequestType;
     void Next();
-    void ParseFrameCandidates(const std::string& FrameMessage, const std::string ParentFrameId);
-    void ParseFrameCandidatesIteration(picojson::object& Obj, const std::string ParentFrameId);
     std::vector<std::pair<std::string, std::string> > ParseSelector(const std::string& SelectorString);
     std::string SerializeSelector(const std::vector<std::pair<std::string, std::string> >& SelectorData);
     std::string Javascript(const std::string& Script);
@@ -47,6 +40,8 @@ class DevToolsActionExecuteJavascript :	public IDevToolsAction
 public:
     virtual void Run();
     virtual void OnWebSocketMessage(const std::string& Message, const std::string& Error);
+    virtual void OnWebSocketEvent(const std::string& Method, const std::string& Message);
+
 };
 
 #endif // DEVTOOLSACTIONEXECUTEJAVASCRIPT_H

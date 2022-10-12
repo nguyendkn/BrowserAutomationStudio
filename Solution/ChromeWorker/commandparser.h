@@ -63,6 +63,7 @@ public:
     std::vector<std::function<void(bool, std::string)> > EventPopupCreate;
     std::vector<std::function<void(double)> > EventSetDeviceScaleFactor;
     std::vector<std::function<void(bool, std::string, std::string, bool)> > EventPopupCreate2;
+    std::vector<std::function<void(int)> > EventSetComboboxIndex;
     std::vector<std::function<void()> > EventPopupInfo;
     std::vector<std::function<void(int)> > EventTimezone;
     std::vector<std::function<void()> > EventCleanHeader;
@@ -103,13 +104,15 @@ public:
     std::vector<std::function<void(const std::string&)> > EventFindCacheByMaskString;
     std::vector<std::function<void(const std::string&)> > EventFindAllCache;
     std::vector<std::function<void(const std::string&)> > EventIsUrlLoadedByMask;
+    std::vector<std::function<void(const std::string&)> > EventRequestVariablesResult;
     std::vector<std::function<void(const std::string&)> > EventDebugVariablesResult;
+    std::vector<std::function<void(const std::string&)> > EventDebugCallstackResult;
     std::vector<std::function<void()> > EventGetLoadStats;
     std::vector<std::function<void()> > EventRestoreOriginalStage;
     std::vector<std::function<void(const std::string&)> > EventSetMode;
 
 
-    std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool,const std::string&,const std::string&)> > EventSetCode;
+    std::vector<std::function<void(const std::string&,const std::string&,const std::string&,bool,const std::string&,const std::string&,const std::string&)> > EventSetCode;
     std::vector<std::function<void(const std::string&)> > EventSetResources;
     std::vector<std::function<void()> > EventReset;
     std::vector<std::function<void(bool)> > EventNavigateBack;

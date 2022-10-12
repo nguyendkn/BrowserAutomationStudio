@@ -1,6 +1,7 @@
 #ifndef DEVTOOLSCONNECTOR_H
 #define DEVTOOLSCONNECTOR_H
 
+#include "idevtoolsconnector.h"
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
 #include <map>
@@ -16,7 +17,7 @@
 #include "sharedmemoryipc.h"
 #include "chromeprocesslauncher.h"
 
-class DevToolsConnector
+class DevToolsConnector : public IDevToolsConnector
 {
     KeyboardEmulation EmulateKeyboard;
 
@@ -50,16 +51,6 @@ class DevToolsConnector
 
     //Connection data
 
-    enum{
-        WaitingForBrowserClose,
-        NotStarted,
-        WaitingForBrowserEndpoint,
-        WaitingForWebsocket,
-        WaitingForAutoconnectEnable,
-        WaitingForDownloadsEnable,
-        WaitingFirstTab,
-        Connected
-    }ConnectionState = NotStarted;
     std::string Endpoint;
 
     bool WasBrowserCreationEvent = false;
@@ -75,17 +66,29 @@ class DevToolsConnector
     void ProcessTabConnection(std::shared_ptr<TabData> Tab);
     void StartFirstSavedAction(std::shared_ptr<TabData> Tab);
 
+    //InspectAt
+
+    bool IsInspectAtScheduled = false;
+    long long InspectAtTime = 0;
+    int InspectAtX = 0;
+    int InspectAtY = 0;
+    void InspectAtFinalize();
+
     //Helpers
 
     int GenerateId();
+    std::string GenerateMessage(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId, int &Id);
     int SendWebSocket(const std::string& Method, const std::map<std::string, Variant>& Params, const std::string& SessionId);
     void InsertAction(std::shared_ptr<IDevToolsAction> Action);
     std::vector<std::shared_ptr<IDevToolsAction> > GetAllActions();
+    void OpenDevToolsInternal(bool IsInspect);
 
     //Callbacks
 
     void OnFetchRequestPaused(std::string& Result);
-    void OnNetworkRequestWillBeSent(std::string& Result);
+    void OnFetchAuthRequired(std::string& Result);
+    void OnNetworkRequestWillBeSent(std::string& Result, std::string& TabId);
+    void OnDragIntercepted(std::string& DragData);
     void OnNetworkResponseReceived(std::string& Result);
     void OnNetworkLoadingCompleted(std::string& Result, bool HasError);
 
@@ -112,20 +115,11 @@ class DevToolsConnector
     //https://source.chromium.org/chromium/chromium/src/+/master:content/browser/devtools/devtools_video_consumer.cc;drc=267e9d603200302cd937cc5b788f044186a1b8c6;l=25
     void SetMinCapturePeriod(int MinCapturePeriod);
 
+    //Inputs private
+    //Drag is used only with Mouse method
+    void Drag(DragEvent Event, int X, int Y, int KeyboardPresses = KeyboardModifiersNone);
+
     public:
-
-        std::vector<std::function<void()> > OnPaint;
-        std::vector<std::function<void()> > OnResize;
-        std::vector<std::function<void()> > OnScroll;
-        std::vector<std::function<void(std::string)> > OnRequestStart;
-        std::vector<std::function<void(std::string)> > OnRequestStop;
-        std::vector<std::function<void()> > OnLoadStart;
-        std::vector<std::function<void()> > OnLoadStop;
-        std::vector<std::function<void(std::string)> > OnAddressChanged;
-        std::vector<std::function<void(std::string)> > OnNativeDialog;
-        std::vector<std::function<void(std::wstring)> > OnDownloadStarted;
-        std::vector<std::function<void()> > OnBrowserCreated;
-
 
         char* GetPaintData();
         int GetPaintWidth();
@@ -134,8 +128,6 @@ class DevToolsConnector
         int GetHeight();
         int GetScrollX();
         int GetScrollY();
-
-        std::vector<std::function<void(std::string&, std::string&)> > OnMessage;
 
         void Timer();
 
@@ -152,6 +144,7 @@ class DevToolsConnector
         bool InterruptAction(int ActionUniqueId);
         void StartProcess();
         void OpenDevTools();
+        void InspectAt(int X, int Y);
 
         //Browser life cycle
         Async Reset(int Timeout = -1);
@@ -181,6 +174,8 @@ class DevToolsConnector
         Async NavigateForward(bool IsInstant = false, int Timeout = -1);
         Async GetCurrentUrl(int Timeout = -1);
         Async SetRequestsRestrictions(const std::vector<std::pair<bool, std::string> >& Rules, int Timeout = -1);
+        Async SetHttpAuth(const std::string& UserName, const std::string& Password, int Timeout = -1);
+
 
         //Cache
         void SetCacheMasks(const std::vector<std::pair<bool, std::string> >& Rules);
@@ -207,7 +202,7 @@ class DevToolsConnector
         //Inputs
         void Mouse(MouseEvent Event, int X, int Y, MouseButton Button = MouseButtonLeft, int MousePressed = MouseButtonNone, int KeyboardPresses = KeyboardModifiersNone, int ClickCount = 1);
         void Wheel(int X, int Y, bool IsUp, int Delta = 100, int MousePressed = MouseButtonNone, int KeyboardPresses = KeyboardModifiersNone);
-        void Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX = 11.5, double RadiusY = 11.5, double RotationAngle = 0.0, double Pressure = 1.0);
+        Async Touch(TouchEvent Event, int X, int Y, int Id, double RadiusX = 11.5, double RadiusY = 11.5, double RotationAngle = 0.0, double Pressure = 1.0, int Timeout = -1);
         void Key(KeyEvent Event, const std::string& Char, int KeyboardPresses = KeyboardModifiersNone);
         void KeyRaw(KeyEvent Event, WPARAM WindowsVirtualKeyCode, LPARAM NativeVirtualKeyCode, int KeyboardPresses = KeyboardModifiersNone);
         void Focus();
@@ -237,6 +232,12 @@ class DevToolsConnector
         //Extensions
         void TriggerExtensionButton(const std::string ExtensionIdOrNamePart);
         std::vector<std::pair<std::string, std::string> > GetExtensionList();
+
+        //Drag and drop
+        Async StartDragFile(const std::string& Path, int Timeout = -1);
+
+        //Helpers
+        Async Sleep(int TimeMilliseconds, int Timeout = -1);
 
 };
 

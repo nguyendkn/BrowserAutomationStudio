@@ -3,10 +3,12 @@
 
 #include "IWebSocketClientFactory.h"
 #include "ISimpleHttpClientFactory.h"
+#include "proxysaver.h"
 #include "RequestRestriction.h"
 #include <memory>
 #include <map>
 #include "CachedItem.h"
+#include "framefinder.h"
 
 class IDevToolsAction;
 
@@ -19,9 +21,8 @@ struct TabData
         WaitingForAttachment,
         WaitingForPageEnable,
         WaitingForRuntimeEnable,
+        WaitingForDragAndDropInit,
         WaitingForNetworkEnable,
-        WaitingForSettingStartupScript,
-        WaitingForPageReloadForFirstTab,
         WaitingForExecutingSavedActions,
         Connected
     }ConnectionState = NotStarted;
@@ -36,6 +37,19 @@ struct TabData
 
     bool IsWaitingForFirstUrl = false;
     std::string FirstUrl;
+
+    enum
+    {
+        TabType,
+        FrameType
+    }TargetType = TabType;
+};
+
+struct ExecutionContextData
+{
+    std::string TabId;
+    std::string FrameId;
+    std::string ContextId;
 };
 
 struct StartupScriptItem
@@ -54,6 +68,7 @@ struct ExtensionInfo
 
 struct DevToolsGlobalState
 {
+    std::shared_ptr<ProxySaver> SaveProxy;
     std::shared_ptr<ISimpleHttpClient> HttpClient;
     std::shared_ptr<IWebSocketClient> WebSocketClient;
     std::string TabId;
@@ -64,17 +79,27 @@ struct DevToolsGlobalState
     std::string WindowOpenNewTabUrl;
     int Port = -1;
     std::vector<StartupScriptItem> StartupScriptIds;
-    std::map<std::string, int> FrameIdToContextId;
+    std::vector<std::shared_ptr<ExecutionContextData> > ExecutionContexts;
     std::vector<std::shared_ptr<TabData> > Tabs;
+    std::vector<std::shared_ptr<TabData> > Frames;
+
+    FrameFinder FindFrames;
 
     int ScrollX = -1;
     int ScrollY = -1;
+
+    int CursorX = -1;
+    int CursorY = -1;
 
     int Width = -1;
     int Height = -1;
 
     int WidthDifference = 16;
     int HeightDifference = 88;
+
+    //Drag and drop
+    bool DragAndDropIsEnabled = false;
+    std::string DragAndDropData;
 
     //Settings to change proxy
     std::string UniqueProcessId;
@@ -99,6 +124,9 @@ struct DevToolsGlobalState
     //Data for fetch.enable
     std::vector<RequestRestriction> BlockRequests;
     std::vector<RequestRestriction> CacheCapture;
+    bool HttpAuthEnabled = false;
+    std::string HttpAuthUserName;
+    std::string HttpAuthPassword;
 
     //Popups
     bool IsPopupsAllowed = true;

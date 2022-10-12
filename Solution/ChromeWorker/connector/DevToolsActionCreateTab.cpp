@@ -54,7 +54,10 @@ void DevToolsActionCreateTab::StartLoad()
 
     CurrentParams["url"] = Variant(Url);
     if(!Referrer.empty())
+    {
         CurrentParams["referrer"] = Variant(Referrer);
+        CurrentParams["referrerPolicy"] = Variant(std::string("unsafeUrl"));
+    }
 
     SendWebSocket("Page.navigate", CurrentParams);
 

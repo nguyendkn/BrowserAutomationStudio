@@ -11,6 +11,9 @@ var MaximumHeight = GetInputConstructorValue("MaximumHeight", loader);
 var PerfectCanvasRequest = GetInputConstructorValue("PerfectCanvasRequest", loader);
 var PerfectCanvasDebug = GetInputConstructorValue("PerfectCanvasDebug", loader);
 
+var EnableCustomServers = GetInputConstructorValue("EnableCustomServers", loader);
+var DynamicPerfectCanvas = GetInputConstructorValue("DynamicPerfectCanvas", loader);
+var EnablePrecomputedFingerprints = GetInputConstructorValue("EnablePrecomputedFingerprints", loader);
 
 if(Tags["original"].length == 0)
 {
@@ -48,6 +51,22 @@ if(MaximumHeight["original"].length == 0)
   Invalid("MaximumHeight are empty");
   return;
 }
+if(EnableCustomServers["original"].length == 0)
+{
+  Invalid("EnableCustomServers is empty");
+  return;
+}
+if(DynamicPerfectCanvas["original"].length == 0)
+{
+  Invalid("DynamicPerfectCanvas is empty");
+  return;
+}
+if(EnablePrecomputedFingerprints["original"].length == 0)
+{
+  Invalid("EnablePrecomputedFingerprints is empty");
+  return;
+}
+
 
 
 try{
@@ -64,6 +83,9 @@ try{
       time_limit: AddedDate["updated"],
       perfectcanvas_request: PerfectCanvasRequest["updated"],
 	    perfectcanvas_logs: PerfectCanvasDebug["updated"],
+      enable_custom_server: EnableCustomServers["updated"],
+      dynamic_perfect_canvas: DynamicPerfectCanvas["updated"],
+      enable_precomputed_fingerprints: EnablePrecomputedFingerprints["updated"]
     })
 
   code = Normalize(code,0)

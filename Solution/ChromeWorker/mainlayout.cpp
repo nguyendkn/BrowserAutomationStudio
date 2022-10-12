@@ -7,7 +7,7 @@
 using namespace std::chrono;
 MainLayout* _Layout;
 
-MainLayout::MainLayout(int ToolboxHeight, int ScenarioWidth)
+MainLayout::MainLayout(int ToolboxHeight, int ScenarioWidth, double DeviceScaleFactor)
 {
     IsRecord = false;
     IsHome = false;
@@ -110,6 +110,18 @@ MainLayout::MainLayout(int ToolboxHeight, int ScenarioWidth)
 
     ManualControl = BrowserData::Indirect;
 
+    this->DeviceScaleFactor = DeviceScaleFactor;
+
+}
+
+double MainLayout::GetScaleFactor()
+{
+    return DeviceScaleFactor;
+}
+
+int MainLayout::Scale(int InputParam)
+{
+    return InputParam * GetScaleFactor();
 }
 
 void MainLayout::ShowCentralBrowser(bool IsSettings, bool IsHome)
@@ -364,10 +376,19 @@ void MainLayout::ShowContextMenu(int X, int BrowserWidth,int BrowserHeight,int W
 
         int half = (r.right - r.left)/2;
         ContextMenuWidth = half;
-        int MaxWidth = 3 * Zoom;
+        if(ContextMenuWidth < Scale(250))
+        {
+            ContextMenuWidth = Scale(250);
+        }
+        int MaxWidth = Scale(3 * Zoom);
         if(ContextMenuWidth > MaxWidth)
         {
             ContextMenuWidth = MaxWidth;
+        }
+
+        if(ContextMenuWidth > (r.right - r.left) * 0.8)
+        {
+            ContextMenuWidth = (r.right - r.left) * 0.8;
         }
 
         if(X > half)
@@ -603,16 +624,19 @@ void MainLayout::MinimizeOrMaximize(HWND MainWindow, HWND ParentWindow)
 
 void MainLayout::CalculateAllSize(int BrowserWidth,int BrowserHeight,int WindowWidth,int WindowHeight, RECT& DevToolsRectangle, RECT& ToolboxRectangle, RECT& BrowserRectangle)
 {
+    BrowserWidth = Scale(BrowserWidth);
+    BrowserHeight = Scale(BrowserHeight);
+
     int UrlOfset = 0;
     int UrlOfset2 = 0;
     if(ManualControl != BrowserData::Indirect && (!IsCentralShown || IsNoDataShown))
     {
-        UrlOfset = 24;
-        UrlOfset2 = 31;
+        UrlOfset = 2 + 2 + Scale(20);
+        UrlOfset2 = 1 + 5 + 5 + Scale(20);
     }
     DevToolsRectangle.left = 0;
     DevToolsRectangle.right = DevToolsRectWidth-3;
-    DevToolsRectangle.top = 31;
+    DevToolsRectangle.top = Scale(30) + 1;
     DevToolsRectangle.bottom = WindowHeight;
 
     ToolboxRectangle.left = DevToolsRectWidth+6;
@@ -623,9 +647,9 @@ void MainLayout::CalculateAllSize(int BrowserWidth,int BrowserHeight,int WindowW
     if(IsRecord)
     {
         BrowserRectangle.left = DevToolsRectWidth+5;
-        BrowserRectangle.right = WindowWidth-31;
+        BrowserRectangle.right = WindowWidth - 1 - 5 - 5 - Scale(20);
         BrowserRectangle.top = ToolBoxRectHeight + 4 + UrlOfset;
-        BrowserRectangle.bottom = WindowHeight - 31;
+        BrowserRectangle.bottom = WindowHeight - 1 - 5 - 5 - Scale(20);
     }else
     {
         BrowserRectangle.left = 0;
@@ -835,8 +859,8 @@ void MainLayout::CustomDraw(HDC hdc,int BrowserWidth,int BrowserHeight,int Windo
         SelectObject(hdc, GetStockObject(DC_PEN));
         SetDCPenColor(hdc, RGB(188,188,188));
 
-        MoveToEx(hdc, 0, 30, &pt);
-        LineTo(hdc, DevToolsRectWidth - 3, 30);
+        MoveToEx(hdc, 0, Scale(30), &pt);
+        LineTo(hdc, DevToolsRectWidth - 3, Scale(30));
 
         /*SetDCPenColor(hdc, RGB(200,200,200));
 
@@ -1020,18 +1044,18 @@ void MainLayout::Update(int BrowserWidth,int BrowserHeight,int WindowWidth,int W
     {
         if(IsRecord)
         {
-            MoveWindow(HEditUrl,BrowserRectangle.left + 23 + 22 + 22, BrowserRectangle.top - 23, BrowserRectangle.right - BrowserRectangle.left + 2 - 22 - 22 - 22, 23, true);
-            MoveWindow(HLoadUrl,BrowserRectangle.right + 5, BrowserRectangle.top - 22, 20, 20, true);
-            MoveWindow(HBackUrl,BrowserRectangle.left + 1 + 22 + 22, BrowserRectangle.top - 22, 20, 20, true);
-            MoveWindow(HBrowserTabs,BrowserRectangle.left + 1 + 22, BrowserRectangle.top - 22, 20, 20, true);
-            MoveWindow(HBrowserMenu,BrowserRectangle.left + 1, BrowserRectangle.top - 22, 20, 20, true);
+            MoveWindow(HEditUrl,BrowserRectangle.left + 1 + 2 + Scale(20) + 2 + Scale(20) + 2 + Scale(20), BrowserRectangle.top - 1 - Scale(22), BrowserRectangle.right - BrowserRectangle.left + 2 - 2 - Scale(20) - 2 - Scale(20) - 2 - Scale(20), Scale(22), true);
+            MoveWindow(HLoadUrl,BrowserRectangle.right + 5, BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
+            MoveWindow(HBackUrl,BrowserRectangle.left + 1 + 2 + Scale(20) + 2 + Scale(20), BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
+            MoveWindow(HBrowserTabs,BrowserRectangle.left + 1 + 2 + Scale(20), BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
+            MoveWindow(HBrowserMenu,BrowserRectangle.left + 1, BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
         }else
         {
-            MoveWindow(HEditUrl,BrowserRectangle.left + 23 + 22 + 22, BrowserRectangle.top - 23, BrowserRectangle.right - BrowserRectangle.left + 2 - 22 - 26 - 22 - 22, 23, true);
-            MoveWindow(HLoadUrl,BrowserRectangle.right + 5 - 26, BrowserRectangle.top - 22, 20, 20, true);
-            MoveWindow(HBackUrl,BrowserRectangle.left + 1 + 22 + 22, BrowserRectangle.top - 22, 20, 20, true);
-            MoveWindow(HBrowserTabs,BrowserRectangle.left + 1 + 22, BrowserRectangle.top - 22, 20, 20, true);
-            MoveWindow(HBrowserMenu,BrowserRectangle.left + 1, BrowserRectangle.top - 22, 20, 20, true);
+            MoveWindow(HEditUrl,BrowserRectangle.left + 1 + 2 + Scale(20) + 2 + Scale(20) + 2 + Scale(20), BrowserRectangle.top - 1 - Scale(22), BrowserRectangle.right - BrowserRectangle.left + 2 - 2 - Scale(20) - 5 - 1 - Scale(20) - 2 - Scale(20) - 2 - Scale(20), Scale(22), true);
+            MoveWindow(HLoadUrl,BrowserRectangle.right - 5 - 1 + 5 - Scale(20), BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
+            MoveWindow(HBackUrl,BrowserRectangle.left + 1 + 2 + Scale(20) + 2 + Scale(20), BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
+            MoveWindow(HBrowserTabs,BrowserRectangle.left + 1 + 2 + Scale(20), BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
+            MoveWindow(HBrowserMenu,BrowserRectangle.left + 1, BrowserRectangle.top - 2 - Scale(20), Scale(20), Scale(20), true);
         }
         ShowWindow(HEditUrl,SW_SHOW);
         ShowWindow(HLoadUrl,SW_SHOW);
@@ -1048,45 +1072,45 @@ void MainLayout::Update(int BrowserWidth,int BrowserHeight,int WindowWidth,int W
     }
 
 
-    MoveWindow(HButtonUpUp,BrowserRectangle.right + 5, BrowserRectangle.bottom - 111,20,20,true);
-    MoveWindow(HButtonUp,BrowserRectangle.right + 5,BrowserRectangle.bottom - 90,20,20,true);
+    MoveWindow(HButtonUpUp,BrowserRectangle.right + 5, BrowserRectangle.bottom - Scale(20) - 2 - 10 - Scale(20) - Scale(20) - 2 - Scale(20) - Scale(19),Scale(20),Scale(20),true);
+    MoveWindow(HButtonUp,BrowserRectangle.right + 5,BrowserRectangle.bottom - 10 - Scale(20) - Scale(20) - 2 - Scale(20) - Scale(19),Scale(20),Scale(20),true);
     {
         RECT r = GetLabelRectangle(BrowserWidth, BrowserHeight, WindowWidth, WindowHeight);
         MoveWindow(HLabelBrowserBottom,r.left,r.top + 2,r.right - r.left,r.bottom - r.top,true);
     }
 
-    MoveWindow(HLabelTop,35,1,DevToolsRectWidth - 3 - 35,28,true);
+    MoveWindow(HLabelTop,Scale(30) + 5,1,DevToolsRectWidth - 3 - Scale(30) - 5,Scale(30) - 2,true);
 
-    MoveWindow(HButtonDown,BrowserRectangle.right + 5, BrowserRectangle.bottom - 60,20,20,true);
-    MoveWindow(HButtonDownDown,BrowserRectangle.right + 5, BrowserRectangle.bottom - 39,20,20,true);
+    MoveWindow(HButtonDown,BrowserRectangle.right + 5, BrowserRectangle.bottom - Scale(20) - 2 - Scale(20) - Scale(19),Scale(20),Scale(20),true);
+    MoveWindow(HButtonDownDown,BrowserRectangle.right + 5, BrowserRectangle.bottom - Scale(20) - Scale(19),Scale(20),Scale(20),true);
 
-    MoveWindow(HButtonLeftLeft,BrowserRectangle.right - 111, BrowserRectangle.bottom + 5,20,20,true);
-    MoveWindow(HButtonLeft,BrowserRectangle.right - 90, BrowserRectangle.bottom + 5,20,20,true);
-    MoveWindow(HButtonRight,BrowserRectangle.right - 60, BrowserRectangle.bottom + 5,20,20,true);
-    MoveWindow(HButtonRightRight,BrowserRectangle.right - 39, BrowserRectangle.bottom + 5,20,20,true);
+    MoveWindow(HButtonLeftLeft,BrowserRectangle.right - Scale(20) - 2 - 10 - Scale(20) - Scale(20) - 2 - Scale(20) - Scale(19), BrowserRectangle.bottom + 5,Scale(20),Scale(20),true);
+    MoveWindow(HButtonLeft,BrowserRectangle.right - 10 - Scale(20) - Scale(20) - 2 - Scale(20) - Scale(19), BrowserRectangle.bottom + 5,Scale(20),Scale(20),true);
+    MoveWindow(HButtonRight,BrowserRectangle.right - Scale(20) - 2 - Scale(20) - Scale(19), BrowserRectangle.bottom + 5,Scale(20),Scale(20),true);
+    MoveWindow(HButtonRightRight,BrowserRectangle.right - Scale(20) - Scale(19), BrowserRectangle.bottom + 5,Scale(20),Scale(20),true);
 
 
     if(IsHome)
     {
         RECT OuterRectangle = GetBrowserOuterRectangle(BrowserWidth, BrowserHeight, WindowWidth, WindowHeight);
-        MoveWindow(HButtonIndirect,OuterRectangle.right - 20 - 19, OuterRectangle.top + 10, 20, 31, true);
-        MoveWindow(HButtonDirectRecord,OuterRectangle.right - 20 - 19, OuterRectangle.top + 10, 20, 31, true);
-        MoveWindow(HButtonDirectNoRecord,OuterRectangle.right - 20 - 19, OuterRectangle.top + 10, 20, 31, true);
+        MoveWindow(HButtonIndirect,OuterRectangle.right - Scale(20) - Scale(19), OuterRectangle.top + Scale(10), Scale(20), Scale(31), true);
+        MoveWindow(HButtonDirectRecord,OuterRectangle.right - Scale(20) - Scale(19), OuterRectangle.top + Scale(10), Scale(20), Scale(31), true);
+        MoveWindow(HButtonDirectNoRecord,OuterRectangle.right - Scale(20) - Scale(19), OuterRectangle.top + Scale(10), Scale(20), Scale(31), true);
 
-        MoveWindow(HButtonSettings,OuterRectangle.right - 20 - 19, OuterRectangle.top + 21 + 31 + 1 + 10,20,20,true);
-        MoveWindow(HButtonMinimizeMaximize,OuterRectangle.right - 20 - 19,OuterRectangle.top + 31 + 1 + 10,20,20,true);
+        MoveWindow(HButtonSettings,OuterRectangle.right - Scale(20) - Scale(19), OuterRectangle.top + 2 + Scale(20) + Scale(31) + 2 + Scale(10),Scale(20),Scale(20),true);
+        MoveWindow(HButtonMinimizeMaximize,OuterRectangle.right - Scale(20) - Scale(19),OuterRectangle.top + Scale(31) + 2 + Scale(10),Scale(20),Scale(20),true);
 
     }else
     {
-        MoveWindow(HButtonIndirect,BrowserRectangle.right + 5, BrowserRectangle.top, 20, 31, true);
-        MoveWindow(HButtonDirectRecord,BrowserRectangle.right + 5, BrowserRectangle.top, 20, 31, true);
-        MoveWindow(HButtonDirectNoRecord,BrowserRectangle.right + 5, BrowserRectangle.top, 20, 31, true);
+        MoveWindow(HButtonIndirect,BrowserRectangle.right + 5, BrowserRectangle.top, Scale(20), Scale(31), true);
+        MoveWindow(HButtonDirectRecord,BrowserRectangle.right + 5, BrowserRectangle.top, Scale(20), Scale(31), true);
+        MoveWindow(HButtonDirectNoRecord,BrowserRectangle.right + 5, BrowserRectangle.top, Scale(20), Scale(31), true);
 
-        MoveWindow(HButtonSettings,BrowserRectangle.right + 5, BrowserRectangle.top + 21 + 31 + 1,20,20,true);
-        MoveWindow(HButtonMinimizeMaximize,BrowserRectangle.right + 5,BrowserRectangle.top + 31 + 1,20,20,true);
+        MoveWindow(HButtonSettings,BrowserRectangle.right + 5, BrowserRectangle.top + 2 + Scale(20) + Scale(31) + 2,Scale(20),Scale(20),true);
+        MoveWindow(HButtonMinimizeMaximize,BrowserRectangle.right + 5,BrowserRectangle.top + Scale(31) + 2,Scale(20),Scale(20),true);
     }
 
-    MoveWindow(HButtonMenu,5,5,20,20,true);
+    MoveWindow(HButtonMenu,Scale(5),Scale(5),Scale(20),Scale(20),true);
 
 
 
@@ -1149,10 +1173,10 @@ RECT MainLayout::GetLabelRectangle(int BrowserWidth,int BrowserHeight,int Window
     RECT DevToolsRectangle, ToolboxRectangle, BrowserRectangle;
     CalculateAllSize(BrowserWidth,BrowserHeight,WindowWidth,WindowHeight,DevToolsRectangle, ToolboxRectangle, BrowserRectangle);
     RECT res;
-    res.left = BrowserRectangle.left + 24;
-    res.right = BrowserRectangle.right - 121;
-    res.top = BrowserRectangle.bottom + 3 + 4 - 1;
-    res.bottom = BrowserRectangle.bottom + 20 + 4 - 1;
+    res.left = BrowserRectangle.left + 4 + Scale(20);
+    res.right = BrowserRectangle.right - 10 - Scale(20) - 1 - 10 - Scale(20) - Scale(20) - 1 - Scale(20) - Scale(19);
+    res.top = BrowserRectangle.bottom + Scale(5) + 1;
+    res.bottom = BrowserRectangle.bottom + Scale(16) + Scale(5) + 1;
     return res;
 }
 
@@ -1162,9 +1186,9 @@ RECT MainLayout::GetManualControlIndicatorRectangle(int BrowserWidth,int Browser
     CalculateAllSize(BrowserWidth,BrowserHeight,WindowWidth,WindowHeight,DevToolsRectangle, ToolboxRectangle, BrowserRectangle);
     RECT res;
     res.left = BrowserRectangle.left + 1;
-    res.right = BrowserRectangle.left + 21;
+    res.right = BrowserRectangle.left + 1 + Scale(20);
     res.top = BrowserRectangle.bottom + 5;
-    res.bottom = BrowserRectangle.bottom + 25;
+    res.bottom = BrowserRectangle.bottom + 5 + Scale(20);
     return res;
 }
 

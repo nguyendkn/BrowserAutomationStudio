@@ -133,16 +133,12 @@ namespace BrowserAutomationStudioFramework
     QJsonValue EngineResourceStringBox::GetDescription()
     {
         QJsonArray Array;
-        int ActualLength = Box->GetTotalLength();
         int MaxLength = 10;
 
         foreach(QString str,Box->GetSome(MaxLength))
         {
             Array.append(str);
         }
-
-        if(ActualLength > MaxLength)
-            Array.append("...");
 
         return Array;
     }

@@ -31,6 +31,7 @@ Solution/FastExecuteScriptProtected/WorkerNotSafe
 Solution/FastExecuteScriptProtected/modules
 Solution/FastExecuteScriptProtected/webinterface
 Solution/FastExecuteScriptProtected/*.exe
+Solution/ChromeWorker/html/**/*_prepared.html
 not_first_run\.txt
 SchedulerDebug
 Solution/Private

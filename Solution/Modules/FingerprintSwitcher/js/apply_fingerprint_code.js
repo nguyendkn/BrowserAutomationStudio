@@ -1,3 +1,3 @@
 /*Browser*/
-_call(BrowserAutomationStudio_ApplyFingerprint,[<%= fingerprint %>,<%= canvas %> == "true",<%= webgl %> == "true",<%= audio %> == "true",<%= battery %> == "true",<%= rectangles %> == "true",<%= perfectcanvas %> == "true"])!
+_call(BrowserAutomationStudio_ApplyFingerprint,[<%= fingerprint %>,<%= canvas %> == "true",<%= webgl %> == "true",<%= audio %> == "true",<%= battery %> == "true",<%= rectangles %> == "true",<%= perfectcanvas %> == "true",<%= sensor %> == "true"])!
 sleep(1000)!

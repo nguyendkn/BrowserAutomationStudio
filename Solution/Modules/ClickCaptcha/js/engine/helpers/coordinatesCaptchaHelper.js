@@ -12,13 +12,13 @@
 
     _call_function(_.script, {
       element: self.$element(),
-      script: '(self.getBoundingClientRect().left + positionx)'
+      script: '(self.getBoundingClientRect().left + scrollx + positionx)'
     })!
     const offsetX = parseInt(_result_function());
 
     _call_function(_.script, {
       element: self.$element(),
-      script: '(self.getBoundingClientRect().top + positiony)'
+      script: '(self.getBoundingClientRect().top + scrolly + positiony)'
     })!
     const offsetY = parseInt(_result_function());
 
@@ -49,11 +49,7 @@
     _if_else(_result_function(), function () {
       _call_function(self.extractData, {})!
     }, function () {
-      if (_K === 'en') {
-        fail("Failed to find an element with the specified selector for CoordinatesCaptcha solving");
-      } else {
-        fail("Не удалось найти элемент с указанным селектором для решения CoordinatesCaptcha");
-      }
+      _function_return(null);
     })!
   };
 

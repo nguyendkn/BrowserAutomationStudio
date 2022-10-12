@@ -17,17 +17,17 @@ namespace BrowserAutomationStudioFramework
 
     int VersionInfo::MajorVersion()
     {
-        return 24;
+        return 25;
     }
 
     int VersionInfo::MinorVersion()
     {
-        return 2;
+        return 3;
     }
 
     int VersionInfo::BuildVersion()
     {
-        return 3;
+        return 0;
     }
 
     QString VersionInfo::VersionString()

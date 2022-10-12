@@ -113,6 +113,7 @@ protected:
     QString ConnectionPort;
     QString ConnectionLogin;
     QString ConnectionPassword;
+    QString InterfaceState;
     QString ScriptEngineVersion;
     bool IsDatabaseDirty;
     HttpSniffer *_HttpSniffer = 0;
@@ -264,6 +265,7 @@ private slots:
 
     void SendCode();
     void ReceiveCode(const QString& Code);
+    void ReceiveInterface(const QString& Json);
     void SetNeedRestart();
     void RemoveOldTunnels();
     bool IsProcessRunning(int pid);

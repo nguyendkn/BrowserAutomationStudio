@@ -132,6 +132,7 @@ public:
     void MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeftMousePressed, bool IsRightMousePressed, bool IsCtrlPressed, bool IsShiftPressed, bool IsLeftMouseButton);
     void Key(UINT msg, WPARAM wParam, LPARAM lParam);
     void StartDrag(CefRefPtr<CefBrowser> Browser, CefRefPtr<CefDragData> drag_data,CefBrowserHost::DragOperationsMask allowed_ops, int x, int y);
+    void ClearSequence();
 
     //Events
     std::vector<std::function<void(const std::string&)> > EventExecuteScenarioCode;

@@ -1,14 +1,14 @@
 #ifndef RESULTMANAGER_H
 #define RESULTMANAGER_H
 
-#include "devtoolsconnector.h"
+#include "idevtoolsconnector.h"
 
 class ResultManager
 {
-    DevToolsConnector *Connector = 0;
+    IDevToolsConnector *Connector = 0;
     int LastActionUniqueId = 0;
 public:
-    void Init(DevToolsConnector *Connector);
+    void Init(IDevToolsConnector *Connector);
     Async ProcessResult(Async Result);
 };
 

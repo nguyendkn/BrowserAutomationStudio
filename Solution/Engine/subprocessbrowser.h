@@ -82,6 +82,7 @@ namespace BrowserAutomationStudioFramework
         virtual void PopupSelect(int index, const QString& callback);
         virtual void PopupCreate(bool is_silent, const QString& url, const QString& callback);
         virtual void PopupCreate2(bool is_silent, const QString& url, const QString& referrer, bool is_instant, const QString& callback);
+        virtual void SetComboboxIndex(int index, const QString& callback);
         virtual void PopupInfo(const QString& callback);
         virtual void Timezone(int offset, const QString& callback);
         virtual void MouseMove(int x, int y,const QString& params, const QString& callback);
@@ -94,7 +95,9 @@ namespace BrowserAutomationStudioFramework
         virtual void StartSection(const QString& Name, int Id, const QString& callback);
         virtual void Scroll(int x, int y, const QString& callback);
         virtual void Render(int x, int y, int width, int height, const QString& callback);
+        virtual void RequestVariablesResult(const QString& data, const QString& callback);
         virtual void DebugVariablesResult(const QString& data, const QString& callback);
+        virtual void DebugCallstackResult(const QString& data, const QString& callback);
         virtual void SendRecaptchaV3List(const QString& action, const QString& callback);
         virtual void SendRecaptchaV3Result(const QString& id,const QString& result);
         virtual void SendWorkerSettings(const QString& json, const QString& callback);
@@ -114,6 +117,7 @@ namespace BrowserAutomationStudioFramework
         bool GetManualBrowserControl();
 
         void ResetSettings();
+        QString GetBrowserProcessId();
         QString GetBrowserUniqueId();
 
         void ResetProxy();
@@ -159,6 +163,7 @@ namespace BrowserAutomationStudioFramework
         void PopupSelect();
         void PopupCreate();
         void PopupCreate2();
+        void SetComboboxIndex();
         void PopupClose();
         void PopupInfo();
         void MouseMove();
@@ -170,7 +175,9 @@ namespace BrowserAutomationStudioFramework
         void Jquery();
         void OptimizeMemory();
         void WaitCode();
+        void RequestVariablesResult();
         void DebugVariablesResult();
+        void DebugCallstackResult();
         void RecaptchaV3List();
         void Timezone();
         void Crush();

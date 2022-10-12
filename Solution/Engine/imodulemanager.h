@@ -20,6 +20,7 @@ namespace BrowserAutomationStudioFramework
         typedef char* (*ResizeFunction)(int,void*);
         typedef void* (*ModuleOnStartFunction)();
         typedef void (*ModuleOnEndFunction)(void*);
+        typedef void (*ModuleOnIddleFunction)(void*);
         typedef void (*ModuleWorkFunction)(char *InputJson, ResizeFunction AllocateSpace, void *AllocateData, void* DllData, void* ThreadData, unsigned int ThreadId, bool *NeedToStop, bool *WasError);
 
         struct ModuleFunctionClass
@@ -40,6 +41,7 @@ namespace BrowserAutomationStudioFramework
             ModuleOnEndFunction EndDllFunction;
             ModuleOnStartFunction StartThreadFunction;
             ModuleOnEndFunction EndThreadFunction;
+            ModuleOnIddleFunction IddleThreadFunction;
             QList<ModuleFunction> FunctionList;
             ~ModuleDllClass()
             {
@@ -52,6 +54,7 @@ namespace BrowserAutomationStudioFramework
                 EndDllFunction = 0;
                 StartThreadFunction = 0;
                 EndThreadFunction = 0;
+                IddleThreadFunction = 0;
             }
         };
         using ModuleDll = std::shared_ptr<ModuleDllClass>;

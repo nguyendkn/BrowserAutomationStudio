@@ -37,7 +37,7 @@ void DevToolsMultiAction::RunJavascriptAction(const std::string& Script, const s
 std::vector<std::string> DevToolsMultiAction::GetSubscribbedEvents()
 {
 	if(!CurrentAction)
-		return std::vector<std::string>();
+        return SubscribbedEvents;
 
 	return CurrentAction->GetSubscribbedEvents();
 }

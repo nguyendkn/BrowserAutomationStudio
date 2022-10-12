@@ -178,6 +178,21 @@ namespace BrowserAutomationStudioFramework
             Worker->GetProcessComunicatorActual()->Send(WriteString);
     }
 
+    void SubprocessBrowser::SetComboboxIndex(int index, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeStartElement("SetComboboxIndex");
+            xmlWriter.writeAttribute("index", QString::number(index));
+        xmlWriter.writeEndElement();
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("SetComboboxIndex"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(SetComboboxIndex()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicatorActual())
+            Worker->GetProcessComunicatorActual()->Send(WriteString);
+    }
+
     void SubprocessBrowser::PopupInfo(const QString& callback)
     {
         QString WriteString;
@@ -357,6 +372,19 @@ namespace BrowserAutomationStudioFramework
 
     }
 
+    void SubprocessBrowser::RequestVariablesResult(const QString& data, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeTextElement("RequestVariablesResult",data);
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("RequestVariablesResult"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(RequestVariablesResult()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicator())
+            Worker->GetProcessComunicator()->Send(WriteString);
+    }
+
     void SubprocessBrowser::DebugVariablesResult(const QString& data, const QString& callback)
     {
         QString WriteString;
@@ -366,6 +394,19 @@ namespace BrowserAutomationStudioFramework
         Worker->SetScript(callback);
         Worker->SetFailMessage(tr("Timeout during ") + QString("DebugVariablesResult"));
         Worker->GetWaiter()->WaitForSignal(this,SIGNAL(DebugVariablesResult()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
+        if(Worker->GetProcessComunicator())
+            Worker->GetProcessComunicator()->Send(WriteString);
+    }
+
+    void SubprocessBrowser::DebugCallstackResult(const QString& data, const QString& callback)
+    {
+        QString WriteString;
+        QXmlStreamWriter xmlWriter(&WriteString);
+        xmlWriter.writeTextElement("DebugCallstackResult",data);
+
+        Worker->SetScript(callback);
+        Worker->SetFailMessage(tr("Timeout during ") + QString("DebugCallstackResult"));
+        Worker->GetWaiter()->WaitForSignal(this,SIGNAL(DebugCallstackResult()), Worker,SLOT(RunSubScript()), Worker, SLOT(FailBecauseOfTimeout()));
         if(Worker->GetProcessComunicator())
             Worker->GetProcessComunicator()->Send(WriteString);
     }
@@ -944,9 +985,15 @@ namespace BrowserAutomationStudioFramework
             }else if(xmlReader.name() == "Jquery" && token == QXmlStreamReader::StartElement)
             {
                 emit Jquery();
+            }else if(xmlReader.name() == "RequestVariablesResult" && token == QXmlStreamReader::StartElement)
+            {
+                emit RequestVariablesResult();
             }else if(xmlReader.name() == "DebugVariablesResult" && token == QXmlStreamReader::StartElement)
             {
                 emit DebugVariablesResult();
+            }else if(xmlReader.name() == "DebugCallstackResult" && token == QXmlStreamReader::StartElement)
+            {
+                emit DebugCallstackResult();
             }else if(xmlReader.name() == "RecaptchaV3List" && token == QXmlStreamReader::StartElement)
             {
                 emit RecaptchaV3List();
@@ -990,6 +1037,9 @@ namespace BrowserAutomationStudioFramework
                 xmlReader.readNext();
                 Worker->SetAsyncResult(QScriptValue(xmlReader.text().toString()));
                 emit PopupCreate2();
+            }else if(xmlReader.name() == "SetComboboxIndex" && token == QXmlStreamReader::StartElement)
+            {
+                emit SetComboboxIndex();
             }else if(xmlReader.name() == "PopupInfo" && token == QXmlStreamReader::StartElement)
             {
                 xmlReader.readNext();
@@ -1177,6 +1227,19 @@ namespace BrowserAutomationStudioFramework
     void SubprocessBrowser::ResetSettings()
     {
         WorkerSettings->Clear();
+    }
+
+    QString SubprocessBrowser::GetBrowserProcessId()
+    {
+        if(!WorkerSettings)
+            return QString();
+
+        if(Worker && Worker->GetProcessComunicator())
+        {
+            return QString::number(Worker->GetProcessComunicator()->GetPID());
+        }
+
+        return QString();
     }
 
     QString SubprocessBrowser::GetBrowserUniqueId()

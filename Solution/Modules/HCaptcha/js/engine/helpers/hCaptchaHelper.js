@@ -80,12 +80,8 @@
 
       _call_function(self.extractData, {})!
     }, function () {
-      if (_K === 'en') {
-        fail(("Failed to find an element with the specified selector for HCaptcha solving"));
-      } else {
-        fail("Не удалось найти элемент с указанным селектором для решения HCaptcha");
-      }
-     })!
+      _function_return(null);
+    })!
   };
 
   solver.helpers.HCaptchaHelper = HCaptchaHelper;

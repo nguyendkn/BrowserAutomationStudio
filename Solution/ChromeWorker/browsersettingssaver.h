@@ -11,12 +11,16 @@ struct BrowserSettingsSaver
 
     bool Detector;
     bool TemporaryDisableDetector;
+    bool IsProxySet;
 
     //Languages
     std::vector<std::string> Languages;
     std::string LanguagesHeader;
     std::string UserAgent;
     std::string UserAgentDataBase64;
+
+    std::vector<std::pair<bool, std::string> > RequestMask;
+    std::string StartupScript;
 
     //Record mode
     bool IsRecord;

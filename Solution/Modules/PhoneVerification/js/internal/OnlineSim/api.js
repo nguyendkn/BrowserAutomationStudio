@@ -91,6 +91,8 @@ _SMS.OnlineSimApi = _SMS.assignApi(function(config, data){
 	
 	this.getState = function(){
 		var number = _function_argument("number");
+		var timeout = _avoid_nilb(_function_argument("timeout"), 60000);
+		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		var confirmData = _SMS.getConfirmData(number);
 		
 		_call_function(api.makeRequest,{action:"getState", options:{tzid:confirmData.lastId, msg_list:0, clean:1}, timeout:timeout, maxTime:maxTime})!

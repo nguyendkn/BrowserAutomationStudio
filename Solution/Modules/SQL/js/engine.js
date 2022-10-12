@@ -40,7 +40,7 @@ function SQL_Query(){
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, query, query_type, data_format];
 	
-	_embedded("SQL_Query", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	_embedded("SQL_Query", "Node", "18.10.0", "SQL_NODE_PARAMETERS", timeout)!
 	
 	var results = VAR_SQL_NODE_PARAMETERS[0];
 	var data_format = VAR_SQL_NODE_PARAMETERS[1];
@@ -61,7 +61,7 @@ function SQL_CountRecords(){
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, where];
 	
-	_embedded("SQL_CountRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	_embedded("SQL_CountRecords", "Node", "18.10.0", "SQL_NODE_PARAMETERS", timeout)!
 	
 	_function_return(VAR_SQL_NODE_PARAMETERS);
 };
@@ -86,7 +86,7 @@ function SQL_SelectRecords(){
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, where, included_columns, excluded_columns, order, offset, limit, data_format];
 	
-	_embedded("SQL_SelectRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	_embedded("SQL_SelectRecords", "Node", "18.10.0", "SQL_NODE_PARAMETERS", timeout)!
 	
 	var results = VAR_SQL_NODE_PARAMETERS[0];
 	var data_format = VAR_SQL_NODE_PARAMETERS[1];
@@ -113,7 +113,7 @@ function SQL_UpdateRecords(){
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, values, convert, where, fields, limit];
 	
-	_embedded("SQL_UpdateRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	_embedded("SQL_UpdateRecords", "Node", "18.10.0", "SQL_NODE_PARAMETERS", timeout)!
 };
 function SQL_DeleteRecords(){
 	var table = _function_argument("table");
@@ -129,7 +129,7 @@ function SQL_DeleteRecords(){
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, where, limit];
 	
-	_embedded("SQL_DeleteRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	_embedded("SQL_DeleteRecords", "Node", "18.10.0", "SQL_NODE_PARAMETERS", timeout)!
 };
 function SQL_InsertRecord(){
 	var table = _function_argument("table");
@@ -150,7 +150,7 @@ function SQL_InsertRecord(){
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, fields, data, convert, idFieldName];
 	
 	_if(true, function(){
-		_embedded("SQL_InsertRecord", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+		_embedded("SQL_InsertRecord", "Node", "18.10.0", "SQL_NODE_PARAMETERS", timeout)!
 	})!
 	
 	_function_return(idFieldName ? VAR_SQL_NODE_PARAMETERS : undefined);
@@ -166,7 +166,7 @@ function SQL_Insert(){
 	
 	VAR_SQL_NODE_PARAMETERS = [_SQL_CONFIG, table, fields, data, convert];
 	
-	_embedded("SQL_InsertMultipleRecords", "Node", "12.18.3", "SQL_NODE_PARAMETERS", timeout)!
+	_embedded("SQL_InsertMultipleRecords", "Node", "18.10.0", "SQL_NODE_PARAMETERS", timeout)!
 };
 function SQL_Debug(enable){
 	_SQL_CONFIG["debug"] = (enable==true || enable=="true");
@@ -174,7 +174,7 @@ function SQL_Debug(enable){
 function SQL_Close(){
 	VAR_SQL_NODE_PARAMETERS = _SQL_CONFIG["id"];
 	
-	_embedded("SQL_Close", "Node", "12.18.3", "SQL_NODE_PARAMETERS", 60000)!
+	_embedded("SQL_Close", "Node", "18.10.0", "SQL_NODE_PARAMETERS", 60000)!
 };
 function SQL_ConvertDates(data){
 	return data instanceof Date ? {isDate:true,date:data} : (Array.isArray(data) ? data.map(function(e){return e instanceof Date ? {isDate:true,date:e} : e}) : data);

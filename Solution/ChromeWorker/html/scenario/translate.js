@@ -219,16 +219,6 @@ _L =
       "ru":"Назад"
    },
 
-   "No data":{
-      "ru":"Нет данных"
-   },
-   "Variables:":{
-      "ru":"Переменные:"
-   },
-   "Resources:":{
-      "ru":"Ресурсы:"
-   },
-
 
 
    "Variables are used to store data between action execution. Each variable has a name and a data, which it points to. For example, variable EMAIL may point to string aaa@gmail.com and variable PASS may point string pass123. You can reference this data by filling variable name with double square brackets into any action and any parameters. For example, to input your email on site use following notation [[EMAIL]]":{
@@ -740,7 +730,6 @@ _L =
 	"Click to select. Drag to move it. Double click to edit and see description":{"ru": "Нажмите, чтобы выбрать. Перетащите, чтобы переместить его. Дважды щелкните, чтобы изменить и увидеть описание"},
 	"Action":{"ru": "Действие"},
 	"Check specified condition, if it's true execute some action sequence, if it's false execute another action sequence. Finally proceed with next actions.": {"ru": "Проверить заданное условие, если оно истинно, выполнить определенную последовательность действий, если оно ложно выполнить другую последовательность действий, наконец продолжить выполнение скрипта."},
-	"Create new or update existing variable and set its value.": {"ru": "Создать новую переменную или изменить существующую заданным значением."},
 	"A place where new action can be inserted or moved. This one is not active. Click to make it active.":{"ru": "Место, куда можно добавлять или перемещать действия. Это место не активно. Кликните по нему чтобы сделать активным."},
 	"A place where new action can be inserted or moved. This one is active. New actions will be inserted here.":{"ru": "Место, куда можно добавлять или перемещать действия. Это место активно. Сюда будут добавлены новые действия."},
 	"Current function name. Functions are containers, which holds action list. Each script must have at least one function - 'Main'. Thread runs 'Main' function when it starts, while script runs 'OnApplicaionStart' function(if it exists) when it starts.":{"ru": "Имя текущей функции. Функции - это контейнеры, в которых содержится список действий. Каждый скрипт должен иметь хотя бы одну функцию - 'Main'. Поток вызывает функцию 'Main', когда он запускается, а скрипт вызывает функцию 'OnApplicaionStart' (если она существует) при запуске."},
@@ -749,7 +738,7 @@ _L =
 	"Edit function name":{"ru": "Редактировать имя функции"},
 	"Delete current function and all content":{"ru": "Удалить текущую функцию и все содержимое"},
 	"Add new function":{"ru": "Добавить новую функцию"},
-	"Show variables list. You can create variable with 'Set Variable' action.": {"ru": "Показать список перменных. Вы можете создать переменную с помощью действия 'Установить переменную'."},
+	"Show variables list. You can create variable with 'Set Variable' action.": {"ru": "Показать список переменных. Вы можете создать переменную с помощью действия 'Установить переменную'."},
 	"Task Description":{"ru": "Описание задания"},
 	"disabled" :{"ru": "отключено"},
 	"(This button will only change task description)" :{"ru": "(Эта кнопка изменит только описание задания)"},
@@ -787,8 +776,8 @@ _L =
 	"Clear Selection" :{"ru": "Очистить Выделение"},
 	"Execute only this action" :{"ru": "Выполнить только это действие"},
 	"Move Execution Point Here" :{"ru": "Переместить точку выполнения"},
-	"Variable Inspector" :{"ru": "Инспектор Переменных"},
-	"Variables will be loaded on next script pause" :{"ru": "Переменные будут загружены при следующей паузе сценария"},
+	"Variable inspector" :{"ru": "Инспектор переменных"},
+   "Variables will be loaded on next script pause" :{"ru": "Переменные будут загружены при следующей паузе сценария"},
 	"Previous" :{"ru": "Предыдущий"},
 	"Next" :{"ru": "Следующий"},
 	"Search" :{"ru": "Поиск"},
@@ -868,4 +857,13 @@ function tr(key)
 		}
 	}
 	return key;
+}
+
+function $t(key, values) {
+   if (typeof _K === 'undefined') return key;
+   const res = key in _L && _K in _L[key] ? _L[key][_K] : key;
+
+   return !values ? res : res.replace(/{(.*?)}/g, (_, k) => {
+      return values[k];
+   });
 }

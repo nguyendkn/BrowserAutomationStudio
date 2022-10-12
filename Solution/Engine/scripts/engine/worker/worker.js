@@ -79,6 +79,11 @@ function _is_record()
     return ScriptWorker.GetIsRecord();
 }
 
+function _get_browser_process_id()
+{
+    return Browser.GetBrowserProcessId();
+}
+
 function _get_browser_unique_id()
 {
     return Browser.GetBrowserUniqueId();
@@ -889,7 +894,7 @@ function _random_point()
         if(typeof(_SELECTOR) == "string")
         {
             Selector = _SELECTOR.split(">FRAME>")[0];
-            Code = "(function(){if(!(Math.round(self.getBoundingClientRect().height) > 0 && Math.round(self.getBoundingClientRect().width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = self.getBoundingClientRect();var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()";
+            Code = "(function(){if(!(Math.round(_BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, self).height) > 0 && Math.round(_BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, self).width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, self);var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()";
         }else
         {
             Selector = "";
@@ -1099,6 +1104,14 @@ function _load(text, referrer, is_instant, callback)
     _ARG = arguments
     _create_browser_if_needed(function(){
         Browser.LoadPage2(_ARG[0],_ARG[1],_ARG[2],"if(_result().length > 0){fail(tr('Failed to load page ') + _ARG[0] + ' : ' + _result())};" + _get_function_body(_ARG[3]));
+    })
+}
+
+function _set_combobox_index(index, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        Browser.SetComboboxIndex(_ARG[0], _get_function_body(_ARG[1]));
     })
 }
 

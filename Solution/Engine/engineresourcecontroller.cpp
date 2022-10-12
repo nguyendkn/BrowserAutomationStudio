@@ -181,6 +181,7 @@ namespace BrowserAutomationStudioFramework
 
 
                    StringBox *box = new StringBox();
+                   box->SetTypeId(m->GetTypeId());
 
                    DatabaseStringBoxLoader *loader = new DatabaseStringBoxLoader();
                    StringBoxProxy *proxy = new StringBoxProxy();
@@ -254,6 +255,7 @@ namespace BrowserAutomationStudioFramework
 
 
                    StringBox *box = new StringBox();
+                   box->SetTypeId(m->GetTypeId());
 
                    FileStringBoxLoader *loader = new FileStringBoxLoader();
                    StringBoxProxy *proxy = new StringBoxProxy();
@@ -311,6 +313,8 @@ namespace BrowserAutomationStudioFramework
                    n->SetInfo("Type",m->GetTypeId());
 
                    StringBox *box = new StringBox();
+                   box->SetTypeId(m->GetTypeId());
+
                    EmptyStringBoxLoader *loader = new EmptyStringBoxLoader();
                    StringBoxProxy *proxy = new StringBoxProxy();
                    StringBoxPeriodicalLoader * period = new StringBoxPeriodicalLoader();
@@ -355,6 +359,8 @@ namespace BrowserAutomationStudioFramework
                    n->SetInfo("FailAttempts",QString::number(r->GetFailAttempts()));
 
                    StringBox *box = new StringBox();
+                   box->SetTypeId(m->GetTypeId());
+
                    UrlStringBoxLoader *loader = new UrlStringBoxLoader();
                    StringBoxProxy *proxy = new StringBoxProxy();
                    StringBoxPeriodicalLoader * period = new StringBoxPeriodicalLoader();
@@ -416,6 +422,8 @@ namespace BrowserAutomationStudioFramework
                    n->SetInfo("FailAttempts",QString::number(r->GetFailAttempts()));
 
                    StringBox *box = new StringBox();
+                   box->SetTypeId(m->GetTypeId());
+
                    DirectoryStringBoxLoader *loader = new DirectoryStringBoxLoader();
                    StringBoxProxy *proxy = new StringBoxProxy();
                    StringBoxPeriodicalLoader * period = new StringBoxPeriodicalLoader();

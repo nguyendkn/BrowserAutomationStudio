@@ -71,8 +71,9 @@ MainApp::MainApp()
     RunElementCommandCallbackOnNextTimer = -1;
     TypeTextDelayCurrent = 0;
     ClearElementCommand();
-    IsInterfaceInitialSent = false;
-    _CefReqest2Action = 0;
+    IsScenarioInterfaceInitialSent = false;
+    IsToolboxInterfaceInitialSent = false;
+    _DevToolsReqest2Action = 0;
     IsMainBrowserCreating = true;
 
     ReadDoTour();
@@ -94,6 +95,9 @@ BrowserDirectControl * MainApp::DirectControl()
 
 void MainApp::UpdateManualControl(bool NoFocus)
 {
+    if(Data->ManualControl != BrowserData::DirectNoRecord && Data->IsRecord && DirectControl())
+        DirectControl()->ClearSequence();
+
     Layout->HideCentralBrowser();
     if(Layout->IsManualControlAction && Data->ManualControl != BrowserData::DirectNoRecord)
     {
@@ -104,6 +108,12 @@ void MainApp::UpdateManualControl(bool NoFocus)
     RECT r = Layout->GetBrowserOuterRectangle(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,true);
     Data->Connector->SetOpenFileDialogManualMode(!Data->IsRecord && Data->ManualControl != BrowserData::Indirect);
+    UpdateBrowserData(Data);
+}
+
+void MainApp::WriteBrowserData()
+{
+    UpdateBrowserData(Data);
 }
 
 std::string MainApp::Javascript(const std::string& Script, const std::string& BrowserType)
@@ -140,19 +150,25 @@ void MainApp::SetData(BrowserData *Data)
 
 }
 
+void MainApp::SetPopupEmulation(PopupEmulation *_PopupEmulation)
+{
+    this->_PopupEmulation = _PopupEmulation;
+}
+
 void MainApp::SetPostManager(PostManager *_PostManager)
 {
     this->_PostManager = _PostManager;
 }
 
-void MainApp::SetCefReqest2Action(CefReqest2Action *_CefReqest2Action)
+void MainApp::SetDevToolsReqest2Action(DevToolsReqest2Action *_DevToolsReqest2Action)
 {
-    this->_CefReqest2Action = _CefReqest2Action;
+    this->_DevToolsReqest2Action = _DevToolsReqest2Action;
+    this->_DevToolsReqest2Action->OnDataReady.push_back(std::bind(&MainApp::OnRecordHttpData,this, _1));
 }
 
-CefReqest2Action * MainApp::GetCefReqest2Action()
+DevToolsReqest2Action * MainApp::GetDevToolsReqest2Action()
 {
-    return _CefReqest2Action;
+    return _DevToolsReqest2Action;
 }
 
 void MainApp::SetSettings(settings *Settings)
@@ -282,6 +298,7 @@ void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
 
     extra_info->SetString(8,ApplicationEngineVersion);
     extra_info->SetString(9,ScriptEngineVersion);
+    extra_info->SetString(10,InterfaceState);
 }
 
 
@@ -316,15 +333,21 @@ void MainApp::UploadStart()
 
 void MainApp::StartRequest(CefRefPtr<CefRequest> Request)
 {
-    //THREAD TID_IO
-    if(Data->IsRecordHttp && _CefReqest2Action)
-    {
-        std::string Script = _CefReqest2Action->Convert(Request);
-        if(BrowserScenario && !Script.empty())
-        {
-            BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script,BrowserScenario->GetMainFrame()->GetURL(), 0);
-        }
+}
 
+void MainApp::OnRequestDataMain(std::string RequestData)
+{
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->ConvertMain(RequestData);
+    }
+}
+
+void MainApp::OnRequestDataAdditional(std::string RequestData)
+{
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->ConvertAdditional(RequestData);
     }
 }
 
@@ -806,6 +829,7 @@ void MainApp::NavigateBackCallback(bool IsInstant)
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
+        Data->_RequestList.RemoveAll();
         this->SendTextResponce("<NavigateBack></NavigateBack>");
     });
 }
@@ -842,6 +866,13 @@ void MainApp::PopupCreate2Callback(bool is_silent, const std::string& url, const
     });
 }
 
+void MainApp::SetComboboxIndexCallback(int Index)
+{
+    _PopupEmulation->SetIndex(Index);
+    this->SendTextResponce(std::string("<SetComboboxIndex></SetComboboxIndex>"));
+}
+
+
 void MainApp::SetOpenFileNameCallback(const std::string& value)
 {
     Data->Connector->SetOpenFileDialogResult(value);
@@ -850,11 +881,12 @@ void MainApp::SetOpenFileNameCallback(const std::string& value)
 
 void MainApp::DragFileCallback(const std::string& value)
 {
-    /*Data->IsDrag = true;
-    CefRefPtr<CefDragData> drag_data = CefDragData::Create();
-    drag_data->AddFile(value,"");
-    BrowserEventsEmulator::StartDrag(_HandlersManager->GetBrowser(),drag_data,DRAG_OPERATION_EVERY,Data->CursorX,Data->CursorY,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation);*/
-    SendTextResponce("<DragFile></DragFile>");
+    Async Result = Data->Connector->StartDragFile(value);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        this->SendTextResponce("<DragFile></DragFile>");
+    });
 }
 
 void MainApp::SetStartupScriptCallback(const std::string& value,const std::string& target,const std::string& script_id)
@@ -870,12 +902,15 @@ void MainApp::SetStartupScriptCallback(const std::string& value,const std::strin
         it->second.Set(value, target);
     }
 
-    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
+    UpdateBrowserData(Data);
+
+    Async Result = Data->Connector->Sleep(2000);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
-        this->SendTextResponce("<SetStartupScript></SetStartupScript>");
+        SendTextResponce("<SetStartupScript></SetStartupScript>");
     });
+
 
 }
 
@@ -949,7 +984,12 @@ void MainApp::SetPromptResultCallback(const std::string& value)
 
 void MainApp::SetHttpAuthResultCallback(const std::string& login,const std::string& password)
 {
-    SendTextResponce("<SetHttpAuthResult>1</SetHttpAuthResult>");
+    Async Result = Data->Connector->SetHttpAuth(login, password);
+    Data->Results->ProcessResult(Result);
+    Result->Then([this](AsyncResult* Result)
+    {
+        SendTextResponce("<SetHttpAuthResult>1</SetHttpAuthResult>");
+    });
 }
 
 void MainApp::GetCookiesForUrlCallback(const std::string& value)
@@ -1325,12 +1365,28 @@ void MainApp::ScrollCallback(int x, int y)
     });
 }
 
+void MainApp::RequestVariablesResultCallback(const std::string & data)
+{
+    if(BrowserScenario)
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RequestVariablesResult(") + picojson::value(data).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+
+    SendTextResponce("<RequestVariablesResult></RequestVariablesResult>");
+}
+
 void MainApp::DebugVariablesResultCallback(const std::string & data)
 {
     if(BrowserScenario)
         BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_UpdateVariablesResult(") + picojson::value(data).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
 
     SendTextResponce("<DebugVariablesResult></DebugVariablesResult>");
+}
+
+void MainApp::DebugCallstackResultCallback(const std::string & data)
+{
+    if(BrowserScenario)
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_UpdateCallstackResult(") + picojson::value(data).serialize() + std::string(")"),"scenario"),BrowserScenario->GetMainFrame()->GetURL(), 0);
+
+    SendTextResponce("<DebugCallstackResult></DebugCallstackResult>");
 }
 
 void MainApp::RenderCallback(int x, int y, int width, int height)
@@ -1364,7 +1420,6 @@ void MainApp::CreateTooboxBrowser()
 {
     if(BrowserToolbox)
         return;
-
     if(!Data->IsRecord)
         return;
     thandler = new ToolboxHandler();
@@ -1378,7 +1433,6 @@ void MainApp::CreateTooboxBrowser()
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserToolbox = CefBrowserHost::CreateBrowserSync(window_info, thandler, "file:///html/toolbox/index.html", browser_settings, CefDictionaryValue::Create(), Context);
@@ -1386,7 +1440,6 @@ void MainApp::CreateTooboxBrowser()
 
     std::string ToolboxScript = ReadAllString("html/toolbox/index.html");
     ToolboxPreprocess(Data->_ModulesData, Data->_UnusedModulesData, ToolboxScript);
-    //BrowserToolbox->GetMainFrame()->LoadString(ToolboxScript, "file:///html/toolbox/index.html");
     WriteStringToFile("html/toolbox/index_prepared.html", ToolboxScript);
     BrowserToolbox->GetMainFrame()->LoadURL("file:///html/toolbox/index_prepared.html");
 
@@ -1406,24 +1459,22 @@ void MainApp::CreateScenarioBrowser()
     CefWindowInfo window_info;
 
     RECT r =  Layout->GetDevToolsRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-
     window_info.SetAsChild(Data->_MainWindowHandle,r);
 
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserScenario = CefBrowserHost::CreateBrowserSync(window_info, shandler, "file:///html/scenario/index.html", browser_settings, CefDictionaryValue::Create(), Context);
     IsMainBrowserCreating = true;
+
     std::string ScenarioScript = ReadAllString("html/scenario/index.html");
     ScenarioPreprocess(Data->_ModulesData, ScenarioScript);
     WriteStringToFile("html/scenario/index_prepared.html", ScenarioScript);
     BrowserScenario->GetMainFrame()->LoadURL("file:///html/scenario/index_prepared.html");
 
     Layout->ScenarioHandle = BrowserScenario->GetHost()->GetWindowHandle();
-
 }
 
 void MainApp::CreateDetectorBrowser()
@@ -1445,7 +1496,6 @@ void MainApp::CreateDetectorBrowser()
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     IsMainBrowserCreating = false;
     BrowserDetector = CefBrowserHost::CreateBrowserSync(window_info, detecthandler, "file:///html/detector/index.html", browser_settings, CefDictionaryValue::Create(), Context);
@@ -1485,7 +1535,6 @@ void MainApp::CreateCentralBrowser()
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(settings,_EmptyRequestContextHandler);
-    //CefRefPtr<CefRequestContext> Context = CefRequestContext::GetGlobalContext();
 
     std::string page = std::string("file:///html/central/index_") + Lang + std::string(".html");
 
@@ -1669,7 +1718,7 @@ void MainApp::ToggleDevTools()
 
 void MainApp::InspectAt(int x, int y)
 {
-    Data->Connector->OpenDevTools();
+    Data->Connector->InspectAt(x, y);
 }
 
 void MainApp::RepeatInspectMouseAt()
@@ -1744,6 +1793,8 @@ void MainApp::MouseLeave()
 void MainApp::SetProxyCallback(const std::string& server, int Port, bool IsHttp, const std::string& username, const std::string& password, const std::string& target)
 {
     WORKER_LOG(std::string("SetProxyCallback ") + server + std::string(" ") + std::to_string(Port) + std::string(" ") + target);
+    Data->IsProxySet = !server.empty();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetProxy(server, Port, IsHttp, username, password);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -1880,12 +1931,16 @@ void MainApp::RecaptchaV3ListCallback(const std::string& value)
 {
     Data->_RecaptchaV3List = value;
 
-    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
+    UpdateBrowserData(Data);
+
+    Async Result = Data->Connector->Sleep(2000);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
-        this->SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
+        SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
     });
+
+
 }
 
 void MainApp::ClickExtensionButton(const std::string& id)
@@ -2059,6 +2114,7 @@ void MainApp::AddRequestMaskAllowCallback(const std::string& value)
     data.first = true;
     data.second = value;
     Data->_RequestMask.push_back(data);
+    UpdateBrowserData(Data);
 
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
@@ -2074,6 +2130,7 @@ void MainApp::AddRequestMaskDenyCallback(const std::string& value)
     data.first = false;
     data.second = value;
     Data->_RequestMask.push_back(data);
+    UpdateBrowserData(Data);
 
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
@@ -2125,7 +2182,7 @@ void MainApp::RestrictDownloads()
 void MainApp::ClearRequestMaskCallback()
 {
     Data->_RequestMask.clear();
-
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2152,6 +2209,7 @@ void MainApp::ClearAllCallback()
     Data->Connector->ClearNetworkData();
 
     Data->_RequestMask.clear();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2165,6 +2223,7 @@ void MainApp::ClearMasksCallback()
     Data->_CacheMask.clear();
     Data->Connector->SetCacheMasks(Data->_CacheMask);
     Data->_RequestMask.clear();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2352,10 +2411,11 @@ void MainApp::IsUrlLoadedByMaskCallback(const std::string& value)
 
 }
 
-void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & script_engine_version, const std::string & application_engine_version)
+void MainApp::SetCodeCallback(const std::string & code,const std::string & embedded,const std::string & schema,bool is_testing, const std::string & interface_state, const std::string & script_engine_version, const std::string & application_engine_version)
 {
     ApplicationEngineVersion = application_engine_version;
     ScriptEngineVersion = script_engine_version;
+    InterfaceState = interface_state;
     Data->IsTesing = is_testing;
     Schema = schema;
     Code = code;
@@ -3108,6 +3168,11 @@ void MainApp::Timer()
         }
     }
 
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->Timer();
+    }
+
     if(Data->IsRecord && BrowserToolbox)
     {
         Notifications.Timer(BrowserToolbox);
@@ -3268,9 +3333,21 @@ void MainApp::OnRequestStart(std::string RequestId)
     Data->_RequestList.Add(RequestId);
 }
 
+void MainApp::OnRecordHttpData(std::string Script)
+{
+    if(Data->IsRecordHttp && _DevToolsReqest2Action && BrowserScenario && !Script.empty())
+    {
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script,BrowserScenario->GetMainFrame()->GetURL(), 0);
+    }
+}
+
 void MainApp::OnRequestStop(std::string RequestId)
 {
     Data->_RequestList.Remove(RequestId);
+    if(Data->IsRecordHttp && _DevToolsReqest2Action)
+    {
+        _DevToolsReqest2Action->ConvertStop(RequestId);
+    }
 }
 
 void MainApp::OnLoadStart()
@@ -3667,10 +3744,11 @@ void MainApp::HandleScenarioBrowserEvents()
     }
 
 
-    std::pair< std::pair<std::string,bool>, bool> res2 = scenariov8handler->GetExecuteCode();
-    if(res2.second)
+    std::pair< std::pair<std::string,bool>, std::pair<bool,bool> > res2 = scenariov8handler->GetExecuteCode();
+    if(res2.second.first)
     {
-        Layout->UpdateState(MainLayout::Hold);
+        if(!res2.second.second)
+            Layout->UpdateState(MainLayout::Hold);
         if(BrowserToolbox)
             BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_ShowWaiting(") + picojson::value(res2.first.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
         std::string CodeSend = res2.first.first;
@@ -3689,10 +3767,10 @@ void MainApp::HandleScenarioBrowserEvents()
         }
     }
 
-    std::pair<std::string, bool> res6 = scenariov8handler->GetClipboardSetRequest();
+    std::pair<std::pair<std::string, std::pair<bool, bool>>, bool> res6 = scenariov8handler->GetClipboardSetRequest();
     if(res6.second)
     {
-        write_clipboard(res6.first);
+        write_clipboard(res6.first.first, res6.first.second.first, res6.first.second.second);
     }
 
     if(Data->IsRecord)
@@ -3757,6 +3835,14 @@ void MainApp::HandleScenarioBrowserEvents()
         }
     }
 
+    if(!IsScenarioInterfaceInitialSent && scenariov8handler->GetIsInitialized())
+    {
+        std::string InterfaceInitial = ReadAllString("scenario.json");
+        std::string Script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"scenario");
+        BrowserScenario->GetMainFrame()->ExecuteJavaScript(Script,BrowserScenario->GetMainFrame()->GetURL(), 0);
+        IsScenarioInterfaceInitialSent = true;
+    }
+
     if(scenariov8handler->GetIsThreadNumberEditStart() && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript("BrowserAutomationStudio_ThreadNumberEdit()","toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
@@ -3815,8 +3901,17 @@ void MainApp::HandleScenarioBrowserEvents()
     if(res10.second && BrowserToolbox)
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(Javascript(std::string("BrowserAutomationStudio_RunFunctionAsync(") + picojson::value(res10.first).serialize() + std::string(")"),"toolbox"),BrowserToolbox->GetMainFrame()->GetURL(), 0);
 
+    std::pair<std::string,bool> res12 = scenariov8handler->GetIsInterfaceState();
+    if(res12.second) WriteStringToFile("scenario.json", res12.first);
+
     std::pair<std::string, bool> res11 = scenariov8handler->GetIsHighlightMenuItem();
     if(res11.second) for (auto f : EventHighlightMenu) f(res11.first);
+
+    std::pair<std::string,bool> res13 = scenariov8handler->GetIsInterfaceJson();
+    if(res13.second)
+    {
+        SendTextResponce(std::string("<SaveInterface>") + res13.first + std::string("</SaveInterface>"));
+    }
 
     ScenarioV8Handler::RestartType res3 = scenariov8handler->GetNeedRestart();
 
@@ -3847,19 +3942,7 @@ void MainApp::HandleToolboxBrowserEvents()
 
 
     std::pair<std::string,bool> InterfaceJson = toolboxv8handler->GetInterfaceState();
-    if(InterfaceJson.second)
-    {
-        try
-        {
-            std::ofstream outfile("interface.json");
-            if(outfile.is_open())
-            {
-                outfile<<InterfaceJson.first<<std::endl;
-                }
-        }catch(...)
-        {
-        }
-    }
+    if(InterfaceJson.second) WriteStringToFile("interface.json", InterfaceJson.first);
 
 
     std::pair<ToolboxV8Handler::ResultClass,bool> res = toolboxv8handler->GetResult();
@@ -4018,12 +4101,12 @@ void MainApp::HandleToolboxBrowserEvents()
         GlobalVariables.clear();
     }
 
-    if(!IsInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
+    if(!IsToolboxInterfaceInitialSent && toolboxv8handler->GetIsInitialized())
     {
         std::string InterfaceInitial = ReadAllString("interface.json");
         std::string script = Javascript(std::string("BrowserAutomationStudio_LoadInterfaceState(") + picojson::value(InterfaceInitial).serialize() + std::string(")"),"toolbox");
         BrowserToolbox->GetMainFrame()->ExecuteJavaScript(script,BrowserToolbox->GetMainFrame()->GetURL(), 0);
-        IsInterfaceInitialSent = true;
+        IsToolboxInterfaceInitialSent = true;
     }
 
     if(toolboxv8handler->GetIsInitialized() && !Schema.empty())
@@ -4336,6 +4419,8 @@ void MainApp::ExecuteMouseMove()
     }
     Data->CursorX = CursorX;
     Data->CursorY = CursorY;
+    Data->DirectControlOrAutomationCursorX = Data->CursorX;
+    Data->DirectControlOrAutomationCursorY = Data->CursorY;
 
     RECT r = Layout->GetBrowserRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
     InvalidateRect(Data->_MainWindowHandle,&r,false);

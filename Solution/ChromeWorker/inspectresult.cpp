@@ -5,7 +5,7 @@
 #include "translate.h"
 #include <string>
 
-void InspectResult::Paint(HDC hdc, HFONT InspectFont, bool ShowText, bool SimplifiedText, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop)
+void InspectResult::Paint(HDC hdc, int TextSize, HFONT InspectFont, bool ShowText, bool SimplifiedText, int BrowserRealWidth, int BrowserRealHeight, int BrowserDrawWidth, int BrowserDrawHeight, int BrowserScrollX, int BrowserScrollY, int BrowserLeft, int BrowserTop)
 {
 
     if(!active)
@@ -39,7 +39,7 @@ void InspectResult::Paint(HDC hdc, HFONT InspectFont, bool ShowText, bool Simpli
        height1 = BrowserDrawHeight - y1 - 1;
 
 
-    int htext = 14;
+    int htext = TextSize;
 
     bool is_text = true;
     std::wstring text;
@@ -79,7 +79,7 @@ void InspectResult::Paint(HDC hdc, HFONT InspectFont, bool ShowText, bool Simpli
             text = std::wstring(L" ") + Translate::Tr(L"Position: ") + std::to_wstring(position) + std::wstring(L" ");
         }else if(width1 < width_tooltip4)
         {
-            htext = 42;
+            htext = TextSize * 3;
             text = std::wstring(L" ") + Translate::Tr(L"Position: ") + std::to_wstring(position) + std::wstring(L". \r\n ") + Translate::Tr(L"Key up / key down - tweak selection.") +  std::wstring(L" \r\n ") + Translate::Tr(L"Enter - select.") + std::wstring(L" ");
         }else
         {

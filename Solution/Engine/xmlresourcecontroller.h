@@ -46,6 +46,8 @@ namespace BrowserAutomationStudioFramework
         QString ModulesMetaJson;
         QString EmbeddedData;
 
+        QString InterfaceState;
+
         MultiLanguageString OutputTitle1;
         MultiLanguageString OutputTitle2;
         MultiLanguageString OutputTitle3;
@@ -105,6 +107,8 @@ namespace BrowserAutomationStudioFramework
         void SetSettingsWorker(const QString & SettingsWorker);
         void SetModulesMetaJson(const QString & ModulesMetaJson);
 
+        void SetInterfaceState(const QString & InterfaceState);
+
         void SetOutputTitle1(const MultiLanguageString& OutputTitle1);
         void SetOutputTitle2(const MultiLanguageString& OutputTitle2);
         void SetOutputTitle3(const MultiLanguageString& OutputTitle3);
@@ -156,6 +160,8 @@ namespace BrowserAutomationStudioFramework
         QString GetChromeCommandLine();
         QString GetSettingsWorker();
         QString GetModulesMetaJson();
+
+        QString GetInterfaceState();
 
         bool GetCopySilent();
         bool GetIsEnginesInAppData();

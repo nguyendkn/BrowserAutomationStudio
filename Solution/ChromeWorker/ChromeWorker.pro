@@ -47,8 +47,15 @@ SOURCES += main.cpp \
     connector/devtoolsactionrestorecookies.cpp \
     connector/devtoolsactionsavecookies.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
+    connector/devtoolsactionsleep.cpp \
+    connector/devtoolsactionstartdragfile.cpp \
+    connector/devtoolsactiontouch.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
+    connector/devtoolsactionempty.cpp \
+    connector/framefinder.cpp \
+    connector/noneconnector.cpp \
     connector/devtoolsconnector.cpp \
+    connector/proxysaver.cpp \
     connector/emoji.cpp \
     connector/idevtoolsaction.cpp \
     connector/rawcpphttpclient.cpp \
@@ -61,6 +68,7 @@ SOURCES += main.cpp \
     copyfolder.cpp \
     createemptyprofile.cpp \
     deletefolder.cpp \
+    devtoolsrequest2action.cpp \
     donothingcallback.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
@@ -75,6 +83,7 @@ SOURCES += main.cpp \
     pipesclient.cpp \
     log.cpp \
     commandparser.cpp \
+    popupemulation.cpp \
     prepareurladressbar.cpp \
     resultmanager.cpp \
     xml_encoder.cpp \
@@ -135,7 +144,6 @@ SOURCES += main.cpp \
     requestlist.cpp \
     resourcehandler.cpp \
     urlrequestclient.cpp \
-    cefrequest2action.cpp \
     tooltip/gToolTip.cpp \
     checkvalidutf8.cpp \
     fillalpharectangle.cpp \
@@ -207,8 +215,16 @@ HEADERS += \
     connector/devtoolsactionrestorecookies.h \
     connector/devtoolsactionsavecookies.h \
     connector/devtoolsactionsetstartupscript.h \
+    connector/devtoolsactionsleep.h \
+    connector/devtoolsactionstartdragfile.h \
+    connector/devtoolsactiontouch.h \
     connector/devtoolsactionwebsocketquery.h \
+    connector/devtoolsactionempty.h \
+    connector/framefinder.h \
+    connector/noneconnector.h \
     connector/devtoolsconnector.h \
+    connector/idevtoolsconnector.h \
+    connector/proxysaver.h \
     connector/emoji.h \
     connector/idevtoolsaction.h \
     connector/rawcpphttpclient.h \
@@ -221,6 +237,7 @@ HEADERS += \
     copyfolder.h \
     createemptyprofile.h \
     deletefolder.h \
+    devtoolsrequest2action.h \
     donothingcallback.h \
     emptyrequestcontexthandler.h \
     fileexists.h \
@@ -235,6 +252,7 @@ HEADERS += \
     pipesclient.h \
     log.h \
     commandparser.h \
+    popupemulation.h \
     prepareurladressbar.h \
     processcheck.h \
     resultmanager.h \
@@ -303,7 +321,6 @@ HEADERS += \
     requestlist.h \
     resourcehandler.h \
     urlrequestclient.h \
-    cefrequest2action.h \
     tooltip/gToolTip.h \
     checkvalidutf8.h \
     fillalpharectangle.h \

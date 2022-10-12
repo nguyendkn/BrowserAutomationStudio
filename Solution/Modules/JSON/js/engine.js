@@ -32,8 +32,10 @@ function JSONPath() {
     this.normalize = function (path) {
         var subx = [];
 
-        path = path.indexOf('..') === 0 ? ('$' + path) : path;
-        path = path.indexOf('$.') !== 0 ? ('$.' + path) : path;
+        if (path.indexOf('$') !== 0) {
+            path = path.indexOf('..') === 0 ? ('$' + path) : path;
+            path = path.indexOf('$.') !== 0 ? ('$.' + path) : path;
+        }
 
         return path
             .replace(/[\['](\??\(.*?\))[\]']/g, function (_$0, $1) {

@@ -1149,6 +1149,7 @@ QString MainWindow::OpenFromFile(const QString& fileName)
     ConnectionLogin = loader.GetConnectionLogin();
     ConnectionPassword = loader.GetConnectionPassword();
     ScriptEngineVersion = loader.GetEngineVersion();
+    InterfaceState = loader.GetInterfaceState();
 
     SetIsDirty(!loader.GetSchema().isEmpty() || _DataBaseConnector->HasDatabase());
 
@@ -1265,6 +1266,7 @@ QPair<bool,QString> MainWindow::SaveToFileSilent(const QString& file)
     saver.SetConnectionPort(ConnectionPort);
     saver.SetConnectionLogin(ConnectionLogin);
     saver.SetConnectionPassword(ConnectionPassword);
+    saver.SetInterfaceState(InterfaceState);
     saver.SetModulesPreserve(ModulesPreserve);
     saver.SetUnusedModules(_ModuleManager->GetStandartModulesNotUsedInProject(TextEditor->GetText()));
 
@@ -1385,6 +1387,7 @@ void MainWindow::New()
         WidgetController->DeleteAllView();
         SetCurrentFileName(fileName);
         Settings->setValue("CurrentFileName",CurrentFileName);
+        InterfaceState.clear();
         Schema.clear();
         ConnectionIsRemote = false;
         ConnectionServer.clear();
@@ -1703,7 +1706,7 @@ void MainWindow::SendCode()
     if(Code.isEmpty())
         Code = " ";
 
-    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun, ScriptEngineVersion, info.VersionString());
+    _RecordProcessCommunication->SendCode(Code,_DataBaseState->ToJson(),_EmbeddedLanguageManager->SerializeData(),IsAutorun, InterfaceState, ScriptEngineVersion, info.VersionString());
     _RecordProcessCommunication->SendResources(LastResourceList);
     _RecordProcessCommunication->SetWindow(QString::number(ui->centralWidget->winId()));
 
@@ -1721,6 +1724,11 @@ void MainWindow::RecordWindowAttached()
         ui->StartRecord->setVisible(false);
         ui->LabelStatus->setVisible(false);
     }
+}
+
+void MainWindow::ReceiveInterface(const QString& Json)
+{
+    InterfaceState = Json;
 }
 
 void MainWindow::ReceiveCode(const QString& Code)
@@ -2473,6 +2481,8 @@ void MainWindow::RunInternal()
 
         connect(worker,SIGNAL(PrepareFunctionSignal(QString)),_RecordProcessCommunication,SLOT(PrepareFunction(QString)));
         connect(_RecordProcessCommunication,SIGNAL(PrepareFunctionResult(QString,QString)),worker,SIGNAL(PrepareFunctionResult(QString,QString)));
+
+        connect(_RecordProcessCommunication,SIGNAL(SaveInterface(QString)),this,SLOT(ReceiveInterface(QString)));
     }
 
     worker->SetModuleManager(_ModuleManager);

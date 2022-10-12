@@ -10,6 +10,11 @@ namespace BrowserAutomationStudioFramework
     {
     }
 
+    QString StringBox::GetIdFromDatabaseResource(const QString& ResourceData)
+    {
+        return ResourceData.split(":").last();
+    }
+
     void StringBox::Reload(StringBoxNode& node)
     {
         node.Fail = 0;
@@ -284,12 +289,27 @@ namespace BrowserAutomationStudioFramework
 
     QList<QPair<QString,StringBox::StringBoxNode> >::iterator StringBox::SearchInData(const QString & key)
     {
+        QString KeyDatabase;
+        bool IsDatabse = TypeId == QString("Database");
+        if(IsDatabse)
+        {
+            KeyDatabase = GetIdFromDatabaseResource(key);
+        }
+
         QList<QPair<QString,StringBoxNode> >::iterator i;
         LastSearchIndex = 0;
         for (i = Data.begin(); i != Data.end(); ++i)
         {
-            if(i->first == key)
-                return i;
+            if(IsDatabse)
+            {
+                //Compare by record id for databse
+                if(GetIdFromDatabaseResource(i->first) == KeyDatabase)
+                    return i;
+            }else
+            {
+                if(i->first == key)
+                    return i;
+            }
 
             LastSearchIndex++;
         }
@@ -394,6 +414,10 @@ namespace BrowserAutomationStudioFramework
     void StringBox::SetInterval(int interval)
     {
         MaxInterval = interval;
+    }
+    void StringBox::SetTypeId(const QString& TypeId)
+    {
+        this->TypeId = TypeId;
     }
     int StringBox::GetMaxSuccess()
     {

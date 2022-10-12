@@ -6,7 +6,9 @@
     _if(args.query, function () {
       BASCaptchaSolver.setHelper(new BASCaptchaSolver.helpers.CoordinatesCaptchaHelper(args));
       _call_function(BASCaptchaSolver.helper.initialize, {})!
-      args.imageData = _result_function().imageData;
+      const data = _result_function();
+      if (data === null) _break('function');
+      args.imageData = data.imageData;
     })!
 
     _call_function(BASCaptchaSolver.api.solve, {

@@ -39,6 +39,12 @@ std::string PrepareMutableStartupScript(BrowserData* Data)
          }
     }
 
+    if(!jscode.empty())
+        jscode += ";";
+    jscode += "try{";
+    jscode += PrepareConstantStartupScript(Data);
+    jscode += "}catch(e){};";
+
     jscode += std::string(";_BAS_HIDE(BrowserAutomationStudio_RecaptchaV3ActionList) = ") + picojson::value(Data->_RecaptchaV3List).serialize() + std::string(";");
 
     JavaScriptExtensions Extensions;
@@ -82,6 +88,10 @@ void UpdateBrowserData(BrowserData* Data)
         }
     }
 
+    Data->Saver.IsProxySet = Data->IsProxySet;
+
+    Data->Saver.RequestMask = Data->_RequestMask;
+
     Data->Saver.Headers = Data->_Headers;
 
     Data->Saver.UserAgent = UserAgent;
@@ -93,6 +103,8 @@ void UpdateBrowserData(BrowserData* Data)
     Data->Saver.Languages = CombineAcceptLanguageWithPattern(AcceptLanguage,Data->_AcceptLanguagePattern).NavigatorLanguages;
 
     Data->Saver.LanguagesHeader = CombineAcceptLanguageWithPattern(AcceptLanguage,Data->_AcceptLanguagePattern).Header;
+
+    Data->Saver.StartupScript = PrepareMutableStartupScript(Data);
 
     Data->Saver.Save();
 }

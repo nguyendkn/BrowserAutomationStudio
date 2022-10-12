@@ -76,28 +76,28 @@
             "DataName": "UtilChecksum",
             "DataType": 1,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilChecksum\");\r\nlet {input, inputEncoding, algorithm, outputLength, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    let hash = util.createHash(algorithm, outputLength && algorithm.toLocaleLowerCase().startsWith('shake') ? {outputLength:outputLength} : {});\r\n    if(inputEncoding){\r\n        hash.update(input, inputEncoding);\r\n    }else{\r\n        hash.update(input);\r\n    };\r\n    [[CHECKSUM_NODE_PARAMETERS]] = hash.digest(outputEncoding);\r\n}catch(err){\r\n    util.error(err);\r\n};",
             "DataName": "Checksum_String",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const util = require(\"../UtilChecksum\");\r\nconst { createReadStream } = require('fs');\r\nlet {filePath, algorithm, outputLength, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    [[CHECKSUM_NODE_PARAMETERS]] = await (new Promise((resolve, reject) => {\r\n        let hash = util.createHash(algorithm, outputLength && algorithm.toLocaleLowerCase().startsWith('shake') ? {outputLength:outputLength} : {});\r\n        let stream = createReadStream(filePath);\r\n        stream.on('error', function(err){\r\n            if(err.message.includes(\"no such file or directory\")){\r\n                reject(util.lang==\"ru\" ? (`файл \"${filePath}\" не существует`) : (`file \"${filePath}\" does not exist`));\r\n            }else{\r\n                reject(err);\r\n            };\r\n        });\r\n        stream.on('data', function(data){\r\n            hash.update(data);\r\n        });\r\n        stream.on('end', function(){\r\n            resolve(hash.digest(outputEncoding));\r\n        });\r\n    }));\r\n}catch(err){\r\n     util.error(err);\r\n};",
             "DataName": "Checksum_File",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const { getHashes } = require('crypto');\r\nconst crc = require(\"crc\");\r\n\r\nlet convert = function(el){\r\n    return typeof el===\"string\" ? (isNaN(el) ? el.toLowerCase() : Number(el)) : el;\r\n};\r\n\r\nlet algorithms = [...getHashes(), ...Object.keys(crc), 'keccak224', 'keccak256', 'keccak384', 'keccak512', 'blake3'];\r\n\r\n[[CHECKSUM_NODE_PARAMETERS]] = algorithms.filter(function(a, i){\r\n    return algorithms.indexOf(a) === i;\r\n}).sort(function(a, b){\r\n    a = convert(a);\r\n\tb = convert(b);\r\n    if(a > b){\r\n        return 1;\r\n    };\r\n    if(a < b){\r\n        return -1;\r\n    };\r\n    return 0;\r\n});",
             "DataName": "Checksum_GetAlgorithmsList",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         }
     ],
     "engine": [
@@ -112,7 +112,7 @@
     "languages": [
         {
             "Name": "Node",
-            "Version": "12.18.3"
+            "Version": "18.10.0"
         }
     ],
     "localize": {
@@ -166,19 +166,19 @@
     "modules": [
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "crc",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "keccak",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "blake3-wasm",
             "ModuleVersion": "*"
         }

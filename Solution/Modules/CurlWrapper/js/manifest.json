@@ -7,7 +7,7 @@
 	"description":"Curl wrapper",
 	"description_small":{"en": "Curl wrapper", "ru": "Вызов curl"},
 	"major_version": 1,
-	"minor_version": 0,
+	"minor_version": 1,
 	"developer_name": "bablosoft", 
 	"developer_email": "mail.to.twaego@gmail.com", 
 	"developer_site": "https://bablosoft.com",
@@ -30,12 +30,25 @@
 				"enddllfunction": "EndDll", 
 				"startthreadfunction": "StartThread", 
 				"endthreadfunction": "EndThread", 
+				"iddlefunction": "IddleThread", 
 				"exportlist":[
 					{
 						"name": "easyperform",
 						"isasync": true,
 						"waitinfinite": false,
 						"workfunction": "CurlEasyPerform"
+					},
+					{
+						"name": "easycleanup",
+						"isasync": false,
+						"waitinfinite": false,
+						"workfunction": "CurlEasyCleanup"
+					},
+					{
+						"name": "decoder",
+						"isasync": false,
+						"waitinfinite": false,
+						"workfunction": "Decoder"
 					}
 				]
 			}

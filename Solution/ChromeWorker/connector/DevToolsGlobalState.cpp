@@ -7,7 +7,7 @@ void DevToolsGlobalState::Reset()
     SwitchToTabFrameId.clear();
     SwitchToTabResetSavedActions = false;
     StartupScriptIds.clear();
-    FrameIdToContextId.clear();
+    ExecutionContexts.clear();
     Tabs.clear();
     ScreenCastTabId.clear();
     OpenFileDialogResult.clear();
@@ -31,4 +31,9 @@ void DevToolsGlobalState::Reset()
     UserAgentData.clear();
     ExtensionList.clear();
     IsDeviceScaleFactorModified = false;
+    HttpAuthEnabled = false;
+    HttpAuthUserName.clear();
+    HttpAuthPassword.clear();
+    DragAndDropIsEnabled = false;
+    DragAndDropData.clear();
 }

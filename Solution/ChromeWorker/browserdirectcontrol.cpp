@@ -107,6 +107,13 @@ void BrowserDirectControl::TimeoutLastInspect()
 
 void BrowserDirectControl::ApplyInspectResult(MouseClickItem Item, InspectResult Inspect)
 {
+    if(_BrowserData->ManualControl != BrowserData::DirectRecord)
+    {
+        IsInspecting = false;
+        MouseClicks.clear();
+        return;
+    }
+
     //TID_UI
     bool IsDownOrUp = Item.IsDownOrUp;
     bool IsDrop = Item.IsDrop;
@@ -471,6 +478,11 @@ void BrowserDirectControl::SendSequenceItems(std::vector<SequenceItem>& Items)
     }
 }
 
+void BrowserDirectControl::ClearSequence()
+{
+    Sequence.clear();
+}
+
 void BrowserDirectControl::ProcessSequence()
 {
     if(Sequence.empty())
@@ -828,6 +840,9 @@ void BrowserDirectControl::MouseMove(int X, int Y, bool IsMousePressed, bool IsC
 {
     //TID_UI
 
+    _BrowserData->DirectControlOrAutomationCursorX = X;
+    _BrowserData->DirectControlOrAutomationCursorY = Y;
+
     //Check if control is indirect
     if(_BrowserData->ManualControl == BrowserData::Indirect)
         return;
@@ -1024,6 +1039,11 @@ void BrowserDirectControl::Key(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void BrowserDirectControl::DoMouseEvent(MouseClickItem Item)
 {
+    if(_BrowserData->IsTouchScreen)
+    {
+        return;
+    }
+
     MouseEvent Event;
     if(Item.IsDownOrUp)
     {
@@ -1090,6 +1110,8 @@ void BrowserDirectControl::DoMouseEvent(MouseClickItem Item)
 void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeftMousePressed, bool IsRightMousePressed, bool IsCtrlPressed, bool IsShiftPressed, bool IsLeftMouseButton)
 {
     //TID_UI
+    _BrowserData->DirectControlOrAutomationCursorX = X;
+    _BrowserData->DirectControlOrAutomationCursorY = Y;
 
     //Check if control is indirect
     if(_BrowserData->ManualControl == BrowserData::Indirect)

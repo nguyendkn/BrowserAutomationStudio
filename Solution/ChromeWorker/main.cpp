@@ -17,7 +17,7 @@
 #include "multithreading.h"
 #include "modulesdata.h"
 #include "postmanager.h"
-#include "cefrequest2action.h"
+#include "devtoolsrequest2action.h"
 #include "gToolTip.h"
 #include "generatejsonmenu.h"
 #include "startwith.h"
@@ -41,6 +41,9 @@
 #include "readallfile.h"
 #include "base64.h"
 #include "writefile.h"
+#include "popupemulation.h"
+#include "noneconnector.h"
+#include "devtoolsconnector.h"
 
 
 #if defined(BAS_DEBUG)
@@ -50,11 +53,12 @@
 int pid = -1;
 CefRefPtr<MainApp> app;
 PipesClient *Client;
+PopupEmulation *_PopupEmulation;
 CommandParser *Parser;
 HWND MousePositionMouseHandle,hwnd,HButtonUp,HButtonDown,HButtonLeft,HButtonRight,HButtonMenu;
 HWND HButtonUpUp,HButtonDownDown,HButtonLeftLeft,HButtonRightRight;
 enum{IDButtonTerminate = 1000,IDButtonQuit,IDButtonUp,IDButtonBackUrl,IDBrowserTabs,IDBrowserMenu,IDButtonLoadUrl,IDButtonDown,IDButtonLeft,IDButtonRight,IDButtonUpUp,IDButtonDownDown,IDButtonLeftLeft,IDButtonRightRight,IDButtonMinimizeMaximize,IDButtonMenu,IDButtonSettings,IDButtonDirectRecord,IDButtonDirectNoRecord,IDButtonIndirect,IDTextHold,IDBrowserLabel,IDLabelTop,IDTextFinished,IDClick,IDMove,IDNone,IDMoveAndClick,IDDrag,IDDrop,IDDragElement,IDDropElement,IDInspect,IDXml,IDText,IDScript,IDClickElement,IDMoveElement,IDMoveAndClickElement,IDClear,IDType,IDExists,IDStyle,IDCheck,IDScreenshot,IDCoordinates,IDFocus,IDSet,IDSetInteger,IDSetRandom,IDGetAttr,IDSetAttr,IDCaptcha,IDLength,IDWaitElement,
-    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowUpdater,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000};
+    IDLoop,IDXmlLoop,IDTextLoop,IDScriptLoop,IDClickElementLoop,IDMoveElementLoop,IDMoveAndClickElementLoop,IDClearLoop,IDTypeLoop,IDExistsLoop,IDStyleLoop,IDCheckLoop,IDScreenshotLoop,IDCoordinatesLoop,IDFocusLoop,IDSetLoop,IDSetIntegerLoop,IDSetRandomLoop,IDGetAttrLoop,IDSetAttrLoop,IDCaptchaLoop,IDAddTabManual,IDShowUpdater,IDShowScenario,IDShowDevtools,IDShowFingerprintDetector,IDRecordHttpRequests,IDCustom = 30000,IDCustomForeach = 40000,IDCustomPopups = 50000, IDManualTabSwitch = 50000, IDManualTabClose = 60000, IDPopupEmulation = 60500};
 HCURSOR HCursor = 0;
 HCURSOR HCursorTouch = 0;
 using namespace std::placeholders;
@@ -139,6 +143,13 @@ std::string GetUrl()
     return ws2s(Url);
 }
 
+bool IsUrlEditSelected()
+{
+    return GetFocus() == Layout->HEditUrl;
+}
+
+
+
 void CreateHMenu(int HighlightedMenuItem = -1)
 {
     if(hMenu)
@@ -169,7 +180,7 @@ void CreateHMenu(int HighlightedMenuItem = -1)
 
     POINT p;
     p.x = -4;
-    p.y = 26;
+    p.y = Layout->Scale(20) + Layout->Scale(5) + 1;
     ClientToScreen(Layout->HButtonMenu,&p);
     if (HighlightedMenuItem > -1) HiliteMenuItem(hwnd, hMenu, HighlightedMenuItem, MF_BYCOMMAND | MF_HILITE);
     TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
@@ -584,50 +595,50 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 HButtonUp = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0, 0, 20, 20, hwnd, (HMENU)IDButtonUp, hInst, NULL);
                 Layout->HButtonUp = HButtonUp;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UP), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UP), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonUp, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonDown = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonDown, hInst, NULL);
                 Layout->HButtonDown = HButtonDown;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWN), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWN), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonDown, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonLeft = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonLeft, hInst, NULL);
                 Layout->HButtonLeft = HButtonLeft;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonLeft, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonRight = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonRight, hInst, NULL);
                 Layout->HButtonRight = HButtonRight;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonRight, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
                 HButtonUpUp = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0, 0, 20, 20, hwnd, (HMENU)IDButtonUpUp, hInst, NULL);
                 Layout->HButtonUpUp = HButtonUpUp;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UPUP), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UPUP), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonUpUp, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonDownDown = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonDownDown, hInst, NULL);
                 Layout->HButtonDownDown = HButtonDownDown;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWNDOWN), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWNDOWN), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonDownDown, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonLeftLeft = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonLeftLeft, hInst, NULL);
                 Layout->HButtonLeftLeft = HButtonLeftLeft;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFTLEFT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFTLEFT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonLeftLeft, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonRightRight = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonRightRight, hInst, NULL);
                 Layout->HButtonRightRight = HButtonRightRight;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHTRIGHT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHTRIGHT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonRightRight, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
@@ -635,82 +646,90 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 HButtonMenu = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonMenu, hInst, NULL);
                 Layout->HButtonMenu = HButtonMenu;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MENU), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MENU), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(Layout->HButtonMenu, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
                 Layout->HButtonSettings = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonSettings, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_SETTINGS), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_SETTINGS), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(Layout->HButtonSettings, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
                 Layout->HButtonIndirect = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonIndirect, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_INDIRECT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_INDIRECT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(31), 0);
                     SendMessage(Layout->HButtonIndirect, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 gToolTip::AddTip(hwnd,hInst,(TCHAR *)Translate::Tr(L"Use this button to start control browser directly.").data(),IDButtonIndirect,TRUE);
 
                 Layout->HButtonDirectRecord = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonDirectRecord, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_RECORD), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_RECORD), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(31), 0);
                     SendMessage(Layout->HButtonDirectRecord, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 gToolTip::AddTip(hwnd,hInst,(TCHAR *)Translate::Tr(L"Use this button to start control browser directly.").data(),IDButtonDirectRecord,TRUE);
 
                 Layout->HButtonDirectNoRecord = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonDirectNoRecord, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_NO_RECORD), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_NO_RECORD), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(31), 0);
                     SendMessage(Layout->HButtonDirectNoRecord, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 gToolTip::AddTip(hwnd,hInst,(TCHAR *)Translate::Tr(L"Use this button to start control browser directly.").data(),IDButtonDirectNoRecord,TRUE);
 
-                Layout->ButtonMinimize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MINIMIZE), IMAGE_BITMAP, 0, 0, 0);
-                Layout->ButtonMaximize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MAXIMIZE), IMAGE_BITMAP, 0, 0, 0);
+                Layout->ButtonMinimize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MINIMIZE), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+                Layout->ButtonMaximize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MAXIMIZE), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 Layout->HButtonMinimizeMaximize = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonMinimizeMaximize, hInst, NULL);
 
-                InspectFont = CreateFont (14, 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                InspectFont = CreateFont (Layout->Scale(14), 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
 
             }
 
-            Layout->BManualControlAction = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION), IMAGE_BITMAP, 0, 0, 0);
-            Layout->BManualControlAction1 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION1), IMAGE_BITMAP, 0, 0, 0);
-            Layout->BManualControlAction2 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION2), IMAGE_BITMAP, 0, 0, 0);
-            Layout->BManualControlAction3 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION3), IMAGE_BITMAP, 0, 0, 0);
+            Layout->BManualControlAction = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+            Layout->BManualControlAction1 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION1), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+            Layout->BManualControlAction2 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION2), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+            Layout->BManualControlAction3 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION3), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
 
             Layout->HEditUrl = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"about:blank", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL,0,0,100,100,hwnd,(HMENU)NULL, NULL, NULL);
             app->GetData()->UrlHandler = Layout->HEditUrl;
 
             SetWindowSubclass(Layout->HEditUrl, UrlEditProc, 0,0);
 
+            {
+                HFONT hFont = CreateFont (Layout->Scale(16), 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                if(hFont)
+                {
+                    SendMessage (Layout->HEditUrl, WM_SETFONT, WPARAM (hFont), TRUE);
+                }
+            }
+
             Layout->HLoadUrl = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonLoadUrl, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LOADURL), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LOADURL), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HLoadUrl, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HBackUrl = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonBackUrl, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BACKURL), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BACKURL), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HBackUrl, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HBrowserTabs = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDBrowserTabs, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERTABS), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERTABS), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HBrowserTabs, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HBrowserMenu = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDBrowserMenu, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERMENU), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERMENU), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HBrowserMenu, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HLabelBrowserBottom = CreateWindow(L"SysLink", L"", WS_CHILD, 0, 0, 100, 30, hwnd, (HMENU)IDBrowserLabel, hInst, NULL);
             {
-                HFONT hFont = CreateFont (14, 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                HFONT hFont = CreateFont (Layout->Scale(14), 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
                 if(hFont)
                 {
                     SendMessage (Layout->HLabelBrowserBottom, WM_SETFONT, WPARAM (hFont), TRUE);
@@ -729,7 +748,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     SetWindowLongPtr(Layout->HLabelTop,GWL_STYLE,(LONG_PTR)s);
                 }
 
-                HFONT hFont = CreateFont (16, 0, 0, 0, FW_REGULAR, TRUE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                HFONT hFont = CreateFont (Layout->Scale(16), 0, 0, 0, FW_REGULAR, TRUE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
                 if(hFont)
                 {
                     SendMessage (Layout->HLabelTop, WM_SETFONT, WPARAM (hFont), TRUE);
@@ -918,6 +937,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 int xPos = LOWORD(lParam);
                 int yPos = HIWORD(lParam);
 
+                if(Layout->IsTouchCursor())
+                {
+                    xPos += 7;
+                    yPos += 7;
+                }
+
                 RECT r = Layout->GetBrowserRectangle(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
 
                 int MousePositionX = (float)(xPos - r.left) * (float)(app->GetData()->WidthBrowser) / (float)(r.right - r.left),MousePositionY = (float)(yPos - r.top) * (float)(app->GetData()->HeightBrowser) / (float)(r.bottom - r.top);
@@ -1073,7 +1098,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 Settings.SaveToFile();
             }
 
-            if(!hTabsManualMenu && (Layout->State == MainLayout::Ready || Layout->IsManualControlAction))
+            if(!IsUrlEditSelected() && !hTabsManualMenu && (Layout->State == MainLayout::Ready || Layout->IsManualControlAction))
             {
                 if(!Layout->IsToolboxMaximized && !Layout->IsCentralShown && !Layout->IsContextMenuShown)
                 {
@@ -1122,6 +1147,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             int xPos = LOWORD(lParam);
             int yPos = HIWORD(lParam);
+
+            if(Layout->IsTouchCursor())
+            {
+                xPos += 7;
+                yPos += 7;
+            }
+
 
             if((!IsControlButton || (Layout->IsManualControlAction && !app->GetData()->IsRecord)) && (Layout->State == MainLayout::Ready || Layout->IsManualControlAction))
             {
@@ -1201,7 +1233,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     app->ProcessContextMenu(Command);
 
 
-                if(Command >= IDManualTabClose)
+                if(Command >= IDManualTabClose && Command < IDPopupEmulation)
                 {
                     int i = Command - IDManualTabClose;
                     app->DirectControl()->CloseTab(i);
@@ -1219,7 +1251,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     {
                         POINT p;
                         p.x = 0;
-                        p.y = 21;
+                        p.y = Layout->Scale(20) + 1;
                         ClientToScreen(Layout->HBrowserMenu,&p);
                         app->MainContextMenu(p);
                     }
@@ -1287,7 +1319,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                             POINT p;
                             p.x = 0;
-                            p.y = 21;
+                            p.y = Layout->Scale(20) + 1;
                             ClientToScreen(TabsButton,&p);
                             TrackPopupMenu(*hTabsManualMenuRef, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
                             if(*hTabsManualMenuRef)
@@ -1368,18 +1400,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     break;
                     case IDRecordHttpRequests:
                     {
-                        /*app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
-                        if(app->GetCefReqest2Action())
-                            app->GetCefReqest2Action()->Reset();
+                        app->GetData()->IsRecordHttp = !app->GetData()->IsRecordHttp;
+                        if(app->GetDevToolsReqest2Action())
+                            app->GetDevToolsReqest2Action()->Reset();
                         if(app->GetData()->IsRecordHttp)
-                        {*/
+                        {
                             MessageBox(
                                         hwnd,
-                                        (TCHAR *)Translate::Tr(L"Http request recorder is temporary disabled. It will be available in one of the following versions.").data(),
+                                        (TCHAR *)Translate::Tr(L"Http request recorder is activated.\nAll requests which browser does will be converted to actions with http client and added to script editor.\nStart interacting with browser to see result.").data(),
                                         (TCHAR *)Translate::Tr(L"Request recorder").data(),
                                         MB_OK | MB_ICONINFORMATION
                             );
-                        //}
+                        }
 
                     }
                     break;
@@ -1460,6 +1492,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 }
 
                 app->Timer();
+                
+                _PopupEmulation->Timer();
 
                 Layout->Timer(app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,app->GetData()->WidthAll,app->GetData()->HeightAll);
 
@@ -1611,7 +1645,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                                     {
                                         LOCK_BROWSER_DATA
                                         bool SimplifiedText = (ElementTweakUpOrDownUsed > 10) || (ElementTweakUpOrDownUsed > 0 && ElementTweakReturnUsed);
-                                        app->GetData()->_Inspect.Paint(hdcTemp,InspectFont,!Layout->IsContextMenuShown,SimplifiedText,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
+                                        app->GetData()->_Inspect.Paint(hdcTemp,Layout->Scale(14),InspectFont,!Layout->IsContextMenuShown,SimplifiedText,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
                                     }
 
                                     if(Layout->IsContextMenuShown)
@@ -1814,6 +1848,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     std::string SandboxType;
     std::string ParentProcessId;
     std::string UniqueProcessId;
+    double DeviceScaleFactor = 1.0;
 
 
     //Parse command line
@@ -1847,6 +1882,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             {
                 UniqueProcessId = ws2s(Item);
                 UniqueProcessId.erase(0,20);
+            }
+
+            if(Item.find(L"--interface-scale-factor=") == 0)
+            {
+                std::string DeviceScaleFactorString = ws2s(Item);
+                DeviceScaleFactorString.erase(0,25);
+                DeviceScaleFactor = std::stoi(DeviceScaleFactorString) * 0.01;
+                if(DeviceScaleFactor <= 0.0001)
+                    DeviceScaleFactor = 1.0;
+
+                //Don't add to arguments list
+                continue;
             }
 
             Arguments.push_back(Item);
@@ -1908,7 +1955,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     outfile->open(std::wstring(L"s/") + s2ws(Settings.UniqueProcessId()) + std::wstring(L".lock"), std::ofstream::out);
 
 
-    Layout = new MainLayout(Settings.ToolboxHeight(),Settings.ScenarioWidth());
+    Layout = new MainLayout(Settings.ToolboxHeight(),Settings.ScenarioWidth(),DeviceScaleFactor);
     hInst = hInstance;
 
     app = new MainApp();
@@ -1917,13 +1964,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     BrowserData * Data = new BrowserData();
     PostManager * _PostManager = new PostManager();
-    CefReqest2Action * _CefReqest2Action = new CefReqest2Action();
 
     {
         Data->IsRecord = Arguments.size() == 6;
         Data->Saver.IsRecord = Data->IsRecord;
         Layout->IsRecord = Data->IsRecord;
         worker_log_init(Data->IsRecord);
+    }
+
+    DevToolsReqest2Action * _DevToolsReqest2Action = 0;
+
+    if(Data->IsRecord)
+    {
+        _DevToolsReqest2Action = new DevToolsReqest2Action();
     }
 
     if(Data->IsRecord)
@@ -1948,6 +2001,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->_ParentWindowHandle = 0;
     Data->CursorX = rand()%20 + 30;
     Data->CursorY = rand()%20 + 30;
+    Data->DirectControlOrAutomationCursorX = Data->CursorX;
+    Data->DirectControlOrAutomationCursorY = Data->CursorY;
     Data->ScrollX = 0;
     Data->ScrollY = 0;
     Data->_Inspect.active = false;
@@ -1972,6 +2027,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Saver.TemporaryDisableDetector = false;
     Data->UrlHandler = 0;
     Data->LastClickIsFromIndirectControl = true;
+    Data->IsProxySet = false;
 
     //Create profile fast if it is empty
     if(Settings.ProfilesCaching())
@@ -2006,7 +2062,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     {
         DeinstallWidevine(Settings.Profile());
     }
-    Data->Connector = new DevToolsConnector();
+    if(HasWorkerArgument("--mock-connector"))
+    {
+        // Initialize dummy connector.
+        Data->Connector = new NoneConnector();
+    }else
+    {
+        // Initialize default connector.
+        Data->Connector = new DevToolsConnector();
+    }
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
     Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));
@@ -2014,6 +2078,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->OnScroll.push_back(std::bind(&MainApp::OnScroll,app.get()));
     Data->Connector->OnRequestStart.push_back(std::bind(&MainApp::OnRequestStart,app.get(),_1));
     Data->Connector->OnRequestStop.push_back(std::bind(&MainApp::OnRequestStop,app.get(),_1));
+    if(Data->IsRecord)
+    {
+        Data->Connector->OnRequestDataMain.push_back(std::bind(&MainApp::OnRequestDataMain,app.get(),_1));
+        Data->Connector->OnRequestDataAdditional.push_back(std::bind(&MainApp::OnRequestDataAdditional,app.get(),_1));
+    }
     Data->Connector->OnLoadStart.push_back(std::bind(&MainApp::OnLoadStart,app.get()));
     Data->Connector->OnLoadStop.push_back(std::bind(&MainApp::OnLoadStop,app.get()));
     Data->Connector->OnAddressChanged.push_back(std::bind(&MainApp::OnAddressChanged,app.get(),_1));
@@ -2048,8 +2117,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     app->SetData(Data);
     app->SetPostManager(_PostManager);
-    app->SetCefReqest2Action(_CefReqest2Action);
+    if(Data->IsRecord)
+    {
+        app->SetDevToolsReqest2Action(_DevToolsReqest2Action);
+    }
     app->InitNetworkProcessIPC();
+    app->WriteBrowserData();
 
     int exit_code = CefExecuteProcess(main_args, app.get(), NULL);
 
@@ -2088,6 +2161,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 
 
+    _PopupEmulation = new PopupEmulation();
 
     Client = new PipesClient();
     Parser = new CommandParser();
@@ -2099,6 +2173,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     KeyGlobal = Key;
     PidGlobal = Pid;
+    _PopupEmulation->EventPopupShown.push_back(std::bind(&MainApp::ComboboxOpened,app.get()));
     Layout->EventLoadNoDataPage.push_back(std::bind(&MainApp::LoadNoDataCallback,app.get()));
     Parser->EventLoad.push_back(std::bind(&MainApp::LoadCallback,app.get(),_1));
     Parser->EventLoad2.push_back(std::bind(&MainApp::Load2Callback,app.get(),_1,_2,_3));
@@ -2134,6 +2209,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventPopupSelect.push_back(std::bind(&MainApp::PopupSelectCallback,app.get(),_1));
     Parser->EventPopupCreate.push_back(std::bind(&MainApp::PopupCreateCallback,app.get(),_1,_2));
     Parser->EventPopupCreate2.push_back(std::bind(&MainApp::PopupCreate2Callback,app.get(),_1,_2,_3,_4));
+    Parser->EventSetComboboxIndex.push_back(std::bind(&MainApp::SetComboboxIndexCallback,app.get(),_1));
     Parser->EventPopupInfo.push_back(std::bind(&MainApp::PopupInfoCallback,app.get()));
     Parser->EventMouseMove.push_back(std::bind(&MainApp::MouseMoveCallback,app.get(),_1,_2,_3,_4,_5,_6,_7,_8,_9,_10));
     Parser->EventSetDeviceScaleFactor.push_back(std::bind(&MainApp::SetDeviceScaleFactorCallback,app.get(),_1));
@@ -2156,7 +2232,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventStartSection.push_back(std::bind(&MainApp::StartSectionCallback,app.get(),_1));
     Parser->EventSetFontList.push_back(std::bind(&MainApp::SetFontListCallback,app.get(),_1));
     Parser->EventScriptFinished.push_back(std::bind(&MainApp::ScriptFinishedCallback,app.get()));
-    Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4,_5,_6));
+    Parser->EventSetCode.push_back(std::bind(&MainApp::SetCodeCallback,app.get(),_1,_2,_3,_4,_5,_6,_7));
     Parser->EventSetResources.push_back(std::bind(&MainApp::SetResourceCallback,app.get(),_1));
     Parser->EventNavigateBack.push_back(std::bind(&MainApp::NavigateBackCallback,app.get(), _1));
     Parser->EventIsChanged.push_back(std::bind(&MainApp::IsChangedCallback,app.get()));
@@ -2186,7 +2262,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Parser->EventIsUrlLoadedByMask.push_back(std::bind(&MainApp::IsUrlLoadedByMaskCallback,app.get(),_1));
     Parser->EventGetLoadStats.push_back(std::bind(&MainApp::GetLoadStatsCallback,app.get()));
     Parser->EventElementCommand.push_back(std::bind(&MainApp::ElementCommandCallback,app.get(),_1));
+    Parser->EventRequestVariablesResult.push_back(std::bind(&MainApp::RequestVariablesResultCallback,app.get(),_1));
     Parser->EventDebugVariablesResult.push_back(std::bind(&MainApp::DebugVariablesResultCallback,app.get(),_1));
+    Parser->EventDebugCallstackResult.push_back(std::bind(&MainApp::DebugCallstackResultCallback,app.get(),_1));
     Parser->EventRestoreOriginalStage.push_back(RestoreOriginalStage);
     Parser->EventSetMode.push_back(SetMode);
 
@@ -2230,13 +2308,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     hwnd = CreateWindowEx(
         WS_EX_OVERLAPPEDWINDOW,
         L"WorkerWindowClass",
-        L"about:blank",
+        Translate::Tr(L"Browser").c_str(),
         WS_OVERLAPPEDWINDOW,
         //WS_POPUP,
         0, 0, Data->WidthAll, Data->HeightAll,
         NULL, NULL, hInstance, NULL);
     if(hwnd == NULL)
         return 0;
+
+    _PopupEmulation->Init(Data, IDPopupEmulation, hwnd, Layout);
+    app->SetPopupEmulation(_PopupEmulation);
 
     Data->_MainWindowHandle = hwnd;
     Layout->MainWindowHandle = hwnd;

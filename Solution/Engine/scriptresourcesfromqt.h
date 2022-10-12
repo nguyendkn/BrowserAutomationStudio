@@ -18,7 +18,7 @@ namespace BrowserAutomationStudioFramework
     public slots:
         virtual QString GetJquery();
         virtual QList<QString> GetJqueryPlugins();
-        virtual QList<QString> GetEngineScripts();
+        virtual QList<QString> GetEngineScripts(bool record);
         virtual QList<QString> GetMultiEngineScripts();
         virtual QList<QString> GetPageScripts();
     };

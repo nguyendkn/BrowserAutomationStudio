@@ -787,6 +787,7 @@ namespace BrowserAutomationStudioFramework
         QJsonObject DependenciesObject = QJsonObject::fromVariantMap(dependencies);
 
         //Remove packages that is already present in package.original
+        if(LanguageVersion != "18.10.0")
         {
             QFile PackageOriginalFile(QString("e/cache.%1/distr/package.original").arg(Suffix));
             if(PackageOriginalFile.open(QIODevice::ReadOnly))

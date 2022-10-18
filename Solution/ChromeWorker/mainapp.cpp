@@ -1121,11 +1121,21 @@ void MainApp::MouseClickCallback(int x, int y)
             Y = std::stoi(y_string);
         }
 
-        this->DelayClickType = 1;
-        this->DelayNextClick = clock() + 80 + (rand()) % 40;
-        this->DelayClickX = X;
-        this->DelayClickY = Y;
-        BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        if(Data->IsTouchScreen)
+        {
+            this->DelayClickType = 1;
+            this->DelayNextClick = -1;
+            this->DelayClickX = X;
+            this->DelayClickY = Y;
+            TouchStartTask = BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        }else
+        {
+            this->DelayClickType = 1;
+            this->DelayNextClick = clock() + 80 + (rand()) % 40;
+            this->DelayClickX = X;
+            this->DelayClickY = Y;
+            BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        }
     });
 }
 
@@ -3132,7 +3142,26 @@ void MainApp::Timer()
     if(DelayClickType == 1 || DelayClickType == 2)
     {
         clock_t CurrentTime = clock();
-        if(CurrentTime >= DelayNextClick)
+        //If DelayNextClick equals -1, we need to wait until TouchStartTask will finish and then make decision about delay
+        if(DelayNextClick == -1 && TouchStartTask && TouchStartTask->GetIsFinished())
+        {
+            //Need to understand, if touch was inside frame
+
+            std::string ResultDataRaw = TouchStartTask->GetString();
+            JsonParser Parser;
+            bool IsInIsolatedFrame = Parser.GetBooleanFromJson(ResultDataRaw, "is_in_isolated_frame", false);
+
+            if(IsInIsolatedFrame)
+            {
+                DelayNextClick = clock() + 580 + (rand()) % 40;
+            }else
+            {
+                DelayNextClick = clock() + 80 + (rand()) % 40;
+            }
+
+            TouchStartTask.reset();
+
+        }else if(CurrentTime >= DelayNextClick && DelayNextClick != -1)
         {
             BrowserEventsEmulator::MouseClick(Data->Connector,DelayClickX,DelayClickY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
             if(DelayClickType == 1)

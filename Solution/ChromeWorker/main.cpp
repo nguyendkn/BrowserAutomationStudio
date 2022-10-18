@@ -1500,6 +1500,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if(app->GetData()->ManualControl == BrowserData::DirectRecord)
                     app->DirectControl()->Timer();
 
+                app->DirectControl()->ProcessPendingTouchEndEvent();
+
                 app->GetData()->Connector->Timer();
 
             }

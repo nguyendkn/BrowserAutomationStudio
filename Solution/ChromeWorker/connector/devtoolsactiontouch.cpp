@@ -75,7 +75,7 @@ void DevToolsActionTouch::FindFrame()
     {
         //Ignore this event
         //WORKER_LOG("{{{" + std::to_string(GetId()) + "," + FrameFinderId + "}}} IGNORE ");
-        Result->Success();
+        Result->Success(std::string(""));
         State = Finished;
     }else if(FrameFindInfo.Status == FrameFinder::StatusInfo::CloseHangingTouch)
     {
@@ -122,6 +122,11 @@ void DevToolsActionTouch::OnActionFinished()
         NeedToSetSessionId = true;
         SessionIdToSave = TabId;
 
+        if(TabId != GlobalState->TabId)
+        {
+            IsInIsolatedFrame = true;
+        }
+
 
         /*if(FrameFinderType != "touchMove")
         {
@@ -165,7 +170,13 @@ void DevToolsActionTouch::OnWebSocketMessage(const std::string& Message, const s
             WORKER_LOG("---------------- END [" + FrameFinderId + "] " + FrameFinderType + std::string(", hanging: ") + GlobalState->FindFrames.GetReport());
         }*/
 
-        Result->Success();
+
+        std::map<std::string, Variant> Data;
+        Data["is_in_isolated_frame"] = Variant(IsInIsolatedFrame);
+
+        JsonSerializer Serializer;
+
+        Result->Success(Serializer.SerializeObjectToString(Data));
         State = Finished;
     }else
     {

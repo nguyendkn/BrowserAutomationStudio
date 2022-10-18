@@ -14,6 +14,7 @@ class DevToolsActionTouch : public DevToolsMultiAction
     int X = 0;
     int Y = 0;
     bool IsTimerEventSubscribed = false;
+    bool IsInIsolatedFrame = false;
 
     bool NeedToSetSessionId = false;
     std::string SessionIdToSave;

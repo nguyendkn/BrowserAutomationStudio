@@ -465,7 +465,7 @@ void BrowserEventsEmulator::MouseMove(IDevToolsConnector* Connector,
 
 }
 
-void BrowserEventsEmulator::MouseClick(IDevToolsConnector* Connector, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
+Async BrowserEventsEmulator::MouseClick(IDevToolsConnector* Connector, int x, int y, const std::pair<int,int> scroll, int type, bool& IsMousePress, bool& IsDrag, bool IsTouch, std::atomic_int& TouchId, std::atomic_bool& IsTouchPressedAutomation, KeyState& State)
 {
     int X = x - scroll.first;
     int Y = y - scroll.second;
@@ -514,13 +514,14 @@ void BrowserEventsEmulator::MouseClick(IDevToolsConnector* Connector, int x, int
         IsDrag = false;
     }
 
+    Async Result;
 
     if(type != 1)
     {
         if(IsTouch)
         {
             IsTouchPressedAutomation = true;
-            Connector->Touch(TouchEventDown,X,Y,TouchId);
+            Result = Connector->Touch(TouchEventDown,X,Y,TouchId);
         }else
         {
             Connector->Mouse(MouseEventDown,X,Y,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
@@ -532,13 +533,15 @@ void BrowserEventsEmulator::MouseClick(IDevToolsConnector* Connector, int x, int
         if(IsTouch)
         {
             IsTouchPressedAutomation = false;
-            Connector->Touch(TouchEventUp,X,Y,TouchId);
+            Result = Connector->Touch(TouchEventUp,X,Y,TouchId);
             TouchId++;
         }else
         {
             Connector->Mouse(MouseEventUp,X,Y,MouseButtonLeft,CurrentMouseState,CurrentKeyState);
         }
     }
+
+    return Result;
 }
 
 void BrowserEventsEmulator::Key(IDevToolsConnector *Connector, std::string & text, KeyState& State, int mousex, int mousey, bool IsTouch)

@@ -158,7 +158,7 @@ void CompileResults::Submit()
             QString("?email=") + QUrl::toPercentEncoding(ui->Login->text()) +
             QString("&name=") + QUrl::toPercentEncoding(_Compiler->GetName()) +
             QString("&pass=") + QUrl::toPercentEncoding(ui->Password->text()) +
-            QString("&mode=") + QUrl::toPercentEncoding("2");
+            QString("&mode=") + QUrl::toPercentEncoding("4");
 
     IHttpClient * Client = _HttpClientFactory->GetHttpClient(false);
     Client->setParent(this);

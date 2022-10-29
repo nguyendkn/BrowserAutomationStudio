@@ -918,7 +918,7 @@ void ChooserResourceWidget::SetupUiCustom()
         formLayout_6->setVerticalSpacing(6);
 
         horizontalLayout_5 = new QHBoxLayout();
-        horizontalLayout_5->setSpacing(0);
+        horizontalLayout_5->setSpacing(3);
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
         RandomStringValue = new QLineEdit(page_4);
         RandomStringValue->setObjectName(QStringLiteral("RandomStringValue"));

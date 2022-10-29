@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
     qDebug()<<"Start 010";
 
     //Support High DPI
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     {
         DeviceScaleManager Scale;
         Scale.Autoscale();

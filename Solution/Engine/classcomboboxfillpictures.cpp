@@ -12,12 +12,12 @@ ClassComboBoxFillPictures::ClassComboBoxFillPictures()
 
 QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 {
-    int w = 22,h = 16;
+    int w = 22 * 3,h = 16 * 3;
 
     QPen Violet((QColor(142,45,197)),1);
     QRect rect(0,0,w,h);
     QFont f;
-    f.setPixelSize(10);
+    f.setPixelSize(10 * 3);
 
     switch(number)
     {
@@ -33,15 +33,31 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
+
+        painter.setBrush(QBrush(QColor(142,45,197)));
+
 
         painter.setPen(Violet);
-        painter.drawLine(9,h/4,w-4,h/4);
-        painter.drawLine(4,h/4,4,h/4);
-        painter.drawLine(9,h/2,w-4,h/2);
+        painter.drawRect(9*3,h/4,w - 4 * 3 - 9 * 3,2);
+        painter.drawEllipse(4*3,h/4,4,4);
+
+        painter.drawRect(9*3,h/2,w - 4 * 3 - 9 * 3,2);
+        painter.drawEllipse(4*3,h/2,4,4);
+
+        painter.drawRect(9*3,3*h/4,w - 4 * 3 - 9 * 3,2);
+        painter.drawEllipse(4*3,3*h/4,4,4);
+
+        //painter.drawRect(4*3,h/4,5,2);
+        /*painter.fillRect(4*3,h/4,5,2,QColor(142,45,197));
+        painter.fill(4*3,h/4,5,2,QColor(142,45,197));*/
+
+        //painter.drawLine(4*3,h/4,4,h/4);
+        //painter.drawLine(4,h/4,4,h/4);
+        /*painter.drawLine(9,h/2,w-4,h/2);
         painter.drawLine(4,h/2,4,h/2);
         painter.drawLine(9,3*h/4,w-4,3*h/4);
-        painter.drawLine(4,3*h/4,4,3*h/4);
+        painter.drawLine(4,3*h/4,4,3*h/4);*/
 
         QIcon icon(pixmap);
 
@@ -58,7 +74,7 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
 
         painter.setPen(Violet);
@@ -81,7 +97,7 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
 
         painter.setPen(Violet);
@@ -102,7 +118,7 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
 
         painter.setPen(Violet);
@@ -123,7 +139,7 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
 
         painter.setPen(Violet);
@@ -144,7 +160,7 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
 
         painter.setPen(Violet);
@@ -160,13 +176,13 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
         pixmap.fill(QColor(0,0,0,0));
 
         QPainter painter(&pixmap);
-        f.setPixelSize(11);
+        f.setPixelSize(11 * 3);
         painter.setFont(f);
         painter.setRenderHint(QPainter::Antialiasing);
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
 
         painter.setPen(Violet);
@@ -182,13 +198,13 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
         pixmap.fill(QColor(0,0,0,0));
 
         QPainter painter(&pixmap);
-        f.setPixelSize(11);
+        f.setPixelSize(11 * 3);
         painter.setFont(f);
         painter.setRenderHint(QPainter::Antialiasing);
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
 
         painter.setPen(Violet);
@@ -208,10 +224,10 @@ QIcon ClassComboBoxFillPictures::GetIconFor(int number)
 
         painter.setPen(QColor(0,0,0,0));
         painter.setBrush(QBrush(QColor(235,235,235)));
-        painter.drawRoundedRect(rect,3,3);
+        painter.drawRoundedRect(rect,6,6);
 
         QSvgRenderer svg(QString(":/engine/images/database.svg"));
-        svg.render(&painter,QRectF(4,1,14,14));
+        svg.render(&painter,QRectF(4 * 3,1 * 3,14 * 3,14 * 3));
 
         QIcon icon(pixmap);
 

@@ -61,7 +61,7 @@ bool ModuleInfoDialog::Init(const QString& ModuleName, const QString& Folder)
                     IconPath = ":/engine/images/modules.png";
                 }
 
-                ui->Icon->setPixmap(QPixmap(IconPath));
+                ui->Icon->setPixmap(QIcon(IconPath).pixmap(32,32));
 
                 ui->Description->setText(doc.object()["description"].toString());
                 ui->DeveloperName->setText(doc.object()["developer_name"].toString());

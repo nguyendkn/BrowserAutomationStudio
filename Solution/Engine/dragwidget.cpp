@@ -82,7 +82,7 @@ void DragWidget::SetData(const QStringList& list)
         label->show();
         label->setMouseTracking(true);
         QFont font;
-        font.setPointSize(9);
+        font.setPixelSize(13);
         label->setFont(font);
         label->setCursor(QCursor(Qt::OpenHandCursor));
         label->setAttribute(Qt::WA_DeleteOnClose);
@@ -188,7 +188,7 @@ void DragWidget::dropEvent(QDropEvent *event)
 
         dynamic_cast<QBoxLayout *>(Layout)->insertWidget(index,newIcon);
         QFont font;
-        font.setPointSize(9);
+        font.setPixelSize(13);
         newIcon->setFont(font);
         newIcon->show();
         newIcon->setMouseTracking(true);

@@ -1103,6 +1103,8 @@ label
   padding:5px;
   border: 1px solid #fafafa;
   filter: grayscale(15%) !important;
+  width: 40px;
+  height: 40px;
 }
 
 .action-button:hover
@@ -1115,6 +1117,8 @@ label
 .action-button2
 {
   margin-right:3px;
+  width:24px;
+  height:24px;
 }
 
 .action-button2.disabled {

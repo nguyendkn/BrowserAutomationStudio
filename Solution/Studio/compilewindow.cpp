@@ -91,6 +91,15 @@ CompileWindow::CompileWindow(Compiler *compiler,QWidget *parent) :
     connect(TimerValidate, SIGNAL(timeout()), this,SLOT(ValidateTimer()));
     TimerValidate->start();
 
+    ui->label_6->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+    ui->label_9->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+    ui->label_3->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+    ui->label_14->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+    ui->label_15->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+    ui->label_16->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+    ui->label_17->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+    ui->label_18->setPixmap(QIcon(":/engine/images/info.png").pixmap(10,10));
+
 
 }
 

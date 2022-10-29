@@ -39,6 +39,7 @@ SOURCES += engine.cpp \
     modulecreator.cpp \
     moduleinfodialog.cpp \
     profilebackgroundremover.cpp \
+    scrollarearepaint.cpp \
     xmlresourcecontroller.cpp \
     vocabularytest.cpp \
     userresourcewrapper.cpp \
@@ -400,6 +401,7 @@ HEADERS += engine.h\
     modulecreator.h \
     moduleinfodialog.h \
     profilebackgroundremover.h \
+    scrollarearepaint.h \
     xmlresourcecontroller.h \
     vocabularytest.h \
     userresourcewrapper.h \

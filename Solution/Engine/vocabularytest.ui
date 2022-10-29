@@ -28,6 +28,12 @@
         <iconset resource="engine.qrc">
          <normaloff>:/engine/images/at_sign.png</normaloff>:/engine/images/at_sign.png</iconset>
        </property>
+       <property name="iconSize">
+        <size>
+         <width>18</width>
+         <height>18</height>
+        </size>
+       </property>
       </widget>
      </item>
     </layout>
@@ -48,9 +54,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-352</y>
-        <width>6024</width>
-        <height>681</height>
+        <y>0</y>
+        <width>7094</width>
+        <height>934</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout_2">

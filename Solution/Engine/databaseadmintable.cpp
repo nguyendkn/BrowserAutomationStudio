@@ -322,6 +322,13 @@ void DatabaseAdminTable::Reload()
     ReactRowSelectionChange = true;
 
     GetSelectedNumber();
+
+    for(int i = 0;i<vsize;i++)
+        ui->DataTable->setRowHeight(i, 30);
+
+    ui->DataTable->horizontalHeader()->setMinimumHeight(25);
+    ui->DataTable->horizontalHeader()->setMaximumHeight(25);
+
 }
 
 void DatabaseAdminTable::HeaderClicked(int index)

@@ -18,22 +18,31 @@
     <normaloff>:/engine/images/modules.png</normaloff>:/engine/images/modules.png</iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
    <property name="topMargin">
     <number>15</number>
    </property>
    <property name="rightMargin">
-    <number>15</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>9</number>
+    <number>0</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="Filter">
      <property name="leftMargin">
-      <number>13</number>
+      <number>26</number>
      </property>
      <property name="topMargin">
       <number>1</number>
+     </property>
+     <property name="rightMargin">
+      <number>15</number>
      </property>
      <property name="bottomMargin">
       <number>9</number>
@@ -62,149 +71,193 @@
     </layout>
    </item>
    <item>
-    <widget class="QScrollArea" name="ScrollArea">
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="leftMargin">
+      <number>26</number>
      </property>
-     <property name="frameShadow">
-      <enum>QFrame::Plain</enum>
+     <property name="topMargin">
+      <number>0</number>
      </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
+     <property name="rightMargin">
+      <number>15</number>
      </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>550</width>
-        <height>468</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="leftMargin">
-        <number>0</number>
+     <property name="bottomMargin">
+      <number>13</number>
+     </property>
+     <item>
+      <widget class="QScrollArea" name="ScrollArea">
+       <property name="frameShape">
+        <enum>QFrame::NoFrame</enum>
        </property>
-       <property name="topMargin">
-        <number>0</number>
+       <property name="frameShadow">
+        <enum>QFrame::Plain</enum>
        </property>
-       <property name="rightMargin">
-        <number>0</number>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
        </property>
-       <property name="bottomMargin">
-        <number>0</number>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAsNeeded</enum>
        </property>
-       <item>
-        <widget class="QWidget" name="MainWidget" native="true">
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <layout class="QGridLayout" name="gridLayout">
+       <property name="sizeAdjustPolicy">
+        <enum>QAbstractScrollArea::AdjustIgnored</enum>
+       </property>
+       <property name="widgetResizable">
+        <bool>true</bool>
+       </property>
+       <widget class="QWidget" name="scrollAreaWidgetContents">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>658</width>
+          <height>565</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QWidget" name="MainWidget" native="true">
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <property name="leftMargin">
-             <number>10</number>
+             <number>0</number>
+            </property>
+            <property name="topMargin">
+             <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>20</number>
+             <number>0</number>
             </property>
-            <property name="verticalSpacing">
-             <number>10</number>
+            <property name="bottomMargin">
+             <number>0</number>
             </property>
-            <item row="3" column="0">
-             <widget class="QLabel" name="LabelNativeModules">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
+            <item>
+             <layout class="QGridLayout" name="gridLayout">
+              <property name="leftMargin">
+               <number>10</number>
               </property>
-              <property name="font">
-               <font>
-                <underline>true</underline>
-               </font>
+              <property name="rightMargin">
+               <number>20</number>
               </property>
-              <property name="text">
-               <string>Native modules:</string>
+              <property name="verticalSpacing">
+               <number>10</number>
               </property>
-              <property name="alignment">
-               <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-              </property>
-              <property name="margin">
-               <number>5</number>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="LabelEmptyCustom">
-              <property name="styleSheet">
-               <string notr="true">*{margin-left:20px}</string>
-              </property>
-              <property name="text">
-               <string>Empty. Use &quot;Install module&quot; button to add.</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="NotFoundCustom">
-              <property name="styleSheet">
-               <string notr="true">*{margin-left:20px}</string>
-              </property>
-              <property name="text">
-               <string>Not found</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0">
-             <widget class="QLabel" name="LabelCustomModules">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="font">
-               <font>
-                <underline>true</underline>
-               </font>
-              </property>
-              <property name="text">
-               <string>Custom modules:</string>
-              </property>
-              <property name="margin">
-               <number>5</number>
-              </property>
-             </widget>
-            </item>
-            <item row="4" column="0">
-             <widget class="QLabel" name="NotFoundNative">
-              <property name="styleSheet">
-               <string notr="true">*{margin-left:20px}</string>
-              </property>
-              <property name="text">
-               <string>Not found</string>
-              </property>
-             </widget>
+              <item row="3" column="0">
+               <widget class="QLabel" name="LabelNativeModules">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <underline>true</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Native modules:</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                </property>
+                <property name="margin">
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QLabel" name="LabelEmptyCustom">
+                <property name="styleSheet">
+                 <string notr="true">*{margin-left:20px}</string>
+                </property>
+                <property name="text">
+                 <string>Empty. Use &quot;Install module&quot; button to add.</string>
+                </property>
+               </widget>
+              </item>
+              <item row="2" column="0">
+               <widget class="QLabel" name="NotFoundCustom">
+                <property name="styleSheet">
+                 <string notr="true">*{margin-left:20px}</string>
+                </property>
+                <property name="text">
+                 <string>Not found</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0">
+               <widget class="QLabel" name="LabelCustomModules">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <underline>true</underline>
+                 </font>
+                </property>
+                <property name="text">
+                 <string>Custom modules:</string>
+                </property>
+                <property name="margin">
+                 <number>5</number>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0">
+               <widget class="QLabel" name="NotFoundNative">
+                <property name="styleSheet">
+                 <string notr="true">*{margin-left:20px}</string>
+                </property>
+                <property name="text">
+                 <string>Not found</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
             </item>
            </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QWidget" name="widget_2" native="true">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>1</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1</height>
+      </size>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget{background-color:gray}</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -215,21 +268,24 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
+     <property name="styleSheet">
+      <string notr="true">#widget{background-color:#444}</string>
+     </property>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
        <number>10</number>
       </property>
       <property name="leftMargin">
-       <number>13</number>
+       <number>26</number>
       </property>
       <property name="topMargin">
-       <number>13</number>
+       <number>9</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>13</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>9</number>
       </property>
       <item>
        <widget class="QPushButton" name="CreateNewModule">
@@ -245,6 +301,12 @@
         <property name="icon">
          <iconset resource="engine.qrc">
           <normaloff>:/engine/images/crud_create.png</normaloff>:/engine/images/crud_create.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -262,6 +324,12 @@
         <property name="icon">
          <iconset resource="engine.qrc">
           <normaloff>:/engine/images/install.png</normaloff>:/engine/images/install.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -295,6 +363,12 @@
         <property name="icon">
          <iconset resource="engine.qrc">
           <normaloff>:/engine/images/stop.png</normaloff>:/engine/images/stop.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
        </widget>
       </item>

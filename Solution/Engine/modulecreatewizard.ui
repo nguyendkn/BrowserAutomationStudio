@@ -510,6 +510,12 @@
          <iconset resource="engine.qrc">
           <normaloff>:/engine/images/down.png</normaloff>:/engine/images/down.png</iconset>
         </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
        </widget>
       </item>
       <item row="10" column="1">

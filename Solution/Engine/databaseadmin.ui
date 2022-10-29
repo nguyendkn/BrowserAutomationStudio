@@ -234,15 +234,6 @@ QGroupBox::indicator:unchecked
             <string>Export Xls</string>
            </property>
           </widget>
-          <zorder>ImportCsv</zorder>
-          <zorder>ExportCsv</zorder>
-          <zorder>label_2</zorder>
-          <zorder>label_3</zorder>
-          <zorder>Backup</zorder>
-          <zorder>Restore</zorder>
-          <zorder>label_4</zorder>
-          <zorder>ExportXls</zorder>
-          <zorder>label</zorder>
          </widget>
         </item>
         <item>
@@ -562,8 +553,8 @@ QGroupBox::indicator:unchecked
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>1245</width>
-                 <height>540</height>
+                 <width>1309</width>
+                 <height>518</height>
                 </rect>
                </property>
                <property name="styleSheet">
@@ -709,7 +700,7 @@ QGroupBox::indicator:unchecked
                    </property>
                    <property name="icon">
                     <iconset resource="engine.qrc">
-                     <normaloff>:/engine/images/delete_all.png</normaloff>:/engine/images/delete_all.png</iconset>
+                     <normaloff>:/engine/images/stop.png</normaloff>:/engine/images/stop.png</iconset>
                    </property>
                   </widget>
                  </item>

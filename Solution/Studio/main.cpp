@@ -170,6 +170,7 @@ int main(int argc, char *argv[])
     //SafeApplication a(argc, argv);
 
     //Support High DPI
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     {
         DeviceScaleManager Scale;
         Scale.Autoscale();

@@ -9,24 +9,24 @@
         <translation>О движке</translation>
     </message>
     <message>
-        <location filename="../aboutbrowserstudio.ui" line="105"/>
+        <location filename="../aboutbrowserstudio.ui" line="99"/>
         <source>Engine Version:</source>
         <translation>Версия движка:</translation>
     </message>
     <message>
-        <location filename="../aboutbrowserstudio.ui" line="118"/>
-        <location filename="../aboutbrowserstudio.ui" line="160"/>
-        <location filename="../aboutbrowserstudio.ui" line="189"/>
+        <location filename="../aboutbrowserstudio.ui" line="112"/>
+        <location filename="../aboutbrowserstudio.ui" line="154"/>
+        <location filename="../aboutbrowserstudio.ui" line="183"/>
         <source>TextLabel</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../aboutbrowserstudio.ui" line="147"/>
+        <location filename="../aboutbrowserstudio.ui" line="141"/>
         <source>Chrome Version:</source>
         <translation>Версия Chrome:</translation>
     </message>
     <message>
-        <location filename="../aboutbrowserstudio.ui" line="202"/>
+        <location filename="../aboutbrowserstudio.ui" line="196"/>
         <source>License Type:</source>
         <translation>Тип Лицензии:</translation>
     </message>
@@ -44,12 +44,16 @@
         <translation>Бесплатная</translation>
     </message>
     <message>
-        <location filename="../aboutbrowserstudio.cpp" line="16"/>
-        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Browser Automation Studio - a comprehensive solution for creating complex network software. &lt;/span&gt;Visit &lt;a href=&quot;%1&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;%1&lt;/span&gt;&lt;/a&gt; to see more details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Browser Automation Studio - программа для создания скриптов для работы с сетью и эмуляции браузера. &lt;/span&gt;Посетите &lt;a href=&quot;%1&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;%1&lt;/span&gt;&lt;/a&gt; чтобы узнать больше&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <location filename="../aboutbrowserstudio.cpp" line="18"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;Browser Automation Studio - a comprehensive solution for creating complex network software. &lt;/span&gt;Visit &lt;a href=&quot;%1&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;%1&lt;/span&gt;&lt;/a&gt; to see more details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14px;&quot;&gt;Browser Automation Studio - программа для создания скриптов для работы с сетью и эмуляции браузера. &lt;/span&gt;Посетите &lt;a href=&quot;%1&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;%1&lt;/span&gt;&lt;/a&gt; чтобы узнать больше&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../aboutbrowserstudio.cpp" line="23"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Browser Automation Studio - a comprehensive solution for creating complex network software. &lt;/span&gt;Visit &lt;a href=&quot;%1&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;%1&lt;/span&gt;&lt;/a&gt; to see more details&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Browser Automation Studio - программа для создания скриптов для работы с сетью и эмуляции браузера. &lt;/span&gt;Посетите &lt;a href=&quot;%1&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#ffffff;&quot;&gt;%1&lt;/span&gt;&lt;/a&gt; чтобы узнать больше&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../aboutbrowserstudio.cpp" line="25"/>
         <source>Premium</source>
         <translation>Премиум</translation>
     </message>
@@ -138,54 +142,54 @@
 <context>
     <name>BrowserAutomationStudioFramework::AskUserForResourcesDialog</name>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="23"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="27"/>
         <source>Data</source>
         <translation>База</translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="29"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="34"/>
         <source>File</source>
         <translation>Файл</translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="35"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="40"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="105"/>
-        <location filename="../askuserforresourcesdialog.cpp" line="124"/>
-        <location filename="../askuserforresourcesdialog.cpp" line="133"/>
-        <location filename="../askuserforresourcesdialog.cpp" line="170"/>
-        <location filename="../askuserforresourcesdialog.cpp" line="203"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="110"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="129"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="138"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="175"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="208"/>
         <source>Show Advanced</source>
         <translation>Продвинутые настройки</translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="111"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="116"/>
         <source>Save Project</source>
         <translation>Сохранить проект</translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="111"/>
-        <location filename="../askuserforresourcesdialog.cpp" line="120"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="116"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="125"/>
         <source>Project Files (*.xml);;All Files (*.*)</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="120"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="125"/>
         <source>Open Project</source>
         <translation>Открыть проект</translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="158"/>
-        <location filename="../askuserforresourcesdialog.cpp" line="166"/>
-        <location filename="../askuserforresourcesdialog.cpp" line="199"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="163"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="171"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="204"/>
         <source>Hide Advanced</source>
         <translation>Стандартные настройки</translation>
     </message>
     <message>
-        <location filename="../askuserforresourcesdialog.cpp" line="180"/>
+        <location filename="../askuserforresourcesdialog.cpp" line="185"/>
         <source>Data is not valid. Are you sure, that you want to continue?</source>
         <translation>Данные заполнены не верно. Действительно продолжить?</translation>
     </message>
@@ -238,25 +242,25 @@
 <context>
     <name>BrowserAutomationStudioFramework::CurlHttpClient</name>
     <message>
-        <location filename="../curlhttpclient.cpp" line="171"/>
-        <location filename="../curlhttpclient.cpp" line="275"/>
-        <location filename="../curlhttpclient.cpp" line="376"/>
+        <location filename="../curlhttpclient.cpp" line="178"/>
+        <location filename="../curlhttpclient.cpp" line="282"/>
+        <location filename="../curlhttpclient.cpp" line="388"/>
         <source>Url</source>
         <translation>Url</translation>
     </message>
     <message>
-        <location filename="../curlhttpclient.cpp" line="172"/>
-        <location filename="../curlhttpclient.cpp" line="276"/>
+        <location filename="../curlhttpclient.cpp" line="179"/>
+        <location filename="../curlhttpclient.cpp" line="283"/>
         <source>Method</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../curlhttpclient.cpp" line="377"/>
+        <location filename="../curlhttpclient.cpp" line="389"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../curlhttpclient.cpp" line="411"/>
+        <location filename="../curlhttpclient.cpp" line="423"/>
         <source>Failed to load file %1</source>
         <translation>Не удалось загрузить файл %1</translation>
     </message>
@@ -533,17 +537,27 @@ Do you want to override it with version %3?
 Хотите заменить его версией %3?</translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="382"/>
+        <location filename="../modulecreator.cpp" line="367"/>
+        <source>Failed to remove folder </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../modulecreator.cpp" line="371"/>
+        <source>Failed to remove file </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../modulecreator.cpp" line="388"/>
         <source>Failed copy module</source>
         <translation>Не удалось скопировать модуль</translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="639"/>
+        <location filename="../modulecreator.cpp" line="645"/>
         <source>Can&apos;t install module while script is running.</source>
         <translation>Не удается установить модуль в то время как скрипт работает.</translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="653"/>
+        <location filename="../modulecreator.cpp" line="659"/>
         <source>Failed to install module.
 
 %1             
@@ -554,7 +568,7 @@ Do you want to override it with version %3?
 </translation>
     </message>
     <message>
-        <location filename="../modulecreator.cpp" line="784"/>
+        <location filename="../modulecreator.cpp" line="790"/>
         <source>Result</source>
         <translation>Результат</translation>
     </message>
@@ -678,69 +692,69 @@ Do you want to override it with version %3?
         <translation>Произошла ошибка. Смотрите лог для более подробной информации.</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="572"/>
+        <location filename="../nodeconnector.cpp" line="578"/>
         <source>Initialization ... </source>
         <translation>Инициализация ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="667"/>
-        <location filename="../nodeconnector.cpp" line="897"/>
+        <location filename="../nodeconnector.cpp" line="680"/>
+        <location filename="../nodeconnector.cpp" line="944"/>
         <source>Failed to delete function files</source>
         <translation>Не удалось удалить функции</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="674"/>
-        <location filename="../nodeconnector.cpp" line="904"/>
+        <location filename="../nodeconnector.cpp" line="687"/>
+        <location filename="../nodeconnector.cpp" line="951"/>
         <source>Failed to install function files</source>
         <translation>Не удалось установить функции</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="697"/>
+        <location filename="../nodeconnector.cpp" line="710"/>
         <source>Downloading Node.js distribution ... </source>
         <translation>Скачивается дистрибутив Node.js ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="720"/>
+        <location filename="../nodeconnector.cpp" line="733"/>
         <source>Extracting Node.js distribution ... </source>
         <translation>Распаковка дистрибутива Node.js ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="735"/>
+        <location filename="../nodeconnector.cpp" line="748"/>
         <source>Failed to write to zip file to %1</source>
         <translation>Не удалось записать архив %1</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="815"/>
+        <location filename="../nodeconnector.cpp" line="839"/>
         <source>Failed to write to json file %1</source>
         <translation>Не удалось записать конфиг %1</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="841"/>
+        <location filename="../nodeconnector.cpp" line="880"/>
         <source>Installing npm modules ... </source>
         <translation>Установка npm модулей ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="855"/>
+        <location filename="../nodeconnector.cpp" line="894"/>
         <source>Failed to execute npm install</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="867"/>
+        <location filename="../nodeconnector.cpp" line="906"/>
         <source>Failed to start node</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="889"/>
+        <location filename="../nodeconnector.cpp" line="928"/>
         <source>Failed to install modules. See log for more details.</source>
         <translation type="unfinished">Не удалось установить npm модули. Смотрите лог для более подробной информации.</translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="1107"/>
+        <location filename="../nodeconnector.cpp" line="1154"/>
         <source>Running Node.js ... </source>
         <translation>Запуск Node.js ... </translation>
     </message>
     <message>
-        <location filename="../nodeconnector.cpp" line="1420"/>
+        <location filename="../nodeconnector.cpp" line="1467"/>
         <source>Finalization ... </source>
         <translation>Завершение установки ... </translation>
     </message>
@@ -782,12 +796,12 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::PostToAntigate</name>
     <message>
-        <location filename="../posttoantigate.cpp" line="172"/>
+        <location filename="../posttoantigate.cpp" line="173"/>
         <source>Error parsing responce</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../posttoantigate.cpp" line="188"/>
+        <location filename="../posttoantigate.cpp" line="189"/>
         <source>Can&apos;t find task id</source>
         <translation type="unfinished"></translation>
     </message>
@@ -818,7 +832,7 @@ Do you want to override it with version %3?
         <translation>Отключить измерения</translation>
     </message>
     <message>
-        <location filename="../profilerdatavisualizer.cpp" line="58"/>
+        <location filename="../profilerdatavisualizer.cpp" line="59"/>
         <source>Actions Execution Time Report</source>
         <translation>Отчет о времени выполнения действий</translation>
     </message>
@@ -945,7 +959,7 @@ Do you want to override it with version %3?
         <translation> Перегрузить</translation>
     </message>
     <message>
-        <location filename="../reportdatavisualizerdialog.cpp" line="21"/>
+        <location filename="../reportdatavisualizerdialog.cpp" line="22"/>
         <source> Copy To Clipboard</source>
         <translation> Скопировать в буфер обмена</translation>
     </message>
@@ -971,7 +985,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::ScriptMultiWorker</name>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="580"/>
+        <location filename="../scriptmultiworker.cpp" line="587"/>
         <source>Script finished with error :</source>
         <translation>Скрипт выполнен с ошибкой :</translation>
     </message>
@@ -984,91 +998,91 @@ Do you want to override it with version %3?
         <translation type="vanished"> Во время выполнения скрипта </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="606"/>
+        <location filename="../scriptmultiworker.cpp" line="613"/>
         <source> during execution of action </source>
         <translation> во время выполнения действия </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="608"/>
+        <location filename="../scriptmultiworker.cpp" line="615"/>
         <source>[%1] Script finished with error : </source>
         <translation>[%1] Скрипт выполнен с ошибкой : </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="652"/>
-        <location filename="../scriptmultiworker.cpp" line="1107"/>
-        <location filename="../scriptmultiworker.cpp" line="1108"/>
+        <location filename="../scriptmultiworker.cpp" line="659"/>
+        <location filename="../scriptmultiworker.cpp" line="1114"/>
+        <location filename="../scriptmultiworker.cpp" line="1115"/>
         <source>Ended with message: </source>
         <translation>Закончен с сообщением: </translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="668"/>
-        <location filename="../scriptmultiworker.cpp" line="681"/>
+        <location filename="../scriptmultiworker.cpp" line="675"/>
+        <location filename="../scriptmultiworker.cpp" line="688"/>
         <source>Aborted By User</source>
         <translation>Прервано Пользователем</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="697"/>
+        <location filename="../scriptmultiworker.cpp" line="704"/>
         <source>[%1] Script finished correctly</source>
         <translation>[%1] Скрипт завершен корректно</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="790"/>
+        <location filename="../scriptmultiworker.cpp" line="797"/>
         <source>Script started with %1 threads and will finish after %2 success execution or %3 fail execution or when resource will finish.</source>
         <translation>Скрипт запущен в %1 потоков и будет остановлен после %2 успешных выполнений или %3 неудачных выполнений или после использования всех ресурсов.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="791"/>
+        <location filename="../scriptmultiworker.cpp" line="798"/>
         <source>You can change these params in record mode.</source>
         <translation>Вы можете изменить эти параметры в режиме записи.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="798"/>
+        <location filename="../scriptmultiworker.cpp" line="805"/>
         <source>FunCaptcha module is enabled, it can reduce browser authenticity.</source>
         <translation>Модуль FunCaptcha включен, он может снизить аутентичность браузера.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="799"/>
+        <location filename="../scriptmultiworker.cpp" line="806"/>
         <source>So it is recommended to &lt;a href=&apos;disablefuncaptcha://disablefuncaptcha&apos; style=&apos;color:red&apos;&gt;turn it off&lt;/a&gt;, unless you are working with funcaptcha.</source>
         <translation>Поэтому рекомендуется &lt;a href=&apos;disablefuncaptcha://disablefuncaptcha&apos; style=&apos;color:red&apos;&gt;отключить его&lt;/a&gt;, если только вы не работаете с funcaptcha.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="806"/>
+        <location filename="../scriptmultiworker.cpp" line="813"/>
         <source>ReCaptcha module is enabled, it can reduce browser authenticity.</source>
         <translation>Модуль ReCaptcha включен, он может снизить аутентичность браузера.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="807"/>
+        <location filename="../scriptmultiworker.cpp" line="814"/>
         <source>So it is recommended to &lt;a href=&apos;disablerecaptcha://disablerecaptcha&apos; style=&apos;color:red&apos;&gt;turn it off&lt;/a&gt;, unless you are working with recaptcha.</source>
         <translation>Поэтому рекомендуется &lt;a href=&apos;disablerecaptcha://disablerecaptcha&apos; style=&apos;color:red&apos;&gt;отключить его&lt;/a&gt;, если только вы не работаете с recaptcha.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="814"/>
+        <location filename="../scriptmultiworker.cpp" line="821"/>
         <source>HCaptcha module is enabled, it can reduce browser authenticity.</source>
         <translation>Модуль HCaptcha включен, он может снизить аутентичность браузера.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="815"/>
+        <location filename="../scriptmultiworker.cpp" line="822"/>
         <source>So it is recommended to &lt;a href=&apos;disablehcaptcha://disablehcaptcha&apos; style=&apos;color:red&apos;&gt;turn it off&lt;/a&gt;, unless you are working with hcaptcha.</source>
         <translation>Поэтому рекомендуется &lt;a href=&apos;disablehcaptcha://disablehcaptcha&apos; style=&apos;color:red&apos;&gt;отключить его&lt;/a&gt;, если только вы не работаете с hcaptcha.</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="841"/>
+        <location filename="../scriptmultiworker.cpp" line="848"/>
         <source>Success</source>
         <translation>Удачно</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="875"/>
+        <location filename="../scriptmultiworker.cpp" line="882"/>
         <source>Stage Timeout</source>
         <translation>Время На Выполнение Этапа Истекло</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="1097"/>
+        <location filename="../scriptmultiworker.cpp" line="1104"/>
         <source>Too Much Fails</source>
         <translation>Слишком Много Ошибок</translation>
     </message>
     <message>
-        <location filename="../scriptmultiworker.cpp" line="1729"/>
-        <location filename="../scriptmultiworker.cpp" line="1730"/>
+        <location filename="../scriptmultiworker.cpp" line="1736"/>
+        <location filename="../scriptmultiworker.cpp" line="1737"/>
         <source>All data have been processed</source>
         <translation>Все данные были обработаны</translation>
     </message>
@@ -1084,7 +1098,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::ScriptWorker</name>
     <message>
-        <location filename="../scriptworker.cpp" line="616"/>
+        <location filename="../scriptworker.cpp" line="611"/>
         <source>Aborted By User</source>
         <translation>Прервано Пользователем</translation>
     </message>
@@ -1097,19 +1111,19 @@ Do you want to override it with version %3?
         <translation type="vanished"> Во время выполнения скрипта </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="894"/>
-        <location filename="../scriptworker.cpp" line="1037"/>
+        <location filename="../scriptworker.cpp" line="891"/>
+        <location filename="../scriptworker.cpp" line="1039"/>
         <source>Fail number exceed</source>
         <translation>Превышено количество ошибок</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="901"/>
-        <location filename="../scriptworker.cpp" line="1138"/>
+        <location filename="../scriptworker.cpp" line="898"/>
+        <location filename="../scriptworker.cpp" line="1140"/>
         <source>Success number exceed</source>
         <translation>Превышено количество успехов</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1209"/>
+        <location filename="../scriptworker.cpp" line="1214"/>
         <source>Failed because process is stopped</source>
         <translation>Процесс остановлен</translation>
     </message>
@@ -1118,7 +1132,7 @@ Do you want to override it with version %3?
         <translation type="vanished">не удалось получить ресурс </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1658"/>
+        <location filename="../scriptworker.cpp" line="1663"/>
         <source>Thread suspended</source>
         <translation>Поток приостановлен</translation>
     </message>
@@ -1131,160 +1145,160 @@ Do you want to override it with version %3?
         <translation type="vanished">Поток аварийно завершился</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="860"/>
+        <location filename="../scriptworker.cpp" line="857"/>
         <source> during execution of action </source>
         <translation> во время выполнения действия </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1608"/>
+        <location filename="../scriptworker.cpp" line="1613"/>
         <source>Waiting for resource %1</source>
         <translation type="unfinished">Ожидаю ресурс %1</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1639"/>
+        <location filename="../scriptworker.cpp" line="1644"/>
         <source>All data have been processed for </source>
         <translation>Все данные были обработаны для </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1665"/>
-        <location filename="../scriptworker.cpp" line="1666"/>
+        <location filename="../scriptworker.cpp" line="1670"/>
+        <location filename="../scriptworker.cpp" line="1671"/>
         <source>Thread ended</source>
         <translation>Поток завершился</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1667"/>
+        <location filename="../scriptworker.cpp" line="1672"/>
         <source>Thread succeeded</source>
         <translation>Поток выполнен успешно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1669"/>
+        <location filename="../scriptworker.cpp" line="1674"/>
         <source> with message &quot;</source>
         <translation> с сообщением &quot;</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1732"/>
-        <location filename="../scriptworker.cpp" line="1743"/>
+        <location filename="../scriptworker.cpp" line="1737"/>
+        <location filename="../scriptworker.cpp" line="1748"/>
         <source>Thread #</source>
         <translation>Поток №</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1772"/>
-        <location filename="../scriptworker.cpp" line="1890"/>
-        <location filename="../scriptworker.cpp" line="1920"/>
+        <location filename="../scriptworker.cpp" line="1777"/>
+        <location filename="../scriptworker.cpp" line="1895"/>
+        <location filename="../scriptworker.cpp" line="1936"/>
         <source>CAPTCHA_FAIL</source>
         <translation>Ошибка решения капчи</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1772"/>
-        <location filename="../scriptworker.cpp" line="1890"/>
+        <location filename="../scriptworker.cpp" line="1777"/>
+        <location filename="../scriptworker.cpp" line="1895"/>
         <source>Failed to get solver</source>
         <translation>Неизвестный метод решения капчи</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1933"/>
+        <location filename="../scriptworker.cpp" line="1949"/>
         <source>Captcha wait timeout</source>
         <translation>Время ожидания решения капчи истекло</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1946"/>
+        <location filename="../scriptworker.cpp" line="1962"/>
         <source>Async function is called in sync mode</source>
         <translation>Асинхронная функция вызвана синхронно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1954"/>
-        <location filename="../scriptworker.cpp" line="2018"/>
+        <location filename="../scriptworker.cpp" line="1970"/>
+        <location filename="../scriptworker.cpp" line="2034"/>
         <source>Failed to run function </source>
         <translation>Ошибка при запуске функции </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1973"/>
+        <location filename="../scriptworker.cpp" line="1989"/>
         <source>Sync function is called in async mode</source>
         <translation>Синхронная функция вызвана асинхронно</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="1983"/>
+        <location filename="../scriptworker.cpp" line="1999"/>
         <source>Failed to execute module function </source>
         <translation>Не удалось выполнить функцию </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2043"/>
+        <location filename="../scriptworker.cpp" line="2059"/>
         <source>Failed to get mail number with Pop3CLient</source>
         <translation>Не удалось получить количество писем с помощью Pop3 клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2051"/>
+        <location filename="../scriptworker.cpp" line="2067"/>
         <source>Failed to get message with Pop3CLient</source>
         <translation>Не удалось получить письмо с помощью Pop3 клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2114"/>
+        <location filename="../scriptworker.cpp" line="2130"/>
         <source>Failed to get mail number with ImapCLient</source>
         <translation>Не удалось получить количество писем с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2122"/>
+        <location filename="../scriptworker.cpp" line="2138"/>
         <source>Failed to search mail with ImapCLient</source>
         <translation>Не удалось выполнить поиск с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2130"/>
+        <location filename="../scriptworker.cpp" line="2146"/>
         <source>Failed to custom search mail with ImapCLient</source>
         <translation>Не удалось выполнить специальный поиск с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2138"/>
+        <location filename="../scriptworker.cpp" line="2154"/>
         <source>Failed to fetch mail with ImapCLient</source>
         <translation>Не удалось получить письмо с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2146"/>
+        <location filename="../scriptworker.cpp" line="2162"/>
         <source>Failed to execute custom query with ImapCLient</source>
         <translation>Не удалось выполнить специальный запрос с помощью Imap клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2230"/>
-        <location filename="../scriptworker.cpp" line="2448"/>
-        <location filename="../scriptworker.cpp" line="2456"/>
-        <location filename="../scriptworker.cpp" line="2466"/>
-        <location filename="../scriptworker.cpp" line="2495"/>
+        <location filename="../scriptworker.cpp" line="2246"/>
+        <location filename="../scriptworker.cpp" line="2464"/>
+        <location filename="../scriptworker.cpp" line="2472"/>
+        <location filename="../scriptworker.cpp" line="2482"/>
+        <location filename="../scriptworker.cpp" line="2511"/>
         <source>Failed to get page </source>
         <translation>Не удалось получить страницу </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2230"/>
-        <location filename="../scriptworker.cpp" line="2315"/>
-        <location filename="../scriptworker.cpp" line="2373"/>
-        <location filename="../scriptworker.cpp" line="2448"/>
-        <location filename="../scriptworker.cpp" line="2456"/>
-        <location filename="../scriptworker.cpp" line="2466"/>
-        <location filename="../scriptworker.cpp" line="2495"/>
-        <location filename="../scriptworker.cpp" line="2526"/>
+        <location filename="../scriptworker.cpp" line="2246"/>
+        <location filename="../scriptworker.cpp" line="2331"/>
+        <location filename="../scriptworker.cpp" line="2389"/>
+        <location filename="../scriptworker.cpp" line="2464"/>
+        <location filename="../scriptworker.cpp" line="2472"/>
+        <location filename="../scriptworker.cpp" line="2482"/>
+        <location filename="../scriptworker.cpp" line="2511"/>
+        <location filename="../scriptworker.cpp" line="2542"/>
         <source> with HttpClient</source>
         <translation> с помощью ХТТП клиента</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2271"/>
+        <location filename="../scriptworker.cpp" line="2287"/>
         <source>Failed to resolve domain </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2315"/>
-        <location filename="../scriptworker.cpp" line="2373"/>
+        <location filename="../scriptworker.cpp" line="2331"/>
+        <location filename="../scriptworker.cpp" line="2389"/>
         <source>Failed to post page </source>
         <translation>Не удалось выполнить пост запрос </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="2526"/>
+        <location filename="../scriptworker.cpp" line="2542"/>
         <source>Failed to download page </source>
         <translation>Не удалось скачать страницу </translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3645"/>
+        <location filename="../scriptworker.cpp" line="3671"/>
         <source>Embedded language execution timeout</source>
         <translation>Таймаут во время выполнения функции на встроенном языке</translation>
     </message>
     <message>
-        <location filename="../scriptworker.cpp" line="3652"/>
+        <location filename="../scriptworker.cpp" line="3678"/>
         <source>Embedded call already running</source>
         <translation>Другая функция на встроенном языке уже выполняется</translation>
     </message>
@@ -1324,44 +1338,48 @@ Do you want to override it with version %3?
         <location filename="../subprocessbrowser.cpp" line="140"/>
         <location filename="../subprocessbrowser.cpp" line="157"/>
         <location filename="../subprocessbrowser.cpp" line="175"/>
-        <location filename="../subprocessbrowser.cpp" line="188"/>
-        <location filename="../subprocessbrowser.cpp" line="204"/>
-        <location filename="../subprocessbrowser.cpp" line="217"/>
-        <location filename="../subprocessbrowser.cpp" line="230"/>
-        <location filename="../subprocessbrowser.cpp" line="243"/>
-        <location filename="../subprocessbrowser.cpp" line="256"/>
-        <location filename="../subprocessbrowser.cpp" line="269"/>
-        <location filename="../subprocessbrowser.cpp" line="282"/>
+        <location filename="../subprocessbrowser.cpp" line="190"/>
+        <location filename="../subprocessbrowser.cpp" line="203"/>
+        <location filename="../subprocessbrowser.cpp" line="219"/>
+        <location filename="../subprocessbrowser.cpp" line="232"/>
+        <location filename="../subprocessbrowser.cpp" line="245"/>
+        <location filename="../subprocessbrowser.cpp" line="258"/>
+        <location filename="../subprocessbrowser.cpp" line="271"/>
+        <location filename="../subprocessbrowser.cpp" line="284"/>
         <location filename="../subprocessbrowser.cpp" line="297"/>
-        <location filename="../subprocessbrowser.cpp" line="317"/>
-        <location filename="../subprocessbrowser.cpp" line="337"/>
-        <location filename="../subprocessbrowser.cpp" line="353"/>
-        <location filename="../subprocessbrowser.cpp" line="367"/>
-        <location filename="../subprocessbrowser.cpp" line="380"/>
-        <location filename="../subprocessbrowser.cpp" line="416"/>
-        <location filename="../subprocessbrowser.cpp" line="490"/>
-        <location filename="../subprocessbrowser.cpp" line="516"/>
-        <location filename="../subprocessbrowser.cpp" line="529"/>
-        <location filename="../subprocessbrowser.cpp" line="543"/>
-        <location filename="../subprocessbrowser.cpp" line="557"/>
-        <location filename="../subprocessbrowser.cpp" line="574"/>
-        <location filename="../subprocessbrowser.cpp" line="587"/>
-        <location filename="../subprocessbrowser.cpp" line="601"/>
-        <location filename="../subprocessbrowser.cpp" line="614"/>
-        <location filename="../subprocessbrowser.cpp" line="627"/>
-        <location filename="../subprocessbrowser.cpp" line="640"/>
-        <location filename="../subprocessbrowser.cpp" line="665"/>
-        <location filename="../subprocessbrowser.cpp" line="678"/>
-        <location filename="../subprocessbrowser.cpp" line="691"/>
-        <location filename="../subprocessbrowser.cpp" line="704"/>
-        <location filename="../subprocessbrowser.cpp" line="717"/>
-        <location filename="../subprocessbrowser.cpp" line="730"/>
-        <location filename="../subprocessbrowser.cpp" line="750"/>
-        <location filename="../subprocessbrowser.cpp" line="763"/>
-        <location filename="../subprocessbrowser.cpp" line="776"/>
-        <location filename="../subprocessbrowser.cpp" line="788"/>
-        <location filename="../subprocessbrowser.cpp" line="804"/>
-        <location filename="../subprocessbrowser.cpp" line="1489"/>
+        <location filename="../subprocessbrowser.cpp" line="312"/>
+        <location filename="../subprocessbrowser.cpp" line="332"/>
+        <location filename="../subprocessbrowser.cpp" line="352"/>
+        <location filename="../subprocessbrowser.cpp" line="368"/>
+        <location filename="../subprocessbrowser.cpp" line="382"/>
+        <location filename="../subprocessbrowser.cpp" line="395"/>
+        <location filename="../subprocessbrowser.cpp" line="408"/>
+        <location filename="../subprocessbrowser.cpp" line="421"/>
+        <location filename="../subprocessbrowser.cpp" line="457"/>
+        <location filename="../subprocessbrowser.cpp" line="532"/>
+        <location filename="../subprocessbrowser.cpp" line="558"/>
+        <location filename="../subprocessbrowser.cpp" line="571"/>
+        <location filename="../subprocessbrowser.cpp" line="585"/>
+        <location filename="../subprocessbrowser.cpp" line="599"/>
+        <location filename="../subprocessbrowser.cpp" line="616"/>
+        <location filename="../subprocessbrowser.cpp" line="629"/>
+        <location filename="../subprocessbrowser.cpp" line="643"/>
+        <location filename="../subprocessbrowser.cpp" line="656"/>
+        <location filename="../subprocessbrowser.cpp" line="669"/>
+        <location filename="../subprocessbrowser.cpp" line="682"/>
+        <location filename="../subprocessbrowser.cpp" line="695"/>
+        <location filename="../subprocessbrowser.cpp" line="720"/>
+        <location filename="../subprocessbrowser.cpp" line="733"/>
+        <location filename="../subprocessbrowser.cpp" line="746"/>
+        <location filename="../subprocessbrowser.cpp" line="759"/>
+        <location filename="../subprocessbrowser.cpp" line="772"/>
+        <location filename="../subprocessbrowser.cpp" line="785"/>
+        <location filename="../subprocessbrowser.cpp" line="805"/>
+        <location filename="../subprocessbrowser.cpp" line="818"/>
+        <location filename="../subprocessbrowser.cpp" line="831"/>
+        <location filename="../subprocessbrowser.cpp" line="843"/>
+        <location filename="../subprocessbrowser.cpp" line="859"/>
+        <location filename="../subprocessbrowser.cpp" line="1569"/>
         <source>Timeout during </source>
         <translation>Таймаут во время выполнения </translation>
     </message>
@@ -1513,17 +1531,17 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::WebInterfaceApi</name>
     <message>
-        <location filename="../webinterfaceapi.cpp" line="894"/>
+        <location filename="../webinterfaceapi.cpp" line="932"/>
         <source>Open Directory</source>
         <translation type="unfinished">Открыть папку</translation>
     </message>
     <message>
-        <location filename="../webinterfaceapi.cpp" line="897"/>
+        <location filename="../webinterfaceapi.cpp" line="935"/>
         <source>Open File</source>
         <translation type="unfinished">Открыть файл</translation>
     </message>
     <message>
-        <location filename="../webinterfaceapi.cpp" line="963"/>
+        <location filename="../webinterfaceapi.cpp" line="1001"/>
         <source>Save File</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1531,7 +1549,7 @@ Do you want to override it with version %3?
 <context>
     <name>BrowserAutomationStudioFramework::XmlResourceController</name>
     <message>
-        <location filename="../xmlresourcecontroller.cpp" line="726"/>
+        <location filename="../xmlresourcecontroller.cpp" line="741"/>
         <source>This file doesn&apos;t look like BAS project.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2103,32 +2121,32 @@ Do you want to override it with version %3?
         <translation>Менеджер данных</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="287"/>
+        <location filename="../databaseadmin.ui" line="278"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="378"/>
+        <location filename="../databaseadmin.ui" line="369"/>
         <source>Select Table:</source>
         <translation>Таблица:</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="392"/>
+        <location filename="../databaseadmin.ui" line="383"/>
         <source>Account</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="397"/>
+        <location filename="../databaseadmin.ui" line="388"/>
         <source>Tweet</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="299"/>
+        <location filename="../databaseadmin.ui" line="290"/>
         <source>Refresh</source>
         <translation>Обновить</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="367"/>
+        <location filename="../databaseadmin.ui" line="358"/>
         <source>Delete All Data</source>
         <translation>Удалить Все</translation>
     </message>
@@ -2163,27 +2181,27 @@ Do you want to override it with version %3?
         <translation>Экспорт в Xls</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="506"/>
+        <location filename="../databaseadmin.ui" line="497"/>
         <source>Group Filter:</source>
         <translation>Фильтр групп:</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="691"/>
+        <location filename="../databaseadmin.ui" line="682"/>
         <source>Add Group</source>
         <translation>Добавить группу</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="708"/>
+        <location filename="../databaseadmin.ui" line="699"/>
         <source>Delete Selected</source>
         <translation>Удалить выбранные</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="719"/>
+        <location filename="../databaseadmin.ui" line="710"/>
         <source>Select All</source>
         <translation>Выбрать все</translation>
     </message>
     <message>
-        <location filename="../databaseadmin.ui" line="730"/>
+        <location filename="../databaseadmin.ui" line="721"/>
         <source>Select None</source>
         <translation>Очистить выделение</translation>
     </message>
@@ -2211,17 +2229,17 @@ Do you want to override it with version %3?
         <translation>Файл:</translation>
     </message>
     <message>
-        <location filename="../databaseadmincsvformat.ui" line="87"/>
+        <location filename="../databaseadmincsvformat.ui" line="93"/>
         <source>File Not Exists</source>
         <translation>Такого файла не существует</translation>
     </message>
     <message>
-        <location filename="../databaseadmincsvformat.ui" line="112"/>
+        <location filename="../databaseadmincsvformat.ui" line="118"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
     <message>
-        <location filename="../databaseadmincsvformat.ui" line="119"/>
+        <location filename="../databaseadmincsvformat.ui" line="125"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -2515,7 +2533,7 @@ Do you want to override it with version %3?
         <translation>Добавить фильтр</translation>
     </message>
     <message>
-        <location filename="../databaseadminfilterwidget.ui" line="90"/>
+        <location filename="../databaseadminfilterwidget.ui" line="96"/>
         <source>Remove All</source>
         <translation>Удалить все</translation>
     </message>
@@ -2708,37 +2726,37 @@ Do you want to override it with version %3?
         <translation>Убрать из групп</translation>
     </message>
     <message>
-        <location filename="../databaseadmintable.cpp" line="411"/>
+        <location filename="../databaseadmintable.cpp" line="418"/>
         <source>None</source>
         <translation>Без групп</translation>
     </message>
     <message>
-        <location filename="../databaseadmintable.cpp" line="641"/>
+        <location filename="../databaseadmintable.cpp" line="648"/>
         <source>Delete Rows</source>
         <translation>Удалить строки</translation>
     </message>
     <message>
-        <location filename="../databaseadmintable.cpp" line="695"/>
+        <location filename="../databaseadmintable.cpp" line="702"/>
         <source>Please Create Group First</source>
         <translation>Сначала создайте группу</translation>
     </message>
     <message>
-        <location filename="../databaseadmintable.cpp" line="749"/>
+        <location filename="../databaseadmintable.cpp" line="756"/>
         <source>Remove From Gorups</source>
         <translation>Удалить из групп</translation>
     </message>
     <message>
-        <location filename="../databaseadmintable.cpp" line="796"/>
+        <location filename="../databaseadmintable.cpp" line="803"/>
         <source>Get Page Number</source>
         <translation>Номер страницы</translation>
     </message>
     <message>
-        <location filename="../databaseadmintable.cpp" line="796"/>
+        <location filename="../databaseadmintable.cpp" line="803"/>
         <source>Page Number:</source>
         <translation>Номер страницы:</translation>
     </message>
     <message>
-        <location filename="../databaseadmintable.cpp" line="848"/>
+        <location filename="../databaseadmintable.cpp" line="855"/>
         <source>Delete Row</source>
         <translation>Удалить строку</translation>
     </message>
@@ -2784,12 +2802,12 @@ Do you want to override it with version %3?
         <translation>Редактировать</translation>
     </message>
     <message>
-        <location filename="../databasegroupwidget.ui" line="207"/>
+        <location filename="../databasegroupwidget.ui" line="213"/>
         <source>CopyGroup</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../databasegroupwidget.ui" line="233"/>
+        <location filename="../databasegroupwidget.ui" line="245"/>
         <source>Delete Group</source>
         <translation>Удалить</translation>
     </message>
@@ -2870,37 +2888,37 @@ Do you want to override it with version %3?
         <translation>Добавить таблицу</translation>
     </message>
     <message>
-        <location filename="../databaseschemaeditordialog.ui" line="200"/>
+        <location filename="../databaseschemaeditordialog.ui" line="206"/>
         <source>Name : </source>
         <translation>Имя : </translation>
     </message>
     <message>
-        <location filename="../databaseschemaeditordialog.ui" line="224"/>
+        <location filename="../databaseschemaeditordialog.ui" line="230"/>
         <source>Table description en : </source>
         <translation>Описание таблицы en: </translation>
     </message>
     <message>
-        <location filename="../databaseschemaeditordialog.ui" line="248"/>
+        <location filename="../databaseschemaeditordialog.ui" line="254"/>
         <source>Table description ru: </source>
         <translation>Описание таблицы ru: </translation>
     </message>
     <message>
-        <location filename="../databaseschemaeditordialog.ui" line="269"/>
+        <location filename="../databaseschemaeditordialog.ui" line="275"/>
         <source>Columns:</source>
         <translation>Колонки:</translation>
     </message>
     <message>
-        <location filename="../databaseschemaeditordialog.ui" line="303"/>
+        <location filename="../databaseschemaeditordialog.ui" line="309"/>
         <source>Add column</source>
         <translation>Добавить колонку</translation>
     </message>
     <message>
-        <location filename="../databaseschemaeditordialog.ui" line="372"/>
+        <location filename="../databaseschemaeditordialog.ui" line="384"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../databaseschemaeditordialog.ui" line="389"/>
+        <location filename="../databaseschemaeditordialog.ui" line="407"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
@@ -3329,12 +3347,12 @@ Do you want to override it with version %3?
         <translation>Включить Фильтр</translation>
     </message>
     <message>
-        <location filename="../logfilter.ui" line="243"/>
+        <location filename="../logfilter.ui" line="249"/>
         <source>Disable Filter</source>
         <translation>Отключить Фильтр</translation>
     </message>
     <message>
-        <location filename="../logfilter.ui" line="254"/>
+        <location filename="../logfilter.ui" line="266"/>
         <source>Defaults</source>
         <translation>Стандартные значения</translation>
     </message>
@@ -3363,8 +3381,8 @@ Do you want to override it with version %3?
         <location filename="../modulecreatewizard.ui" line="14"/>
         <location filename="../modulecreatewizard.ui" line="36"/>
         <location filename="../modulecreatewizard.ui" line="205"/>
-        <location filename="../modulecreatewizard.ui" line="722"/>
-        <location filename="../modulecreatewizard.ui" line="857"/>
+        <location filename="../modulecreatewizard.ui" line="728"/>
+        <location filename="../modulecreatewizard.ui" line="863"/>
         <source>Create new module</source>
         <translation>Создать новый модуль</translation>
     </message>
@@ -3446,47 +3464,47 @@ Do you want to override it with version %3?
         <translation>Показать больше</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="587"/>
+        <location filename="../modulecreatewizard.ui" line="593"/>
         <source>Detailed description en:</source>
         <translation>Подробное описание en:</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="603"/>
+        <location filename="../modulecreatewizard.ui" line="609"/>
         <source>Detailed description ru:</source>
         <translation>Подробное описание ru:</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="619"/>
+        <location filename="../modulecreatewizard.ui" line="625"/>
         <source>Developer name:</source>
         <translation>Имя разработчика:</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="635"/>
+        <location filename="../modulecreatewizard.ui" line="641"/>
         <source>Developer mail:</source>
         <translation>Почта разработчика:</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="651"/>
+        <location filename="../modulecreatewizard.ui" line="657"/>
         <source>Developer site:</source>
         <translation>Сайта разработчика:</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="714"/>
+        <location filename="../modulecreatewizard.ui" line="720"/>
         <source>* - Required field.</source>
         <translation>* - Обязательное поле.</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="725"/>
+        <location filename="../modulecreatewizard.ui" line="731"/>
         <source>Select module image.</source>
         <translation>Выберите изображение модуля.</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="753"/>
+        <location filename="../modulecreatewizard.ui" line="759"/>
         <source>&lt;p style=&quot;line-height:20px;&quot;&gt;On this page you can set up icon for a new module. It will be automatically scaled to size of 32*32 pixels and converted to png format.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p style=&quot;line-height:20px;&quot;&gt;На этой странице вы можете настроить изображение для нового модуля. Он будет автоматически масштабировано до размера 32*32 пикселей и преобразовано в формат png.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="818"/>
+        <location filename="../modulecreatewizard.ui" line="824"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body &gt;
 &lt;div style=&quot;line-height:18px;&quot;&gt;
 Click on icon to change it.
@@ -3505,27 +3523,27 @@ Click on icon to change it.
 &lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="860"/>
+        <location filename="../modulecreatewizard.ui" line="866"/>
         <source>Additional parameters.</source>
         <translation>Дополнительные параметры.</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="888"/>
+        <location filename="../modulecreatewizard.ui" line="894"/>
         <source>&lt;p style=&quot;line-height:20px&quot;&gt;Randomize function name may help if several modules will contain functions with same name. Use this option to avoid conflicts. Turn this option off if you want to call function directly.&lt;/p&gt;</source>
         <translation type="unfinished">&lt;p style=&quot;line-height:20px&quot;&gt;Случайное название функции может помочь, если несколько модулей будут содержать функции с одинаковым именем. Используйте эту опцию, чтобы избежать конфликтов. Отключите эту настройку, если вы хотите вызвать функцию напрямую.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="914"/>
+        <location filename="../modulecreatewizard.ui" line="920"/>
         <source>Randomize function name (recommended).</source>
         <translation>Случайное название функции (рекомендуется).</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="943"/>
+        <location filename="../modulecreatewizard.ui" line="949"/>
         <source>&lt;p style=&quot;line-height:20px&quot;&gt;Module will be installed immediately. This option is good for testing.&lt;/p&gt;</source>
         <translation>&lt;p style=&quot;line-height:20px&quot;&gt;Модуль будет установлен немедленно после создания. Этот вариант хорошо подходит для тестирования.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../modulecreatewizard.ui" line="966"/>
+        <location filename="../modulecreatewizard.ui" line="972"/>
         <source>Install module immediately after creation.</source>
         <translation>Установить модуль сразу после создания.</translation>
     </message>
@@ -3595,15 +3613,15 @@ Click on icon to change it.
     <message>
         <location filename="../moduleinfodialog.ui" line="140"/>
         <location filename="../moduleinfodialog.ui" line="147"/>
-        <location filename="../moduleinfodialog.ui" line="173"/>
-        <location filename="../moduleinfodialog.ui" line="180"/>
-        <location filename="../moduleinfodialog.ui" line="187"/>
-        <location filename="../moduleinfodialog.ui" line="194"/>
+        <location filename="../moduleinfodialog.ui" line="176"/>
+        <location filename="../moduleinfodialog.ui" line="183"/>
+        <location filename="../moduleinfodialog.ui" line="190"/>
+        <location filename="../moduleinfodialog.ui" line="197"/>
         <source>TextLabel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../moduleinfodialog.ui" line="237"/>
+        <location filename="../moduleinfodialog.ui" line="240"/>
         <source>Ok</source>
         <translation>Ок</translation>
     </message>
@@ -3616,43 +3634,43 @@ Click on icon to change it.
         <translation>Менеджер Модулей</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="44"/>
+        <location filename="../modulemanagerwindow.ui" line="53"/>
         <source>Filter</source>
         <translation>Фильтр</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="140"/>
+        <location filename="../modulemanagerwindow.ui" line="172"/>
         <source>Native modules:</source>
         <translation>Системные модули:</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="156"/>
+        <location filename="../modulemanagerwindow.ui" line="188"/>
         <source>Empty. Use &quot;Install module&quot; button to add.</source>
         <translation>Пусто. Используйте кнопку &quot;Установить модуль&quot;, чтобы добавить новый.</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="166"/>
-        <location filename="../modulemanagerwindow.ui" line="197"/>
+        <location filename="../modulemanagerwindow.ui" line="198"/>
+        <location filename="../modulemanagerwindow.ui" line="229"/>
         <source>Not found</source>
         <translation>Не найдено</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="184"/>
+        <location filename="../modulemanagerwindow.ui" line="216"/>
         <source>Custom modules:</source>
         <translation>Пользовательские модули:</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="243"/>
+        <location filename="../modulemanagerwindow.ui" line="299"/>
         <source> Create new module</source>
         <translation> Создать новый модуль</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="260"/>
+        <location filename="../modulemanagerwindow.ui" line="322"/>
         <source> Install module</source>
         <translation> Установить модуль</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.ui" line="293"/>
+        <location filename="../modulemanagerwindow.ui" line="361"/>
         <source> Close</source>
         <translation> Закрыть</translation>
     </message>
@@ -3677,75 +3695,75 @@ Click on icon to change it.
         <translation type="vanished">Закрыть</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="144"/>
-        <location filename="../modulemanagerwindow.cpp" line="219"/>
+        <location filename="../modulemanagerwindow.cpp" line="173"/>
+        <location filename="../modulemanagerwindow.cpp" line="248"/>
         <source>Can&apos;t enable or disable module while script is running.</source>
         <translation>Невозможно включить или отключить модуль во время работы скрипта.</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="173"/>
+        <location filename="../modulemanagerwindow.cpp" line="202"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="181"/>
+        <location filename="../modulemanagerwindow.cpp" line="210"/>
         <source>Disable</source>
         <translation>Отключить</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="181"/>
+        <location filename="../modulemanagerwindow.cpp" line="210"/>
         <source>Enable</source>
         <translation>Включить</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="187"/>
+        <location filename="../modulemanagerwindow.cpp" line="216"/>
         <source>Info</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="191"/>
+        <location filename="../modulemanagerwindow.cpp" line="220"/>
         <source>Open containing folder</source>
         <translation>Открыть папку содержащую модуль</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="199"/>
+        <location filename="../modulemanagerwindow.cpp" line="228"/>
         <source>Uninstall</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="243"/>
+        <location filename="../modulemanagerwindow.cpp" line="272"/>
         <source>Can&apos;t uninstall module while script is running.</source>
         <translation>Невозможно удалить модуль во время работы скрипта.</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="254"/>
+        <location filename="../modulemanagerwindow.cpp" line="283"/>
         <source>This will completely remove &apos;%1&apos; module.
 This operation is not invertible, do you want to proceed?</source>
         <translation>Это действие полностью удалит модуль &quot;%1&quot;.
 Эта операция не обратима, вы хотите продолжить?</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="266"/>
+        <location filename="../modulemanagerwindow.cpp" line="295"/>
         <source>Failed to uninstall module</source>
         <translation>Не удалось удалить модуль</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="400"/>
+        <location filename="../modulemanagerwindow.cpp" line="429"/>
         <source>Can&apos;t install module while script is running.</source>
         <translation>Невозможно установить модуль во время работы скрипта.</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="406"/>
+        <location filename="../modulemanagerwindow.cpp" line="435"/>
         <source>Open Module</source>
         <translation>Открыть модуль</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="406"/>
+        <location filename="../modulemanagerwindow.cpp" line="435"/>
         <source>Module Files (*.zip);;All Files (*.*)</source>
         <translation>Module Files (*.zip);;All Files (*.*)</translation>
     </message>
     <message>
-        <location filename="../modulemanagerwindow.cpp" line="417"/>
+        <location filename="../modulemanagerwindow.cpp" line="446"/>
         <source>Failed to install module.
 
 %1             
@@ -4656,242 +4674,242 @@ p, li { white-space: pre-wrap; }
         <translation>Тест</translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="38"/>
+        <location filename="../vocabularytest.ui" line="44"/>
         <source>Tips:</source>
         <translation>Подсказки:</translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="77"/>
+        <location filename="../vocabularytest.ui" line="83"/>
         <source>AnyLetter</source>
         <translation>AnyLetter</translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="84"/>
+        <location filename="../vocabularytest.ui" line="90"/>
         <source>Any letter</source>
         <translation>Любая буква</translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="103"/>
+        <location filename="../vocabularytest.ui" line="109"/>
         <source>AnyDigit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="110"/>
+        <location filename="../vocabularytest.ui" line="116"/>
         <source>Any digit</source>
         <translation>Любая цифра</translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="129"/>
+        <location filename="../vocabularytest.ui" line="135"/>
         <source>{B1|B2|B3}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="136"/>
+        <location filename="../vocabularytest.ui" line="142"/>
         <source>One of options</source>
         <translation>Один из вариантов</translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="155"/>
+        <location filename="../vocabularytest.ui" line="161"/>
         <source>ELowVow</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="162"/>
+        <location filename="../vocabularytest.ui" line="168"/>
         <source>{a|e|i|o|u}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="181"/>
+        <location filename="../vocabularytest.ui" line="187"/>
         <source>EUpVow</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="207"/>
+        <location filename="../vocabularytest.ui" line="213"/>
         <source>ELowCons</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="389"/>
+        <location filename="../vocabularytest.ui" line="395"/>
         <source>EMaleNameLow</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="363"/>
+        <location filename="../vocabularytest.ui" line="369"/>
         <source>EMaleName</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="337"/>
+        <location filename="../vocabularytest.ui" line="343"/>
         <source>EFemNameLow</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="311"/>
+        <location filename="../vocabularytest.ui" line="317"/>
         <source>EFemName</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="285"/>
+        <location filename="../vocabularytest.ui" line="291"/>
         <source>ELow</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="259"/>
+        <location filename="../vocabularytest.ui" line="265"/>
         <source>EUp</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="233"/>
+        <location filename="../vocabularytest.ui" line="239"/>
         <source>EUpCons</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="188"/>
+        <location filename="../vocabularytest.ui" line="194"/>
         <source>{A|E|I|O|U}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="214"/>
+        <location filename="../vocabularytest.ui" line="220"/>
         <source>{b|c|d|f|g|h|j|k|l|m|n|p|q|r|s|t|v|w|x|y|z}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="240"/>
+        <location filename="../vocabularytest.ui" line="246"/>
         <source>{B|C|D|F|G|H|J|K|L|M|N|P|Q|R|S|T|V|W|X|Y|Z}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="266"/>
+        <location filename="../vocabularytest.ui" line="272"/>
         <source>{&lt;EUpVow&gt;|&lt;EUpCons&gt;}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="292"/>
+        <location filename="../vocabularytest.ui" line="298"/>
         <source>{&lt;ELowVow&gt;|&lt;ELowCons&gt;}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="318"/>
+        <location filename="../vocabularytest.ui" line="324"/>
         <source>{Mary|Jennifer|Lisa|Sandra|Michelle|Patricia|Maria|Nancy|Donna|Laura|Linda|Susan|Karen|Carol|Sarah|Barbara|Margaret|Betty|Ruth|Kimberly|Elizabeth|Dorothy|Helen|Sharon|Deborah}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="344"/>
+        <location filename="../vocabularytest.ui" line="350"/>
         <source>{mary|jennifer|lisa|sandra|michelle|patricia|maria|nancy|donna|laura|linda|susan|karen|carol|sarah|barbara|margaret|betty|ruth|kimberly|elizabeth|dorothy|helen|sharon|deborah}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="370"/>
+        <location filename="../vocabularytest.ui" line="376"/>
         <source>{James|David|Christopher|George|Ronald|John|Richard|Daniel|Kenneth|Anthony|Robert|Charles|Paul|Steven|Kevin|Michael|Joseph|Mark|Edward|Jason|William|Thomas|Donald|Brian|Jeff}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="396"/>
+        <location filename="../vocabularytest.ui" line="402"/>
         <source>{james|david|christopher|george|ronald|john|richard|daniel|kenneth|anthony|robert|charles|paul|steven|kevin|michael|joseph|mark|edward|jason|william|thomas|donald|brian|jeff}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="415"/>
+        <location filename="../vocabularytest.ui" line="421"/>
         <source>ESurname</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="467"/>
+        <location filename="../vocabularytest.ui" line="473"/>
         <source>RFemName</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="474"/>
+        <location filename="../vocabularytest.ui" line="480"/>
         <source>{Александра|Саша|Анастасия|Анна|Аня|Валентина|Валя|Валерия|Лера|Вера|Виктория|Вика|Галина|Галя|Дарья|Даша|Дашка|Евгения|Женя|Екатерина|Катя|Кейт|Елена|Лена|Ленка|Инна|Кира|Лариса|Леся|Людмила|Марина|Маша|Надежда|Надя|Наталья|Наташа|Натали|Нина|Оксана|Ольга|Оля|Светлана|Света|Юлия|Юля|Яна}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="493"/>
+        <location filename="../vocabularytest.ui" line="499"/>
         <source>TFemName</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="512"/>
+        <location filename="../vocabularytest.ui" line="518"/>
         <source>RMaleName</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="531"/>
+        <location filename="../vocabularytest.ui" line="537"/>
         <source>TMaleName</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="550"/>
+        <location filename="../vocabularytest.ui" line="556"/>
         <source>RSurname</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="569"/>
+        <location filename="../vocabularytest.ui" line="575"/>
         <source>TSurname</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="614"/>
+        <location filename="../vocabularytest.ui" line="620"/>
         <source>Numbers</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="588"/>
+        <location filename="../vocabularytest.ui" line="594"/>
         <source>Birth</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="422"/>
+        <location filename="../vocabularytest.ui" line="428"/>
         <source>{Smith|Anderson|Clark|Wright|Mitchell|Johnson|Thomas|Rodriguez|Lopez|Perez|Williams|Jackson|Lewis|Hill|Roberts|Jones|White|Lee|Scott|Turner|Brown|Harris|Walker|Green|Phillips|Davis|Martin|Hall|Adams|Campbell|Miller|Thompson|Allen|Baker|Parker|Wilson|Garcia|Young|Gonzalez|Evans|Moore|Martinez|Hernandez|Nelson|Edwards|Taylor|Robinson|King|Carter|Collins}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="595"/>
+        <location filename="../vocabularytest.ui" line="601"/>
         <source>19{6|7|8}?</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="621"/>
+        <location filename="../vocabularytest.ui" line="627"/>
         <source>{2000|2010|2011|2012|99|9|100}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="441"/>
+        <location filename="../vocabularytest.ui" line="447"/>
         <source>ESurnameLow</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="448"/>
+        <location filename="../vocabularytest.ui" line="454"/>
         <source>{smith|anderson|clark|wright|mitchell|johnson|thomas|rodriguez|lopez|perez|williams|jackson|lewis|hill|roberts|jones|white|lee|scott|turner|brown|harris|walker|green|phillips|davis|martin|hall|adams|campbell|miller|thompson|allen|baker|parker|wilson|garcia|young|gonzalez|evans|moore|martinez|hernandez|nelson|edwards|taylor|robinson|king|carter|collins}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="628"/>
+        <location filename="../vocabularytest.ui" line="634"/>
         <source>{aleksandra|sasha|anastasija|anna|anja|valentina|valja|valerija|lera|vera|viktorija|vika|galina|galja|darja|dasha|dashka|evgenija|zhenja|ekaterina|katja|kejt|elena|lena|lenka|inna|kira|larisa|lesja|ljudmila|marina|masha|nadezhda|nadja|natalja|natasha|natali|nina|oksana|olga|olja|svetlana|sveta|julija|julja|jana}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="635"/>
+        <location filename="../vocabularytest.ui" line="641"/>
         <source>{Александр|Саня|Саша|Алексей|Леша|Леха|Анатолий|Толя|Толик|Андрей|Антон|Артем|Артур|Богдан|Борис|Боря|Вадим|Вадик|Валентин|Валик|Валерий|Василий|Вася|Виктор|Виталий|Виталик|Владимир|Вова|Владислав|Влад|Вячеслав|Слава|Геннадий|Гена|Григорий|Гриша|Денис|Дмитрий|Дима|Евгений|Женя|Иван|Ваня|Игорь|Илья|Константин|Костя|Леонид|Максим|Макс|Михаил|Миша|Никита|Николай|Коля|Олег|Павел|Паша|Петр|Петя|Роман|Рома|Руслан|Тарас|Юрий|Юра}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="642"/>
+        <location filename="../vocabularytest.ui" line="648"/>
         <source>{aleksandr|sanja|sasha|aleksej|lesha|leha|anatolij|tolja|tolik|andrej|anton|artem|artur|bogdan|boris|borja|vadim|vadik|valentin|valik|valerij|vasilij|vasja|viktor|vitalij|vitalik|vladimir|vova|vladislav|vlad|vjacheslav|slava|gennadij|gena|grigorij|grisha|denis|dmitrij|dima|evgenij|zhenja|ivan|vanja|igor|ilja|konstantin|kostja|leonid|maksim|maks|mihail|misha|nikita|nikolaj|kolja|oleg|pavel|pasha|petr|petja|roman|roma|ruslan|taras|jurij|jura}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="649"/>
+        <location filename="../vocabularytest.ui" line="655"/>
         <source>{Иванов|Смирнов|Васильев|Смирнов|Кузнецов|Попов|Васильев|Петров|Соколов|Михайлов|Новиков|Федоров|Морозов|Волков|Алексеев|Лебедев|Семенов|Егоров|Павлов|Козлов|Степанов|Николаев|Орлов|Андреев|Макаров|Никитин|Захаров|Зайцев|Соловьев|Борисов|Яковлев|Григорьев|Романов|Воробьев|Сергеев|Кузьмин|Фролов|Александров|Дмитриев|Королев|Гусев|Киселев|Максимов|Поляков|Сорокин|Виноградов|Ковалев|Белов|Медведев|Антонов|Тарасов|Жуков|Баранов|Филиппов|Комаров|Давыдов|Беляев|Герасимов|Богданов|Осипов|Сидоров|Матвеев|Титов|Марков|Миронов|Крылов|Куликов|Карпов|Власов|Мельников|Денисов|Гаврилов|Тихонов|Казаков|Афанасьев|Данилов|Савельев|Тимофеев|Фомин|Чернов|Абрамов|Мартынов|Ефимов|Федотов|Щербаков|Назаров|Калинин|Исаев|Чернышев|Быков|Маслов|Родионов|Коновалов|Лазарев|Воронин|Климов|Филатов|Пономарев|Голубев|Кудрявцев|Прохоров}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="656"/>
+        <location filename="../vocabularytest.ui" line="662"/>
         <source>{ivanov|smirnov|vasilev|smirnov|kuznecov|popov|vasilev|petrov|sokolov|mihajlov|novikov|fedorov|morozov|volkov|alekseev|lebedev|semenov|egorov|pavlov|kozlov|stepanov|nikolaev|orlov|andreev|makarov|nikitin|zaharov|zajcev|solovev|borisov|jakovlev|grigorev|romanov|vorobev|sergeev|kuzmin|frolov|aleksandrov|dmitriev|korolev|gusev|kiselev|maksimov|poljakov|sorokin|vinogradov|kovalev|belov|medvedev|antonov|tarasov|zhukov|baranov|filippov|komarov|davydov|beljaev|gerasimov|bogdanov|osipov|sidorov|matveev|titov|markov|mironov|krylov|kulikov|karpov|vlasov|melnikov|denisov|gavrilov|tihonov|kazakov|afanasev|danilov|savelev|timofeev|fomin|chernov|abramov|martynov|efimov|fedotov|werbakov|nazarov|kalinin|isaev|chernyshev|bykov|maslov|rodionov|konovalov|lazarev|voronin|klimov|filatov|ponomarev|golubev|kudrjavcev|prohorov}</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../vocabularytest.ui" line="669"/>
+        <location filename="../vocabularytest.ui" line="675"/>
         <source>Results:</source>
         <translation>Результаты:</translation>
     </message>

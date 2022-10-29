@@ -3,6 +3,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QMenuBar>
+#include "scrollarearepaint.h"
 #include "every_cpp.h"
 
 
@@ -13,6 +14,9 @@ namespace BrowserAutomationStudioFramework
         ui(new Ui::AskUserForResourcesDialog), Widget(0)
     {
         ui->setupUi(this);
+
+        new ScrollAreaRepaint(ui->scrollArea);
+
         this->resize(width,height);
         ui->scrollAreaWidgetContents->layout()->setAlignment(Qt::AlignTop);
         ClearContentWidget();
@@ -22,6 +26,7 @@ namespace BrowserAutomationStudioFramework
         //qDebug()<<"Add";
         DatabaseButton = ui->buttonBox->addButton(tr("Data"),QDialogButtonBox::ResetRole);
         DatabaseButton->setIcon(QIcon(":/engine/images/database.png"));
+        DatabaseButton->setIconSize(QSize(18,18));
         connect(DatabaseButton, SIGNAL(clicked()),this,SIGNAL(ShowDatabase()));
 
         QMenuBar *Menu = new QMenuBar(this);

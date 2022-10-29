@@ -126,7 +126,7 @@ void DatabaseStateDialog::SetIsDirty(bool IsDirty)
     if(IsDirty)
     {
         ui->RelevanceRelevant->setText("");
-        ui->RelevanceRelevant->setPixmap(QPixmap(":/images/redball.png"));
+        ui->RelevanceRelevant->setPixmap(QIcon(":/images/redball.png").pixmap(24,24));
         ui->RelevanceRelevantLabel->setText(tr("Changes will take effect only after restart"));
         //ui->groupBox_2->setVisible(true);
         ui->RestartProcess->setText(tr("Restart process"));
@@ -137,7 +137,7 @@ void DatabaseStateDialog::SetIsDirty(bool IsDirty)
     {
         //ui->groupBox_2->setVisible(false);
         ui->RelevanceRelevant->setText("");
-        ui->RelevanceRelevant->setPixmap(QPixmap(":/images/greenball.png"));
+        ui->RelevanceRelevant->setPixmap(QIcon(":/images/greenball.png").pixmap(24,24));
         ui->RelevanceRelevantLabel->setText(tr("No need to restart"));
         ui->RestartProcess->setText(tr("Restart process"));
         ui->RestartProcess->setIcon(QIcon(":/engine/images/reload.png"));
@@ -177,7 +177,7 @@ void DatabaseStateDialog::SetHasDabase(bool HasDatabase)
     if(HasDatabase)
     {
         ui->WorkNotWorButton->setText("");
-        ui->WorkNotWorButton->setPixmap(QPixmap(":/images/greenball.png"));
+        ui->WorkNotWorButton->setPixmap(QIcon(":/images/greenball.png").pixmap(24,24));
         ui->WorkNotWorkLabel->setText(tr("Database works"));
         ui->EditDatabaseSchema->setText(tr("Edit database schema"));
         ui->DeleteDatabase->setText(tr("Delete database"));
@@ -188,7 +188,7 @@ void DatabaseStateDialog::SetHasDabase(bool HasDatabase)
     }else
     {
         ui->WorkNotWorButton->setText("");
-        ui->WorkNotWorButton->setPixmap(QPixmap(":/images/redball.png"));
+        ui->WorkNotWorButton->setPixmap(QIcon(":/images/redball.png").pixmap(24,24));
         ui->WorkNotWorkLabel->setText(tr("Database does not work"));
         ui->EditDatabaseSchema->setText(tr("Create database"));
         ui->DeleteDatabase->setText(tr("Delete database"));

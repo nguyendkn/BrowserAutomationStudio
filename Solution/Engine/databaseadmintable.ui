@@ -481,7 +481,7 @@ QHeaderView
           </property>
           <property name="icon">
            <iconset resource="engine.qrc">
-            <normaloff>:/engine/images/delete_all.png</normaloff>:/engine/images/delete_all.png</iconset>
+            <normaloff>:/engine/images/stop.png</normaloff>:/engine/images/stop.png</iconset>
           </property>
          </widget>
         </item>
@@ -579,7 +579,7 @@ QHeaderView
           </property>
           <property name="icon">
            <iconset resource="engine.qrc">
-            <normaloff>:/engine/images/delete_all.png</normaloff>:/engine/images/delete_all.png</iconset>
+            <normaloff>:/engine/images/stop.png</normaloff>:/engine/images/stop.png</iconset>
           </property>
          </widget>
         </item>

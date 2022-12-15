@@ -36,6 +36,8 @@ class DevToolsConnector : public IDevToolsConnector
 
     std::wstring ProfilePath;
     std::vector<std::wstring> Extensions;
+    std::vector<std::wstring> DefaultExtensions;
+    std::vector<std::wstring> OptionalExtensions;
     std::vector<std::pair<std::string,std::string> > CommandLineAdditional;
     ChromeProcessLauncher ProcessLauncher;
 

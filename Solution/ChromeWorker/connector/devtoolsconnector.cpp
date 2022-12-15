@@ -58,6 +58,10 @@ void DevToolsConnector::Initialize
     ImageData.clear();
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
+
+    this->DefaultExtensions = {  L"neajdppkdcdipfabeoofebfddakdcjhd" };
+    this->OptionalExtensions = {  L"ghbmnnjooekpmoecnnnilnnbdlolhkhi" };
+    this->DefaultExtensions.push_back(L"nmmhkkegccagdldgiimedpiccmgmieda");
 }
 
 char* DevToolsConnector::GetPaintData()
@@ -261,9 +265,26 @@ void DevToolsConnector::StartProcess()
         CommandLine += std::wstring(L"\" ");
     }
 
+    std::wstring ExtensionsString;
+    std::wstring ParentFolder = GetRelativePathToParentFolder(L"");
+    for(const std::wstring& ExtensionId : OptionalExtensions)
+    {
+        if(!ExtensionsString.empty())
+        {
+            ExtensionsString += std::wstring(L",");
+        }
+        ExtensionsString += ParentFolder + L"\\extensions\\optional\\" + ExtensionId;
+    }
+    for(const std::wstring& ExtensionId : DefaultExtensions)
+    {
+        if(!ExtensionsString.empty())
+        {
+            ExtensionsString += std::wstring(L",");
+        }
+        ExtensionsString += ParentFolder + L"\\extensions\\default\\" + ExtensionId;
+    }
     if(!Extensions.empty())
     {
-        std::wstring ExtensionsString;
         for(const std::wstring& ExtensionString : Extensions)
         {
             if(!ExtensionsString.empty())
@@ -272,11 +293,11 @@ void DevToolsConnector::StartProcess()
             }
             ExtensionsString += ExtensionString;
         }
-        ReplaceAllInPlace(ExtensionsString, L"\\", L"\\\\");
-
-        CommandLine += std::wstring(L"--load-extension=\"") + ExtensionsString;
-        CommandLine += std::wstring(L"\" ");
     }
+    ReplaceAllInPlace(ExtensionsString, L"\\", L"\\\\");
+
+    CommandLine += std::wstring(L"--load-extension=\"") + ExtensionsString;
+    CommandLine += std::wstring(L"\" ");
 
     CommandLine += std::wstring(L"about:blank");
 

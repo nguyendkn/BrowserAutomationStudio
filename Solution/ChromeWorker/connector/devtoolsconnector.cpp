@@ -59,8 +59,8 @@ void DevToolsConnector::Initialize
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
 
-    this->DefaultExtensions = {  L"neajdppkdcdipfabeoofebfddakdcjhd" };
-    this->OptionalExtensions = {  L"ghbmnnjooekpmoecnnnilnnbdlolhkhi" };
+    this->DefaultExtensions = { L"neajdppkdcdipfabeoofebfddakdcjhd" };
+    this->OptionalExtensions = { L"ghbmnnjooekpmoecnnnilnnbdlolhkhi" };
     this->DefaultExtensions.push_back(L"nmmhkkegccagdldgiimedpiccmgmieda");
 }
 

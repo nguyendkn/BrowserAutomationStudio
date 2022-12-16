@@ -35,11 +35,13 @@ class DevToolsConnector : public IDevToolsConnector
     int CurrentHttpClientActionId = 0;
 
     std::wstring ProfilePath;
+    std::vector<std::pair<std::string,std::string> > CommandLineAdditional;
+    ChromeProcessLauncher ProcessLauncher;
+
+    ///Extensions
     std::vector<std::wstring> Extensions;
     std::vector<std::wstring> DefaultExtensions;
     std::vector<std::wstring> OptionalExtensions;
-    std::vector<std::pair<std::string,std::string> > CommandLineAdditional;
-    ChromeProcessLauncher ProcessLauncher;
 
     //Switch tab after close
     int SwitchTabAfterCloseCurrentActionId = 0;
@@ -93,7 +95,6 @@ class DevToolsConnector : public IDevToolsConnector
     void OnDragIntercepted(std::string& DragData);
     void OnNetworkResponseReceived(std::string& Result);
     void OnNetworkLoadingCompleted(std::string& Result, bool HasError);
-
 
 
     //Reset method

@@ -266,14 +266,14 @@ void DevToolsConnector::StartProcess()
     }
 
     std::wstring ExtensionsString;
-    std::wstring ParentFolder = GetRelativePathToParentFolder(L"");
+    std::wstring RootFolder = GetRelativePathToParentFolder(L"");
     for(const std::wstring& ExtensionId : OptionalExtensions)
     {
         if(!ExtensionsString.empty())
         {
             ExtensionsString += std::wstring(L",");
         }
-        ExtensionsString += ParentFolder + L"\\extensions\\optional\\" + ExtensionId;
+        ExtensionsString += RootFolder + std::wstring(L"\\extensions\\optional\\") + ExtensionId;
     }
     for(const std::wstring& ExtensionId : DefaultExtensions)
     {
@@ -281,7 +281,7 @@ void DevToolsConnector::StartProcess()
         {
             ExtensionsString += std::wstring(L",");
         }
-        ExtensionsString += ParentFolder + L"\\extensions\\default\\" + ExtensionId;
+        ExtensionsString += RootFolder + std::wstring(L"\\extensions\\default\\") + ExtensionId;
     }
     if(!Extensions.empty())
     {
@@ -310,7 +310,6 @@ void DevToolsConnector::StartProcess()
 
 void DevToolsConnector::TryToConnect()
 {
-
     //Launch type is not set yet
     if(TargetPort < 0)
         return;

@@ -13,6 +13,7 @@
 #include "startwith.h"
 #include "base64.h"
 #include "replaceall.h"
+#include "readallfile.h"
 
 using namespace std::placeholders;
 using namespace std::chrono;
@@ -33,6 +34,8 @@ void DevToolsConnector::Initialize
         const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
 )
 {
+    std::wstring RootFolder = GetRelativePathToParentFolder(L"");
+
     this->CommandLineAdditional = CommandLineAdditional;
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
     this->WebSocketClientFactory = WebSocketClientFactory;
@@ -59,9 +62,17 @@ void DevToolsConnector::Initialize
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
 
-    this->DefaultExtensions = { L"neajdppkdcdipfabeoofebfddakdcjhd" };
-    this->OptionalExtensions = { L"ghbmnnjooekpmoecnnnilnnbdlolhkhi" };
-    this->DefaultExtensions.push_back(L"nmmhkkegccagdldgiimedpiccmgmieda");
+    for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\default"))
+    {
+        if (Entry.IsDirectory)
+            this->DefaultExtensions.push_back(s2ws(Entry.Path));
+    }
+
+    for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\optional"))
+    {
+        if (Entry.IsDirectory)
+            this->OptionalExtensions.push_back(s2ws(Entry.Path));
+    }
 }
 
 char* DevToolsConnector::GetPaintData()
@@ -266,22 +277,21 @@ void DevToolsConnector::StartProcess()
     }
 
     std::wstring ExtensionsString;
-    std::wstring RootFolder = GetRelativePathToParentFolder(L"");
-    for(const std::wstring& ExtensionId : OptionalExtensions)
+    for(const std::wstring& ExtensionPath : OptionalExtensions)
     {
         if(!ExtensionsString.empty())
         {
             ExtensionsString += std::wstring(L",");
         }
-        ExtensionsString += RootFolder + std::wstring(L"\\extensions\\optional\\") + ExtensionId;
+        ExtensionsString += ExtensionPath;
     }
-    for(const std::wstring& ExtensionId : DefaultExtensions)
+    for(const std::wstring& ExtensionPath : DefaultExtensions)
     {
         if(!ExtensionsString.empty())
         {
             ExtensionsString += std::wstring(L",");
         }
-        ExtensionsString += RootFolder + std::wstring(L"\\extensions\\default\\") + ExtensionId;
+        ExtensionsString += ExtensionPath;
     }
     if(!Extensions.empty())
     {

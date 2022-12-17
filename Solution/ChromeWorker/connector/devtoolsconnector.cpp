@@ -64,13 +64,13 @@ void DevToolsConnector::Initialize
 
     for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\default"))
     {
-        if (Entry.IsDirectory)
+        if(Entry.IsDirectory)
             this->DefaultExtensions.push_back(s2ws(Entry.Path));
     }
 
     for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\optional"))
     {
-        if (Entry.IsDirectory)
+        if(Entry.IsDirectory)
             this->OptionalExtensions.push_back(s2ws(Entry.Path));
     }
 }

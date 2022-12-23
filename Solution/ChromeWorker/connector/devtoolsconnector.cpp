@@ -2776,8 +2776,11 @@ std::vector<std::pair<std::string, std::string> > DevToolsConnector::GetExtensio
     std::vector<std::pair<std::string, std::string> > Res;
     for(std::shared_ptr<ExtensionInfo> ExtInfo : GlobalState.ExtensionList)
     {
-        //Disable CryptoTokenExtension, Google Network Speech, Chrome Web Store Payments
-        if(ExtInfo->Id != "kmendfapggjehodndflmmgagdbamhnfd" && ExtInfo->Id != "neajdppkdcdipfabeoofebfddakdcjhd" && ExtInfo->Id != "nmmhkkegccagdldgiimedpiccmgmieda" && ExtInfo->Id != "ieikdbfcccgjdlaifllaggagbcmkjnmk")
+        //Disable CryptoTokenExtension, Google Docs Offline, Google Network Speech, Chrome Web Store Payments
+        if(ExtInfo->Id != "kmendfapggjehodndflmmgagdbamhnfd" &&
+           ExtInfo->Id != "ghbmnnjooekpmoecnnnilnnbdlolhkhi" &&
+           ExtInfo->Id != "neajdppkdcdipfabeoofebfddakdcjhd" &&
+           ExtInfo->Id != "nmmhkkegccagdldgiimedpiccmgmieda")
         {
             std::pair<std::string, std::string> ExtensionPair;
             ExtensionPair.first = ExtInfo->Id;

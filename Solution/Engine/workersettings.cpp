@@ -1136,6 +1136,7 @@ namespace BrowserAutomationStudioFramework
                 {
                     FilePath.remove(FilePath.size()-5,5);
                     QFile(FilePath + ".txt").remove();
+                    QFile(FilePath + ".fonts.txt").remove();
                     QFile(FilePath + ".ini").remove();
                     QFile(FilePath + "1.ini").remove();
                     QFile(FilePath + ".detect").remove();

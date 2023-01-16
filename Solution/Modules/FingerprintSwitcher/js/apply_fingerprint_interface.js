@@ -18,8 +18,8 @@
 
   <div style="margin-bottom:5px;margin-left:20px;margin-right:20px;font-size:small;">
     <span class="tr">More info about font pack and download link can be found</span>
-    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=perfectcanvas'); return false;" class="tr-en">here</a>
-    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:perfectcanvas'); return false;" class="tr-ru">здесь</a>
+    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=fontpack'); return false;" class="tr-en">here</a>
+    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:fontpack'); return false;" class="tr-ru">здесь</a>
     
   </div>
 

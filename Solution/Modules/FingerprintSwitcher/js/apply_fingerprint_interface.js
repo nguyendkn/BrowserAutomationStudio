@@ -13,11 +13,24 @@
   <%= _.template($('#input_constructor').html())({id:"AudioNoise", description:tr("Safe Audio"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("If this settings is set to true, audio will be enabled, noise will be added to sound and your hardware properties, like sample rate and naumber of channels, will be changed")}}) %>
 
   <%= _.template($('#input_constructor').html())({id:"SafeBattery", description:tr("Safe Battery"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("If this settings is set to true battery API will show different values for each thread, this prevents sites for detecting your real identity. In case if device from which fingerprint was obtained doesn't have battery API, 100% charge level will always be returned.")}}) %>
+  
+  <%= _.template($('#input_constructor').html())({id:"FontData", description:tr("Use font pack"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("By default browser searches for fonts only in system font folder. This may lead to inconsistencies during fingerprint emulation if target fingerprint has more fonts than local system. Therefore, it is recommended to download font pack with most popular fonts. This setting allows to use font pack if it is installed.")}}) %>
+
+  <div style="margin-bottom:5px;margin-left:20px;margin-right:20px;font-size:small;">
+    <span class="tr">More info about font pack and download link can be found</span>
+    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=perfectcanvas'); return false;" class="tr-en">here</a>
+    <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:perfectcanvas'); return false;" class="tr-ru">здесь</a>
+    
+  </div>
 
   <%= _.template($('#input_constructor').html())({id:"SafeRectangles", description:tr("Safe Element Size"), default_selector: "string", disable_int:true, value_string: "false", variants: ["true", "false"], help: { description: tr("If this settings is set to true, results of API which returns element coordinates will be updated to protect against 'client rects' fingerprinting.")}}) %>
   
   <%= _.template($('#input_constructor').html())({id:"EmulateSensor", description:tr("Emulate Sensor API"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("Chrome browser has Sensor API, which allows to read data from devices like accelerometer, gyroscope or others. Data from that devices is available only on mobile platforms. After checking this setting data for that devices will be generated and replaced automatically. Enable this option in order to emulate mobile fingerprints more precisely.")}}) %>
+
+  
 </div>
+
+
 
 <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Change browser fingerprint, which contains: user agent, screen size, navigator, fonts and many more.</div>

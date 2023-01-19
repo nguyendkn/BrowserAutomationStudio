@@ -313,7 +313,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGERPRINT_PERFECTCANVAS = _arguments()[6]
 		if(_arguments().length > 7 && FINGERPRINT_JSON["sensor"])
 			FINGERPRINT_SENSOR = _arguments()[7]
-		if(_arguments().length > 8 && FINGERPRINT_JSON["font_data"])
+		if(_arguments().length > 8 && FINGERPRINT_JSON["font_data2"])
 			FINGERPRINT_FONT_DATA = _arguments()[8]
 			
 	}else
@@ -447,18 +447,44 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			var FontDataRootPath = native("fontpack", "getfontpackpath", "")
 			if(FontDataRootPath.length > 0)
 			{
-				var Keys = Object.keys(FINGERPRINT_JSON["font_data"])
+				var Keys = Object.keys(FINGERPRINT_JSON["font_data2"])
 				var FontPathList = []
 				for(var i = 0;i<Keys.length;i++)
 				{
 					var Key = Keys[i]
-					var Value = FINGERPRINT_JSON["font_data"][Key]
-					if(Value.length > 0)
+
+					var Values = FINGERPRINT_JSON["font_data2"][Key]
+					if(Values.length > 0)
 					{
-						var Path = FontDataRootPath + Value + ".ttf"
-						if(FontPathList.indexOf(Path) < 0)
+						Values = Values.split(",")
+						var MaxSize = 0
+						var MaxPath = ""
+						for(var j = 0;j<Values.length;j++)
 						{
-							FontPathList.push(Path)
+							var Value = Values[j]
+							var Path = FontDataRootPath + Value + ".ttf"
+							
+							if(Values.length > 1)
+							{
+								var FileInfo = JSON.parse(native("filesystem", "fileinfo", Path))
+								var Size = FileInfo["size"]
+								var Exists = FileInfo["exists"]
+								
+								if(Exists && Size > MaxSize)
+								{
+									MaxPath = Path
+									MaxSize = Size
+								}
+							}else
+							{
+								MaxPath = Path
+							}
+							
+						}
+
+						if(MaxPath.length > 0 && FontPathList.indexOf(MaxPath) < 0)
+						{
+							FontPathList.push(MaxPath)
 						}
 					}
 				}

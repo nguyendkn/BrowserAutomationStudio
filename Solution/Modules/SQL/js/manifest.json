@@ -295,7 +295,7 @@
         },
         {
             "Data": "const util = global._UtilSQL || require(\"../UtilSQL\");\r\n\r\nlet [config, table, fields, data, convert] = [[SQL_NODE_PARAMETERS]];\r\nlet {id, timeout, debug} = config;\r\n\r\nlet sql = await util.connect_sql(config);\r\ntry{\r\n    let model = await util.get_model(sql, table, debug);\r\n    let options = {};\r\n    if(debug){\r\n        options.logging = BAS_CONSOLE_LOG;\r\n    };\r\n    if(fields!==\"\"){\r\n        options.fields = fields;\r\n        data = util.format_data(data, fields, convert);\r\n    }else{\r\n        data = util.format_data(data, sql.fields, convert);\r\n    };\r\n    let results = await model.bulkCreate(data, options);\r\n    if(debug){\r\n        BAS_CONSOLE_LOG(\"Result: \" + JSON.stringify(results));\r\n    };\r\n    sql.setTimeout(timeout);\r\n}catch(err){\r\n    sql.setTimeout(timeout);\r\n    throw err;\r\n};",
-            "DataName": "SQL_Insert",
+            "DataName": "SQL_InsertMultipleRecords",
             "DataType": 0,
             "LanguageName": "Node",
             "LanguageVersion": "18.10.0"

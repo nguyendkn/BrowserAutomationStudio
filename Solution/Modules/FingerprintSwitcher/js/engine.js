@@ -289,6 +289,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	FINGERPRINT_RECTANGLES = false
 	FINGERPRINT_PERFECTCANVAS = true
 	FINGERPRINT_SENSOR = false
+	FINGERPRINT_FONT_DATA = false
 
 	if(typeof(_arguments()) == "object")
 	{
@@ -312,6 +313,8 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGERPRINT_PERFECTCANVAS = _arguments()[6]
 		if(_arguments().length > 7 && FINGERPRINT_JSON["sensor"])
 			FINGERPRINT_SENSOR = _arguments()[7]
+		if(_arguments().length > 8 && FINGERPRINT_JSON["font_data2"])
+			FINGERPRINT_FONT_DATA = _arguments()[8]
 			
 	}else
 	{
@@ -342,7 +345,8 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	   		"battery": FINGERPRINT_BATTERY,
 	   		"rectangles": FINGERPRINT_RECTANGLES,
 			"perfectcanvas": FINGERPRINT_PERFECTCANVAS,
-			"sensor": FINGERPRINT_SENSOR
+			"sensor": FINGERPRINT_SENSOR,
+			"font_data": FINGERPRINT_FONT_DATA,
 	   	}
 		if(typeof(_arguments()) == "object")
 		{
@@ -437,7 +441,57 @@ function BrowserAutomationStudio_ApplyFingerprint()
 				Settings["Fingerprints." + Key] = Value.toString()
 			}
 		}
-		
+
+		if(FINGERPRINT_FONT_DATA)
+		{
+			var FontDataRootPath = native("fontpack", "getfontpackpath", "")
+			if(FontDataRootPath.length > 0)
+			{
+				var Keys = Object.keys(FINGERPRINT_JSON["font_data2"])
+				var FontPathList = []
+				for(var i = 0;i<Keys.length;i++)
+				{
+					var Key = Keys[i]
+
+					var Values = FINGERPRINT_JSON["font_data2"][Key]
+					if(Values.length > 0)
+					{
+						Values = Values.split(",")
+						var MaxSize = 0
+						var MaxPath = ""
+						for(var j = 0;j<Values.length;j++)
+						{
+							var Value = Values[j]
+							var Path = FontDataRootPath + Value + ".ttf"
+							
+							if(Values.length > 1)
+							{
+								var FileInfo = JSON.parse(native("filesystem", "fileinfo", Path))
+								var Size = FileInfo["size"]
+								var Exists = FileInfo["exists"]
+								
+								if(Exists && Size > MaxSize)
+								{
+									MaxPath = Path
+									MaxSize = Size
+								}
+							}else
+							{
+								MaxPath = Path
+							}
+							
+						}
+
+						if(MaxPath.length > 0 && FontPathList.indexOf(MaxPath) < 0)
+						{
+							FontPathList.push(MaxPath)
+						}
+					}
+				}
+				Settings["Fingerprints.FontFilesList"] = base64_encode(JSON.stringify(FontPathList))
+			}
+		}
+
 		if(FINGERPRINT_BATTERY)
 		{
 			Settings["Fingerprints.BatteryEnabled"] = "true"

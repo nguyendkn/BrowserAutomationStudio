@@ -20,7 +20,7 @@ settings::settings()
 void settings::Init()
 {
     use_flash = false;
-    use_widevine = false;
+    use_widevine = true;
     force_utf8 = true;
     canvas = "enable";
     audio = "enable";
@@ -137,9 +137,9 @@ void settings::Init()
             {
                 use_flash = true;
             }
-            if(line.find("EnableWidevine=true") != std::string::npos)
+            if(line.find("EnableWidevine=false") != std::string::npos)
             {
-                use_widevine = true;
+                use_widevine = false;
             }
             if(line.find("AutostartDebug=true") != std::string::npos)
             {

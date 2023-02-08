@@ -31,7 +31,7 @@ namespace BrowserAutomationStudioFramework
         Audio = "enable";
         QUIC = "disable";
         UseFlash = false;
-        UseWidevine = false;
+        UseWidevine = true;
         Webgl = "enable";
         ProxyPort = 0;
         ProxyIsHttp = true;
@@ -434,7 +434,7 @@ namespace BrowserAutomationStudioFramework
             SetUseFlash(Settings.value("EnableFlash",false).toBool());
 
         if(Settings.contains("EnableWidevine"))
-            SetUseWidevine(Settings.value("EnableWidevine",false).toBool());
+            SetUseWidevine(Settings.value("EnableWidevine",true).toBool());
     }
 
     void WorkerSettings::SetSettingWhichRestartsBrowser(const QString& Key, QJsonObject& Object, bool& NeedRestart, bool& NeedSend)

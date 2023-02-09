@@ -13,6 +13,7 @@
 #include "startwith.h"
 #include "base64.h"
 #include "replaceall.h"
+#include "readallfile.h"
 
 using namespace std::placeholders;
 using namespace std::chrono;
@@ -33,6 +34,8 @@ void DevToolsConnector::Initialize
         const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
 )
 {
+    std::wstring RootFolder = GetRelativePathToParentFolder(L"");
+
     this->CommandLineAdditional = CommandLineAdditional;
     this->SimpleHttpClientFactory = SimpleHttpClientFactory;
     this->WebSocketClientFactory = WebSocketClientFactory;
@@ -58,6 +61,18 @@ void DevToolsConnector::Initialize
     ImageData.clear();
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
+
+    for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\default"))
+    {
+        if(Entry.IsDirectory)
+            this->DefaultExtensions.push_back(s2ws(Entry.Path));
+    }
+
+    /*for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\optional"))
+    {
+        if(Entry.IsDirectory)
+            this->OptionalExtensions.push_back(s2ws(Entry.Path));
+    }*/
 }
 
 char* DevToolsConnector::GetPaintData()
@@ -261,9 +276,25 @@ void DevToolsConnector::StartProcess()
         CommandLine += std::wstring(L"\" ");
     }
 
+    std::wstring ExtensionsString;
+    /*for(const std::wstring& ExtensionPath : OptionalExtensions)
+    {
+        if(!ExtensionsString.empty())
+        {
+            ExtensionsString += std::wstring(L",");
+        }
+        ExtensionsString += ExtensionPath;
+    }*/
+    for(const std::wstring& ExtensionPath : DefaultExtensions)
+    {
+        if(!ExtensionsString.empty())
+        {
+            ExtensionsString += std::wstring(L",");
+        }
+        ExtensionsString += ExtensionPath;
+    }
     if(!Extensions.empty())
     {
-        std::wstring ExtensionsString;
         for(const std::wstring& ExtensionString : Extensions)
         {
             if(!ExtensionsString.empty())
@@ -272,11 +303,14 @@ void DevToolsConnector::StartProcess()
             }
             ExtensionsString += ExtensionString;
         }
-        ReplaceAllInPlace(ExtensionsString, L"\\", L"\\\\");
-
-        CommandLine += std::wstring(L"--load-extension=\"") + ExtensionsString;
-        CommandLine += std::wstring(L"\" ");
     }
+	if(!ExtensionsString.empty())
+	{
+    	ReplaceAllInPlace(ExtensionsString, L"\\", L"\\\\");
+
+    	CommandLine += std::wstring(L"--load-extension=\"") + ExtensionsString;
+    	CommandLine += std::wstring(L"\" ");
+	}
 
     CommandLine += std::wstring(L"about:blank");
 
@@ -2749,8 +2783,11 @@ std::vector<std::pair<std::string, std::string> > DevToolsConnector::GetExtensio
     std::vector<std::pair<std::string, std::string> > Res;
     for(std::shared_ptr<ExtensionInfo> ExtInfo : GlobalState.ExtensionList)
     {
-        //Disable CryptoTokenExtension
-        if(ExtInfo->Id != "kmendfapggjehodndflmmgagdbamhnfd")
+        //Disable CryptoTokenExtension, Google Docs Offline, Google Network Speech, Chrome Web Store Payments
+        if(ExtInfo->Id != "kmendfapggjehodndflmmgagdbamhnfd" &&
+           ExtInfo->Id != "ghbmnnjooekpmoecnnnilnnbdlolhkhi" &&
+           ExtInfo->Id != "neajdppkdcdipfabeoofebfddakdcjhd" &&
+           ExtInfo->Id != "nmmhkkegccagdldgiimedpiccmgmieda")
         {
             std::pair<std::string, std::string> ExtensionPair;
             ExtensionPair.first = ExtInfo->Id;

@@ -12,6 +12,8 @@ struct FileEntry
 {
     std::string Path;
     std::string FileName;
+    std::wstring PathWString;
+    std::wstring FileNameWString;
     bool IsDirectory;
 };
 std::vector<FileEntry> GetFilesInDirectory(const std::string &Directory);

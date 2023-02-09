@@ -62,13 +62,13 @@ void DevToolsConnector::Initialize
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
 
-    for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\default"))
+    for(auto Entry : GetFilesInDirectory(RootFolder + L"\\ex\\d"))
     {
         if(Entry.IsDirectory)
             this->DefaultExtensions.push_back(Entry.PathWString);
     }
 
-    /*for(auto Entry : GetFilesInDirectory(RootFolder + L"\\extensions\\optional"))
+    /*for(auto Entry : GetFilesInDirectory(RootFolder + L"\\ex\\o"))
     {
         if(Entry.IsDirectory)
             this->OptionalExtensions.push_back(s2ws(Entry.Path));

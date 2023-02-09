@@ -35,9 +35,13 @@ class DevToolsConnector : public IDevToolsConnector
     int CurrentHttpClientActionId = 0;
 
     std::wstring ProfilePath;
-    std::vector<std::wstring> Extensions;
     std::vector<std::pair<std::string,std::string> > CommandLineAdditional;
     ChromeProcessLauncher ProcessLauncher;
+
+    ///Extensions
+    std::vector<std::wstring> Extensions;
+    std::vector<std::wstring> DefaultExtensions;
+    /*std::vector<std::wstring> OptionalExtensions;*/
 
     //Switch tab after close
     int SwitchTabAfterCloseCurrentActionId = 0;

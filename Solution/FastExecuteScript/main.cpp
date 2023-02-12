@@ -6,11 +6,14 @@
 #include <curl/curl.h>
 #include <QSslSocket>
 #include <openssl/ssl.h>
+#include <QSettings>
 #include <QThread>
 #include <QtGlobal>
 #include "mongodatabaseconnector.h"
 #include "addavexclusion.h"
 #include "profilebackgroundremover.h"
+#include "devicescalemanager.h"
+
 #if defined(BAS_DEBUG)
     #include "CrashHandler.h"
 #endif
@@ -150,7 +153,13 @@ int main(int argc, char *argv[])
     PanicLogger.SetFileName("panic.txt");
     qDebug()<<"Start 010";
 
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    //Support High DPI
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    {
+        DeviceScaleManager Scale;
+        Scale.Autoscale();
+    }
+
     SafeApplication a(argc, argv);
     qDebug()<<"Start 0100";
     /*{
@@ -197,7 +206,8 @@ int main(int argc, char *argv[])
     qDebug()<<"Start 100";
     w->Start();
     qDebug()<<"Start 200";
-    (new ProfileBackgroundRemover())->Run();
+    QSettings Settings("settings.ini", QSettings::IniFormat);
+    (new ProfileBackgroundRemover())->Run(Settings.value("RunProfileRemoverImmediately", false).toBool());
     qDebug()<<"Start 201";
     int res = a.exec();
     qDebug()<<"Start 300";

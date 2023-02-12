@@ -1,6 +1,6 @@
 #include "aboutbrowserstudio.h"
 #include "ui_aboutbrowserstudio.h"
-
+#include <QIcon>
 #include "every_cpp.h"
 
 
@@ -9,11 +9,13 @@ AboutBrowserStudio::AboutBrowserStudio(const QString& Version,const QString& Ser
     ui(new Ui::AboutBrowserStudio)
 {
     ui->setupUi(this);
-    ui->LabelWebkit->setText(QString("<b>") + "101.0.4951.41" + QString("</b>"));
+    ui->LabelWebkit->setText(QString("<b>") + "109.0.5414.75" + QString("</b>"));
     ui->LabelVersion->setText(QString("<b>") + Version + QString("</b>"));
     ui->LabelLicenseType->setText(QString("<b>") + tr("Free") + QString("</b>"));
 
-    ui->LabelDescription->setText(QString(tr("<html><head/><body><p><span style=\" font-size:10pt;\">Browser Automation Studio - a comprehensive solution for creating complex network software. </span>Visit <a href=\"%1\"><span style=\" text-decoration: underline; color:#ffffff;\">%1</span></a> to see more details</p></body></html>")).arg(ServerName));
+    ui->label->setPixmap(QIcon(":/engine/images/Logo.png").pixmap(100,100));
+
+    ui->LabelDescription->setText(QString(tr("<html><head/><body><p><span style=\" font-size:14px;\">Browser Automation Studio - a comprehensive solution for creating complex network software. </span>Visit <a href=\"%1\"><span style=\" text-decoration: underline; color:#ffffff;\">%1</span></a> to see more details</p></body></html>")).arg(ServerName));
     this->setFixedSize(327,270);
 
 }

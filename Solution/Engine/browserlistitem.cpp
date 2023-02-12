@@ -12,7 +12,7 @@ BrowserListItem::BrowserListItem(QWidget *parent) :
     SetVisibilityInternal(false);
     setCursor(Qt::PointingHandCursor);
 
-    ui->ManualControlIndicator->setPixmap(QPixmap(":/engine/images/manual_control.png"));
+    ui->ManualControlIndicator->setPixmap(QIcon(":/engine/images/manual_control.png").pixmap(16,16));
     QSizePolicy p = ui->ManualControlIndicator->sizePolicy();
     p.setRetainSizeWhenHidden(true);
     ui->ManualControlIndicator->setSizePolicy(p);
@@ -44,13 +44,13 @@ void BrowserListItem::SetVisibilityInternal(bool IsVisible)
     if(IsVisible)
     {
         VisibleText = tr("<small><u>Hide browser</u></small>");
-        ui->VisibilityIndicator->setPixmap(QPixmap(":/engine/images/chrome_enable.png"));
+        ui->VisibilityIndicator->setPixmap(QIcon(":/engine/images/chrome_enable.png").pixmap(16,16));
         ui->LabelShowHide->setProperty("active", true);
         ui->BrowserNumber->setProperty("active", true);
     }else
     {
         VisibleText = tr("<small><u>Show browser</u></small>");
-        ui->VisibilityIndicator->setPixmap(QPixmap(":/engine/images/chrome_disable.png"));
+        ui->VisibilityIndicator->setPixmap(QIcon(":/engine/images/chrome_disable.png").pixmap(16,16));
 
         ui->LabelShowHide->setProperty("active", false);
         ui->BrowserNumber->setProperty("active", false);

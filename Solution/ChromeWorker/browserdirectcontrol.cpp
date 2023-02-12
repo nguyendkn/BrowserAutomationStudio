@@ -607,6 +607,38 @@ void BrowserDirectControl::Timer()
 //  Browser events
 //
 
+void BrowserDirectControl::ProcessPendingTouchEndEvent()
+{
+    if(!TouchEndIsPending)
+        return;
+
+    if(!TouchStartTask)
+        return;
+
+    if(!TouchStartTask->GetIsFinished())
+        return;
+
+    if(TouchStartTime == 0)
+        TouchStartTime = Now();
+
+    std::string ResultDataRaw = TouchStartTask->GetString();
+    JsonParser Parser;
+    bool IsInIsolatedFrame = Parser.GetBooleanFromJson(ResultDataRaw, "is_in_isolated_frame", false);
+
+    if(!IsInIsolatedFrame || Now() > TouchStartTime + 500)
+    {
+
+        //Need to send event
+
+        TouchEndIsPending = false;
+        TouchStartTask.reset();
+        TouchStartTime = 0;
+
+        _BrowserData->Connector->Touch(TouchEventUp, TouchEndPendingX, TouchEndPendingY, TouchEndPendingId);
+    }
+}
+
+
 void BrowserDirectControl::StartDrag(CefRefPtr<CefBrowser> Browser, CefRefPtr<CefDragData> drag_data,CefBrowserHost::DragOperationsMask allowed_ops, int x, int y)
 {
     //TID_UI
@@ -1039,6 +1071,11 @@ void BrowserDirectControl::Key(UINT msg, WPARAM wParam, LPARAM lParam)
 
 void BrowserDirectControl::DoMouseEvent(MouseClickItem Item)
 {
+    if(_BrowserData->IsTouchScreen)
+    {
+        return;
+    }
+
     MouseEvent Event;
     if(Item.IsDownOrUp)
     {
@@ -1191,7 +1228,27 @@ void BrowserDirectControl::MouseClick(int X, int Y, bool IsDownOrUp, bool IsLeft
 
         if(SendEvent)
         {
-            _BrowserData->Connector->Touch(EventType, X, Y, CurrentTouchId);
+
+            if(EventType == TouchEventDown)
+            {
+                if(TouchStartTask)
+                {
+                    //ignore event, avoid zoom
+                }else
+                {
+                    TouchStartTask = _BrowserData->Connector->Touch(EventType, X, Y, CurrentTouchId);
+                    TouchStartTime = 0;
+                    TouchEndIsPending = false;
+                }
+            }else if(EventType == TouchEventUp)
+            {
+                TouchEndIsPending = true;
+                TouchEndPendingX = X;
+                TouchEndPendingY = Y;
+                TouchEndPendingId = CurrentTouchId;
+                ProcessPendingTouchEndEvent();
+            }
+
         }
         return;
     }

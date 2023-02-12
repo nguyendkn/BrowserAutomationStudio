@@ -47,9 +47,15 @@ SOURCES += main.cpp \
     connector/devtoolsactionrestorecookies.cpp \
     connector/devtoolsactionsavecookies.cpp \
     connector/devtoolsactionsetstartupscript.cpp \
+    connector/devtoolsactionsleep.cpp \
     connector/devtoolsactionstartdragfile.cpp \
+    connector/devtoolsactiontouch.cpp \
     connector/devtoolsactionwebsocketquery.cpp \
+    connector/devtoolsactionempty.cpp \
+    connector/framefinder.cpp \
+    connector/noneconnector.cpp \
     connector/devtoolsconnector.cpp \
+    connector/proxysaver.cpp \
     connector/emoji.cpp \
     connector/idevtoolsaction.cpp \
     connector/rawcpphttpclient.cpp \
@@ -209,9 +215,16 @@ HEADERS += \
     connector/devtoolsactionrestorecookies.h \
     connector/devtoolsactionsavecookies.h \
     connector/devtoolsactionsetstartupscript.h \
+    connector/devtoolsactionsleep.h \
     connector/devtoolsactionstartdragfile.h \
+    connector/devtoolsactiontouch.h \
     connector/devtoolsactionwebsocketquery.h \
+    connector/devtoolsactionempty.h \
+    connector/framefinder.h \
+    connector/noneconnector.h \
     connector/devtoolsconnector.h \
+    connector/idevtoolsconnector.h \
+    connector/proxysaver.h \
     connector/emoji.h \
     connector/idevtoolsaction.h \
     connector/rawcpphttpclient.h \

@@ -7,7 +7,7 @@ void DevToolsGlobalState::Reset()
     SwitchToTabFrameId.clear();
     SwitchToTabResetSavedActions = false;
     StartupScriptIds.clear();
-    FrameIdToContextId.clear();
+    ExecutionContexts.clear();
     Tabs.clear();
     ScreenCastTabId.clear();
     OpenFileDialogResult.clear();

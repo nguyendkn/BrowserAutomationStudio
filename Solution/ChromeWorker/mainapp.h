@@ -115,6 +115,7 @@ class MainApp: public CefApp, public CefBrowserProcessHandler, public CefComplet
     clock_t LastHighlight;
     clock_t LastHighlightMultiselect;
     clock_t LastRecaptchaV3Check;
+    Async TouchStartTask;
     Async HighlightTask;
     Async HighlightMultiselectTask;
     Async RecaptchaV3Task;

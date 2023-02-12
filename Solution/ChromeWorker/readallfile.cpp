@@ -78,6 +78,10 @@ std::vector<FileEntry> GetFilesInDirectory(const std::wstring &Directory)
     do {
         const std::string file_name = ws2s(file_data.cFileName);
         const std::string full_file_name = ws2s(Directory) + "/" + file_name;
+
+        const std::wstring file_name_wstring = file_data.cFileName;
+        const std::wstring full_file_name_wstring = Directory + L"/" + file_name_wstring;
+
         const bool is_directory = (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0;
 
         if (file_name[0] == '.')
@@ -89,6 +93,8 @@ std::vector<FileEntry> GetFilesInDirectory(const std::wstring &Directory)
         FileEntry entry;
         entry.FileName = file_name;
         entry.Path = full_file_name;
+        entry.FileNameWString = file_name_wstring;
+        entry.PathWString = full_file_name_wstring;
         entry.IsDirectory = is_directory;
 
         out.push_back(entry);

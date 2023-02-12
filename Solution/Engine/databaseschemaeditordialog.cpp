@@ -220,7 +220,7 @@ void DatabaseSchemaEditorDialog::ShowContextMenu(const QPoint &pos)
     QMenu myMenu;
     myMenu.addAction(QIcon(":/engine/images/up.png"),QString(tr("Move up ")) + ui->listWidget->currentItem()->data(Qt::DisplayRole).toString(),  this, SLOT(MoveUp()));
     myMenu.addAction(QIcon(":/engine/images/down.png"),QString(tr("Move down ")) + ui->listWidget->currentItem()->data(Qt::DisplayRole).toString(),  this, SLOT(MoveDown()));
-    myMenu.addAction(QIcon(":/engine/images/close_gray.png"),QString(tr("Erase ")) + ui->listWidget->currentItem()->data(Qt::DisplayRole).toString(),  this, SLOT(EraseItem()));
+    myMenu.addAction(QIcon(":/engine/images/stop.png"),QString(tr("Erase ")) + ui->listWidget->currentItem()->data(Qt::DisplayRole).toString(),  this, SLOT(EraseItem()));
 
     myMenu.exec(globalPos);
 }

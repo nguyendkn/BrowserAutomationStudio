@@ -362,7 +362,7 @@ void MainHandler::OnTitleChange(CefRefPtr<CefBrowser> browser, const CefString& 
 {
     WORKER_LOG("OnTitleChange");
 
-    SetWindowText(Data->_MainWindowHandle, std::wstring(title).c_str());
+    //SetWindowText(Data->_MainWindowHandle, std::wstring(title).c_str());
 }
 
 void MainHandler::OnAddressChange(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& url)

@@ -1,15 +1,15 @@
 function Checksum_String(){
-	_embedded("Checksum_String", "Node", "12.18.3", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareArguments(_function_arguments()))!
+	_embedded("Checksum_String", "Node", "18.10.0", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareArguments(_function_arguments()))!
 	
 	_function_return(VAR_CHECKSUM_NODE_PARAMETERS);
 };
 function Checksum_File(){
-	_embedded("Checksum_File", "Node", "12.18.3", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareArguments(_function_arguments()))!
+	_embedded("Checksum_File", "Node", "18.10.0", "CHECKSUM_NODE_PARAMETERS", Checksum_PrepareArguments(_function_arguments()))!
 	
 	_function_return(VAR_CHECKSUM_NODE_PARAMETERS);
 };
 function Checksum_GetAlgorithmsList(){
-	_embedded("Checksum_GetAlgorithmsList", "Node", "12.18.3", "CHECKSUM_NODE_PARAMETERS", 60000)!
+	_embedded("Checksum_GetAlgorithmsList", "Node", "18.10.0", "CHECKSUM_NODE_PARAMETERS", 60000)!
 	
 	_function_return(VAR_CHECKSUM_NODE_PARAMETERS);
 };

@@ -7,6 +7,7 @@
 #include <QWidget>
 #include <QDebug>
 #include <QDesktopWidget>
+#include <QPushButton>
 
 RecentsWidget::RecentsWidget(QWidget *parent) :
     QWidget(parent),
@@ -32,7 +33,43 @@ void RecentsWidget::Reload(const QString& CurrentFile)
     }
 
     {
+        QWidget * Widget = new QWidget(this);
+        Widget->setLayout(new QHBoxLayout());
+
         QLabel * Label = new QLabel(this);
+
+        QString FileName = QFileInfo(CurrentFile).fileName();
+        QString FilePath = CurrentFile;
+        int max_lent = 100;
+        if(FileName.length()>max_lent)
+            FileName = FileName.left(max_lent - 3) + "...";
+        if(FilePath.length()>max_lent)
+            FilePath = FilePath.left(max_lent - 3) + "...";
+
+        Label->setText(QString("<html><head/><body><table style=\"margin-bottom:10px;margin-top:10px\"><tr><td><div>&nbsp;&nbsp;<span style=\" text-decoration: underline; color:white\">%1</span></div></td></tr><tr><td><div>&nbsp;&nbsp;<span style=\"color:gray;\">%2</span></div></td></tr></table></body></html>").arg(FileName).arg(FilePath));
+        Label->setToolTip(CurrentFile);
+
+        QPushButton * Button = new QPushButton(this);
+        Button->setMinimumWidth(32);
+        Button->setMaximumWidth(32);
+        Button->setMinimumHeight(32);
+        Button->setMaximumHeight(32);
+        Button->setIconSize(QSize(32,32));
+        Button->setStyleSheet(QString("QPushButton {border: 0px;}"));
+        Button->setIcon(QIcon(":/images/current.png"));
+        Button->setFlat(true);
+        Button->setToolTip(CurrentFile);
+
+        Widget->layout()->addItem(new QSpacerItem(25, 0, QSizePolicy::Fixed, QSizePolicy::Fixed));
+        Widget->layout()->addWidget(Button);
+        Widget->layout()->addWidget(Label);
+        Widget->layout()->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+        Widget->layout()->setMargin(0);
+        Widget->layout()->setSpacing(0);
+
+        ui->Container->layout()->addWidget(Widget);
+
+        /*QLabel * Label = new QLabel(this);
 
         Label->setProperty("file",QVariant(CurrentFile));
 
@@ -46,7 +83,7 @@ void RecentsWidget::Reload(const QString& CurrentFile)
         Label->setText(QString("<html><head/><body><span style=\" text-decoration: none; \"> <table style=\"margin-left:25px; margin-bottom:10px; margin-top:10px\"><tr><td rowspan=\"2\"><img src=\"://images/current.png\"/></td><td><div>&nbsp;&nbsp;<span style=\" text-decoration: underline; color:white\">%1</span></div></td></tr><tr><td><div>&nbsp;&nbsp;<span style=\"color:gray;\">%2</span></div></td></tr></table></span></body></html>").arg(FileName).arg(FilePath));
         Label->setToolTip(CurrentFile);
         Label->setTextInteractionFlags(Qt::TextSelectableByMouse);
-        ui->Container->layout()->addWidget(Label);
+        ui->Container->layout()->addWidget(Label);*/
     }
     QSettings Settings("settings.ini",QSettings::IniFormat);
     QString RecentProjects = Settings.value("RecentProjects",QString()).toString();
@@ -107,8 +144,10 @@ void RecentsWidget::Reload(const QString& CurrentFile)
         }
         if(QFileInfo(Recent).exists())
         {
-            QLabel * Label = new QLabel(this);
+            QWidget * Widget = new QWidget(this);
+            Widget->setLayout(new QHBoxLayout());
 
+            QLabel * Label = new QLabel(this);
             Label->setProperty("file",QVariant(Recent));
             connect(Label,SIGNAL(linkActivated(QString)),this,SLOT(ButtonClicked()));
             QString FileName = QFileInfo(Recent).fileName();
@@ -118,14 +157,31 @@ void RecentsWidget::Reload(const QString& CurrentFile)
                 FileName = FileName.left(max_lent - 3) + "...";
             if(FilePath.length()>max_lent)
                 FilePath = FilePath.left(max_lent - 3) + "...";
-            QString MarginTop;
-            if(!it)
-            {
-                MarginTop = "margin-top:10px";
-            }
-            Label->setText(QString("<html><head/><body><a href=\"bas://loadproject\" style=\"text-decoration: none;\"> <table style=\"margin-bottom:10px;margin-left:25px;%3\"><tr><td rowspan=\"2\"><img src=\":/studio/images/open.png\"/></td><td><div>&nbsp;&nbsp;<span style=\" text-decoration: underline; color:white\">%1</span></div></td></tr><tr><td><div>&nbsp;&nbsp;<span style=\"color:gray;\">%2</span></div></td></tr></table></a></body></html>").arg(FileName).arg(FilePath).arg(MarginTop));
+            Label->setText(QString("<html><head/><body><a href=\"bas://loadproject\" style=\"text-decoration: none;\"> <table style=\"margin-bottom:10px;margin-top:10px\"><tr><td><div>&nbsp;&nbsp;<span style=\" text-decoration: underline; color:white\">%1</span></div></td></tr><tr><td><div>&nbsp;&nbsp;<span style=\"color:gray;\">%2</span></div></td></tr></table></a></body></html>").arg(FileName).arg(FilePath));
             Label->setToolTip(tr("Open") + QString(" ") + Recent);
-            ui->Container->layout()->addWidget(Label);
+
+            QPushButton * Button = new QPushButton(this);
+            Button->setProperty("file",QVariant(Recent));
+            connect(Button,SIGNAL(clicked(bool)),this,SLOT(ButtonClicked()));
+            Button->setMinimumWidth(32);
+            Button->setMaximumWidth(32);
+            Button->setMinimumHeight(32);
+            Button->setMaximumHeight(32);
+            Button->setIconSize(QSize(32,32));
+            Button->setStyleSheet(QString("QPushButton {border: 0px;}"));
+            Button->setIcon(QIcon(":/studio/images/open.png"));
+            Button->setCursor(Qt::PointingHandCursor);
+            Button->setFlat(true);
+            Button->setToolTip(tr("Open") + QString(" ") + Recent);
+
+            Widget->layout()->addItem(new QSpacerItem(25, 0, QSizePolicy::Fixed, QSizePolicy::Fixed));
+            Widget->layout()->addWidget(Button);
+            Widget->layout()->addWidget(Label);
+            Widget->layout()->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+            Widget->layout()->setMargin(0);
+            Widget->layout()->setSpacing(0);
+
+            ui->Container->layout()->addWidget(Widget);
             it++;
         }
 

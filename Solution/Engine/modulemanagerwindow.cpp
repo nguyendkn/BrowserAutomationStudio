@@ -11,6 +11,7 @@
 #include <QMessageBox>
 #include "moduleinfodialog.h"
 #include "modulecreatewizard.h"
+#include "scrollarearepaint.h"
 #include "every_cpp.h"
 
 ModuleManagerWindow::ModuleManagerWindow(QWidget *parent) :
@@ -18,6 +19,7 @@ ModuleManagerWindow::ModuleManagerWindow(QWidget *parent) :
     ui(new Ui::ModuleManagerWindow)
 {
     ui->setupUi(this);
+    new ScrollAreaRepaint(ui->ScrollArea);
     ui->MainWidget->layout()->setAlignment(Qt::AlignTop);
     ui->ClearFilter->setVisible(false);
     ProjectChanged = false;
@@ -107,20 +109,47 @@ void ModuleManagerWindow::Reload()
         CheckBox->setProperty("name",Info->Name);
         connect(CheckBox,SIGNAL(stateChanged(int)),this,SLOT(CheckBoxClicked()));
 
+        QWidget * Widget = new QWidget(this);
+        Widget->setProperty("name",Info->Name);
+        Widget->setProperty("custom",Info->Folder == "custom");
+        Widget->setLayout(new QHBoxLayout());
+
         QLabel *Label = new QLabel(ui->MainWidget);
         QString Path = ":/engine/images/modules.png";
         if(!Info->IconPath.isEmpty())
         {
             Path = Info->IconPath;
         }
-        Label->setText(QString("<html><head/><body><a href=\"bas://loadmodule\" style=\" text-decoration: none;\"> <table style=\"margin-bottom:10px;margin-left:20px\"><tr><td rowspan=\"2\"><img src=\"%4\"/></td><td><div>&nbsp;&nbsp;<span style=\" text-decoration: underline; color:white\">%1</span> <span style=\"color:white\"> - %3</span></div></td></tr><tr><td><div>&nbsp;&nbsp;<span style=\"color:gray;\">%2</span></div></td></tr></table></a></body></html>").arg(Info->Name).arg(Info->Description).arg(QString::number(Info->MajorVersion) + QString(".") + QString::number(Info->MinorVersion)).arg(Path));
+        Label->setText(QString("<html><head/><body><a href=\"bas://loadmodule\" style=\" text-decoration: none;\"> <table><tr><td><div>&nbsp;&nbsp;<span style=\" text-decoration: underline; color:white\">%1</span> <span style=\"color:white\"> - %3</span></div></td></tr><tr><td><div>&nbsp;&nbsp;<span style=\"color:gray;\">%2</span></div></td></tr></table></a></body></html>").arg(Info->Name).arg(Info->Description).arg(QString::number(Info->MajorVersion) + QString(".") + QString::number(Info->MinorVersion)).arg(Path));
         Label->setProperty("name",Info->Name);
         Label->setProperty("custom",Info->Folder == "custom");
         connect(Label,SIGNAL(linkActivated(QString)),this,SLOT(LabelClicked()));
         Label->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(Label, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(LabelClicked()));
 
-        ui->gridLayout->addWidget(Label,index,0,Qt::AlignLeft);
+        QPushButton * Button = new QPushButton(this);
+        connect(Button, SIGNAL(clicked(bool)), this, SLOT(LabelClicked()));
+
+        Button->setProperty("name",Info->Name);
+        Button->setProperty("custom",Info->Folder == "custom");
+        Button->setMinimumWidth(32);
+        Button->setMaximumWidth(32);
+        Button->setMinimumHeight(32);
+        Button->setMaximumHeight(32);
+        Button->setIconSize(QSize(32,32));
+        Button->setStyleSheet(QString("QPushButton {border: 0px;}"));
+        Button->setIcon(QIcon(Path));
+        Button->setCursor(Qt::PointingHandCursor);
+        Button->setFlat(true);
+
+        Widget->layout()->addItem(new QSpacerItem(25, 0, QSizePolicy::Fixed, QSizePolicy::Fixed));
+        Widget->layout()->addWidget(Button);
+        Widget->layout()->addWidget(Label);
+        Widget->layout()->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+        Widget->layout()->setContentsMargins(0,5,0,5);
+        Widget->layout()->setSpacing(0);
+
+        ui->gridLayout->addWidget(Widget,index,0,Qt::AlignLeft);
         ui->gridLayout->addWidget(CheckBox,index,1,Qt::AlignRight);
         index++;
 

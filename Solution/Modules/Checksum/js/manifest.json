@@ -72,32 +72,32 @@
     "developer_site": "https://t.me/GhostZed",
     "embeddeddata": [
         {
-            "Data": "const self = this;\nthis.lang = \"en\";\nconst ERR_CRYPTO_HASH_FINALIZED = function(){throw new Error(self.lang==\"ru\" ? 'digest уже вызывался.' : 'digest already called.')};\nconst ERR_CRYPTO_ALGORITHM_NOT_SPECIFIED = function(){throw new Error(self.lang==\"ru\" ? 'алгоритм не указан.' : 'algorithm not specified.')};\nconst ERR_CRYPTO_UNSUPPORTED_ALGORITHM = function(){throw new Error(self.lang==\"ru\" ? 'указан неподдерживаемый алгоритм.' : 'unsupported algorithm specified.')};\nconst ERR_INVALID_ARG_TYPE = function(){throw new Error(self.lang==\"ru\" ? 'указанные данные не являются строкой или буфером.' : 'specified data is not a string or a buffer.')};\n\nthis.error = function(err){\n    throw (self.lang==\"ru\" ? 'Не удалось рассчитать контрольную сумму' : 'Failed to calculate checksum') + ', ' + (err.message || err);\n};\n\nthis.setLang = function(lang){\n    if(!self.lang || self.lang !== lang){\n        self.lang = lang;\n    };\n};\n\nthis.createHash = function(algorithm){\n    if(!algorithm){\n        ERR_CRYPTO_ALGORITHM_NOT_SPECIFIED();\n    };\n\n    if(algorithm.startsWith('crc')){\n        let crc = require(\"crc\");\n        \n        if(!crc.hasOwnProperty(algorithm)){\n            ERR_CRYPTO_UNSUPPORTED_ALGORITHM();\n        };\n\n        let { Transform } = require(\"stream\");\n\n        class crcHash extends Transform {\n            constructor(algorithm){\n                super();\n                Transform.call(this);\n                this.handler = crc[algorithm];\n                this.finalized = false;\n                this.value = undefined;\n            };\n            \n            getResultBuffer(){\n                return Buffer.from(this.value.toString(16), 'hex');\n            };\n\n            _transform(chunk, encoding, callback){\n                this.value = this.handler(chunk, this.value);\n                callback();\n            };\n\n            _flush(callback){\n                this.push(this.getResultBuffer());\n                callback();\n            };\n\n            update(data, encoding){\n                if(!Buffer.isBuffer(data) && typeof data !== 'string'){\n                    ERR_INVALID_ARG_TYPE();\n                };\n                if(this.finalized){\n                    ERR_CRYPTO_HASH_FINALIZED();\n                };\n                if(!Buffer.isBuffer(data) && encoding){\n                    data = Buffer.from(data, encoding);\n                };\n                this.value = this.handler(data, this.value);\n                return this;\n            };\n\n            digest(encoding){\n                if(this.finalized){\n                    ERR_CRYPTO_HASH_FINALIZED();\n                };\n                this.finalized = true;\n                return this.getResultBuffer().toString(encoding);\n            };\n        };\n\n        return new crcHash(algorithm);\n    }else if(algorithm.startsWith('keccak')){\n        let keccak = require('keccak');\n        return keccak(...arguments);\n    }else if(algorithm==='blake3'){\n        let { createHash } = require('blake3-wasm');\n        return createHash();\n    }else{\n        let { createHash } = require('crypto');\n        return createHash(...arguments);\n    };\n};",
+            "Data": "const crc = require(\"crc\");\nconst self = this;\nthis.lang = \"en\";\nconst ERR_CRYPTO_HASH_FINALIZED = function(){throw new Error(self.lang==\"ru\" ? 'digest уже вызывался.' : 'digest already called.')};\nconst ERR_CRYPTO_ALGORITHM_NOT_SPECIFIED = function(){throw new Error(self.lang==\"ru\" ? 'алгоритм не указан.' : 'algorithm not specified.')};\nconst ERR_CRYPTO_UNSUPPORTED_ALGORITHM = function(){throw new Error(self.lang==\"ru\" ? 'указан неподдерживаемый алгоритм.' : 'unsupported algorithm specified.')};\nconst ERR_INVALID_ARG_TYPE = function(){throw new Error(self.lang==\"ru\" ? 'указанные данные не являются строкой или буфером.' : 'specified data is not a string or a buffer.')};\n\nthis.error = function(err){\n    throw (self.lang==\"ru\" ? 'Не удалось рассчитать контрольную сумму' : 'Failed to calculate checksum') + ', ' + (err.message || err);\n};\n\nthis.setLang = function(lang){\n    if(!self.lang || self.lang !== lang){\n        self.lang = lang;\n    };\n};\n\nclass crcHash {\n    constructor(algorithm){\n        this.handler = crc[algorithm];\n        this.finalized = false;\n        this.value = undefined;\n    };\n\n    update(data, encoding){\n        if(!Buffer.isBuffer(data) && typeof data !== 'string'){\n            ERR_INVALID_ARG_TYPE();\n        };\n        if(this.finalized){\n            ERR_CRYPTO_HASH_FINALIZED();\n        };\n        if(!Buffer.isBuffer(data) && encoding){\n            data = Buffer.from(data, encoding);\n        };\n        this.value = this.handler(data, this.value);\n        return this;\n    };\n\n    digest(encoding){\n        if(this.finalized){\n            ERR_CRYPTO_HASH_FINALIZED();\n        };\n        this.finalized = true;\n        return Buffer.from(this.value.toString(16), 'hex').toString(encoding);\n    };\n};\n\nclass nobleHash {\n    constructor(algorithm){\n        this.handler = require(`@noble/hashes/${algorithm.startsWith('keccak') ? 'sha3' : algorithm}`)[algorithm.replace(/keccak_?/, 'keccak_')].create();\n        this.finalized = false;\n    };\n\n    update(data, encoding){\n        if(!Buffer.isBuffer(data) && typeof data !== 'string'){\n            ERR_INVALID_ARG_TYPE();\n        };\n        if(this.finalized){\n            ERR_CRYPTO_HASH_FINALIZED();\n        };\n        if(!Buffer.isBuffer(data)){\n            data = encoding ? Buffer.from(data, encoding) : Buffer.from(data);\n        };\n        this.handler.update(Uint8Array.from(data));\n        return this;\n    };\n\n    digest(encoding){\n        if(this.finalized){\n            ERR_CRYPTO_HASH_FINALIZED();\n        };\n        this.finalized = true;\n        return Buffer.from(this.handler.digest()).toString(encoding);\n    };\n};\n\nthis.createHash = function(algorithm){\n    if(!algorithm){\n        ERR_CRYPTO_ALGORITHM_NOT_SPECIFIED();\n    };\n\n    if(algorithm.startsWith('crc')){\n        if(!crc.hasOwnProperty(algorithm)){\n            ERR_CRYPTO_UNSUPPORTED_ALGORITHM();\n        };\n\n        return new crcHash(algorithm);\n    }else if(algorithm==='blake3' || algorithm.startsWith('keccak')){\n        return new nobleHash(algorithm);\n    }else{\n        let { createHash } = require('crypto');\n        return createHash(...arguments);\n    };\n};",
             "DataName": "UtilChecksum",
             "DataType": 1,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
-            "Data": "const util = require(\"../UtilChecksum\");\r\nlet {input, inputEncoding, algorithm, outputLength, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    let hash = util.createHash(algorithm, outputLength && algorithm.toLocaleLowerCase().startsWith('shake') ? {outputLength:outputLength} : {});\r\n    if(inputEncoding){\r\n        hash.update(input, inputEncoding);\r\n    }else{\r\n        hash.update(input);\r\n    };\r\n    [[CHECKSUM_NODE_PARAMETERS]] = hash.digest(outputEncoding);\r\n}catch(err){\r\n    util.error(err);\r\n};",
+            "Data": "const util = require(\"../UtilChecksum\");\r\nlet {input, inputEncoding, algorithm, outputLength, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    let hash = util.createHash(algorithm, outputLength && algorithm.toLowerCase().startsWith('shake') ? {outputLength:outputLength} : {});\r\n    if(inputEncoding){\r\n        hash.update(input, inputEncoding);\r\n    }else{\r\n        hash.update(input);\r\n    };\r\n    [[CHECKSUM_NODE_PARAMETERS]] = hash.digest(outputEncoding);\r\n}catch(err){\r\n    util.error(err);\r\n};",
             "DataName": "Checksum_String",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
-            "Data": "const util = require(\"../UtilChecksum\");\r\nconst { createReadStream } = require('fs');\r\nlet {filePath, algorithm, outputLength, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    [[CHECKSUM_NODE_PARAMETERS]] = await (new Promise((resolve, reject) => {\r\n        let hash = util.createHash(algorithm, outputLength && algorithm.toLocaleLowerCase().startsWith('shake') ? {outputLength:outputLength} : {});\r\n        let stream = createReadStream(filePath);\r\n        stream.on('error', function(err){\r\n            if(err.message.includes(\"no such file or directory\")){\r\n                reject(util.lang==\"ru\" ? (`файл \"${filePath}\" не существует`) : (`file \"${filePath}\" does not exist`));\r\n            }else{\r\n                reject(err);\r\n            };\r\n        });\r\n        stream.on('data', function(data){\r\n            hash.update(data);\r\n        });\r\n        stream.on('end', function(){\r\n            resolve(hash.digest(outputEncoding));\r\n        });\r\n    }));\r\n}catch(err){\r\n     util.error(err);\r\n};",
+            "Data": "const util = require(\"../UtilChecksum\");\r\nconst { createReadStream } = require('fs');\r\nlet {filePath, algorithm, outputLength, outputEncoding, lang} = [[CHECKSUM_NODE_PARAMETERS]];\r\nutil.setLang(lang);\r\n\r\ntry{\r\n    [[CHECKSUM_NODE_PARAMETERS]] = await (new Promise((resolve, reject) => {\r\n        let hash = util.createHash(algorithm, outputLength && algorithm.toLowerCase().startsWith('shake') ? {outputLength:outputLength} : {});\r\n        let stream = createReadStream(filePath);\r\n        stream.on('error', function(err){\r\n            if(err.message.includes(\"no such file or directory\")){\r\n                reject(util.lang==\"ru\" ? (`файл \"${filePath}\" не существует`) : (`file \"${filePath}\" does not exist`));\r\n            }else{\r\n                reject(err);\r\n            };\r\n        });\r\n        stream.on('data', function(data){\r\n            hash.update(data);\r\n        });\r\n        stream.on('end', function(){\r\n            resolve(hash.digest(outputEncoding));\r\n        });\r\n    }));\r\n}catch(err){\r\n     util.error(err);\r\n};",
             "DataName": "Checksum_File",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         },
         {
             "Data": "const { getHashes } = require('crypto');\r\nconst crc = require(\"crc\");\r\n\r\nlet convert = function(el){\r\n    return typeof el===\"string\" ? (isNaN(el) ? el.toLowerCase() : Number(el)) : el;\r\n};\r\n\r\nlet algorithms = [...getHashes(), ...Object.keys(crc), 'keccak224', 'keccak256', 'keccak384', 'keccak512', 'blake3'];\r\n\r\n[[CHECKSUM_NODE_PARAMETERS]] = algorithms.filter(function(a, i){\r\n    return algorithms.indexOf(a) === i;\r\n}).sort(function(a, b){\r\n    a = convert(a);\r\n\tb = convert(b);\r\n    if(a > b){\r\n        return 1;\r\n    };\r\n    if(a < b){\r\n        return -1;\r\n    };\r\n    return 0;\r\n});",
             "DataName": "Checksum_GetAlgorithmsList",
             "DataType": 0,
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3"
+            "LanguageVersion": "18.10.0"
         }
     ],
     "engine": [
@@ -112,7 +112,7 @@
     "languages": [
         {
             "Name": "Node",
-            "Version": "12.18.3"
+            "Version": "18.10.0"
         }
     ],
     "localize": {
@@ -162,24 +162,18 @@
 		"Variable in which, after successful execution of the action, the list of supported hashing algorithms will be written.": {"ru":"Переменная в которую, после успешного выполнения действия, будет записан список поддерживаемых алгоритмов хеширования."}
     },
     "major_version": 1,
-    "minor_version": 0,
+    "minor_version": 1,
     "modules": [
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
+            "LanguageVersion": "18.10.0",
             "ModuleName": "crc",
             "ModuleVersion": "*"
         },
         {
             "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "keccak",
-            "ModuleVersion": "*"
-        },
-        {
-            "LanguageName": "Node",
-            "LanguageVersion": "12.18.3",
-            "ModuleName": "blake3-wasm",
+            "LanguageVersion": "18.10.0",
+            "ModuleName": "@noble/hashes",
             "ModuleVersion": "*"
         }
     ],

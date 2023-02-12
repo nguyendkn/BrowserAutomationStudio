@@ -158,7 +158,7 @@ void CompileResults::Submit()
             QString("?email=") + QUrl::toPercentEncoding(ui->Login->text()) +
             QString("&name=") + QUrl::toPercentEncoding(_Compiler->GetName()) +
             QString("&pass=") + QUrl::toPercentEncoding(ui->Password->text()) +
-            QString("&mode=") + QUrl::toPercentEncoding("2");
+            QString("&mode=") + QUrl::toPercentEncoding("4");
 
     IHttpClient * Client = _HttpClientFactory->GetHttpClient(false);
     Client->setParent(this);
@@ -188,6 +188,13 @@ void CompileResults::Submit()
         if(Document.setContent(DataRaw, false))
         {
             QDomElement ProjectElement = Document.documentElement();
+
+            //Remove InterfaceState tag
+            QDomElement InterfaceStateElement = ProjectElement.firstChildElement("InterfaceState");
+            QDomNode InterfaceStateTextElement = InterfaceStateElement.firstChild();
+            QDomNode NewInterfaceStateTextElement = Document.createTextNode(QString());
+            InterfaceStateElement.replaceChild(NewInterfaceStateTextElement, InterfaceStateTextElement);
+
             QDomElement ScriptElement = ProjectElement.firstChildElement("Script");
             QDomNode ScriptTextElement = ScriptElement.firstChild();
             QString Script = ScriptTextElement.toText().data();

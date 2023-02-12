@@ -15,11 +15,13 @@ namespace BrowserAutomationStudioFramework
 
         QPushButton *ReloadKey = new QPushButton(tr(" Reload"));
         ReloadKey->setIcon(QIcon(":/engine/images/reload.png"));
+        ReloadKey->setIconSize(QSize(18,18));
         connect(ReloadKey,SIGNAL(clicked()),this,SIGNAL(Reload()));
         ui->buttonBox->addButton(ReloadKey,QDialogButtonBox::HelpRole);
 
         QPushButton *CopyKey = new QPushButton(tr(" Copy To Clipboard"));
         CopyKey->setIcon(QIcon(":/engine/images/clipboard.png"));
+        CopyKey->setIconSize(QSize(18,18));
         connect(CopyKey,SIGNAL(clicked()),this,SLOT(Copy()));
         ui->buttonBox->addButton(CopyKey,QDialogButtonBox::HelpRole);
     }

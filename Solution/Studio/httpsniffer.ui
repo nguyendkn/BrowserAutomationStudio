@@ -124,6 +124,12 @@
          <iconset resource="../Engine/engine.qrc">
           <normaloff>:/engine/images/clear.png</normaloff>:/engine/images/clear.png</iconset>
         </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
+        </property>
        </widget>
       </item>
       <item>
@@ -231,6 +237,12 @@
          <property name="currentIndex">
           <number>0</number>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>18</width>
+           <height>18</height>
+          </size>
+         </property>
          <widget class="QWidget" name="tab">
           <attribute name="icon">
            <iconset resource="studio.qrc">
@@ -284,6 +296,12 @@
                <property name="icon">
                 <iconset resource="studio.qrc">
                  <normaloff>:/studio/images/preview.png</normaloff>:/studio/images/preview.png</iconset>
+               </property>
+               <property name="iconSize">
+                <size>
+                 <width>18</width>
+                 <height>18</height>
+                </size>
                </property>
               </widget>
              </item>
@@ -371,6 +389,12 @@
         <property name="icon">
          <iconset resource="studio.qrc">
           <normaloff>:/studio/images/stop.png</normaloff>:/studio/images/stop.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
        </widget>
       </item>

@@ -221,6 +221,17 @@
 
 	<%= _.template($('#block_end').html())() %>
 
+	<%= _.template($('#block_start').html())({id: "Support", name: tr("Researching sites protection"), description: `
+		<span>
+			<span>${tr('Use following page to report about anti-bot detection on particular site, ')}</span>
+			<a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://community.bablosoft.com/topic/12199/'); return false;" class="tr-en">link</a>
+			<a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://community.bablosoft.com/topic/12198/'); return false;" class="tr-ru">ссылка</a>
+		
+		</span>
+	`}) %>
+		
+	<%= _.template($('#block_end').html())() %>
+
 
   <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable To Save"), default_variable: "FINGERPRINT", help: 
 	{

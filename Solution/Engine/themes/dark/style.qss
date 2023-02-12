@@ -32,7 +32,7 @@ QMainWindow::separator:hover
 QDockWidget::title {
     background: #3e3e3e;
     border-bottom: 2px solid #4c4c4c;
-    padding-top:1px;
+    padding-top:6px;
 }
 
 
@@ -48,12 +48,19 @@ QDockWidget::close-button, QDockWidget::float-button {
     background: transparent;
 }
 
-QDockWidget::close-button:hover, QDockWidget::float-button:hover {
-    background: rgba(255, 255, 255, 10);
+QScrollBar:vertical {
+    width: 15px;
 }
 
-QDockWidget::close-button:pressed, QDockWidget::float-button:pressed {
-    padding: 1px -1px -1px 1px;
-    background: rgba(255, 255, 255, 10);
+QScrollBar:horizontal {
+    height: 15px;
 }
+
+QTabBar::tab{
+    height:32px
+}
+
+
+
+
 

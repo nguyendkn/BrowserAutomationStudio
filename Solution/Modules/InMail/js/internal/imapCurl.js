@@ -1544,7 +1544,12 @@ _InMail.imap = _InMail.assignApi(function(config){
 		var maxTime = _avoid_nilb(_function_argument("maxTime"), Date.now() + timeout);
 		
 		_call_function(api.fetch, {uids: uid, options: {bodies: [part.partID], markSeen: markSeen}, box: box, timeout: timeout, maxTime: maxTime})!
-		var data = _result_function()[0].parts[0].body;
+		var res = _result_function();
+		if(!res.length || !res[0].parts || !res[0].parts.length){
+			_function_return(null);
+			return;
+		};
+		var data = res[0].parts[0].body;
 		var encoding = part.encoding.toLowerCase();
 		var charset = ((part.params && part.params.charset) ? part.params.charset.toLowerCase() : '') || 'utf-8';
 		
@@ -1552,6 +1557,8 @@ _InMail.imap = _InMail.assignApi(function(config){
 		
 		if(!saveToFile){
 			_function_return(result);
+		}else{
+			_function_return(true);
 		};
 	};
 	
@@ -1656,7 +1663,10 @@ _InMail.imap = _InMail.assignApi(function(config){
 								_break();
 							};
 							_call_function(api.getPartData, {uid: attrs.uid, part: _cycle_param("parts")[part_index], markSeen: markSeen, box: box, timeout: timeout, maxTime: maxTime})!
-							message.body[type] += _result_function();
+							var res = _result_function();
+							if(res){
+								message.body[type] += res;
+							};
 						})!
 						message.body[type] = message.body[type].trim();
 					})!
@@ -1726,12 +1736,15 @@ _InMail.imap = _InMail.assignApi(function(config){
 							};
 							var randomFile = api.randStr() + '.file';
 							_call_function(api.getPartData, {uid: attrs.uid, part: part, markSeen: markSeen, saveToFile: randomFile, box: box, timeout: timeout, maxTime: maxTime})!
-							var randomFileDir = JSON.parse(native("filesystem", "fileinfo", randomFile)).directory;
-							message.attachments.push({
-								name: filename,
-								type: part.type + '/' + part.subtype,
-								path: randomFileDir + '/' + randomFile
-							});
+							var res = _result_function();
+							if(res){
+								var randomFileDir = JSON.parse(native("filesystem", "fileinfo", randomFile)).directory;
+								message.attachments.push({
+									name: filename,
+									type: part.type + '/' + part.subtype,
+									path: randomFileDir + '/' + randomFile
+								});
+							};
 						})!
 					})!
 				})!

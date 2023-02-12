@@ -50,6 +50,9 @@
 	],
 	"localize": 
 	{
+		"Emulate device scale factor": {"ru": "Эмулировать масштаб устройства"},
+		"Allows to better emulate devices with higher pixel density. With this setting enabled, emulation will be done in the most natural way. It means that browser will render the page in a bigger resolution, just like on real device. The tradeoff is higher system resources usage, because you need to perform more calculations to render a bigger picture. Javascript settings related to pixel density, for example devicePixelRatio, will be replaced correctly regardless if this setting will be enabled or not.": {"ru": "Позволяет лучше эмулировать устройства с более высокой плотностью пикселей. Если этот параметр включен, эмуляция будет выполняться наиболее естественным образом. Это означает, что браузер будет рисовать страницу в большем разрешении, как на реальном устройстве. Взамен ресурсы системы будут использоваться более интенсивно, потому что устройству нужно будет выполнять больше вычислений, чтобы отобразить страницу больших размеров. Параметры javascript, связанные с плотностью пикселей, например devicePixelRatio, будут заменены корректно независимо от того, включен этот параметр или нет."},
+
 		"Custom servers": {"ru": "Пользовательские серверы"},
 		"More info about font pack and download link can be found": {"ru": "Дополнительную информацию о паке шрифтов и ссылку для скачивания можно найти"},
 		"Use font pack": {"ru": "Использовать пак шрифтов"},

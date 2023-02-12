@@ -98,30 +98,30 @@ _SMS.rateLimiter = function(options){
 	/**
 	 * Asynchronous function
 	 * 
-     * Remove the requested number of tokens. If the rate limiter contains enough
-     * tokens and we haven't spent too many tokens in this interval already, this
-     * will happen immediately. Otherwise, the removal will happen when enough
-     * tokens become available.
-     * @param {Number} count The number of tokens to remove.
-     * @returns {Number} The remainingTokens count.
-     */
-    this.removeTokens = function(count){
+	 * Remove the requested number of tokens. If the rate limiter contains enough
+	 * tokens and we haven't spent too many tokens in this interval already, this
+	 * will happen immediately. Otherwise, the removal will happen when enough
+	 * tokens become available.
+	 * @param {Number} count The number of tokens to remove.
+	 * @returns {Number} The remainingTokens count.
+	 */
+	this.removeTokens = function(count){
 		var args = _function_arguments();
 		var count = _avoid_nilb(args.count, 1);
 		
-        // Make sure the request isn't for more than we can handle
-        if(count > limiter.tokenBucket.bucketSize){
+		// Make sure the request isn't for more than we can handle
+		if(count > limiter.tokenBucket.bucketSize){
 			fail('Requested tokens ' + count + ' exceeds maximum tokens per interval ' + limiter.tokenBucket.bucketSize);
-        };
-        var now = Date.now();
-        // Advance the current interval and reset the current interval token count
-        // if needed
-        if(now < limiter.getCurIntervalStart() || now - limiter.getCurIntervalStart() >= limiter.tokenBucket.interval){
-            limiter.setCurIntervalStart(now);
-            limiter.setTokensThisInterval(0);
-        };
-        // If we don't have enough tokens left in this interval, wait until the
-        // next interval
+		};
+		var now = Date.now();
+		// Advance the current interval and reset the current interval token count
+		// if needed
+		if(now < limiter.getCurIntervalStart() || now - limiter.getCurIntervalStart() >= limiter.tokenBucket.interval){
+			limiter.setCurIntervalStart(now);
+			limiter.setTokensThisInterval(0);
+		};
+		// If we don't have enough tokens left in this interval, wait until the
+		// next interval
 		_if(count > limiter.tokenBucket.tokensPerInterval - limiter.getTokensThisInterval(), function(){
 			_if_else(limiter.fireImmediately, function(){
 				_function_return(-1);
@@ -130,70 +130,70 @@ _SMS.rateLimiter = function(options){
 				_call_function(limiter.wait,{ms:waitMs})!
 				_call_function(limiter.tokenBucket.removeTokens, args)!
 				var remainingTokens = _result_function();
-                limiter.plusTokensThisInterval(count);
+				limiter.plusTokensThisInterval(count);
 				_function_return(remainingTokens);
 			})!
 		})!
-        // Remove the requested number of tokens from the token bucket
+		// Remove the requested number of tokens from the token bucket
 		_call_function(limiter.tokenBucket.removeTokens, args)!
 		var remainingTokens = _result_function();
-        limiter.plusTokensThisInterval(count);
+		limiter.plusTokensThisInterval(count);
 		_function_return(remainingTokens);
-    };
+	};
 	
 	/**
 	 * Asynchronous function
 	 * 
-     * Wait for a specified number of milliseconds
-     * @param {Number} Number of milliseconds to wait.
-     */
+	 * Wait for a specified number of milliseconds
+	 * @param {Number} Number of milliseconds to wait.
+	 */
 	this.wait = function(){
 		var ms = _function_argument("ms");
 		
 		sleep(ms)!
 	};
 	
-    /**
-     * Attempt to remove the requested number of tokens and return immediately.
-     * If the bucket (and any parent buckets) contains enough tokens and we
-     * haven't spent too many tokens in this interval already, this will return
-     * true. Otherwise, false is returned.
-     * @param {Number} count The number of tokens to remove.
-     * @returns {Boolean} True if the tokens were successfully removed, otherwise
-     *  false.
-     */
-    this.tryRemoveTokens = function(count){
+	/**
+	 * Attempt to remove the requested number of tokens and return immediately.
+	 * If the bucket (and any parent buckets) contains enough tokens and we
+	 * haven't spent too many tokens in this interval already, this will return
+	 * true. Otherwise, false is returned.
+	 * @param {Number} count The number of tokens to remove.
+	 * @returns {Boolean} True if the tokens were successfully removed, otherwise
+	 *  false.
+	 */
+	this.tryRemoveTokens = function(count){
 		count = _avoid_nilb(_function_argument("count"), 1);
 		
-        // Make sure the request isn't for more than we can handle
-        if(count > limiter.tokenBucket.bucketSize){
+		// Make sure the request isn't for more than we can handle
+		if(count > limiter.tokenBucket.bucketSize){
 			return false;
 		};
-        var now = Date.now();
-        // Advance the current interval and reset the current interval token count
-        // if needed
-        if(now < limiter.getCurIntervalStart() || now - limiter.getCurIntervalStart() >= limiter.tokenBucket.interval){
-            limiter.setCurIntervalStart(now);
-            limiter.setTokensThisInterval(0);
-        };
-        // If we don't have enough tokens left in this interval, return false
-        if(count > limiter.tokenBucket.tokensPerInterval - limiter.getTokensThisInterval()){
+		var now = Date.now();
+		// Advance the current interval and reset the current interval token count
+		// if needed
+		if(now < limiter.getCurIntervalStart() || now - limiter.getCurIntervalStart() >= limiter.tokenBucket.interval){
+			limiter.setCurIntervalStart(now);
+			limiter.setTokensThisInterval(0);
+		};
+		// If we don't have enough tokens left in this interval, return false
+		if(count > limiter.tokenBucket.tokensPerInterval - limiter.getTokensThisInterval()){
 			return false;
 		};
-        // Try to remove the requested number of tokens from the token bucket
-        var removed = limiter.tokenBucket.tryRemoveTokens(count);
-        if(removed){
-            limiter.plusTokensThisInterval(count);
-        };
-        return removed;
-    };
+		// Try to remove the requested number of tokens from the token bucket
+		var removed = limiter.tokenBucket.tryRemoveTokens(count);
+		if(removed){
+			limiter.plusTokensThisInterval(count);
+		};
+		return removed;
+	};
 	
-    /**
-     * Returns the number of tokens remaining in the TokenBucket.
-     * @returns {Number} The number of tokens remaining.
-     */
-    this.getTokensRemaining = function(){
-        limiter.tokenBucket.drip();
-        return limiter.tokenBucket.getContent();
-    };
+	/**
+	 * Returns the number of tokens remaining in the TokenBucket.
+	 * @returns {Number} The number of tokens remaining.
+	 */
+	this.getTokensRemaining = function(){
+		limiter.tokenBucket.drip();
+		return limiter.tokenBucket.getContent();
+	};
 };

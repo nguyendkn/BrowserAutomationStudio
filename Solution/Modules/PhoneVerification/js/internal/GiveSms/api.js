@@ -1,5 +1,5 @@
 _SMS.GiveSmsApi = _SMS.assignApi(function(config, data){
-    const api = this;
+	const api = this;
 	_SMS.BaseApi.call(this, config, data, '/api/v1/');
 	
 	this.makeRequest = function(){

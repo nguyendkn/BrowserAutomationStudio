@@ -1,156 +1,156 @@
 {
-    "actions": [
+	"actions": [
 		{
-            "code": [
-                {
-                    "file": "SMS_GetNumber_code.js",
-                    "name": "SMS_GetNumber_code"
-                }
-            ],
-            "description": {
-                "en": "Get phone number",
-                "ru": "Получить номер телефона"
-            },
-            "interface": "SMS_GetNumber_interface.js",
-            "is_element": false,
-            "name": "SMS_GetNumber",
-            "select": "SMS_GetNumber_select.js",
-            "template": "{{service}} ({{site}}) -> {{Save}}"
-        },
+			"code": [
+				{
+					"file": "SMS_GetNumber_code.js",
+					"name": "SMS_GetNumber_code"
+				}
+			],
+			"description": {
+				"en": "Get phone number",
+				"ru": "Получить номер телефона"
+			},
+			"interface": "SMS_GetNumber_interface.js",
+			"is_element": false,
+			"name": "SMS_GetNumber",
+			"select": "SMS_GetNumber_select.js",
+			"template": "{{service}} ({{site}}) -> {{Save}}"
+		},
 		{
-            "code": [
-                {
-                    "file": "SMS_GetCode_code.js",
-                    "name": "SMS_GetCode_code"
-                }
-            ],
-            "description": {
-                "en": "Get activation code",
-                "ru": "Получить код активации"
-            },
-            "interface": "SMS_GetCode_interface.js",
-            "is_element": false,
-            "name": "SMS_GetCode",
-            "select": "SMS_GetCode_select.js",
-            "template": "{{number}} -> {{Save}}"
-        },
+			"code": [
+				{
+					"file": "SMS_GetCode_code.js",
+					"name": "SMS_GetCode_code"
+				}
+			],
+			"description": {
+				"en": "Get activation code",
+				"ru": "Получить код активации"
+			},
+			"interface": "SMS_GetCode_interface.js",
+			"is_element": false,
+			"name": "SMS_GetCode",
+			"select": "SMS_GetCode_select.js",
+			"template": "{{number}} -> {{Save}}"
+		},
 		{
-            "code": [
-                {
-                    "file": "SMS_SetStatus_code.js",
-                    "name": "SMS_SetStatus_code"
-                }
-            ],
-            "description": {
-                "en": "Change activation status",
-                "ru": "Изменение статуса активации"
-            },
-            "interface": "SMS_SetStatus_interface.js",
-            "is_element": false,
-            "name": "SMS_SetStatus",
-            "select": "SMS_SetStatus_select.js",
-            "template": "{{status}} -> {{number}}"
-        },
+			"code": [
+				{
+					"file": "SMS_SetStatus_code.js",
+					"name": "SMS_SetStatus_code"
+				}
+			],
+			"description": {
+				"en": "Change activation status",
+				"ru": "Изменение статуса активации"
+			},
+			"interface": "SMS_SetStatus_interface.js",
+			"is_element": false,
+			"name": "SMS_SetStatus",
+			"select": "SMS_SetStatus_select.js",
+			"template": "{{status}} -> {{number}}"
+		},
 		{
-            "code": [
-                {
-                    "file": "SMS_GetBalance_code.js",
-                    "name": "SMS_GetBalance_code"
-                }
-            ],
-            "description": {
-                "en": "Get balance",
-                "ru": "Получить баланс"
-            },
-            "interface": "SMS_GetBalance_interface.js",
-            "is_element": false,
-            "name": "SMS_GetBalance",
-            "select": "SMS_GetBalance_select.js",
-            "template": "{{service}} -> {{Save}}"
-        },
+			"code": [
+				{
+					"file": "SMS_GetBalance_code.js",
+					"name": "SMS_GetBalance_code"
+				}
+			],
+			"description": {
+				"en": "Get balance",
+				"ru": "Получить баланс"
+			},
+			"interface": "SMS_GetBalance_interface.js",
+			"is_element": false,
+			"name": "SMS_GetBalance",
+			"select": "SMS_GetBalance_select.js",
+			"template": "{{service}} -> {{Save}}"
+		},
 		{
-            "code": [
-                {
-                    "file": "SMS_GetNumbersCount_code.js",
-                    "name": "SMS_GetNumbersCount_code"
-                }
-            ],
-            "description": {
-                "en": "Get the count of available numbers",
-                "ru": "Получить количество доступных номеров"
-            },
-            "interface": "SMS_GetNumbersCount_interface.js",
-            "is_element": false,
-            "name": "SMS_GetNumbersCount",
-            "select": "SMS_GetNumbersCount_select.js",
-            "template": "{{service}} ({{site}}) -> {{Save}}"
-        },
+			"code": [
+				{
+					"file": "SMS_GetNumbersCount_code.js",
+					"name": "SMS_GetNumbersCount_code"
+				}
+			],
+			"description": {
+				"en": "Get the count of available numbers",
+				"ru": "Получить количество доступных номеров"
+			},
+			"interface": "SMS_GetNumbersCount_interface.js",
+			"is_element": false,
+			"name": "SMS_GetNumbersCount",
+			"select": "SMS_GetNumbersCount_select.js",
+			"template": "{{service}} ({{site}}) -> {{Save}}"
+		},
 		{
-            "code": [
-                {
-                    "file": "SMS_GetSites_code.js",
-                    "name": "SMS_GetSites_code"
-                }
-            ],
-            "description": {
-                "en": "Get list of sites",
-                "ru": "Получить список сайтов"
-            },
-            "interface": "SMS_GetSites_interface.js",
-            "is_element": false,
-            "name": "SMS_GetSites",
-            "select": "SMS_GetSites_select.js",
-            "template": "{{service}} -> {{Save}}"
-        },
+			"code": [
+				{
+					"file": "SMS_GetSites_code.js",
+					"name": "SMS_GetSites_code"
+				}
+			],
+			"description": {
+				"en": "Get list of sites",
+				"ru": "Получить список сайтов"
+			},
+			"interface": "SMS_GetSites_interface.js",
+			"is_element": false,
+			"name": "SMS_GetSites",
+			"select": "SMS_GetSites_select.js",
+			"template": "{{service}} -> {{Save}}"
+		},
 		{
-            "code": [
-                {
-                    "file": "SMS_GetCountries_code.js",
-                    "name": "SMS_GetCountries_code"
-                }
-            ],
-            "description": {
-                "en": "Get list of countries",
-                "ru": "Получить список стран"
-            },
-            "interface": "SMS_GetCountries_interface.js",
-            "is_element": false,
-            "name": "SMS_GetCountries",
-            "select": "SMS_GetCountries_select.js",
-            "template": "{{service}} -> {{Save}}"
-        },
+			"code": [
+				{
+					"file": "SMS_GetCountries_code.js",
+					"name": "SMS_GetCountries_code"
+				}
+			],
+			"description": {
+				"en": "Get list of countries",
+				"ru": "Получить список стран"
+			},
+			"interface": "SMS_GetCountries_interface.js",
+			"is_element": false,
+			"name": "SMS_GetCountries",
+			"select": "SMS_GetCountries_select.js",
+			"template": "{{service}} -> {{Save}}"
+		},
 		{
-            "code": [
-                {
-                    "file": "SMS_Debug_code.js",
-                    "name": "SMS_Debug_code"
-                }
-            ],
-            "description": {
-                "en": "Debug",
-                "ru": "Отладка"
-            },
-            "interface": "SMS_Debug_interface.js",
-            "is_element": false,
-            "name": "SMS_Debug",
-            "select": "SMS_Debug_select.js",
-            "template": "{{enable}}"
-        }
+			"code": [
+				{
+					"file": "SMS_Debug_code.js",
+					"name": "SMS_Debug_code"
+				}
+			],
+			"description": {
+				"en": "Debug",
+				"ru": "Отладка"
+			},
+			"interface": "SMS_Debug_interface.js",
+			"is_element": false,
+			"name": "SMS_Debug",
+			"select": "SMS_Debug_select.js",
+			"template": "{{enable}}"
+		}
 	],
-    "api_version": 1,
-    "browser": [],
-    "depends": [],
-    "description": "Working with SMS receiving services",
-    "description_small": {
-        "en": "Phone verification",
-        "ru": "Подтверждение телефона"
-    },
-    "developer_email": "sasha9817@mail.ru",
-    "developer_name": "GhostZ",
-    "developer_site": "https://t.me/GhostZed",
-    "embeddeddata": [],
-    "engine": [
-        "engine.js",
+	"api_version": 1,
+	"browser": [],
+	"depends": [],
+	"description": "Working with SMS receiving services",
+	"description_small": {
+		"en": "Phone verification",
+		"ru": "Подтверждение телефона"
+	},
+	"developer_email": "sasha9817@mail.ru",
+	"developer_name": "GhostZ",
+	"developer_site": "https://t.me/GhostZed",
+	"embeddeddata": [],
+	"engine": [
+		"engine.js",
 		"internal/services.js",
 		"internal/base.js",
 		"internal/TokenBucket.js",
@@ -183,15 +183,15 @@
 		"internal/GiveSms/api.js",
 		"internal/GiveSms/sites.js",
 		"internal/GiveSms/countries.js"
-    ],
-    "icon": "SMS.png",
-    "info": {
-        "en": "Working with SMS receiving services, get a balance, request the number of available numbers, get a temporary phone number and receive an SMS code.",
-        "ru": "Работа с сервисами приема SMS, узнать баланс, запросить количество доступных номеров, получить временный номер телефона и принять SMS код."
-    },
+	],
+	"icon": "SMS.png",
+	"info": {
+		"en": "Working with SMS receiving services, get a balance, request the number of available numbers, get a temporary phone number and receive an SMS code.",
+		"ru": "Работа с сервисами приема SMS, узнать баланс, запросить количество доступных номеров, получить временный номер телефона и принять SMS код."
+	},
 	"is_autogenerated": true,
-    "languages": [],
-    "localize": {
+	"languages": [],
+	"localize": {
 		"Site": {"ru": "Сайт"},
 		"Service": {"ru": "Сервис"},
 		"API key": {"ru":"API ключ"},
@@ -511,9 +511,9 @@
 		"Virgin Islands, British":{"ru":"Виргинские острова, Британские"},
 		"Bermuda":{"ru":"Бермуды"},
 		"Western Sahara":{"ru":"Западная Сахара"}
-    },
-    "major_version": 1,
-    "minor_version": 2,
-    "modules": [],
-    "name": "PhoneVerification"
+	},
+	"major_version": 1,
+	"minor_version": 2,
+	"modules": [],
+	"name": "PhoneVerification"
 }

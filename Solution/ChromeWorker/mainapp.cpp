@@ -621,7 +621,7 @@ void MainApp::FindImageCallback()
 
 char* MainApp::GetImageData()
 {
-    return Data->Connector->GetPaintData();
+    return Data->Connector->GetPaintDataScaled();
 }
 
 std::string MainApp::GetSubImageDataBase64(int x1, int y1, int x2, int y2)
@@ -691,8 +691,8 @@ std::string MainApp::GetSubImageDataBase64(int x1, int y1, int x2, int y2)
 std::pair<int,int> MainApp::GetImageSize()
 {
     std::pair<int,int> res;
-    res.first = Data->Connector->GetPaintWidth();
-    res.second = Data->Connector->GetPaintHeight();
+    res.first = Data->Connector->GetPaintWidthScaled();
+    res.second = Data->Connector->GetPaintHeightScaled();
     return res;
 }
 

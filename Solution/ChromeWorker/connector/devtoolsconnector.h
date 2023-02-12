@@ -108,6 +108,13 @@ class DevToolsConnector : public IDevToolsConnector
     int PaintHeight = 0;
     int LastMetadataPaintWidth = 0;
     int LastMetadataPaintHeight = 0;
+
+    //Store scaled image due to _set_device_scale_factor usage
+    bool HasScaledImage = false;
+    std::vector<char> ImageDataScaled;
+    int PaintWidthScaled = 0;
+    int PaintHeightScaled = 0;
+
     SharedMemoryIPC* IPC = 0;
     void HandleIPCData();
     void HandleIPCDataNoDeviceScale();
@@ -128,6 +135,10 @@ class DevToolsConnector : public IDevToolsConnector
         char* GetPaintData();
         int GetPaintWidth();
         int GetPaintHeight();
+
+        char* GetPaintDataScaled();
+        int GetPaintWidthScaled();
+        int GetPaintHeightScaled();
         int GetWidth();
         int GetHeight();
         int GetScrollX();

@@ -42,6 +42,8 @@
 #include "base64.h"
 #include "writefile.h"
 #include "popupemulation.h"
+#include "noneconnector.h"
+#include "devtoolsconnector.h"
 
 
 #if defined(BAS_DEBUG)
@@ -141,6 +143,13 @@ std::string GetUrl()
     return ws2s(Url);
 }
 
+bool IsUrlEditSelected()
+{
+    return GetFocus() == Layout->HEditUrl;
+}
+
+
+
 void CreateHMenu(int HighlightedMenuItem = -1)
 {
     if(hMenu)
@@ -171,7 +180,7 @@ void CreateHMenu(int HighlightedMenuItem = -1)
 
     POINT p;
     p.x = -4;
-    p.y = 26;
+    p.y = Layout->Scale(20) + Layout->Scale(5) + 1;
     ClientToScreen(Layout->HButtonMenu,&p);
     if (HighlightedMenuItem > -1) HiliteMenuItem(hwnd, hMenu, HighlightedMenuItem, MF_BYCOMMAND | MF_HILITE);
     TrackPopupMenu(hMenu, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
@@ -586,50 +595,50 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 HButtonUp = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0, 0, 20, 20, hwnd, (HMENU)IDButtonUp, hInst, NULL);
                 Layout->HButtonUp = HButtonUp;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UP), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UP), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonUp, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonDown = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonDown, hInst, NULL);
                 Layout->HButtonDown = HButtonDown;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWN), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWN), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonDown, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonLeft = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonLeft, hInst, NULL);
                 Layout->HButtonLeft = HButtonLeft;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonLeft, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonRight = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonRight, hInst, NULL);
                 Layout->HButtonRight = HButtonRight;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonRight, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
                 HButtonUpUp = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0, 0, 20, 20, hwnd, (HMENU)IDButtonUpUp, hInst, NULL);
                 Layout->HButtonUpUp = HButtonUpUp;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UPUP), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_UPUP), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonUpUp, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonDownDown = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonDownDown, hInst, NULL);
                 Layout->HButtonDownDown = HButtonDownDown;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWNDOWN), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DOWNDOWN), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonDownDown, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonLeftLeft = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonLeftLeft, hInst, NULL);
                 Layout->HButtonLeftLeft = HButtonLeftLeft;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFTLEFT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LEFTLEFT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonLeftLeft, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 HButtonRightRight = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonRightRight, hInst, NULL);
                 Layout->HButtonRightRight = HButtonRightRight;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHTRIGHT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_RIGHTRIGHT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(HButtonRightRight, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
@@ -637,82 +646,90 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 HButtonMenu = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonMenu, hInst, NULL);
                 Layout->HButtonMenu = HButtonMenu;
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MENU), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MENU), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(Layout->HButtonMenu, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
                 Layout->HButtonSettings = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonSettings, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_SETTINGS), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_SETTINGS), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                     SendMessage(Layout->HButtonSettings, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
 
                 Layout->HButtonIndirect = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonIndirect, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_INDIRECT), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_INDIRECT), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(31), 0);
                     SendMessage(Layout->HButtonIndirect, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 gToolTip::AddTip(hwnd,hInst,(TCHAR *)Translate::Tr(L"Use this button to start control browser directly.").data(),IDButtonIndirect,TRUE);
 
                 Layout->HButtonDirectRecord = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonDirectRecord, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_RECORD), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_RECORD), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(31), 0);
                     SendMessage(Layout->HButtonDirectRecord, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 gToolTip::AddTip(hwnd,hInst,(TCHAR *)Translate::Tr(L"Use this button to start control browser directly.").data(),IDButtonDirectRecord,TRUE);
 
                 Layout->HButtonDirectNoRecord = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonDirectNoRecord, hInst, NULL);
                 {
-                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_NO_RECORD), IMAGE_BITMAP, 0, 0, 0);
+                    HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_DIRECT_NO_RECORD), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(31), 0);
                     SendMessage(Layout->HButtonDirectNoRecord, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
                 }
                 gToolTip::AddTip(hwnd,hInst,(TCHAR *)Translate::Tr(L"Use this button to start control browser directly.").data(),IDButtonDirectNoRecord,TRUE);
 
-                Layout->ButtonMinimize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MINIMIZE), IMAGE_BITMAP, 0, 0, 0);
-                Layout->ButtonMaximize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MAXIMIZE), IMAGE_BITMAP, 0, 0, 0);
+                Layout->ButtonMinimize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MINIMIZE), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+                Layout->ButtonMaximize = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MAXIMIZE), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 Layout->HButtonMinimizeMaximize = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0, 20, 20, hwnd, (HMENU)IDButtonMinimizeMaximize, hInst, NULL);
 
-                InspectFont = CreateFont (14, 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                InspectFont = CreateFont (Layout->Scale(14), 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
 
             }
 
-            Layout->BManualControlAction = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION), IMAGE_BITMAP, 0, 0, 0);
-            Layout->BManualControlAction1 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION1), IMAGE_BITMAP, 0, 0, 0);
-            Layout->BManualControlAction2 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION2), IMAGE_BITMAP, 0, 0, 0);
-            Layout->BManualControlAction3 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION3), IMAGE_BITMAP, 0, 0, 0);
+            Layout->BManualControlAction = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+            Layout->BManualControlAction1 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION1), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+            Layout->BManualControlAction2 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION2), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
+            Layout->BManualControlAction3 = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_MANUALCONTROLACTION3), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
 
             Layout->HEditUrl = CreateWindowEx(WS_EX_CLIENTEDGE, L"EDIT", L"about:blank", WS_VISIBLE | WS_CHILD | WS_BORDER | ES_LEFT | ES_AUTOHSCROLL,0,0,100,100,hwnd,(HMENU)NULL, NULL, NULL);
             app->GetData()->UrlHandler = Layout->HEditUrl;
 
             SetWindowSubclass(Layout->HEditUrl, UrlEditProc, 0,0);
 
+            {
+                HFONT hFont = CreateFont (Layout->Scale(16), 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                if(hFont)
+                {
+                    SendMessage (Layout->HEditUrl, WM_SETFONT, WPARAM (hFont), TRUE);
+                }
+            }
+
             Layout->HLoadUrl = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonLoadUrl, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LOADURL), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_LOADURL), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HLoadUrl, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HBackUrl = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDButtonBackUrl, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BACKURL), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BACKURL), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HBackUrl, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HBrowserTabs = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDBrowserTabs, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERTABS), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERTABS), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HBrowserTabs, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HBrowserMenu = CreateWindow(L"BUTTON", NULL, BS_BITMAP|WS_TABSTOP|WS_VISIBLE|WS_CHILD|BS_PUSHBUTTON, 0,0 , 20, 20, hwnd, (HMENU)IDBrowserMenu, hInst, NULL);
             {
-                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERMENU), IMAGE_BITMAP, 0, 0, 0);
+                HBITMAP bitmap = (HBITMAP)LoadImage(hInst, MAKEINTRESOURCEW(IDB_BROWSERMENU), IMAGE_BITMAP, Layout->Scale(20), Layout->Scale(20), 0);
                 SendMessage(Layout->HBrowserMenu, BM_SETIMAGE, (WPARAM)IMAGE_BITMAP, (LPARAM)bitmap);
             }
 
             Layout->HLabelBrowserBottom = CreateWindow(L"SysLink", L"", WS_CHILD, 0, 0, 100, 30, hwnd, (HMENU)IDBrowserLabel, hInst, NULL);
             {
-                HFONT hFont = CreateFont (14, 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                HFONT hFont = CreateFont (Layout->Scale(14), 0, 0, 0, FW_MEDIUM, FALSE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
                 if(hFont)
                 {
                     SendMessage (Layout->HLabelBrowserBottom, WM_SETFONT, WPARAM (hFont), TRUE);
@@ -731,7 +748,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     SetWindowLongPtr(Layout->HLabelTop,GWL_STYLE,(LONG_PTR)s);
                 }
 
-                HFONT hFont = CreateFont (16, 0, 0, 0, FW_REGULAR, TRUE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
+                HFONT hFont = CreateFont (Layout->Scale(16), 0, 0, 0, FW_REGULAR, TRUE, FALSE, FALSE, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_SWISS, L"Arial");
                 if(hFont)
                 {
                     SendMessage (Layout->HLabelTop, WM_SETFONT, WPARAM (hFont), TRUE);
@@ -1081,7 +1098,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 Settings.SaveToFile();
             }
 
-            if(!hTabsManualMenu && (Layout->State == MainLayout::Ready || Layout->IsManualControlAction))
+            if(!IsUrlEditSelected() && !hTabsManualMenu && (Layout->State == MainLayout::Ready || Layout->IsManualControlAction))
             {
                 if(!Layout->IsToolboxMaximized && !Layout->IsCentralShown && !Layout->IsContextMenuShown)
                 {
@@ -1234,7 +1251,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                     {
                         POINT p;
                         p.x = 0;
-                        p.y = 21;
+                        p.y = Layout->Scale(20) + 1;
                         ClientToScreen(Layout->HBrowserMenu,&p);
                         app->MainContextMenu(p);
                     }
@@ -1302,7 +1319,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
                             POINT p;
                             p.x = 0;
-                            p.y = 21;
+                            p.y = Layout->Scale(20) + 1;
                             ClientToScreen(TabsButton,&p);
                             TrackPopupMenu(*hTabsManualMenuRef, TPM_TOPALIGN | TPM_LEFTALIGN, p.x, p.y, 0, hwnd, NULL);
                             if(*hTabsManualMenuRef)
@@ -1483,6 +1500,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                 if(app->GetData()->ManualControl == BrowserData::DirectRecord)
                     app->DirectControl()->Timer();
 
+                app->DirectControl()->ProcessPendingTouchEndEvent();
+
                 app->GetData()->Connector->Timer();
 
             }
@@ -1628,7 +1647,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
                                     {
                                         LOCK_BROWSER_DATA
                                         bool SimplifiedText = (ElementTweakUpOrDownUsed > 10) || (ElementTweakUpOrDownUsed > 0 && ElementTweakReturnUsed);
-                                        app->GetData()->_Inspect.Paint(hdcTemp,InspectFont,!Layout->IsContextMenuShown,SimplifiedText,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
+                                        app->GetData()->_Inspect.Paint(hdcTemp,Layout->Scale(14),InspectFont,!Layout->IsContextMenuShown,SimplifiedText,app->GetData()->WidthBrowser,app->GetData()->HeightBrowser,br.right - br.left,br.bottom - br.top,app->GetData()->ScrollX,app->GetData()->ScrollY,0,0);
                                     }
 
                                     if(Layout->IsContextMenuShown)
@@ -1831,6 +1850,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     std::string SandboxType;
     std::string ParentProcessId;
     std::string UniqueProcessId;
+    double DeviceScaleFactor = 1.0;
 
 
     //Parse command line
@@ -1864,6 +1884,18 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
             {
                 UniqueProcessId = ws2s(Item);
                 UniqueProcessId.erase(0,20);
+            }
+
+            if(Item.find(L"--interface-scale-factor=") == 0)
+            {
+                std::string DeviceScaleFactorString = ws2s(Item);
+                DeviceScaleFactorString.erase(0,25);
+                DeviceScaleFactor = std::stoi(DeviceScaleFactorString) * 0.01;
+                if(DeviceScaleFactor <= 0.0001)
+                    DeviceScaleFactor = 1.0;
+
+                //Don't add to arguments list
+                continue;
             }
 
             Arguments.push_back(Item);
@@ -1925,7 +1957,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     outfile->open(std::wstring(L"s/") + s2ws(Settings.UniqueProcessId()) + std::wstring(L".lock"), std::ofstream::out);
 
 
-    Layout = new MainLayout(Settings.ToolboxHeight(),Settings.ScenarioWidth());
+    Layout = new MainLayout(Settings.ToolboxHeight(),Settings.ScenarioWidth(),DeviceScaleFactor);
     hInst = hInstance;
 
     app = new MainApp();
@@ -2032,7 +2064,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     {
         DeinstallWidevine(Settings.Profile());
     }
-    Data->Connector = new DevToolsConnector();
+    if(HasWorkerArgument("--mock-connector"))
+    {
+        // Initialize dummy connector.
+        Data->Connector = new NoneConnector();
+    }else
+    {
+        // Initialize default connector.
+        Data->Connector = new DevToolsConnector();
+    }
     Data->Results = new ResultManager();
     Data->Results->Init(Data->Connector);
     Data->Connector->OnPaint.push_back(std::bind(&MainApp::OnPaint,app.get()));
@@ -2270,7 +2310,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     hwnd = CreateWindowEx(
         WS_EX_OVERLAPPEDWINDOW,
         L"WorkerWindowClass",
-        L"about:blank",
+        Translate::Tr(L"Browser").c_str(),
         WS_OVERLAPPEDWINDOW,
         //WS_POPUP,
         0, 0, Data->WidthAll, Data->HeightAll,

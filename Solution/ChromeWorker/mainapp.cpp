@@ -902,12 +902,15 @@ void MainApp::SetStartupScriptCallback(const std::string& value,const std::strin
         it->second.Set(value, target);
     }
 
-    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
+    UpdateBrowserData(Data);
+
+    Async Result = Data->Connector->Sleep(2000);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
-        this->SendTextResponce("<SetStartupScript></SetStartupScript>");
+        SendTextResponce("<SetStartupScript></SetStartupScript>");
     });
+
 
 }
 
@@ -1118,11 +1121,21 @@ void MainApp::MouseClickCallback(int x, int y)
             Y = std::stoi(y_string);
         }
 
-        this->DelayClickType = 1;
-        this->DelayNextClick = clock() + 80 + (rand()) % 40;
-        this->DelayClickX = X;
-        this->DelayClickY = Y;
-        BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        if(Data->IsTouchScreen)
+        {
+            this->DelayClickType = 1;
+            this->DelayNextClick = -1;
+            this->DelayClickX = X;
+            this->DelayClickY = Y;
+            TouchStartTask = BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        }else
+        {
+            this->DelayClickType = 1;
+            this->DelayNextClick = clock() + 80 + (rand()) % 40;
+            this->DelayClickX = X;
+            this->DelayClickY = Y;
+            BrowserEventsEmulator::MouseClick(this->Data->Connector,X,Y,GetScrollPosition(),2,this->Data->IsMousePress,this->Data->IsDrag,this->Data->IsTouchScreen,this->Data->TouchEventId,this->Data->IsTouchPressedAutomation,this->TypeTextState);
+        }
     });
 }
 
@@ -1928,12 +1941,16 @@ void MainApp::RecaptchaV3ListCallback(const std::string& value)
 {
     Data->_RecaptchaV3List = value;
 
-    Async Result = Data->Connector->SetStartupScript(PrepareMutableStartupScript(Data));
+    UpdateBrowserData(Data);
+
+    Async Result = Data->Connector->Sleep(2000);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
     {
-        this->SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
+        SendTextResponce("<RecaptchaV3List></RecaptchaV3List>");
     });
+
+
 }
 
 void MainApp::ClickExtensionButton(const std::string& id)
@@ -2107,6 +2124,7 @@ void MainApp::AddRequestMaskAllowCallback(const std::string& value)
     data.first = true;
     data.second = value;
     Data->_RequestMask.push_back(data);
+    UpdateBrowserData(Data);
 
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
@@ -2122,6 +2140,7 @@ void MainApp::AddRequestMaskDenyCallback(const std::string& value)
     data.first = false;
     data.second = value;
     Data->_RequestMask.push_back(data);
+    UpdateBrowserData(Data);
 
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
@@ -2173,7 +2192,7 @@ void MainApp::RestrictDownloads()
 void MainApp::ClearRequestMaskCallback()
 {
     Data->_RequestMask.clear();
-
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2200,6 +2219,7 @@ void MainApp::ClearAllCallback()
     Data->Connector->ClearNetworkData();
 
     Data->_RequestMask.clear();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -2213,6 +2233,7 @@ void MainApp::ClearMasksCallback()
     Data->_CacheMask.clear();
     Data->Connector->SetCacheMasks(Data->_CacheMask);
     Data->_RequestMask.clear();
+    UpdateBrowserData(Data);
     Async Result = Data->Connector->SetRequestsRestrictions(Data->_RequestMask);
     Data->Results->ProcessResult(Result);
     Result->Then([this](AsyncResult* Result)
@@ -3121,7 +3142,26 @@ void MainApp::Timer()
     if(DelayClickType == 1 || DelayClickType == 2)
     {
         clock_t CurrentTime = clock();
-        if(CurrentTime >= DelayNextClick)
+        //If DelayNextClick equals -1, we need to wait until TouchStartTask will finish and then make decision about delay
+        if(DelayNextClick == -1 && TouchStartTask && TouchStartTask->GetIsFinished())
+        {
+            //Need to understand, if touch was inside frame
+
+            std::string ResultDataRaw = TouchStartTask->GetString();
+            JsonParser Parser;
+            bool IsInIsolatedFrame = Parser.GetBooleanFromJson(ResultDataRaw, "is_in_isolated_frame", false);
+
+            if(IsInIsolatedFrame)
+            {
+                DelayNextClick = clock() + 580 + (rand()) % 40;
+            }else
+            {
+                DelayNextClick = clock() + 80 + (rand()) % 40;
+            }
+
+            TouchStartTask.reset();
+
+        }else if(CurrentTime >= DelayNextClick && DelayNextClick != -1)
         {
             BrowserEventsEmulator::MouseClick(Data->Connector,DelayClickX,DelayClickY,GetScrollPosition(),1,Data->IsMousePress,Data->IsDrag,Data->IsTouchScreen,Data->TouchEventId,Data->IsTouchPressedAutomation,TypeTextState);
             if(DelayClickType == 1)

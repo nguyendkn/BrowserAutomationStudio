@@ -18,11 +18,14 @@
 #include <curl/curl.h>
 #include <QSslSocket>
 #include <openssl/ssl.h>
+#include <QSettings>
 #include <QThread>
 #include <QMessageBox>
 #include "mongodatabaseconnector.h"
 #include "addavexclusion.h"
 #include "profilebackgroundremover.h"
+#include "devicescalemanager.h"
+
 #if defined(BAS_DEBUG)
     #include "CrashHandler.h"
 #endif
@@ -131,7 +134,7 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext &, const QString 
 }
 
 int main(int argc, char *argv[])
-{
+    {
     {
         std::string CurrentProcessId = std::string("BASProcess") + std::to_string(GetCurrentProcessId());
         HANDLE HandleMutex = CreateMutexA(0,false,CurrentProcessId.c_str());
@@ -165,7 +168,14 @@ int main(int argc, char *argv[])
     PanicLogger.SetFileName("panic.txt");
 
     //SafeApplication a(argc, argv);
-    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
+    //Support High DPI
+    QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    {
+        DeviceScaleManager Scale;
+        Scale.Autoscale();
+    }
+
     SingleApplication a(argc, argv,"BAS_UNIQUE_KEY");
     if(a.alreadyExists() && !a.arguments().contains("--notasksingleinstance"))
     {
@@ -198,7 +208,8 @@ int main(int argc, char *argv[])
     {
         w.showMaximized();
     }
-    (new ProfileBackgroundRemover())->Run();
+    QSettings Settings("settings.ini", QSettings::IniFormat);
+    (new ProfileBackgroundRemover())->Run(Settings.value("RunProfileRemoverImmediately", false).toBool());
     int res = a.exec();
     curl_global_cleanup();
     CRYPTO_set_locking_callback(0);

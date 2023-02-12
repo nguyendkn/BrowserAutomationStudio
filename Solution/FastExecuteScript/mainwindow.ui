@@ -171,6 +171,12 @@
    <property name="movable">
     <bool>false</bool>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextBesideIcon</enum>
    </property>
@@ -189,8 +195,8 @@
   </widget>
   <action name="actionStop">
    <property name="icon">
-    <iconset resource="execute.qrc">
-     <normaloff>:/fastexecutescript/images/stop.png</normaloff>:/fastexecutescript/images/stop.png</iconset>
+    <iconset resource="../Engine/engine.qrc">
+     <normaloff>:/engine/images/stop.png</normaloff>:/engine/images/stop.png</iconset>
    </property>
    <property name="text">
     <string>Stop</string>

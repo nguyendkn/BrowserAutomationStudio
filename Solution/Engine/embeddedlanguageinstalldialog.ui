@@ -187,6 +187,12 @@
            <iconset resource="engine.qrc">
             <normaloff>:/engine/images/resources_ok.png</normaloff>:/engine/images/resources_ok.png</iconset>
           </property>
+          <property name="iconSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
+          </property>
          </widget>
         </item>
         <item>
@@ -216,6 +222,12 @@
           <property name="icon">
            <iconset resource="engine.qrc">
             <normaloff>:/engine/images/stop.png</normaloff>:/engine/images/stop.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>18</width>
+            <height>18</height>
+           </size>
           </property>
          </widget>
         </item>

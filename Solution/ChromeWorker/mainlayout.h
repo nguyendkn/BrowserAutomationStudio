@@ -15,6 +15,8 @@ class MainLayout
     int ManualAnimation;
     bool IsRenderEmpty;
 
+    double DeviceScaleFactor = 1.0;
+
 
 public:
     enum TabType
@@ -91,7 +93,11 @@ public:
 
     int BrowserWidth, BrowserHeight, WindowWidth, WindowHeight;
 
-    MainLayout(int ToolboxHeight, int ScenarioWidth);
+    //High DPI support
+    double GetScaleFactor();
+    int Scale(int InputParam);
+
+    MainLayout(int ToolboxHeight, int ScenarioWidth, double DeviceScaleFactor);
     void MinimizeOrMaximize(HWND MainWindow, HWND ParentWindow);
 
     void Update(int BrowserWidth,int BrowserHeight,int WindowWidth,int WindowHeight, bool OnlyMove = false);

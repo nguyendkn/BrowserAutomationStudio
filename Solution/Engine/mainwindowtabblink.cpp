@@ -50,6 +50,7 @@ namespace BrowserAutomationStudioFramework
                 if(bar->tabText(i).startsWith(FindText))
                 {
                     bar->setTabIcon(i,QIcon(":/engine/images/redball.png"));
+                    bar->setIconSize(QSize(14,14));
                 }
             }
 
@@ -67,6 +68,7 @@ namespace BrowserAutomationStudioFramework
                 if(bar->tabText(i).startsWith(FindText))
                 {
                     bar->setTabIcon(i,QIcon("://images/grayball.png"));
+                    bar->setIconSize(QSize(14,14));
                 }
             }
 

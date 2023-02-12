@@ -135,6 +135,12 @@
                          <iconset resource="engine.qrc">
                           <normaloff>:/engine/images/crud_create.png</normaloff>:/engine/images/crud_create.png</iconset>
                         </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>18</width>
+                          <height>18</height>
+                         </size>
+                        </property>
                        </widget>
                       </item>
                       <item>
@@ -306,6 +312,12 @@
                          <iconset resource="engine.qrc">
                           <normaloff>:/engine/images/crud_create.png</normaloff>:/engine/images/crud_create.png</iconset>
                         </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>18</width>
+                          <height>18</height>
+                         </size>
+                        </property>
                        </widget>
                       </item>
                       <item>
@@ -375,6 +387,12 @@
           <iconset resource="engine.qrc">
            <normaloff>:/engine/images/edit.png</normaloff>:/engine/images/edit.png</iconset>
          </property>
+         <property name="iconSize">
+          <size>
+           <width>18</width>
+           <height>18</height>
+          </size>
+         </property>
         </widget>
        </item>
        <item>
@@ -391,6 +409,12 @@
          <property name="icon">
           <iconset resource="engine.qrc">
            <normaloff>:/engine/images/stop.png</normaloff>:/engine/images/stop.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>18</width>
+           <height>18</height>
+          </size>
          </property>
         </widget>
        </item>

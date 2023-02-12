@@ -53,6 +53,7 @@ namespace BrowserAutomationStudioFramework
             connect(Disable,SIGNAL(clicked(bool)),this,SLOT(DisableProfiler()));
             Disable->setText(tr("Disable Measurement"));
             Disable->setIcon(QIcon(":/engine/images/stop.png"));
+            Disable->setIconSize(QSize(18,18));
             VisualizerDialog->AddButton(Disable);
             VisualizerDialog->setWindowIcon(QIcon(":/engine/images/racing.png"));
             VisualizerDialog->setWindowTitle(tr("Actions Execution Time Report"));

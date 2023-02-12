@@ -51,6 +51,12 @@
 	"localize": 
 	{
 		"Custom servers": {"ru": "Пользовательские серверы"},
+		"More info about font pack and download link can be found": {"ru": "Дополнительную информацию о паке шрифтов и ссылку для скачивания можно найти"},
+		"Use font pack": {"ru": "Использовать пак шрифтов"},
+		"By default browser searches for fonts only in system font folder. This may lead to inconsistencies during fingerprint emulation if target fingerprint has more fonts than local system. Therefore, it is recommended to download font pack with most popular fonts. This setting allows to use font pack if it is installed.": {"ru": "По умолчанию браузер ищет шрифты только в системной папке. Это может привести к несоответствиям при эмуляции отпечатка, если в нем больше шрифтов, чем установлено в локальной системе. Поэтому рекомендуется скачать пак с наиболее популярными шрифтами. Этот параметр разрешает использовать пак шрифтов, если он установлен."},
+		"Use following page to report about anti-bot detection on particular site, ": {"ru": "Используйте следующую страницу, чтобы сообщить о проблемах с анти-бот защитой на конкретном сайте, "},
+		"Researching sites protection": {"ru": "Исследование защиты сайтов"},
+
 		"Emulate Sensor API": {"ru": "Эмуляция датчиков устройства"},
 
 		"Chrome browser has Sensor API, which allows to read data from devices like accelerometer, gyroscope or others. Data from that devices is available only on mobile platforms. After checking this setting data for that devices will be generated and replaced automatically. Enable this option in order to emulate mobile fingerprints more precisely.": {"ru": "Chrome поддерживает считывание данных из датчиков устройства, таких как акселерометр, гироскоп или другие. Данные с этих устройств доступны только на мобильных платформах. После установки данной настройки, данные для этих устройств будут сгенерированы и заменены автоматически. Включите эту опцию для более точной эмуляции мобильных отпечатков."},

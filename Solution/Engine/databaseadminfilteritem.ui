@@ -59,9 +59,11 @@
      <property name="text">
       <string/>
      </property>
-     <property name="icon">
-      <iconset resource="engine.qrc">
-       <normaloff>:/engine/images/crud_delete.png</normaloff>:/engine/images/crud_delete.png</iconset>
+     <property name="iconSize">
+      <size>
+       <width>18</width>
+       <height>18</height>
+      </size>
      </property>
      <property name="flat">
       <bool>true</bool>
@@ -70,8 +72,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="engine.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

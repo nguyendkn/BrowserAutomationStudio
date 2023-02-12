@@ -101,7 +101,21 @@ class BrowserDirectControl
 
     void PageLoadedInternal();
 
+    //Pending touch end event
+    Async TouchStartTask;
+    int64 TouchStartTime = 0;
+    int TouchEndPendingX = 0;
+    int TouchEndPendingY = 0;
+    int TouchEndPendingId = 0;
+    bool TouchEndIsPending = false;
+
+
 public:
+
+    //Pending touch end event
+    void ProcessPendingTouchEndEvent();
+
+
     //Main methods
     BrowserDirectControl();
     void Init(BrowserData *_BrowserData);

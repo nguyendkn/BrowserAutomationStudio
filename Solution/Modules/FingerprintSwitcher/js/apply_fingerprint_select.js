@@ -6,7 +6,14 @@ var SafeBattery = GetInputConstructorValue("SafeBattery", loader);
 var SafeRectangles = GetInputConstructorValue("SafeRectangles", loader);
 var PerfectCanvas = GetInputConstructorValue("PerfectCanvas", loader);
 var Sensor = GetInputConstructorValue("EmulateSensor", loader);
+var FontData = GetInputConstructorValue("FontData", loader);
 
+
+if(FontData["original"].length == 0)
+{
+  Invalid("FontData is empty");
+  return;
+}
 
 if(Sensor["original"].length == 0)
 {
@@ -67,6 +74,7 @@ try{
       rectangles: SafeRectangles["updated"],
       perfectcanvas: PerfectCanvas["updated"],
       sensor: Sensor["updated"],
+      font_data: FontData["updated"]
   	})
 
   code = Normalize(code,0)

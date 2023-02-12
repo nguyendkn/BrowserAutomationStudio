@@ -29,16 +29,29 @@ _SMS = {
 		return this.apiData[id];
 	},
 	
-	getConfirmData: function(number){
+	getConfirmData: function(number, copy){
 		if(_is_nilb(_SMS.confirmData) || !_SMS.confirmData.hasOwnProperty(number)){
 			fail((_K=="ru" ? 'Нет информации о номере' : 'No information about the number') + ' "' + number + '"');
 		};
 		
-		return _SMS.confirmData[number];
+		var confirmData = _SMS.confirmData[number];
+		
+		if(!copy){
+			return confirmData;
+		};
+		
+		var api = confirmData.api;
+		var confirmDataCopy = api.combineParams({}, confirmData);
+		confirmDataCopy.api = {service: api.service, key: api.key, customUrl: api.customUrl};
+		
+		return confirmDataCopy;
 	},
 	
 	setConfirmData: function(confirmData){
-		confirmData.api = _SMS.init(confirmData.api.service, confirmData.api.key, confirmData.api.customUrl);
+		var api = confirmData.api;
+		if(!(api instanceof _SMS.BaseApi)){
+			confirmData.api = _SMS.init(api.service, api.key, api.customUrl);
+		};
 		_SMS.confirmData[confirmData.number] = confirmData;
 	},
 	

@@ -18,7 +18,7 @@
 			"cheapsms.ru",
 			"smsvk.net",
 			"smscode.me<br/><span style='color:gray'>" + tr("Ex sms.kopeechka.store") + "</span>",
-			"365sms.ru",
+			"365sms.org<br/><span style='color:gray'>" + tr("Ex 365sms.ru") + "</span>",
 			"smspva.com",
 			"simsms.org"
 		],

@@ -87,28 +87,34 @@ _SMS.getServices = function(){
 			},
 			aliases: ["5sim"]
 		},
-		"365sms.ru": {
+		"365sms.org": {
 			api: this.SmsActivateApi,
 			config: {
 				name: '365SMS',
-				url: 'https://365sms.ru',
+				url: 'https://365sms.org',
 				supportedMethods: [
 					'getNumbersCount'
 				],
+				ref: '2glCMQmT',
 				limits: [
 					{
-						requestsPerInterval: 10,
-						interval: 30000,
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 3,
+						interval: 'second',
 						type: 'service'
 					},
 					{
 						requestsPerInterval: 1,
-						interval: 2000,
-						type: 'service'
+						interval: 'second',
+						type: 'thread'
 					}
 				]
 			},
-			aliases: ["365sms"]
+			aliases: ["365sms.ru", "365sms"]
 		},
 		"sms-man.ru": {
 			api: this.SmsActivateApi,
@@ -128,12 +134,12 @@ _SMS.getServices = function(){
 						type: 'service'
 					},
 					{
-						requestsPerInterval: 10,
+						requestsPerInterval: 3,
 						interval: 'second',
 						type: 'service'
 					},
 					{
-						requestsPerInterval: 2,
+						requestsPerInterval: 1,
 						interval: 'second',
 						type: 'thread'
 					}

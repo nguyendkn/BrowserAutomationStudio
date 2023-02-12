@@ -7,6 +7,14 @@ var SafeRectangles = GetInputConstructorValue("SafeRectangles", loader);
 var PerfectCanvas = GetInputConstructorValue("PerfectCanvas", loader);
 var Sensor = GetInputConstructorValue("EmulateSensor", loader);
 var FontData = GetInputConstructorValue("FontData", loader);
+var EmulateDeviceScaleFactor = GetInputConstructorValue("EmulateDeviceScaleFactor", loader);
+
+
+if(EmulateDeviceScaleFactor["original"].length == 0)
+{
+  Invalid("EmulateDeviceScaleFactor is empty");
+  return;
+}
 
 
 if(FontData["original"].length == 0)
@@ -74,7 +82,8 @@ try{
       rectangles: SafeRectangles["updated"],
       perfectcanvas: PerfectCanvas["updated"],
       sensor: Sensor["updated"],
-      font_data: FontData["updated"]
+      font_data: FontData["updated"],
+      device_scale: EmulateDeviceScaleFactor["updated"],
   	})
 
   code = Normalize(code,0)

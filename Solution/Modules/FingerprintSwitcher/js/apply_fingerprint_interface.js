@@ -27,6 +27,8 @@
   
   <%= _.template($('#input_constructor').html())({id:"EmulateSensor", description:tr("Emulate Sensor API"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("Chrome browser has Sensor API, which allows to read data from devices like accelerometer, gyroscope or others. Data from that devices is available only on mobile platforms. After checking this setting data for that devices will be generated and replaced automatically. Enable this option in order to emulate mobile fingerprints more precisely.")}}) %>
 
+  <%= _.template($('#input_constructor').html())({id:"EmulateDeviceScaleFactor", description:tr("Emulate device scale factor"), default_selector: "string", disable_int:true, value_string: "true", variants: ["true", "false"], help: { description: tr("Allows to better emulate devices with higher pixel density. With this setting enabled, emulation will be done in the most natural way. It means that browser will render the page in a bigger resolution, just like on real device. The tradeoff is higher system resources usage, because you need to perform more calculations to render a bigger picture. Javascript settings related to pixel density, for example devicePixelRatio, will be replaced correctly regardless if this setting will be enabled or not.")}}) %>
+
   
 </div>
 

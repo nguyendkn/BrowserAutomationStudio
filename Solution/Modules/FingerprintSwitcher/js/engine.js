@@ -290,6 +290,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 	FINGERPRINT_PERFECTCANVAS = true
 	FINGERPRINT_SENSOR = false
 	FINGERPRINT_FONT_DATA = false
+	FINGERPRINT_DEVICE_SCALE = false
 
 	if(typeof(_arguments()) == "object")
 	{
@@ -315,6 +316,8 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			FINGERPRINT_SENSOR = _arguments()[7]
 		if(_arguments().length > 8 && FINGERPRINT_JSON["font_data2"])
 			FINGERPRINT_FONT_DATA = _arguments()[8]
+		if(_arguments().length > 9)
+			FINGERPRINT_DEVICE_SCALE = _arguments()[9]
 			
 	}else
 	{
@@ -347,6 +350,7 @@ function BrowserAutomationStudio_ApplyFingerprint()
 			"perfectcanvas": FINGERPRINT_PERFECTCANVAS,
 			"sensor": FINGERPRINT_SENSOR,
 			"font_data": FINGERPRINT_FONT_DATA,
+			"device_scale": FINGERPRINT_DEVICE_SCALE
 	   	}
 		if(typeof(_arguments()) == "object")
 		{
@@ -583,7 +587,19 @@ function BrowserAutomationStudio_ApplyFingerprint()
 		FINGERPRINT_HEIGHT = parseInt(FINGERPRINT_JSON["height"])
 	}catch(e){FINGERPRINT_HEIGHT = -1;FINGERPRINT_WIDTH = -1}
 
+
+	_if(FINGERPRINT_DEVICE_SCALE, function(){
+		FINGERPRINT_DEVICE_SCALE_FACTOR = 1.0
+		try
+		{
+			FINGERPRINT_DEVICE_SCALE_FACTOR = parseFloat(FINGERPRINT_JSON.attr["window.devicePixelRatio"])
+		}catch(e){FINGERPRINT_DEVICE_SCALE_FACTOR = 1.0}
 	
+		_if(FINGERPRINT_DEVICE_SCALE_FACTOR >= 1.01 || FINGERPRINT_DEVICE_SCALE_FACTOR <= 0.99, function(){
+			_set_device_scale_factor_no_resize(FINGERPRINT_DEVICE_SCALE_FACTOR)!
+		})!
+	})!
+
 	_if(FINGERPRINT_WIDTH > 0, function(){
 		resize(FINGERPRINT_WIDTH, FINGERPRINT_HEIGHT)!
 	})!

@@ -1230,6 +1230,15 @@ function _set_device_scale_factor(scale, callback)
     })
 }
 
+function _set_device_scale_factor_no_resize(scale, callback)
+{
+    _ARG = arguments
+    _create_browser_if_needed(function(){
+        log(_ARG[0])
+        Browser.SetDeviceScaleFactor(_ARG[0], _get_function_body(_ARG[1]));
+    })
+}
+
 function save_cookies(callback)
 {
     _ARG = arguments

@@ -26,6 +26,10 @@ class NoneConnector : public IDevToolsConnector
         int GetPaintHeight();
         int GetPaintWidth();
 
+        char* GetPaintDataScaled();
+        int GetPaintHeightScaled();
+        int GetPaintWidthScaled();
+
         // Scroll
         int GetScrollX();
         int GetScrollY();

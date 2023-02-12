@@ -30,8 +30,7 @@ void NoneConnector::Initialize(
 
 char* NoneConnector::GetPaintData()
 {
-    std::vector<char> data;
-    return data.data();
+    return 0;
 }
 
 int NoneConnector::GetPaintHeight()
@@ -40,6 +39,21 @@ int NoneConnector::GetPaintHeight()
 }
 
 int NoneConnector::GetPaintWidth()
+{
+    return 0;
+}
+
+char* NoneConnector::GetPaintDataScaled()
+{
+    return 0;
+}
+
+int NoneConnector::GetPaintHeightScaled()
+{
+    return 0;
+}
+
+int NoneConnector::GetPaintWidthScaled()
 {
     return 0;
 }

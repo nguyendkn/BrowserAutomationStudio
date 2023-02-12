@@ -33,6 +33,10 @@ class IDevToolsConnector
         virtual int GetPaintHeight() = 0;
         virtual int GetPaintWidth() = 0;
 
+        virtual char* GetPaintDataScaled() = 0;
+        virtual int GetPaintHeightScaled() = 0;
+        virtual int GetPaintWidthScaled() = 0;
+
         // Scroll
         virtual int GetScrollX() = 0;
         virtual int GetScrollY() = 0;

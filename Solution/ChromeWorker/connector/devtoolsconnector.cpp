@@ -59,6 +59,8 @@ void DevToolsConnector::Initialize
     GlobalState.ConstantStartupScript = ConstantStartupScript;
 
     ImageData.clear();
+    ImageDataScaled.clear();
+    HasScaledImage = false;
     IPC = new SharedMemoryIPC();
     IPC->Start(UniqueProcessId);
 
@@ -87,6 +89,33 @@ int DevToolsConnector::GetPaintWidth()
 
 int DevToolsConnector::GetPaintHeight()
 {
+    return PaintHeight;
+}
+
+char* DevToolsConnector::GetPaintDataScaled()
+{
+    if(HasScaledImage && !ImageDataScaled.empty())
+    {
+        return ImageDataScaled.data();
+    }
+    return ImageData.data();
+}
+
+int DevToolsConnector::GetPaintWidthScaled()
+{
+    if(HasScaledImage && !ImageDataScaled.empty())
+    {
+        return PaintWidthScaled;
+    }
+    return PaintWidth;
+}
+
+int DevToolsConnector::GetPaintHeightScaled()
+{
+    if(HasScaledImage && !ImageDataScaled.empty())
+    {
+        return PaintHeightScaled;
+    }
     return PaintHeight;
 }
 
@@ -1503,6 +1532,9 @@ void DevToolsConnector::HandleIPCDataNoDeviceScale()
 
     if(IsNewImage)
     {
+        HasScaledImage = false;
+        ImageDataScaled.clear();
+
         PaintNotify();
     }
 }
@@ -1514,11 +1546,6 @@ void DevToolsConnector::HandleIPCDataWithDeviceScale()
     //These values are obtained from Page.screencastFrame message.
     bool IsNewImage = false;
 
-    int CurrentPaintWidth = 0;
-    int CurrentPaintHeight = 0;
-
-    std::vector<char> CurrentImageData;
-
     //Get data
     if(IPC->GetImageId())
     {
@@ -1526,9 +1553,9 @@ void DevToolsConnector::HandleIPCDataWithDeviceScale()
 
         if(IPC->GetImageId())
         {
-            CurrentImageData.assign(IPC->GetImagePointer(),IPC->GetImagePointer() + IPC->GetImageSize());
-            CurrentPaintWidth = IPC->GetImageWidth();
-            CurrentPaintHeight = IPC->GetImageHeight();
+            ImageDataScaled.assign(IPC->GetImagePointer(),IPC->GetImagePointer() + IPC->GetImageSize());
+            PaintWidthScaled = IPC->GetImageWidth();
+            PaintHeightScaled = IPC->GetImageHeight();
             IPC->SetImageId(0);
             IsNewImage = true;
         }
@@ -1537,6 +1564,8 @@ void DevToolsConnector::HandleIPCDataWithDeviceScale()
 
     if(IsNewImage)
     {
+        HasScaledImage = true;
+
         //Prepare data for scaled image
         ImageData.clear();
         PaintWidth = LastMetadataPaintWidth;
@@ -1550,22 +1579,22 @@ void DevToolsConnector::HandleIPCDataWithDeviceScale()
             {
                 int ic = i;
                 int jc = j;
-                ic = ((float)i * (float)CurrentPaintWidth) / ((float)PaintWidth);
-                jc = ((float)j * (float)CurrentPaintHeight) / ((float)PaintHeight);
+                ic = ((float)i * (float)PaintWidthScaled) / ((float)PaintWidth);
+                jc = ((float)j * (float)PaintHeightScaled) / ((float)PaintHeight);
                 if(ic < 0)
                     ic = 0;
-                if(ic >= CurrentPaintWidth)
-                    ic = CurrentPaintWidth - 1;
+                if(ic >= PaintWidthScaled)
+                    ic = PaintHeightScaled - 1;
                 if(jc < 0)
                     jc = 0;
-                if(jc >= CurrentPaintHeight)
-                    jc = CurrentPaintHeight - 1;
-                if(ic >= 0 && ic < CurrentPaintWidth && jc >= 0 && jc < CurrentPaintHeight)
+                if(jc >= PaintHeightScaled)
+                    jc = PaintHeightScaled - 1;
+                if(ic >= 0 && ic < PaintWidthScaled && jc >= 0 && jc < PaintHeightScaled)
                 {
-                    ImageData[i*4+j*PaintWidth*4 + 0] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 0];
-                    ImageData[i*4+j*PaintWidth*4 + 1] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 1];
-                    ImageData[i*4+j*PaintWidth*4 + 2] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 2];
-                    ImageData[i*4+j*PaintWidth*4 + 3] = CurrentImageData[ic*4+jc*CurrentPaintWidth*4 + 3];
+                    ImageData[i*4+j*PaintWidth*4 + 0] = ImageDataScaled[ic*4+jc*PaintWidthScaled*4 + 0];
+                    ImageData[i*4+j*PaintWidth*4 + 1] = ImageDataScaled[ic*4+jc*PaintWidthScaled*4 + 1];
+                    ImageData[i*4+j*PaintWidth*4 + 2] = ImageDataScaled[ic*4+jc*PaintWidthScaled*4 + 2];
+                    ImageData[i*4+j*PaintWidth*4 + 3] = ImageDataScaled[ic*4+jc*PaintWidthScaled*4 + 3];
                 }
 
             }

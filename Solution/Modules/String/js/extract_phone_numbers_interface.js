@@ -6,6 +6,6 @@
 	<div class="tr tooltip-paragraph-first-fold">Extract all phone numbers from the string.</div>
 	<div class="tr tooltip-paragraph-fold">This action will return a list containing the phone numbers obtained from the string.</div>
 	<div class="tr tooltip-paragraph-fold">For example, if the string <code>"Test text - 89001112233. Just example text - +7 900 999 4455."</code> is specified, then the action will return <code>["89001112233", "+7 900 999 4455"]</code>.</div>
-	<div class="tr tooltip-paragraph-last-fold">The list can be processed using actions from the "List" module.</div>
+	<div class="tr tooltip-paragraph-last-fold">The resulting list can be processed using actions from the "List" module.</div>
 </div>
 <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>

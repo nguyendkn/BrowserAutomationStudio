@@ -1,5 +1,5 @@
 _SMS.SmsRegApi = _SMS.assignApi(function(config, data){
-    const api = this;
+	const api = this;
 	_SMS.BaseApi.call(this, config, data, '');
 	
 	this.makeRequest = function(){

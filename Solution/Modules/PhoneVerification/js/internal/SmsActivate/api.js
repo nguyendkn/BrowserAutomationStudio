@@ -1,5 +1,5 @@
 _SMS.SmsActivateApi = _SMS.assignApi(function(config, data){
-    const api = this;
+	const api = this;
 	_SMS.BaseApi.call(this, config, data, '/stubs/handler_api.php');
 	
 	this.makeRequest = function(){

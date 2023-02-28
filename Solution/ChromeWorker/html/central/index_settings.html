@@ -14,6 +14,9 @@
 	<link rel="stylesheet" href="font-awesome.min.css">
 
 	<script>
+
+		bootbox.setLocale(_K);
+
 		function getParameterByName(name, url) {
 		    if (!url) url = window.location.href;
 		    name = name.replace(/[\[\]]/g, "\\$&");
@@ -35,7 +38,7 @@
 			el.find("[data-role='remove']").click(function(event){
 				event.stopPropagation();
 				var self = this
-				bootbox.confirm(tr("Are you sure that you want to delete ") + name + tr(" module?"), function(result) {
+				bootbox.confirm(tr("Are you sure that you want to delete") + " '" + name + "' " + tr("module?"), function(result) {
 	          	if(result)
 	          	{
 					$(self).parent().remove()

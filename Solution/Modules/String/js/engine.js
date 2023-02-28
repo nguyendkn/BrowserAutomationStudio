@@ -14,6 +14,7 @@ _L["Right substring"] = {"ru":"Правая подстрока"};
 _L["Allowed Chars"] = {"ru":"Разрешенные Символы"};
 _L["Convert types"] = {"ru":"Преобразовывать типы"};
 _L["List of separators"] = {"ru":"Список разделителей"};
+_L["Remove empty lines"] = {"ru":"Удалить пустые строки"};
 _L["Thousandth separator"] = {"ru":"Разделитель тысячных"};
 _L["Latinize Cyrillic"] = {"ru":"Латинизировать кириллицу"};
 _L["Insertable substring"] = {"ru":"Вставляемая подстрока"};
@@ -266,6 +267,22 @@ function _insert_substring(str, index, sub){
 	index = _avoid_nilb(index, 0);
 	_validate_argument_type(index, 'number', 'Index', act);
 	return _splice_string(str, index, 0, sub);
+};
+function _split_string(str, sep, remove, limit){
+	var act = '_split_string';
+	_validate_argument_type(str, 'string', 'String', act);
+	sep = _avoid_nil(sep);
+	_validate_argument_type(sep, ['string','regexp'], 'Separator', act);
+	remove = _avoid_nilb(remove, true);
+	_validate_argument_type(remove, ['boolean','number'], 'Remove empty lines', act);
+	limit = _avoid_nilb(limit, 0);
+	_validate_argument_type(limit, 'number', 'Limit', act);
+	
+    var list = limit ? str.split(sep, limit) : str.split(sep);
+	if(remove){
+		list = list.filter(function(e){return !_is_nilb(e)});
+	};
+	return list;
 };
 function _join_strings(list, sep){
 	var act = '_join_strings';

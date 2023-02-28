@@ -18,8 +18,7 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			"CURLOPT_USERNAME": api.config.username,
 			"CURLOPT_PASSWORD": api.config.password,
 			"CURLOPT_USE_SSL": api.config.encrypt=="none" ? 0 : 3,
-			"CURLOPT_SSL_VERIFYPEER": false,
-			"CURLOPT_LOGIN_OPTIONS": 'AUTH=PLAIN'
+			"CURLOPT_SSL_VERIFYPEER": false
 		};
 		
 		this.setProxy = function(proxy){
@@ -77,7 +76,11 @@ _InMail.baseApi = function(isCurl, protocol, config){
 			
 			if(timeout && maxTime){
 				var timeLeft = maxTime - Date.now();
-				options["CURLOPT_TIMEOUT_MS"] = timeout < 60000 ? timeout : (timeLeft < 60000 ? 60000 : timeLeft);
+				var requestTimeout = timeout < 60000 ? timeout : (timeLeft < 60000 ? 60000 : timeLeft);
+				options["CURLOPT_TIMEOUT_MS"] = requestTimeout;
+				if(requestTimeout > 60000){
+					general_timeout_next(requestTimeout + 5000);
+				};
 			};
 			
 			options["CURLOPT_CUSTOMREQUEST"] = _is_nil(query) ? "" : query.trim();

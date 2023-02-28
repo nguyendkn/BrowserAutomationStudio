@@ -8,7 +8,7 @@ _SMS = {
 	},
 	
 	init: function(service, apiKey, serverUrl){
-		service = this.paramClean(service);
+		service = this.getBasicName(this.paramClean(service));
 		apiKey = this.paramClean(apiKey);
 		serverUrl = this.paramClean(serverUrl);
 		
@@ -29,12 +29,30 @@ _SMS = {
 		return this.apiData[id];
 	},
 	
-	getConfirmData: function(number){
+	getConfirmData: function(number, copy){
 		if(_is_nilb(_SMS.confirmData) || !_SMS.confirmData.hasOwnProperty(number)){
 			fail((_K=="ru" ? 'Нет информации о номере' : 'No information about the number') + ' "' + number + '"');
 		};
 		
-		return _SMS.confirmData[number];
+		var confirmData = _SMS.confirmData[number];
+		
+		if(!copy){
+			return confirmData;
+		};
+		
+		var api = confirmData.api;
+		var confirmDataCopy = api.combineParams({}, confirmData);
+		confirmDataCopy.api = {service: api.service, key: api.key, customUrl: api.customUrl};
+		
+		return confirmDataCopy;
+	},
+	
+	setConfirmData: function(confirmData){
+		var api = confirmData.api;
+		if(!(api instanceof _SMS.BaseApi)){
+			confirmData.api = _SMS.init(api.service, api.key, api.customUrl);
+		};
+		_SMS.confirmData[confirmData.number] = confirmData;
 	},
 	
 	getBalance: function(){

@@ -4,16 +4,16 @@
 		description: tr("Service"),
 		default_selector: "string",
 		variants: [
-			"sms-activate.ru",
+			"sms-activate.org<br/><span style='color:gray'>" + tr("Ex sms-activate.ru") + "</span>",
 			"sms-acktiwator.ru",
 			"sms-man.ru"
 		],
 		disable_int: true,
-		value_string: "sms-activate.ru",
+		value_string: "sms-activate.org",
 		help: {
 			description: tr("SMS receiving service for which need to get a list of countries."),
 			examples: [
-				{code: "sms-activate.ru", description: "https://sms-activate.ru"},
+				{code: "sms-activate.org", description: "https://sms-activate.org"},
 				{code: "sms-acktiwator.ru", description: "https://sms-acktiwator.ru"},
 				{code: "sms-man.ru", description: "https://sms-man.ru"}
 			]
@@ -47,7 +47,7 @@
 					{code: "https://sms.org"},
 					{code: "http://receive-sms.com"},
 					{code: "http://127.0.0.1:8888"},
-					{code: tr("Empty string"), description: tr("Use default server url, https://sms-activate.ru for sms-activate.ru, etc")}
+					{code: tr("Empty string"), description: tr("Use default server url, https://api.sms-activate.org for sms-activate.org, etc")}
 				]
 			}
 		}) %>

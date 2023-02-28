@@ -1,10 +1,10 @@
-_SMS.getServiceApi = function(data){
-	var services = {
-		"sms-activate.ru": {
+_SMS.getServices = function(){
+	return {
+		"sms-activate.org": {
 			api: this.SmsActivateApi,
 			config: {
 				name: 'Sms-activate',
-				url: 'https://sms-activate.ru',
+				url: 'https://api.sms-activate.org',
 				supportedMethods: [
 					'getNumbersCount',
 					'getCountries'
@@ -27,13 +27,14 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-activate.ru", "sms-activate", "smsactivate"]
 		},
 		"smshub.org": {
 			api: this.SmsActivateApi,
 			config: {
 				name: 'SMSHUB',
-				url: 'https://smshub.org',
+				url: 'http://smshub.org',
 				supportedMethods: [
 					'getNumbersCount'
 				],
@@ -54,7 +55,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["smshub"]
 		},
 		"5sim.net": {
 			api: this.SmsActivateApi,
@@ -82,29 +84,37 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["5sim"]
 		},
-		"365sms.ru": {
+		"365sms.org": {
 			api: this.SmsActivateApi,
 			config: {
 				name: '365SMS',
-				url: 'https://365sms.ru',
+				url: 'https://365sms.org',
 				supportedMethods: [
 					'getNumbersCount'
 				],
+				ref: '2glCMQmT',
 				limits: [
 					{
-						requestsPerInterval: 10,
-						interval: 30000,
+						requestsPerInterval: 100,
+						interval: 'minute',
+						type: 'service'
+					},
+					{
+						requestsPerInterval: 3,
+						interval: 'second',
 						type: 'service'
 					},
 					{
 						requestsPerInterval: 1,
-						interval: 2000,
-						type: 'service'
+						interval: 'second',
+						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["365sms.ru", "365sms"]
 		},
 		"sms-man.ru": {
 			api: this.SmsActivateApi,
@@ -124,17 +134,18 @@ _SMS.getServiceApi = function(data){
 						type: 'service'
 					},
 					{
-						requestsPerInterval: 10,
+						requestsPerInterval: 3,
 						interval: 'second',
 						type: 'service'
 					},
 					{
-						requestsPerInterval: 2,
+						requestsPerInterval: 1,
 						interval: 'second',
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-man", "smsman"]
 		},
 		"activation.pw": {
 			api: this.SmsActivateApi,
@@ -162,7 +173,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["activationpw", "activation"]
 		},
 		"getsms.online": {
 			api: this.SmsActivateApi,
@@ -190,7 +202,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["getsms"]
 		},
 		"cheapsms.ru": {
 			api: this.SmsActivateApi,
@@ -218,7 +231,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["cheapsms"]
 		},
 		"smsvk.net": {
 			api: this.SmsActivateApi,
@@ -246,13 +260,14 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["smsvk"]
 		},
-		"sms.kopeechka.store": {
+		"smscode.me": {
 			api: this.SmsActivateApi,
 			config: {
-				name: 'Sms.Kopeechka.Store',
-				url: 'https://sms.kopeechka.store',
+				name: 'SMScode.me',
+				url: 'https://smscode.me',
 				supportedMethods: [
 					'getNumbersCount'
 				],
@@ -274,7 +289,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms.kopeechka.store", "kopeechka", "smscodeme", "smscode"]
 		},
 		"sms-reg.com": {
 			api: this.SmsRegApi,
@@ -303,7 +319,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-reg", "smsreg"]
 		},
 		"smspva.com": {
 			api: this.SmsPvaApi,
@@ -330,7 +347,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["smspva"]
 		},
 		"simsms.org": {
 			api: this.SmsPvaApi,
@@ -357,7 +375,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["simsms"]
 		},
 		"onlinesim.ru": {
 			api: this.OnlineSimApi,
@@ -386,7 +405,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["onlinesim"]
 		},
 		"sms-acktiwator.ru": {
 			api: this.SmsAcktiwatorApi,
@@ -415,7 +435,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["sms-acktiwator", "smsacktiwator"]
 		},
 		"vak-sms.com": {
 			api: this.VakSmsApi,
@@ -444,7 +465,8 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["vak-sms", "vaksms"]
 		},
 		"give-sms.com": {
 			api: this.GiveSmsApi,
@@ -471,17 +493,34 @@ _SMS.getServiceApi = function(data){
 						type: 'thread'
 					}
 				]
-			}
+			},
+			aliases: ["give-sms", "givesms"]
 		}
 	};
+};
+_SMS.getServiceApi = function(data){
+	var services = this.getServices();
 	var service = data.service;
 	if(!services.hasOwnProperty(service)){
 		die(_K=="ru" ? ('Сервиса ' + service + ' нет в списке доступных') : (service + ' service is not in the list of available'), true);
 	};
 	var obj = services[service];
 	try{
-		return new obj.api(obj.config, data);
+		return (new obj.api(obj.config, data));
 	}catch(e){
 		die(_K=="ru" ? ('Класс сервиса ' + service + ' поврежден или отсутствует') : ('Class of service ' + service + ' is corrupted or missing'), true);
 	};
+};
+_SMS.getBasicName = function(service){
+	service = service.toLowerCase();
+	var services = this.getServices();
+	if(services.hasOwnProperty(service)){
+		return service;
+	};
+	for(var name in services){
+		if(services[name].aliases && services[name].aliases.indexOf(service) > -1){
+			return name;
+		};
+	};
+	return service;
 };

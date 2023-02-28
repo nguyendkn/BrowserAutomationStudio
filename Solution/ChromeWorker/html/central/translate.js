@@ -29,6 +29,8 @@ _L =
 	"Version:" :{"ru": "Версия:"},
 	"Close" :{"ru": "Закрыть"},
 	"Add" :{"ru": "Добавить"},
+	"Are you sure that you want to delete" :{"ru": "Вы уверены, что хотите удалить"},
+	"module?" :{"ru": "модуль?"},
 	"module" :{"ru": "модуль"},
 	"Unlike HTTP, QUIC protocol is build on top of UDP. Not all proxies supports UDP. It means that enabling QUIC can cause problems when working with certain proxies. It is recommended to enable this option only if sure, that your proxy supports it. Disabled by default.": {"ru": "В отличие от HTTP, протокол QUIC построен поверх UDP. Не все прокси поддерживают UDP. Это означает, что включение QUIC может вызвать проблемы при работе с определенными прокси. Рекомендуется включать эту опцию только в том случае, если вы уверены, что прокси ее поддерживает. По умолчанию отключено."},
 	"Mouse emulation" :{"ru": "Эмуляция мыши"},

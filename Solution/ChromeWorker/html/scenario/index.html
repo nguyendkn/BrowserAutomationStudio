@@ -1556,6 +1556,8 @@
     var _ActionFinder = new ActionFinder()
     _ActionFinder.Initialize();
 
+    bootbox.setLocale(_K);
+
     var MainView = Backbone.View.extend({
       el: '#container',
       currentTargetId: 0,

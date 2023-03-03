@@ -1706,13 +1706,12 @@ if([[SAVED_PAGE_HTML]].indexOf("Ip banned"))
       <div class="container-fluid javascript">
         <%= _.template($('#input_constructor').html())({id:"Value", description:tr("Script Text"), default_selector: "string", disable_int:true, disable_editor:true, use_textarea:true, size: 8, disable_type_chooser:true, help: {description: tr("Script which must be executed at page start. May contain variables or resources."), examples:[{code:"window.secret = 123",description:tr("Set global variable in browser context")},{code:"Object.defineProperty(navigator,\"platform\", {  get: () => \"MacIntel\" });",description:tr("Set navigator.platform")}]}
 }) %>
-        <%= _.template($('#targetfields').html())({}) %>
       </div>
       <div class="tooltipinternal">
         <div class="tr tooltip-paragraph-first-fold">This action sets script which must be executed inside every page and every frame immediately after page is created. Unlike javascript action, script defined here is executed at the very beginning of page load, which gives possibility to change browser internals like window.navigator. Action should be called before page load.</div>
         <span class="short-description tr">This action sets script which must be executed inside every page and every frame immediately after page is created.</span>
       </div>
-      <%= _.template($('#back').html())({action:"executeandadd", use_target:true, visible:true}) %>
+      <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
   <script type="text/template" id="parseline">

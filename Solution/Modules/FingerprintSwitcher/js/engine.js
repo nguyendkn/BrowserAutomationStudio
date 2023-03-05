@@ -830,6 +830,17 @@ function BrowserAutomationStudio_ApplyFingerprint()
 
 	try
 	{
+		if(FINGERPRINT_JSON["tags"].indexOf("Desktop") < 0)
+		{
+			FINGEPRINT_SETTINGS["Fingerprints.Extensions"] = "Disable"
+		}
+	}catch(e)
+	{
+
+	}
+
+	try
+	{
 		if(FINGERPRINT_JSON["systemcolors"])
 			FINGEPRINT_SETTINGS["Fingerprints.SystemColors"] = base64_encode(JSON.stringify(FINGERPRINT_JSON["systemcolors"]))
 		else

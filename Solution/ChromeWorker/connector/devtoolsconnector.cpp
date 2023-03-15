@@ -252,6 +252,9 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"--remote-debugging-port=") + std::to_wstring(GlobalState.Port);
     CommandLine += std::wstring(L" ");
 
+    CommandLine += std::wstring(L"--remote-allow-origins=http://127.0.0.1:") + std::to_wstring(GlobalState.Port);
+    CommandLine += std::wstring(L" ");
+
     CommandLine += std::wstring(L"--unique-process-id=") + s2ws(GlobalState.UniqueProcessId);
     CommandLine += std::wstring(L" ");
 

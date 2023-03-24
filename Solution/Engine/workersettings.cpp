@@ -1113,16 +1113,6 @@ namespace BrowserAutomationStudioFramework
             }
         }
 
-        //Arrange stack size to look like Chrome 111 x64. See patch 1069.
-        //Temporary solution.
-        if(!keys.contains("Fingerprints.StackSizeDiff"))
-        {
-            if(!Text.isEmpty())
-                Text += "\r\n";
-
-            Text += "StackSizeDiff=-381010";
-        }
-
         QFile file(QString("s/") + UniqueProcessId + QString("1.ini"));
         if(file.open(QIODevice::WriteOnly))
         {

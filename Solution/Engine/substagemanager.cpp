@@ -231,6 +231,11 @@ void SubstageManager::SetCustomThreadInfo(int Id, bool IsSuccess, bool IsRunning
     s.CustomThreadsIsRunning = IsRunning;
     s.CustomThreadsResultJson = ResultJson;
     s.CustomThreadsErrorMesage = ErrorMesage;
+
+    if(IsRunning)
+    {
+        s.CustomThreadsWasRunningAtLeastOnce = true;
+    }
 }
 
 bool SubstageManager::CustomThreadGetIsRunning(int ThreadId)
@@ -240,6 +245,15 @@ bool SubstageManager::CustomThreadGetIsRunning(int ThreadId)
 
     SubstageInfo &s = StagesInfo[ThreadId];
     return s.CustomThreadsIsRunning;
+}
+
+bool SubstageManager::CustomThreadGetWasRunningAtLeastOnce(int ThreadId)
+{
+    if(!StagesInfo.contains(ThreadId))
+        return false;
+
+    SubstageInfo &s = StagesInfo[ThreadId];
+    return s.CustomThreadsWasRunningAtLeastOnce;
 }
 
 bool SubstageManager::CustomThreadGetIsSuccess(int ThreadId)

@@ -3481,6 +3481,11 @@ namespace BrowserAutomationStudioFramework
         return GetSubstageManager()->CustomThreadGetIsRunning(ThreadId);
     }
 
+    bool ScriptWorker::CustomThreadGetWasRunningAtLeastOnce(int ThreadId)
+    {
+        return GetSubstageManager()->CustomThreadGetWasRunningAtLeastOnce(ThreadId);
+    }
+
     bool ScriptWorker::CustomThreadGetIsSuccess(int ThreadId)
     {
         return GetSubstageManager()->CustomThreadGetIsSuccess(ThreadId);

@@ -37,6 +37,7 @@ class SubstageManager
         /* Custom threads */
         bool CustomThreadsIsSuccess = false;
         bool CustomThreadsIsRunning = true;
+        bool CustomThreadsWasRunningAtLeastOnce = false;
         QString CustomThreadsResultJson;
         QString CustomThreadsErrorMesage;
         bool CustomThreadsStopThreadAfterTaskFinish = false;
@@ -89,6 +90,7 @@ public:
     bool CustomThreadGetIsSuccess(int ThreadId);
     QString CustomThreadGetResult(int ThreadId);
     QString CustomThreadGetError(int ThreadId);
+    bool CustomThreadGetWasRunningAtLeastOnce(int ThreadId);
     bool CustomThreadGetStopThreadAfterTaskFinish(int ThreadId);
     void CustomThreadSetStopThreadAfterTaskFinish(int ThreadId, bool StopThreadAfterTaskFinish);
     bool CustomThreadGetStartPostponedOnIdle(int ThreadId);

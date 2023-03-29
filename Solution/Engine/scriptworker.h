@@ -513,6 +513,7 @@ namespace BrowserAutomationStudioFramework
         void CustomThreadQueueFunctionSlot(int ThreadId, QString FunctionName, QString Parameters, bool StopThreadAfterTaskFinish, bool StartPostponedOnIdle, int MaxThreads);
 
         bool CustomThreadGetIsRunning(int ThreadId);
+        bool CustomThreadGetWasRunningAtLeastOnce(int ThreadId);
         bool CustomThreadGetIsSuccess(int ThreadId);
         QString CustomThreadGetResult(int ThreadId);
         QString CustomThreadGetError(int ThreadId);

@@ -2044,6 +2044,7 @@ function _thread_get_status(id)
         "is_success": ScriptWorker.CustomThreadGetIsSuccess(id),
         "result": result,
         "error": ScriptWorker.CustomThreadGetError(id),
+        "was_running_at_least_once": ScriptWorker.CustomThreadGetWasRunningAtLeastOnce(id),
     }
 }
 
@@ -2057,7 +2058,8 @@ function _thread_wait(id, func)
 
         if(typeof(id) == "number")
         {
-            if(_thread_get_status(id).is_running)
+            var status = _thread_get_status(id)
+            if(!status.was_running_at_least_once || status.is_running)
             {
                 result = false
             }
@@ -2065,7 +2067,8 @@ function _thread_wait(id, func)
         {
             for(var i = 0;i<id.length;i++)
             {
-                if(_thread_get_status(id[i]).is_running)
+                var status = _thread_get_status(id[i])
+                if(!status.was_running_at_least_once || status.is_running)
                 {
                     result = false
                     break

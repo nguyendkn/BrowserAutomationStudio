@@ -178,6 +178,7 @@ function EmbeddedModel()
 			if(found)
 			{
 				found["data"] = dat["data"]
+				found["language_version"] = dat["language_version"]
 			}else
 			{
 				Data.push(dat)

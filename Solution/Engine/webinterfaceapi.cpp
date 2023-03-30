@@ -264,11 +264,19 @@ namespace BrowserAutomationStudioFramework
             return;
         WebInterface->Send("thread_end",false,0,"success",true);
     }
-    void WebInterfaceApi::ThreadFail()
+    void WebInterfaceApi::ThreadFail(const QString& Message)
     {
         if(!WebInterface)
             return;
-        WebInterface->Send("thread_end",false,0,"success",false);
+
+        if(Message == "Ok")
+        {
+            //Async function
+            WebInterface->Send("thread_end",false,0,"success",true);
+        }else
+        {
+            WebInterface->Send("thread_end",false,0,"success",false);
+        }
     }
 
     void WebInterfaceApi::Init(IWebInterface *WebInterface)
@@ -317,7 +325,7 @@ namespace BrowserAutomationStudioFramework
         if(Worker)
         {
             disconnect(Worker,SIGNAL(ThreadStarted()),this,SLOT(ThreadStarted()));
-            disconnect(Worker,SIGNAL(ThreadFail()),this,SLOT(ThreadFail()));
+            disconnect(Worker,SIGNAL(ThreadFail(QString)),this,SLOT(ThreadFail(QString)));
             disconnect(Worker,SIGNAL(ThreadSuccess()),this,SLOT(ThreadSuccess()));
             disconnect(Worker,SIGNAL(WebInterfaceEvalSignal(QString)),this,SLOT(WebInterfaceEvalSignal(QString)));
             disconnect(Worker,SIGNAL(RunTaskResult(int,QString)),this,SLOT(RunTaskResult(int,QString)));
@@ -325,7 +333,7 @@ namespace BrowserAutomationStudioFramework
             disconnect(this,SIGNAL(StopThread(int)),Worker,SLOT(StopThreadWebInterface(int)));
             disconnect(this,SIGNAL(RunTaskInThread(int,int,QString,QString)),Worker,SLOT(RunTaskInThreadWebInterface(int,int,QString,QString)));
             connect(Worker,SIGNAL(ThreadStarted()),this,SLOT(ThreadStarted()));
-            connect(Worker,SIGNAL(ThreadFail()),this,SLOT(ThreadFail()));
+            connect(Worker,SIGNAL(ThreadFail(QString)),this,SLOT(ThreadFail(QString)));
             connect(Worker,SIGNAL(ThreadSuccess()),this,SLOT(ThreadSuccess()));
             connect(Worker,SIGNAL(WebInterfaceEvalSignal(QString)),this,SLOT(WebInterfaceEvalSignal(QString)));
             connect(Worker,SIGNAL(RunTaskResult(int,QString)),this,SLOT(RunTaskResult(int,QString)));

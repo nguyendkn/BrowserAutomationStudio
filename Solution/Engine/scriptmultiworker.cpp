@@ -961,7 +961,7 @@ namespace BrowserAutomationStudioFramework
                 {
                     if(!Substages.IsDeadInstant(w->SubstageGetParentId()))
                     {
-                        emit ThreadFail();
+                        emit ThreadFail(w->GetResultMessageRaw());
                         ReportData->Fail(w->GetResultMessageRaw());
                         Logger->WriteFail(w->GetResultMessage(), LogFail);
                     }
@@ -971,7 +971,7 @@ namespace BrowserAutomationStudioFramework
                 {
                     if(!Substages.IsDeadInstant(w->SubstageGetParentId()))
                     {
-                        emit ThreadFail();
+                        emit ThreadFail(w->GetResultMessageRaw());
                         if(w->GetResultMessageRaw() == "Ok")
                         {
                             ReportData->Success(w->GetResultMessageRaw());
@@ -1093,7 +1093,7 @@ namespace BrowserAutomationStudioFramework
                     Logger->WriteFail(w->GetResultMessage(), LogFail);
                     if(!LastDieInstant)
                     {
-                        emit ThreadFail();
+                        emit ThreadFail(w->GetResultMessageRaw());
                         ReportData->Fail(w->GetResultMessageRawWithId());
                         FailNumber ++;
                         emit Failed();
@@ -1110,7 +1110,7 @@ namespace BrowserAutomationStudioFramework
                     Logger->Write(w->GetResultMessage(), LogFail);
                     if(!LastDieInstant)
                     {
-                        emit ThreadFail();
+                        emit ThreadFail(w->GetResultMessageRaw());
                         ReportData->Fail(tr("Ended with message: ") + w->GetResultMessageRaw());
                         ReportData->Final(tr("Ended with message: ") + w->GetResultMessageRaw());
                     }

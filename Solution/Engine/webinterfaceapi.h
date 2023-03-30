@@ -74,7 +74,7 @@ namespace BrowserAutomationStudioFramework
         void ReceivedMessage(QString, QVariantMap,bool,int);
         void ThreadStarted();
         void ThreadSuccess();
-        void ThreadFail();
+        void ThreadFail(const QString& Message);
         void BrowserStart(IProcessComunicator* Comunicator, int Index);
         void BrowserStop(IProcessComunicator* Comunicator, int Index);
         void Received(const QString& value);

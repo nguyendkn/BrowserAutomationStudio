@@ -162,7 +162,7 @@ namespace BrowserAutomationStudioFramework
         void ProgressMaximum(int);
         void ThreadStarted();
         void ThreadSuccess();
-        void ThreadFail();
+        void ThreadFail(const QString& Message);
         //Total success, total fail
         void StageStatistic(int, int);
         void WebInterfaceEvalSignal(const QString& script);

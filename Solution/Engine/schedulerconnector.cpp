@@ -22,11 +22,11 @@ namespace BrowserAutomationStudioFramework
         if(Worker)
         {
             disconnect(Worker,SIGNAL(ThreadStarted()),this,SLOT(ThreadStarted()));
-            disconnect(Worker,SIGNAL(ThreadFail()),this,SLOT(ThreadFail()));
+            disconnect(Worker,SIGNAL(ThreadFail(QString)),this,SLOT(ThreadFail()));
             disconnect(Worker,SIGNAL(ThreadSuccess()),this,SLOT(ThreadSuccess()));
             disconnect(Worker,SIGNAL(StageStatistic(int,int)),this,SLOT(StageStatistic(int,int)));
             connect(Worker,SIGNAL(ThreadStarted()),this,SLOT(ThreadStarted()));
-            connect(Worker,SIGNAL(ThreadFail()),this,SLOT(ThreadFail()));
+            connect(Worker,SIGNAL(ThreadFail(QString)),this,SLOT(ThreadFail()));
             connect(Worker,SIGNAL(ThreadSuccess()),this,SLOT(ThreadSuccess()));
             connect(Worker,SIGNAL(StageStatistic(int,int)),this,SLOT(StageStatistic(int,int)));
         }

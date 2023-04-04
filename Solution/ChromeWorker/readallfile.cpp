@@ -5,11 +5,16 @@
 
 std::string ReadAllString(const std::string& filename)
 {
+    return ReadAllString(s2ws(filename));
+}
+
+std::string ReadAllString(const std::wstring& filename)
+{
     std::string result;
 
     try
     {
-        std::ifstream ifs(s2ws(filename), std::ios::binary|std::ios::ate);
+        std::ifstream ifs(filename, std::ios::binary|std::ios::ate);
         std::ifstream::pos_type pos = ifs.tellg();
 
         result.resize(pos);

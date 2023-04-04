@@ -506,7 +506,7 @@ _L =
 
 
 	"If you want to change settings for every thread, it is better to use settings tab.": {"ru": "Если вы хотите поменять настройки для всех потоков, то лучше воспользоваться вкладкой настройки."},
-	"\"Flash\", \"Extensions\", \"Widevine\" or \"Command line\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "Смена параметров \"Флеш\", \"Расширения\", \"Widevine\" или \"Командная строка\" перезапустит браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
+	"\"Components\", \"Extensions\", \"Widevine\" or \"Command line\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "Смена параметров \"Компоненты\", \"Расширения\", \"Widevine\" или \"Командная строка\" перезапустит браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
 	"Empty string or 0 means, that value wont be changed.": {"ru": "Пустая строка или 0 означает, что значение изменяться не будут."},
 	"Changes browser settings: network, canvas, webgl, etc. Use \"Get Fingerprint\" action to change browser fingerprint.": {"ru": "Изменяет настройки браузера: работа с сетью, canvas, webgl и другое. Используйте действие \"Получить отпечаток\" чтобы поменять отпечаток браузера."},
 	"BAS allows to set timeout for every action individually, to do that click on hourglass icon near cancel button inside action interface.": {"ru": "BAS позволяет установить таймаут для каждого действия индивидуально, для этого щелкните на значок песочных часов возле кнопки отмены внутри интерфейса конкретного действия."},
@@ -1628,6 +1628,15 @@ _L =
 
 "Line break, join into multiline text": {"ru": "Перенос строки, объединение в многострочный текст"},
 "Carriage return and line break, join into multiline text": {"ru": "Возврат каретки и перенос строки, объединение в многострочный текст"},
+
+
+	"Components": {"ru": "Компоненты"},
+	"Enable Safe Browsing. It is technology embedded in Chrome, helps to protect users from malicious web sites. Its absence can be detected.": {"ru": "Включить Safe Browsing. Эта технология, встроенная в Chrome, помогает защитить пользователей от вредоносных сайтов. Ее отсутствие можно обнаружить."},
+	"Enable Safe Browsing": {"ru": "Включить Safe Browsing"},
+	"Disable Safe Browsing": {"ru": "Отключить Safe Browsing"},
+	"Enable Chrome components. Increase profile size, but its absence can be detected.": {"ru": "Включить компоненты Chrome. Это увеличит размер профиля, но их отсутствие может быть обнаружено."},
+	"Enable components": {"ru": "Включить компоненты"},
+	"Disable components": {"ru": "Отключить компоненты"},
 	
 	/* Actions search */
 	"No recent actions found": {"ru": "Недавние действия не найдены"},

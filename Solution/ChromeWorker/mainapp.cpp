@@ -2069,10 +2069,6 @@ void MainApp::OnBeforeCommandLineProcessing(const CefString& process_type,CefRef
         }
     }
 
-
-
-    if(Settings->UseFlash())
-        command_line->AppendSwitch("--enable-system-flash");
 }
 
 void MainApp::OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line)

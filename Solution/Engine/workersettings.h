@@ -17,8 +17,9 @@ namespace BrowserAutomationStudioFramework
         QString TempProfile;
         QString BrowserEngine;
         QString BrowserEngineVirtual;
-        bool UseFlash;
         bool UseWidevine;
+        bool UseSafeBrowsing;
+        bool UseComponents;
         int Timezone;
         QString TimezoneName;
 
@@ -61,8 +62,9 @@ namespace BrowserAutomationStudioFramework
         virtual void SetProfile(const QString& Profile);
         virtual void SetExtensions(const QString& Extensions);
         virtual void SetCommandLine(const QString& CommandLine);
-        virtual void SetUseFlash(bool UseFlash);
         virtual void SetUseWidevine(bool UseWidevine);
+        virtual void SetUseSafeBrowsing(bool UseSafeBrowsing);
+        virtual void SetUseComponents(bool UseComponents);
 
         virtual QString Get(const QString& Key);
         virtual void Set(const QString& Key,const QString& Value);
@@ -108,7 +110,8 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetRealProfile();
         virtual bool IsTemporaryProfile();
 
-        virtual bool GetUseFlash();
+        virtual bool GetUseSafeBrowsing();
+        virtual bool GetUseComponents();
         virtual bool GetUseWidevine();
 
         virtual QString GetProxyServer();

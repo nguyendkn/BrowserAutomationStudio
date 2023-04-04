@@ -6,8 +6,9 @@
 
 class settings
 {
-    bool use_flash;
     bool use_widevine;
+    bool use_safe_browsing;
+    bool use_components;
     bool force_utf8;
     int toolbox_height;
     int scenario_width;
@@ -47,8 +48,9 @@ class settings
     void SetProfile(std::wstring profile);
 public:
     settings();
-    bool UseFlash();
     bool UseWidevine();
+    bool UseSafeBrowsing();
+    bool UseComponents();
     bool AutostartDebug();
     bool SaveBrowserLog();
     bool ProfilesCaching();

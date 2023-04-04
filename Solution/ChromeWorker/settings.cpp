@@ -19,7 +19,8 @@ settings::settings()
 
 void settings::Init()
 {
-    use_flash = false;
+    use_safe_browsing = true;
+    use_components = true;
     use_widevine = true;
     force_utf8 = true;
     canvas = "enable";
@@ -133,13 +134,17 @@ void settings::Init()
             }
 
 
-            if(line.find("EnableFlash=true") != std::string::npos)
-            {
-                use_flash = true;
-            }
             if(line.find("EnableWidevine=false") != std::string::npos)
             {
                 use_widevine = false;
+            }
+            if(line.find("EnableSafeBrowsing=false") != std::string::npos)
+            {
+                use_safe_browsing = false;
+            }
+            if(line.find("EnableComponents=false") != std::string::npos)
+            {
+                use_components = false;
             }
             if(line.find("AutostartDebug=true") != std::string::npos)
             {
@@ -250,81 +255,105 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
 
     bool NextExtensions = false;
     bool NextCommandLine = false;
-    bool NextUseFlash = false;
     bool NextUseWidevine = false;
+    bool NextUseSafeBrowsing = false;
+    bool NextUseComponents = false;
+
     bool NextProfile = false;
     bool NextNoEmbeddedLanguages = false;
     for(std::wstring& param: Params)
     {
-        if(NextUseFlash)
-        {
-            use_flash = param == L"1";
-            NextUseFlash = false;
-            NextUseWidevine = false;
-            NextProfile = false;
-            NextNoEmbeddedLanguages = false;
-            NextExtensions = false;
-            NextCommandLine = false;
-            continue;
-        }else if(NextUseWidevine)
+        if(NextUseWidevine)
         {
             use_widevine = param == L"1";
-            NextUseFlash = false;
             NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
             NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
             continue;
         }else if(NextProfile)
         {
             SetProfile(param);
-            NextUseFlash = false;
             NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
             NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
             continue;
         }else if(NextNoEmbeddedLanguages)
         {
             no_embedded = param == L"true";
-            NextUseFlash = false;
             NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
             NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
             continue;
         }else if(NextExtensions)
         {
             extensions = split(param,L';');
-            NextUseFlash = false;
             NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
             NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
             continue;
         }else if(NextCommandLine)
         {
             command_line = split(param,L';');
-            NextUseFlash = false;
             NextUseWidevine = false;
             NextProfile = false;
             NextNoEmbeddedLanguages = false;
             NextExtensions = false;
             NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
+            continue;
+        }else if(NextUseSafeBrowsing)
+        {
+            use_safe_browsing = param == L"1";
+            NextUseWidevine = false;
+            NextProfile = false;
+            NextNoEmbeddedLanguages = false;
+            NextExtensions = false;
+            NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
+            continue;
+        }else if(NextUseComponents)
+        {
+            use_components = param == L"1";
+            NextUseWidevine = false;
+            NextProfile = false;
+            NextNoEmbeddedLanguages = false;
+            NextExtensions = false;
+            NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
             continue;
         }
 
-        if(param == L"--UseFlash")
-        {
-            NextUseFlash = true;
-            continue;
-        }else if(param == L"--UseWidevine")
+
+        if(param == L"--UseWidevine")
         {
             NextUseWidevine = true;
+            continue;
+        }else if(param == L"--UseSafeBrowsing")
+        {
+            NextUseSafeBrowsing = true;
+            continue;
+        }else if(param == L"--UseComponents")
+        {
+            NextUseComponents = true;
             continue;
         }else if(param == L"--Profile")
         {
@@ -405,14 +434,19 @@ std::string settings::Webgl()
     return webgl;
 }
 
-bool settings::UseFlash()
-{
-    return use_flash;
-}
-
 bool settings::UseWidevine()
 {
     return use_widevine;
+}
+
+bool settings::UseSafeBrowsing()
+{
+    return use_safe_browsing;
+}
+
+bool settings::UseComponents()
+{
+    return use_components;
 }
 
 bool settings::AutostartDebug()
@@ -483,8 +517,9 @@ void settings::SaveToFile()
         std::ofstream outfile("settings_worker.ini");
         if(outfile.is_open())
         {
-            outfile<<"EnableFlash="<<((use_flash) ? "true" : "false")<<std::endl;
             outfile<<"EnableWidevine="<<((use_widevine) ? "true" : "false")<<std::endl;
+            outfile<<"EnableSafeBrowsing="<<((use_safe_browsing) ? "true" : "false")<<std::endl;
+            outfile<<"EnableComponents="<<((use_components) ? "true" : "false")<<std::endl;
             outfile<<"AutostartDebug="<<((autostart_debug) ? "true" : "false")<<std::endl;
             outfile<<"SaveBrowserLog="<<((save_browser_log) ? "true" : "false")<<std::endl;
             outfile<<"ProfilesCaching="<<((profiles_caching) ? "true" : "false")<<std::endl;
@@ -526,8 +561,9 @@ std::string settings::Serialize()
 {
 
     picojson::value::object res;
-    res["use_flash"] = picojson::value(use_flash);
     res["use_widevine"] = picojson::value(use_widevine);
+    res["use_safe_browsing"] = picojson::value(use_safe_browsing);
+    res["use_components"] = picojson::value(use_components);
     res["autostart_debug"] = picojson::value(autostart_debug);
     res["save_browser_log"] = picojson::value(save_browser_log);
     res["profiles_caching"] = picojson::value(profiles_caching);
@@ -568,8 +604,9 @@ void settings::Deserialize(const std::string & Data)
         picojson::parse(val, Data);
         picojson::value::object o = val.get<picojson::value::object>();
 
-        use_flash = o["use_flash"].get<bool>();
         use_widevine = o["use_widevine"].get<bool>();
+        use_safe_browsing = o["use_safe_browsing"].get<bool>();
+        use_components = o["use_components"].get<bool>();
         autostart_debug = o["autostart_debug"].get<bool>();
         save_browser_log = o["save_browser_log"].get<bool>();
         profiles_caching = o["profiles_caching"].get<bool>();

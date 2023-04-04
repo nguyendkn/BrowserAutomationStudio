@@ -36,7 +36,7 @@
 #include "preparestartupscript.h"
 #include "chromecommandlineparser.h"
 #include "mixnumbers.h"
-#include "installwidevine.h"
+#include "installcomponents.h"
 #include "createemptyprofile.h"
 #include "readallfile.h"
 #include "base64.h"
@@ -2064,6 +2064,24 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     {
         DeinstallWidevine(Settings.Profile());
     }
+
+    if(Settings.UseSafeBrowsing())
+    {
+        InstallSafeBrowsing(Settings.Profile());
+    }else
+    {
+        DeinstallSafeBrowsing(Settings.Profile());
+    }
+
+    if(Settings.UseComponents())
+    {
+        InstallComponents(Settings.Profile());
+    }else
+    {
+        DeinstallComponents(Settings.Profile());
+    }
+
+
     if(HasWorkerArgument("--mock-connector"))
     {
         // Initialize dummy connector.

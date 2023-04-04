@@ -73,7 +73,7 @@ SOURCES += main.cpp \
     emptyrequestcontexthandler.cpp \
     fileexists.cpp \
     fileutils.cpp \
-    installwidevine.cpp \
+    installcomponents.cpp \
     ipcsimple.cpp \
     mainapp.cpp \
     mainhandler.cpp \
@@ -242,7 +242,7 @@ HEADERS += \
     emptyrequestcontexthandler.h \
     fileexists.h \
     fileutils.h \
-    installwidevine.h \
+    installcomponents.h \
     ipcsimple.h \
     mainapp.h \
     mainhandler.h \

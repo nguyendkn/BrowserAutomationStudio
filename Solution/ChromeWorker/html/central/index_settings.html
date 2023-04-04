@@ -198,6 +198,8 @@
 			$("#FingerprintDetectorEnabled").prop("checked",json["detector"])
 			$("#Flash").val((json["use_flash"]) ? "enable" : "disable")
 			$("#Widevine").val((json["use_widevine"]) ? "enable" : "disable")
+			$("#SafeBrowsing").val((json["use_safe_browsing"]) ? "enable" : "disable")
+			$("#Components").val((json["use_components"]) ? "enable" : "disable")
 
 			$("#Canvas").val(json["canvas"])
 			$("#Audio").val(json["audio"])
@@ -257,6 +259,8 @@
 				$("#Zoom").val("100")
 				$("#Flash").val("disable")
 				$("#Widevine").val("enable")
+				$("#SafeBrowsing").val("enable")
+				$("#Components").val("enable")
 
 				$("#Canvas").val("enable")
 				$("#Audio").val("enable")
@@ -311,6 +315,8 @@
 		    			"zoom": parseInt($("#Zoom").val()),
 		    			"use_flash": $("#Flash").val() == "enable",
 						"use_widevine": $("#Widevine").val() == "enable",
+						"use_safe_browsing": $("#SafeBrowsing").val() == "enable",
+						"use_components": $("#Components").val() == "enable",
 
 						"canvas": $("#Canvas").val(),
 						"audio": $("#Audio").val(),
@@ -450,19 +456,8 @@
 		<div class="text-center tr">Browser setting may be changed individually per each thread with "Browser Settings" action. Changing settings here will set them for all script.</div>
 
 		<div class="form-horizontal" style="padding-top:20px">
-		  <div class="form-group form-item">
-		    <label for="Flash" class="col-sm-5 control-label tr">Flash</label>
-		    <div class="col-sm-4">
-		    	 <select class="form-control" id="Flash">
-			        <option value="enable" class="tr">Turn on</option>
-			        <option value="disable" class="tr">Turn off</option>
-			      </select>
-		    </div>
-		  </div>
 
-		  <div class="text-center text-muted"><span class="tr">Flash may expose your identity and generally is not safe for usage. If you want to enable it, change setting above and install flash on your PC, like described</span> <a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash')">here</a>.</div>
-
-
+			  
 		  <div class="form-horizontal" style="padding-top:20px">
 			<div class="form-group form-item">
 			  <label for="Widevine" class="col-sm-5 control-label tr">Widevine</label>
@@ -475,6 +470,31 @@
 			</div>
 
 			<div class="text-center text-muted"><span class="tr">Enable Widevine plugin.</span></div>
+
+			<div class="form-group form-item" style="padding-top:20px">
+				<label for="SafeBrowsing" class="col-sm-5 control-label tr">Safe Browsing</label>
+				<div class="col-sm-4">
+					 <select class="form-control" id="SafeBrowsing">
+						<option value="enable" class="tr">Turn on</option>
+						<option value="disable" class="tr">Turn off</option>
+					  </select>
+				</div>
+			  </div>
+  
+			<div class="text-center text-muted"><span class="tr">Enable</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://safebrowsing.google.com/');return false">Safe Browsing</a>. <span class="tr">It is technology embedded in Chrome, helps to protect users from malicious web sites. Its absence can be detected.</span> </div>
+
+
+			<div class="form-group form-item" style="padding-top:20px">
+				<label for="Components" class="col-sm-5 control-label tr">Chrome components</label>
+				<div class="col-sm-4">
+					 <select class="form-control" id="Components">
+						<option value="enable" class="tr">Turn on</option>
+						<option value="disable" class="tr">Turn off</option>
+					  </select>
+				</div>
+			  </div>
+  
+			<div class="text-center text-muted"><span class="tr">Enable Chrome components. Increase profile size, but its absence can be detected.</span> </div>
 
   
 

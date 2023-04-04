@@ -91,6 +91,11 @@ _L =
 
 	"Enable fingerprint detector":{"ru": "Включить fingerprint detector"},
 	"FingerprintDetector addon helps to check if site that is opened with BAS uses browser fingerprint techniques to identify you among other users. This includes canvas, audio fingerprinting, font enumeration and many other. You will get detailed report for each fingerprinting activity as a result of its work. This tool can be useful if you want to check why your bot is being banned.":{"ru": "FingerprintDetector помогает собрать сведения, получает ли сайт отпечаток браузера, чтобы идентифицировать вас среди других пользователей. Это включает в себя методы идентификации по canvas, audio, перечисление шрифтов и многое многое другое. Этот инструмент может быть полезен, если вы хотите проверить, почему сайт обнаруживает активность ваших ботов."},
+
+	"Enable":{"ru": "Включить"},
+	"It is technology embedded in Chrome, helps to protect users from malicious web sites. Its absence can be detected.":{"ru": "Эта технология, встроенная в Chrome, помогает защитить пользователей от вредоносных сайтов. Ее отсутствие можно обнаружить."},
+	"Enable Chrome components. Increase profile size, but its absence can be detected.":{"ru": "Включить компоненты Chrome. Это увеличит размер профиля, но их отсутствие может быть обнаружено."},
+	"Chrome components":{"ru": "Компоненты Chrome"},
 }
 
 

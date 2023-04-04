@@ -3757,24 +3757,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="container-fluid">
 
       <div class="col-xs-12">
-       <form class="form-horizontal">
-          <div class="form-group">
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-            <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Flash</span></span>:
-            <hr style="margin-top:5px;margin-bottom:5px"/>
-          </div>
-        </form>
-      </div>
-
-     
-      <%= _.template($('#input_constructor').html())({id:"Flash", description:tr("Flash"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Flash may expose your identity and generally is not safe for usage. If you want to enable it, change this setting and install flash on your PC. Instruction may be found in a help section below."), examples:[{code:"enable",description:tr("Use flash")},{code:"disable",description:tr("Don't use flash")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
-
-
-      <div class="col-xs-12">
         <form class="form-horizontal">
            <div class="form-group">
              <hr style="margin-top:5px;margin-bottom:5px"/>
-             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Widevine</span></span>:
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Components</span></span>:
              <hr style="margin-top:5px;margin-bottom:5px"/>
            </div>
          </form>
@@ -3782,6 +3768,10 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
  
       
        <%= _.template($('#input_constructor').html())({id:"Widevine", description:tr("Widevine"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable or disable Widevine plugin."), examples:[{code:"enable",description:tr("Use Widevine")},{code:"disable",description:tr("Don't use Widevine")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
+
+       <%= _.template($('#input_constructor').html())({id:"SafeBrowsing", description:tr("Safe Browsing"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable Safe Browsing. It is technology embedded in Chrome, helps to protect users from malicious web sites. Its absence can be detected."), examples:[{code:"enable",description:tr("Enable Safe Browsing")},{code:"disable",description:tr("Disable Safe Browsing")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
+
+       <%= _.template($('#input_constructor').html())({id:"Components", description:tr("Components"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable Chrome components. Increase profile size, but its absence can be detected."), examples:[{code:"enable",description:tr("Enable components")},{code:"disable",description:tr("Disable components")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
 
       <div class="col-xs-12">
        <form class="form-horizontal">
@@ -3917,10 +3907,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
-      <div class="tr tooltip-paragraph-fold">"Flash", "Extensions", "Widevine" or "Command line" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
+      <div class="tr tooltip-paragraph-fold">"Components", "Extensions", "Widevine" or "Command line" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">Chrome extension can be used in BAS by inputting either extension id or extension url or extension path into "Extensions" field. Extension id is a unique string with 32 length, for example, padekgcemlokbadohgkifijomclgjgif. Extension url is the main url of extension in</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">chrome web store</a>. <span class="tr">It has chrome.google.com domain, for example: https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif. Extension path is path to unpacked extension. Each path must contain extracted extension, a folder with manifest.json and other files. See</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">this link</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">эту ссылку</a>, <span class="tr">for information about unpacking extensions and other info about using them</span>.</div>
-
-      <div class="tooltip-paragraph-fold"><span class="tr">To start BAS with flash enabled besides changing "Flash" setting you also need to install flash on your PC. Instruction is located</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=how_to_enable_flash');return false" class="tr">here</a>. </div>
 
 
       <div class="tr tooltip-paragraph-last-fold">If you want to change settings for every thread, it is better to use settings tab.</div>
@@ -5499,11 +5487,11 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
   </script>
 
   <script type="text/template" id="browsersettings_code">
-      /*Browser*/
       _require_extensions(<%= Extensions %>)!
       var Params = {};
-      var Flash = (<%= Flash %>);
       var Widevine = (<%= Widevine %>);
+      var SafeBrowsing = (<%= SafeBrowsing %>);
+      var Components = (<%= Components %>);
       var Extensions = (_result());
       var CommandLine = (<%= CommandLine %>);
 
@@ -5521,11 +5509,14 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       var WebglVendor = (<%= WebglVendor %>);
       var WebglRenderer = (<%= WebglRenderer %>);
 
-      if(Flash.length > 0)
-        Params["UseFlash"] = Flash == "enable"
-      
       if(Widevine.length > 0)
         Params["UseWidevine"] = Widevine == "enable"
+
+      if(SafeBrowsing.length > 0)
+        Params["UseSafeBrowsing"] = SafeBrowsing == "enable"
+
+      if(Components.length > 0)
+        Params["UseComponents"] = Components == "enable"
 
       if(Webrtc.length > 0)
         Params["Webrtc"] = Webrtc
@@ -9571,8 +9562,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           else if(State == "browsersettings")
           {
             
-            var Flash = GetInputConstructorValue("Flash", loader);
             var Widevine = GetInputConstructorValue("Widevine", loader);
+            var SafeBrowsing = GetInputConstructorValue("SafeBrowsing", loader);
+            var Components = GetInputConstructorValue("Components", loader);
             var Webrtc = GetInputConstructorValue("Webrtc", loader);
             var Canvas = GetInputConstructorValue("Canvas", loader);
             var CanvasNoise = GetInputConstructorValue("CanvasNoise", loader);
@@ -9594,8 +9586,9 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             try{
               var code = loader.GetAdditionalData() +  _.template($('#' + State + "_code").html())(
                 {
-                  Flash:Flash["updated"],
                   Widevine:Widevine["updated"],
+                  SafeBrowsing:SafeBrowsing["updated"],
+                  Components:Components["updated"],
                   ProxyTunneling:ProxyTunneling["updated"],
                   SkipFrames:SkipFrames["updated"],
                   Extensions:Extensions["updated"],

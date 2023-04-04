@@ -16,8 +16,9 @@ namespace BrowserAutomationStudioFramework
 
         virtual void SetWorkerPathSafe(const QString& PathSafe) = 0;
         virtual void SetWorkerPathNotSafe(const QString& PathNotSafe) = 0;
-        virtual void SetUseFlash(bool UseFlash) = 0;
         virtual void SetUseWidevine(bool UseWidevine) = 0;
+        virtual void SetUseSafeBrowsing(bool UseSafeBrowsing) = 0;
+        virtual void SetUseComponents(bool UseComponents) = 0;
         virtual void SetProfile(const QString& Profile) = 0;
         virtual void SetExtensions(const QString& Extensions) = 0;
         virtual void SetCommandLine(const QString& CommandLine) = 0;
@@ -34,8 +35,9 @@ namespace BrowserAutomationStudioFramework
         virtual QString GetWorkerPathSafe() = 0;
         virtual QString GetWorkerPathNotSafe() = 0;
         virtual QString GetWorkerPath() = 0;
-        virtual bool GetUseFlash() = 0;
         virtual bool GetUseWidevine() = 0;
+        virtual bool GetUseSafeBrowsing() = 0;
+        virtual bool GetUseComponents() = 0;
         virtual QString GetProfile() = 0;
         virtual QString GetRealProfile() = 0;
         virtual bool IsTemporaryProfile() = 0;

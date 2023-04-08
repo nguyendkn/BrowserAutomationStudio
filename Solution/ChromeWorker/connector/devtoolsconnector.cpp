@@ -2180,7 +2180,7 @@ Async DevToolsConnector::StopScreenCast(int Timeout)
 
 Async DevToolsConnector::Load(const std::string& Url, bool IsInstant, const std::string& Referrer, int Timeout)
 {
-    if(!GlobalState.IsProxySet)
+    if(!GlobalState.IsProxySet && Url != "data:text/plain," /* This url is used when apply fingerprint in record mode */)
     {
         ResetProxy(GlobalState.ParentProcessId);
         GlobalState.IsProxySet = true;
@@ -2350,7 +2350,7 @@ Async DevToolsConnector::NavigateForward(bool IsInstant, int Timeout)
 
 Async DevToolsConnector::CreateTab(const std::string& Url, bool IsInstant, bool IsDelayed, const std::string& Referrer, int Timeout)
 {
-    if(!GlobalState.IsProxySet)
+    if(!GlobalState.IsProxySet && Url != "data:text/plain," /* This url is used when apply fingerprint in record mode */)
     {
         ResetProxy(GlobalState.ParentProcessId);
         GlobalState.IsProxySet = true;

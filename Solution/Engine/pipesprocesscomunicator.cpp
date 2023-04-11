@@ -149,8 +149,7 @@ namespace BrowserAutomationStudioFramework
         if(Process)
         {
             Send("<Visible>0</Visible>");
-            if(!IsTemporaryProfile)
-                Send("<Flush></Flush>");
+            Send("<Flush></Flush>");
             Suspend();
             ProcessDeleter *Deleter = new ProcessDeleter(IsTemporaryProfile);
             Deleter->Start(Process);
@@ -165,8 +164,7 @@ namespace BrowserAutomationStudioFramework
         if(Process)
         {
             Send("<Visible>0</Visible>");
-            if(!IsTemporaryProfile)
-                Send("<Flush></Flush>");
+            Send("<Flush></Flush>");
             Suspend();
             ProcessDeleter *Deleter = new ProcessDeleter(IsTemporaryProfile);
             Deleter->Start(Process);

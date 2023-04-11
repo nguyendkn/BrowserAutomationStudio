@@ -12,8 +12,7 @@ void ProcessDeleter::Start(QProcess * Process)
     Process->setParent(0);
     this->Process = Process;
     int DelayTime = qrand() % 5000;
-    if(!IsTemporaryProfile)
-        DelayTime += 10000;
+    DelayTime += 10000;
     QTimer::singleShot(DelayTime, this, SLOT(Timer()));
 }
 

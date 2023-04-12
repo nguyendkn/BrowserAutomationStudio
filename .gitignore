@@ -11,6 +11,7 @@ build-Solution-*
 *.qm
 /data
 /logs
+.vscode
 Makefile*
 AddAVExclusion.log
 AddAVExclusion.ps1

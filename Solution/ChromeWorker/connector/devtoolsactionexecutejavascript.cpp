@@ -191,7 +191,6 @@ std::string DevToolsActionExecuteJavascript::Javascript(const std::string& Scrip
     return Res;
 }
 
-
 void DevToolsActionExecuteJavascript::Next()
 {
     if(RequestType == JavascriptExecution)

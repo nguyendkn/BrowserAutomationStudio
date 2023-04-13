@@ -44,6 +44,7 @@ namespace BrowserAutomationStudioFramework
         TempProfile = QString("prof/") + GetRandomString();
         Extensions.clear();
         CommandLine.clear();
+        ProxyForNextProfile = "block";
         Timezone = TIMEZONE_NONE;
         TimezoneName = "BAS_NOT_SET";
 
@@ -184,6 +185,10 @@ namespace BrowserAutomationStudioFramework
     {
         this->CommandLine = CommandLine;
     }
+    void WorkerSettings::SetProxyForNextProfile(const QString& ProxyForNextProfile)
+    {
+        this->ProxyForNextProfile = ProxyForNextProfile;
+    }
     void WorkerSettings::SetUseWidevine(bool UseWidevine)
     {
         this->UseWidevine = UseWidevine;
@@ -316,6 +321,10 @@ namespace BrowserAutomationStudioFramework
     {
         return CommandLine;
     }
+    QString WorkerSettings::GetProxyForNextProfile()
+    {
+        return ProxyForNextProfile;
+    }
     bool WorkerSettings::GetUseWidevine()
     {
         return UseWidevine;
@@ -340,6 +349,7 @@ namespace BrowserAutomationStudioFramework
         res->SetProfile(Profile);
         res->SetExtensions(Extensions);
         res->SetCommandLine(CommandLine);
+        res->SetProxyForNextProfile(ProxyForNextProfile);
         res->SetBrowserEngine(BrowserEngine);
         res->SetProxyServer(ProxyServer);
         res->SetProxyPort(ProxyPort);
@@ -857,6 +867,18 @@ namespace BrowserAutomationStudioFramework
 
          }
 
+         if(object.contains("ProxyForNextProfile"))
+         {
+            QString prev = GetProxyForNextProfile();
+            QString next = object["ProxyForNextProfile"].toString();
+
+            if(prev != next)
+            {
+                SetProxyForNextProfile(next);
+            }
+
+         }
+
          if(IsMLA && object.contains("LoadFingerprintFromProfileFolder"))
          {
             QString prev = Get("LoadFingerprintFromProfileFolder");
@@ -1216,6 +1238,10 @@ namespace BrowserAutomationStudioFramework
 
             res.append("--CommandLine");
             res.append(GetCommandLineAdditional().split(QRegExp("[\r\n]"),QString::SkipEmptyParts).join(";"));
+
+            res.append("--InitialProxy");
+            res.append(GetProxyForNextProfile());
+            SetProxyForNextProfile("block");
         }else if(Engine.startsWith(QString("WebDriver")))
         {
             //res.append("--headless");

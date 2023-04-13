@@ -28,6 +28,7 @@ void settings::Init()
     quic = "disable";
     webrtc = "enable";
     webgl = "enable";
+    initial_proxy = "block";
     toolbox_height = 300;
     scenario_width = 500;
     zoom = 100;
@@ -255,6 +256,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
 
     bool NextExtensions = false;
     bool NextCommandLine = false;
+    bool NextInitialProxy = false;
     bool NextUseWidevine = false;
     bool NextUseSafeBrowsing = false;
     bool NextUseComponents = false;
@@ -273,6 +275,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextCommandLine = false;
             NextUseSafeBrowsing = false;
             NextUseComponents = false;
+            NextInitialProxy = false;
             continue;
         }else if(NextProfile)
         {
@@ -284,6 +287,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextCommandLine = false;
             NextUseSafeBrowsing = false;
             NextUseComponents = false;
+            NextInitialProxy = false;
             continue;
         }else if(NextNoEmbeddedLanguages)
         {
@@ -295,6 +299,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextCommandLine = false;
             NextUseSafeBrowsing = false;
             NextUseComponents = false;
+            NextInitialProxy = false;
             continue;
         }else if(NextExtensions)
         {
@@ -306,6 +311,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextCommandLine = false;
             NextUseSafeBrowsing = false;
             NextUseComponents = false;
+            NextInitialProxy = false;
             continue;
         }else if(NextCommandLine)
         {
@@ -317,6 +323,19 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextCommandLine = false;
             NextUseSafeBrowsing = false;
             NextUseComponents = false;
+            NextInitialProxy = false;
+            continue;
+        }else if(NextInitialProxy)
+        {
+            initial_proxy = ws2s(param);
+            NextUseWidevine = false;
+            NextProfile = false;
+            NextNoEmbeddedLanguages = false;
+            NextExtensions = false;
+            NextCommandLine = false;
+            NextUseSafeBrowsing = false;
+            NextUseComponents = false;
+            NextInitialProxy = false;
             continue;
         }else if(NextUseSafeBrowsing)
         {
@@ -328,6 +347,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextCommandLine = false;
             NextUseSafeBrowsing = false;
             NextUseComponents = false;
+            NextInitialProxy = false;
             continue;
         }else if(NextUseComponents)
         {
@@ -339,6 +359,7 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
             NextCommandLine = false;
             NextUseSafeBrowsing = false;
             NextUseComponents = false;
+            NextInitialProxy = false;
             continue;
         }
 
@@ -370,6 +391,10 @@ void settings::ParseCommandLine(std::vector<std::wstring>& Params)
         }else if(param == L"--CommandLine")
         {
             NextCommandLine = true;
+            continue;
+        }else if(param == L"--InitialProxy")
+        {
+            NextInitialProxy = true;
             continue;
         }else if(starts_with(param, L"--unique-process-id="))
         {
@@ -408,6 +433,11 @@ std::vector<std::wstring> settings::Extensions()
 std::vector<std::wstring> settings::AdditionalCommandLine()
 {
     return command_line;
+}
+
+std::string settings::InitialProxy()
+{
+    return initial_proxy;
 }
 
 std::string settings::Languages()

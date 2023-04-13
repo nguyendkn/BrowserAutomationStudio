@@ -2120,7 +2120,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     WebScoketFactory,
                     Data->MainRemoteDebuggingPort, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker\\chrome\\",
                     PrepareConstantStartupScript(Data),
-                    ParseChromeCommandLine(Settings.AdditionalCommandLine())
+                    ParseChromeCommandLine(Settings.AdditionalCommandLine()),
+                    Settings.InitialProxy()
                     );
     WebScoketFactory.reset();
     if(Data->IsRecord)

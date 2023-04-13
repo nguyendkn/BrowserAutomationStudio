@@ -68,7 +68,8 @@ class IDevToolsConnector
             std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
             int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
             const std::string& ConstantStartupScript,
-            const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
+            const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional,
+            const std::string& InitalProxy
         ) = 0;
         virtual void SetProfilePath(const std::wstring& Path) = 0;
         virtual void SetExtensionList(const std::vector<std::wstring>& Extensions) = 0;

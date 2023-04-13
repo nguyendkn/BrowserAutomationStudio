@@ -25,15 +25,53 @@ void DevToolsConnector::ResetProxy(const std::string& ParentProcessId)
     GlobalState.SaveProxy->Reset(Folder + std::string("/s"));
 }
 
+void DevToolsConnector::SetInitialProxy(const std::string& InitalProxy)
+{
+    if(InitalProxy == "block")
+    {
+        return;
+    }
+
+    if(InitalProxy == "direct")
+    {
+        ResetProxy(GlobalState.ParentProcessId);
+        GlobalState.IsProxySet = true;
+        return;
+    }
+
+    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, GlobalState.ParentProcessId);
+    try
+    {
+        picojson::value Value;
+        picojson::parse(Value, base64_decode(InitalProxy));
+        picojson::object Object = Value.get<picojson::object>();
+        std::string server = Object["server"].get<std::string>();
+        int Port = Object["Port"].get<double>();
+        bool IsHttp = Object["IsHttp"].get<bool>();
+        std::string name = Object["name"].get<std::string>();
+        std::string password = Object["password"].get<std::string>();
+        GlobalState.SaveProxy->Save(server, Port, IsHttp, name, password,Folder + std::string("/s"));
+        GlobalState.IsProxySet = true;
+        return;
+
+    }catch(...)
+    {
+
+    }
+
+}
+
 void DevToolsConnector::Initialize
 (
         std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
         std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
         int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
         const std::string& ConstantStartupScript,
-        const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
+        const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional,
+        const std::string& InitalProxy
 )
 {
+
     std::wstring RootFolder = GetRelativePathToParentFolder(L"");
 
     this->CommandLineAdditional = CommandLineAdditional;
@@ -75,6 +113,8 @@ void DevToolsConnector::Initialize
         if(Entry.IsDirectory)
             this->OptionalExtensions.push_back(s2ws(Entry.Path));
     }*/
+
+    SetInitialProxy(InitalProxy);
 }
 
 char* DevToolsConnector::GetPaintData()

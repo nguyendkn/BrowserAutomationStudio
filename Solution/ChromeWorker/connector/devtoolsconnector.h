@@ -123,6 +123,7 @@ class DevToolsConnector : public IDevToolsConnector
     void ParseNewTabReferrer(const std::string& NewTabReferrer);
     void CheckIfTabsNeedsToLoadFirstUrl(std::shared_ptr<TabData> Tab);
     void ResetProxy(const std::string& ParentProcessId);
+    void SetInitialProxy(const std::string& InitalProxy);
     //https://source.chromium.org/chromium/chromium/src/+/master:content/browser/devtools/devtools_video_consumer.cc;drc=267e9d603200302cd937cc5b788f044186a1b8c6;l=25
     void SetMinCapturePeriod(int MinCapturePeriod);
 
@@ -152,7 +153,8 @@ class DevToolsConnector : public IDevToolsConnector
                 std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
                 int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
                 const std::string& ConstantStartupScript,
-                const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional
+                const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional,
+                const std::string& InitalProxy
         );
         void SetProfilePath(const std::wstring& Path);
         void SetExtensionList(const std::vector<std::wstring>& Extensions);

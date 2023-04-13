@@ -138,6 +138,50 @@ function set_proxy(server, Port, IsHttp, name, password, callback)
     }
 }
 
+function _set_proxy_for_next_profile(proxy_string, callback)
+{
+    if(proxy_string == "block" || proxy_string == "direct")
+    {
+        _settings({"ProxyForNextProfile": proxy_string},callback)
+    }else
+    {
+        _PROXY_NEXT_PROFILE = proxy_parse(proxy_string)
+
+        if(_is_ip(_PROXY_NEXT_PROFILE["server"]))
+        {
+            var ProxyForNextProfile = JSON.stringify(_PROXY_NEXT_PROFILE)
+            ProxyForNextProfile = base64_encode(ProxyForNextProfile)
+
+            delete _PROXY_NEXT_PROFILE
+
+            _settings({"ProxyForNextProfile": ProxyForNextProfile},callback)
+        }else
+        {
+            _ARG = arguments
+
+            _dns_lookup(_PROXY_NEXT_PROFILE.server, function(){
+                if(_result().length == 0)
+                {
+                    delete _PROXY_NEXT_PROFILE
+
+                    _settings({"ProxyForNextProfile": "eyJzZXJ2ZXIiOiIxMjcuMC4wLjEiLCJQb3J0IjowLCJJc0h0dHAiOnRydWUsIm5hbWUiOiIiLCJwYXNzd29yZCI6IiJ9"},_ARG[1])
+                }
+                else
+                {
+                    _PROXY_NEXT_PROFILE["server"] = _result()[0]
+                    var ProxyForNextProfile = JSON.stringify(_PROXY_NEXT_PROFILE)
+                    ProxyForNextProfile = base64_encode(ProxyForNextProfile)
+
+                    delete _PROXY_NEXT_PROFILE
+
+                    _settings({"ProxyForNextProfile": ProxyForNextProfile},_ARG[1])
+                }
+
+            })
+        }
+    }
+}
+
 function set_proxy_extended()
 {
     var DetectExternalIp = arguments[0]

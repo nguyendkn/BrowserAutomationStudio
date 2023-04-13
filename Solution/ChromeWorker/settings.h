@@ -43,6 +43,7 @@ class settings
     std::wstring profile;
     std::vector<std::wstring> extensions;
     std::vector<std::wstring> command_line;
+    std::string initial_proxy;
     std::string languages;
     std::string modules;
     void SetProfile(std::wstring profile);
@@ -58,6 +59,7 @@ public:
     bool DebugToolbox();
     bool DebugScenario();
     bool EmulateMouse();
+    std::string InitialProxy();
     bool Detector();
     std::wstring Profile();
     std::vector<std::wstring> Extensions();

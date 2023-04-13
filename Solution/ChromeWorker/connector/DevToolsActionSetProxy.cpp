@@ -1,5 +1,6 @@
 #include "DevToolsActionSetProxy.h"
 #include "converter.h"
+#include "readallfile.h"
 #include <windows.h>
 #include <fstream>
 #include <chrono>
@@ -16,6 +17,30 @@ void DevToolsActionSetProxy::Run()
     // 5) Make all connection run through proxy.
     // 4) Wait 0.5 seconds.
 
+    //Init folder
+    std::string Folder = GlobalState->SaveProxy->CreateFolder(GlobalState->ChromeExecutableLocation, GlobalState->ParentProcessId);
+
+    //Check if same proxy already applied.
+    {
+        std::string Server = Params["server"].String;
+        int Port = Params["port"].Number;
+        bool IsHttp = Params["is_http"].Boolean;
+        std::string Login = Params["login"].String;
+        std::string Password = Params["password"].String;
+
+
+        std::string OldProxyData = GlobalState->SaveProxy->Generate(Server, Port, IsHttp, Login, Password);
+        std::string NewProxyData = ReadAllString(Folder + std::string("/s"));
+        if(OldProxyData == NewProxyData)
+        {
+            //We are using same proxy, immediatelly return
+            State = Finished;
+            Result->Success();
+            return;
+        }
+    }
+
+
     //Initialization
 
     WaitingForSetProxy = false;
@@ -23,7 +48,6 @@ void DevToolsActionSetProxy::Run()
     WaitingForStopNetworkActivity = false;
 
     //Stop new reqeusts from being send
-    std::string Folder = GlobalState->SaveProxy->CreateFolder(GlobalState->ChromeExecutableLocation, GlobalState->ParentProcessId);
     GlobalState->SaveProxy->Save("127.0.0.1", 0, true, std::string(), std::string(), Folder + std::string("/s"));
 
     //Wait 3 seconds

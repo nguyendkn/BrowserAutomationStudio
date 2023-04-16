@@ -7,8 +7,7 @@ using namespace std::placeholders;
 void NoneConnector::ResetProxy(const std::string& ParentProcessId)
 {
     // Generate proxy data
-    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId);
-    GlobalState.SaveProxy->Reset(Folder + std::string("/s"));
+    GlobalState.SaveProxy->WriteDirectConnectionConfig();
 }
 
 void NoneConnector::Initialize(
@@ -21,6 +20,7 @@ void NoneConnector::Initialize(
 )
 {
     GlobalState.SaveProxy.reset(new ProxySaver());
+    GlobalState.SaveProxy->Initialize(ParentProcessId);
 
     GlobalState.Port = Port;
     GlobalState.UniqueProcessId = UniqueProcessId;
@@ -270,8 +270,7 @@ Async NoneConnector::SetProxy(const std::string Server, int Port, bool IsHttp, c
 {
     GlobalState.IsProxySet = true;
 
-    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, GlobalState.ParentProcessId);
-    GlobalState.SaveProxy->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
+    GlobalState.SaveProxy->WriteProxyConfig(Server, Port, IsHttp, Login, Password);
 
     return ActionStub(Timeout);
 }

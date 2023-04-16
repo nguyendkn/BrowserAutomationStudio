@@ -2,10 +2,72 @@
 #include "replaceall.h"
 #include <windows.h>
 #include <fstream>
+#include <vector>
+#include <algorithm>
+#include "converter.h"
+#include "readallfile.h"
 #include "md5.h"
 #include "aes.h"
 
-std::string ProxySaver::Generate(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password)
+void ProxySaver::Initialize(const std::string &ParentProcessId)
+{
+    this->ParentProcessId = ParentProcessId;
+}
+
+std::wstring ProxySaver::GetConfigFilePath(const std::string& Filename)
+{
+    std::vector<wchar_t> buffer(MAX_PATH);
+    int size = GetModuleFileName(NULL, buffer.data(), MAX_PATH);
+    buffer.resize(size);
+    for(size_t i = 0;i<buffer.size();i++)
+    {
+        if(buffer[i] == L'/')
+        {
+            buffer[i] = L'\\';
+        }
+    }
+    wchar_t separator[] = {L'\\'};
+    std::vector<wchar_t>::iterator it = std::find_end(buffer.begin(), buffer.end(), separator, separator + 1);
+    size = it - buffer.begin();
+    buffer.resize(size);
+    it = std::find_end(buffer.begin(), buffer.end(), separator, separator + 1);
+    size = it - buffer.begin() + 1;
+    buffer.resize(size);
+
+    std::wstring Result = std::wstring(buffer.data(),buffer.size());
+
+    Result += std::wstring(L"t");
+    CreateDirectoryW(Result.c_str(), NULL);
+
+    Result += std::wstring(L"\\") + s2ws(ParentProcessId);
+    CreateDirectoryW(Result.c_str(), NULL);
+
+    Result += std::wstring(L"\\") + s2ws(Filename);
+
+    return Result;
+}
+
+void ProxySaver::WriteConfigFile(const std::string& Filename, const std::string& Data)
+{
+    std::wstring Path = GetConfigFilePath(Filename);
+    DeleteFileW(Path.c_str());
+    try
+    {
+        std::ofstream outfile(Path, std::ios::binary);
+        if (outfile.is_open())
+        {
+            outfile << Data;
+        }
+        outfile.flush();
+        outfile.close();
+    }
+    catch (...)
+    {
+    }
+}
+
+
+std::string ProxySaver::GenerateProxyConfig(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password)
 {
     std::string data;
 
@@ -41,34 +103,40 @@ std::string ProxySaver::Generate(const std::string& Server, int Port, bool IsHtt
     return data;
 }
 
-void ProxySaver::Save(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password, const std::string &Path)
+void ProxySaver::WriteProxyConfig(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password)
 {
-    DeleteFileA(Path.c_str());
-    try
-    {
-        std::ofstream outfile(Path, std::ios::binary);
-        if (outfile.is_open())
-        {
-            outfile << Generate(Server, Port, IsHttp, Login, Password);
-        }
-        outfile.flush();
-        outfile.close();
-    }
-    catch (...)
-    {
-    }
+    std::string ConfigData = GenerateProxyConfig(Server, Port, IsHttp, Login, Password);
+    WriteConfigFile("s", ConfigData);
 }
 
-std::string ProxySaver::CreateFolder(const std::string& Path, const std::string& ParentProcessId)
+void ProxySaver::WriteDirectConnectionConfig()
 {
-    std::string Folder(Path + std::string("/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-    return Folder;
+    WriteProxyConfig(std::string(), 0, true, std::string(), std::string());
 }
 
-void ProxySaver::Reset(const std::string &Path)
+bool ProxySaver::IsCurrentProxyConfigEquals(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password)
 {
-    Save(std::string(), 0, true, std::string(), std::string(), Path);
+    std::string OldProxyData = GenerateProxyConfig(Server, Port, IsHttp, Login, Password);
+    std::string NewProxyData = ReadAllString(GetConfigFilePath("s"));
+    return OldProxyData == NewProxyData;
+}
+
+void ProxySaver::ResetAllConnections()
+{
+    WriteConfigFile("r", "reset");
+}
+
+void ProxySaver::ResetDPI()
+{
+    WriteConfigFile("dpi", "reset");
+}
+
+void ProxySaver::SetMinCapturePeriod(int MinCapturePeriod)
+{
+    WriteConfigFile("f", std::to_string(MinCapturePeriod));
+}
+
+void ProxySaver::TriggerExtensionButton(const std::string& ExtensionId)
+{
+    WriteConfigFile(ExtensionId, "-");
 }

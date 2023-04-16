@@ -18,7 +18,6 @@ void DevToolsActionSetProxy::Run()
     // 4) Wait 0.5 seconds.
 
     //Init folder
-    std::string Folder = GlobalState->SaveProxy->CreateFolder(GlobalState->ChromeExecutableLocation, GlobalState->ParentProcessId);
 
     //Check if same proxy already applied.
     {
@@ -28,10 +27,7 @@ void DevToolsActionSetProxy::Run()
         std::string Login = Params["login"].String;
         std::string Password = Params["password"].String;
 
-
-        std::string OldProxyData = GlobalState->SaveProxy->Generate(Server, Port, IsHttp, Login, Password);
-        std::string NewProxyData = ReadAllString(Folder + std::string("/s"));
-        if(OldProxyData == NewProxyData)
+        if(GlobalState->SaveProxy->IsCurrentProxyConfigEquals(Server, Port, IsHttp, Login, Password))
         {
             //We are using same proxy, immediatelly return
             State = Finished;
@@ -48,7 +44,7 @@ void DevToolsActionSetProxy::Run()
     WaitingForStopNetworkActivity = false;
 
     //Stop new reqeusts from being send
-    GlobalState->SaveProxy->Save("127.0.0.1", 0, true, std::string(), std::string(), Folder + std::string("/s"));
+    GlobalState->SaveProxy->WriteProxyConfig("127.0.0.1", 0, true, std::string(), std::string());
 
     //Wait 3 seconds
     FinishActionTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 3000;
@@ -72,30 +68,7 @@ void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const s
                 WaitingForResetAllConnections = false;
                 WaitingForStopNetworkActivity = false;
 
-                std::string Folder(GlobalState->ChromeExecutableLocation + std::string("/t/"));
-                CreateDirectoryA(Folder.c_str(), NULL);
-                Folder += GlobalState->ParentProcessId;
-                CreateDirectoryA(Folder.c_str(), NULL);
-
-                //Path of file to write
-                std::string Path = Folder + std::string("/s");
-                std::string ResetPath = Folder + std::string("/r");
-
-
-                //This will create file, which tells browser to reset all sockets
-                try
-                {
-                    std::ofstream outfile(ResetPath, std::ios::binary);
-                    if(outfile.is_open())
-                    {
-                        outfile << "reset";
-                    }
-                    outfile.flush();
-                    outfile.close();
-                } catch(...)
-                {
-
-                }
+                GlobalState->SaveProxy->ResetAllConnections();
 
                 FinishActionTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 3000;
                 WaitingForResetAllConnections = true;
@@ -126,8 +99,7 @@ void DevToolsActionSetProxy::OnWebSocketEvent(const std::string& Method, const s
                 Params.erase("password");
 
                 //Generate proxy data
-                std::string Folder = GlobalState->SaveProxy->CreateFolder(GlobalState->ChromeExecutableLocation, GlobalState->ParentProcessId);
-                GlobalState->SaveProxy->Save(Server, Port, IsHttp, Login, Password, Folder + std::string("/s"));
+                GlobalState->SaveProxy->WriteProxyConfig(Server, Port, IsHttp, Login, Password);
 
                 FinishActionTime = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 500;
                 WaitingForSetProxy = true;

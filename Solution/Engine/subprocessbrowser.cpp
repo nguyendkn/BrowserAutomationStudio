@@ -1304,7 +1304,7 @@ namespace BrowserAutomationStudioFramework
     {
         if(LastPID>0)
         {
-            QString OldConfigDir = QDir(QString("worker/chrome/t") + QDir::separator() + QString::number(LastPID)).absolutePath();
+            QString OldConfigDir = QDir(QString("t") + QDir::separator() + QString::number(LastPID)).absolutePath();
             QDir(OldConfigDir).removeRecursively();
             LastPID = -1;
         }

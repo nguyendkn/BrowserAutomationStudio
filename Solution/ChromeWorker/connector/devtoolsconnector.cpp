@@ -21,8 +21,7 @@ using namespace std::chrono;
 void DevToolsConnector::ResetProxy(const std::string& ParentProcessId)
 {
     // Generate proxy data
-    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, ParentProcessId);
-    GlobalState.SaveProxy->Reset(Folder + std::string("/s"));
+    GlobalState.SaveProxy->WriteDirectConnectionConfig();
 }
 
 void DevToolsConnector::SetInitialProxy(const std::string& InitalProxy)
@@ -39,7 +38,6 @@ void DevToolsConnector::SetInitialProxy(const std::string& InitalProxy)
         return;
     }
 
-    std::string Folder = GlobalState.SaveProxy->CreateFolder(GlobalState.ChromeExecutableLocation, GlobalState.ParentProcessId);
     try
     {
         picojson::value Value;
@@ -50,7 +48,7 @@ void DevToolsConnector::SetInitialProxy(const std::string& InitalProxy)
         bool IsHttp = Object["IsHttp"].get<bool>();
         std::string name = Object["name"].get<std::string>();
         std::string password = Object["password"].get<std::string>();
-        GlobalState.SaveProxy->Save(server, Port, IsHttp, name, password,Folder + std::string("/s"));
+        GlobalState.SaveProxy->WriteProxyConfig(server, Port, IsHttp, name, password);
         GlobalState.IsProxySet = true;
         return;
 
@@ -79,6 +77,7 @@ void DevToolsConnector::Initialize
     this->WebSocketClientFactory = WebSocketClientFactory;
 
     GlobalState.SaveProxy.reset(new ProxySaver());
+    GlobalState.SaveProxy->Initialize(ParentProcessId);
 
     ISimpleHttpClient * HttpClient = this->SimpleHttpClientFactory->Create();
     HttpClient->GlobalActivate();
@@ -2172,29 +2171,7 @@ void DevToolsConnector::DisableBackgroundMode()
 
 void DevToolsConnector::SetMinCapturePeriod(int MinCapturePeriod)
 {
-    //Create folder if needed
-    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += GlobalState.ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-
-    //Path of file to write
-    std::string FrameRatePath = Folder + std::string("/f");
-
-    //This will create file, which tells browser to change framerate
-    try
-    {
-        std::ofstream outfile(FrameRatePath, std::ios::binary);
-        if(outfile.is_open())
-        {
-            outfile << std::to_string(MinCapturePeriod);
-        }
-        outfile.flush();
-        outfile.close();
-    } catch(...)
-    {
-
-    }
+    GlobalState.SaveProxy->SetMinCapturePeriod(MinCapturePeriod);
 }
 
 Async DevToolsConnector::StartScreenCast(int Timeout)
@@ -2891,29 +2868,7 @@ void DevToolsConnector::TriggerExtensionButton(const std::string ExtensionIdOrNa
         Id = ExtensionIdOrNamePart;
     }
 
-    //Create folder if needed
-    std::string Folder(GlobalState.ChromeExecutableLocation + std::string("/t/"));
-    CreateDirectoryA(Folder.c_str(), NULL);
-    Folder += GlobalState.ParentProcessId;
-    CreateDirectoryA(Folder.c_str(), NULL);
-
-    //Path of file to write
-    std::string ExtensionPath = Folder + std::string("/") + Id;
-
-    //This will create file, which tells browser to trigger extension
-    try
-    {
-        std::ofstream outfile(ExtensionPath, std::ios::binary);
-        if(outfile.is_open())
-        {
-            outfile << "-";
-        }
-        outfile.flush();
-        outfile.close();
-    } catch(...)
-    {
-
-    }
+    GlobalState.SaveProxy->TriggerExtensionButton(Id);
 }
 
 Async DevToolsConnector::StartDragFile(const std::string& Path, int Timeout)

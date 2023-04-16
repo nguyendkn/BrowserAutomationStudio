@@ -7,12 +7,27 @@ class ProxySaver
 {
 private:
 
+    std::string ParentProcessId;
+    std::wstring GetConfigFilePath(const std::string& Filename);
+    std::string GenerateProxyConfig(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);
+    void WriteConfigFile(const std::string& Filename, const std::string& Data);
 
 public:
-    std::string Generate(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);
-    void Save(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password, const std::string &Path);
-    std::string CreateFolder(const std::string& Path, const std::string& ParentProcessId);
-    void Reset(const std::string &Path);
+    void Initialize(const std::string &ParentProcessId);
+
+    /*Proxy*/
+    void WriteProxyConfig(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);
+    void WriteDirectConnectionConfig();
+    bool IsCurrentProxyConfigEquals(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);
+
+    /*Other config files*/
+    void ResetAllConnections();
+    void ResetDPI();
+    void SetMinCapturePeriod(int MinCapturePeriod);
+    void TriggerExtensionButton(const std::string& ExtensionId);
+
+
+
 };
 
 #endif // PROXYSAVER_H

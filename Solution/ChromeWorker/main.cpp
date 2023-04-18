@@ -2337,7 +2337,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     if(hwnd == NULL)
         return 0;
 
-    _PopupEmulation->Init(Data, IDPopupEmulation, hwnd, Layout);
+    _PopupEmulation->Init(Data, IDPopupEmulation, hwnd, Layout, Data->Connector->GetProxyConfigFolder());
     app->SetPopupEmulation(_PopupEmulation);
 
     Data->_MainWindowHandle = hwnd;

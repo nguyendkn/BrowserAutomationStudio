@@ -59,6 +59,12 @@ void DevToolsConnector::SetInitialProxy(const std::string& InitalProxy)
 
 }
 
+std::wstring DevToolsConnector::GetProxyConfigFolder()
+{
+    return GlobalState.SaveProxy->GetConfigFilePath(std::string());
+}
+
+
 void DevToolsConnector::Initialize
 (
         std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,

@@ -8,7 +8,7 @@ class ProxySaver
 private:
 
     std::string ParentProcessId;
-    std::wstring GetConfigFilePath(const std::string& Filename);
+
     std::string GenerateProxyConfig(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);
     void WriteConfigFile(const std::string& Filename, const std::string& Data);
 
@@ -26,7 +26,7 @@ public:
     void SetMinCapturePeriod(int MinCapturePeriod);
     void TriggerExtensionButton(const std::string& ExtensionId);
 
-
+    std::wstring GetConfigFilePath(const std::string& Filename);
 
 };
 

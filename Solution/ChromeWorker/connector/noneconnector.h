@@ -56,6 +56,8 @@ class NoneConnector : public IDevToolsConnector
         void OpenDevTools();
         void InspectAt(int X, int Y);
 
+        std::wstring GetProxyConfigFolder();
+
         // Browser life cycle
         Async Reset(int Timeout = -1);
         bool IsLoading();

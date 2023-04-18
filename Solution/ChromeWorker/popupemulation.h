@@ -2,14 +2,14 @@
 #define POPUPEMULATION_H
 
 #include "browserdata.h"
-#include "ipcsimple.h"
+#include "ipcwithfile.h"
 #include "mainlayout.h"
 #include <windows.h>
 
 class PopupEmulation
 {
     BrowserData *Data = 0;
-    IPCSimple SelectElementIPC;
+    IPCWithFile SelectElementIPC;
     bool IsActive = false;
     HMENU hMenu = 0;
     int FirstIndex = 0;
@@ -17,13 +17,14 @@ class PopupEmulation
     HWND hwnd;
     std::string CurrentElementId;
     MainLayout* Layout;
+    std::wstring ProxyConfigFolder;
     void ShowMenu(int X, int Y, int Height, std::vector<std::string> Options);
     void CloseMenu(bool ForceClose = false);
 
 public:
 
 
-    void Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayout* Layout);
+    void Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayout* Layout, const std::wstring& ProxyConfigFolder);
     void Timer();
     void SetIndex(int Index);
 

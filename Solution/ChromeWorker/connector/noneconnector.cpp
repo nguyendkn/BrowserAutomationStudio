@@ -10,6 +10,11 @@ void NoneConnector::ResetProxy(const std::string& ParentProcessId)
     GlobalState.SaveProxy->WriteDirectConnectionConfig();
 }
 
+std::wstring NoneConnector::GetProxyConfigFolder()
+{
+    return GlobalState.SaveProxy->GetConfigFilePath(std::string());
+}
+
 void NoneConnector::Initialize(
     std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
     std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,

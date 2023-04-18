@@ -78,6 +78,8 @@ class IDevToolsConnector
         virtual void OpenDevTools() = 0;
         virtual void InspectAt(int X, int Y) = 0;
 
+        virtual std::wstring GetProxyConfigFolder() = 0;
+
         // Browser life cycle
         virtual Async Reset(int Timeout = -1) = 0;
         virtual bool IsLoading() = 0;

@@ -3,13 +3,14 @@
 #include "JsonSerializer.h"
 #include "converter.h"
 
-void PopupEmulation::Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayout* Layout)
+void PopupEmulation::Init(BrowserData *Data, int FirstIndex, HWND hwnd, MainLayout* Layout, const std::wstring& ProxyConfigFolder)
 {
     this->Data = Data;
     this->hwnd = hwnd;
     this->FirstIndex = FirstIndex;
     this->Layout = Layout;
-    SelectElementIPC.Init(std::string("inselect") + Data->_UniqueProcessId);
+    this->ProxyConfigFolder = ProxyConfigFolder;
+    SelectElementIPC.Init(ProxyConfigFolder + std::wstring(L"inselect"));
 }
 
 bool PopupEmulation::GetMenuVisibility()
@@ -96,7 +97,7 @@ void PopupEmulation::ShowMenu(int X, int Y, int Height, std::vector<std::string>
     SendObject["element_id"] = Variant(CurrentElementId);
     std::string SendData = Serializer.SerializeObjectToString(SendObject);
 
-    IPCSimple::Write(std::string("outselect") + CurrentElementId + Data->_UniqueProcessId, SendData);
+    IPCWithFile::Write(ProxyConfigFolder + std::wstring(L"outselect") + s2ws(CurrentElementId), SendData);
 
 }
 
@@ -118,7 +119,7 @@ void PopupEmulation::SetIndex(int Index)
     SendObject["element_id"] = Variant(CurrentElementId);
     std::string SendData = Serializer.SerializeObjectToString(SendObject);
 
-    IPCSimple::Write(std::string("outselect") + CurrentElementId + Data->_UniqueProcessId, SendData);
+    IPCWithFile::Write(ProxyConfigFolder + std::wstring(L"outselect") + s2ws(CurrentElementId), SendData);
 
 }
 

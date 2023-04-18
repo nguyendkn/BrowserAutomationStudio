@@ -75,6 +75,7 @@ SOURCES += main.cpp \
     fileutils.cpp \
     installcomponents.cpp \
     ipcsimple.cpp \
+    ipcwithfile.cpp \
     mainapp.cpp \
     mainhandler.cpp \
     mixnumbers.cpp \
@@ -244,6 +245,7 @@ HEADERS += \
     fileutils.h \
     installcomponents.h \
     ipcsimple.h \
+    ipcwithfile.h \
     mainapp.h \
     mainhandler.h \
     mixnumbers.h \

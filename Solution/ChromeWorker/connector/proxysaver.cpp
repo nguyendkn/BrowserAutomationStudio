@@ -12,6 +12,9 @@
 void ProxySaver::Initialize(const std::string &ParentProcessId)
 {
     this->ParentProcessId = ParentProcessId;
+
+    //Create process folder inside "t" folder
+    GetConfigFilePath(std::string());
 }
 
 std::wstring ProxySaver::GetConfigFilePath(const std::string& Filename)

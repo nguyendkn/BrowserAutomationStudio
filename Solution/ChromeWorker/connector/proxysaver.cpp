@@ -90,7 +90,7 @@ std::string ProxySaver::GenerateProxyConfig(const std::string& Server, int Port,
             std::to_string(Port) + std::string("|") +
             ReplaceAll(Login, "|", "") + std::string("|") +
             ReplaceAll(Password, "|", "") + std::string("|") +
-            proxy_type_string + std::string("|2|29815|0|0|1111|SCAP_END!");
+            proxy_type_string + std::string("|2|29815|0|0|1111|1|SCAP_END!");
 
         data += std::string("\x4d\x43\x23\x23\x01\x01\x01\x01\x73\x6f\x63\x6b\x73\x63\x61\x70\x36\x34\x2e\x63\x6f\x6d\x23", 23);
         data += md5(proxy);

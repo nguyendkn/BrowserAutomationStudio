@@ -102,6 +102,8 @@ namespace BrowserAutomationStudioFramework
 
         bool EmptyProject = false;
 
+        int PcapPort = -1;
+
     public:
         QString WorkerScript;
 

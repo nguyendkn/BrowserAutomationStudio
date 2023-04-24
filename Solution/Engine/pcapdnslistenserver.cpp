@@ -20,6 +20,11 @@ void PcapDNSListenServer::NewConnection()
 
 }
 
+int PcapDNSListenServer::GetPort()
+{
+    return Port;
+}
+
 void PcapDNSListenServer::ReadyRead()
 {
     QTcpSocket *Connection = (QTcpSocket *)(sender());
@@ -66,5 +71,8 @@ void PcapDNSListenServer::Start()
 {
     if(Started)
         return;
-    Started = Server->listen(QHostAddress::LocalHost, 29815);
+
+    Started = Server->listen(QHostAddress::LocalHost);
+
+    Port = Server->serverPort();
 }

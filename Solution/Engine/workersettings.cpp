@@ -108,6 +108,16 @@ namespace BrowserAutomationStudioFramework
         this->ProxyPort = ProxyPort;
     }
 
+    int WorkerSettings::GetPcapPort()
+    {
+        return PcapPort;
+    }
+
+    void WorkerSettings::SetPcapPort(int PcapPort)
+    {
+        this->PcapPort = PcapPort;
+    }
+
     bool WorkerSettings::GetProxyIsHttp()
     {
         return ProxyIsHttp;
@@ -1238,6 +1248,8 @@ namespace BrowserAutomationStudioFramework
 
             res.append("--CommandLine");
             res.append(GetCommandLineAdditional().split(QRegExp("[\r\n]"),QString::SkipEmptyParts).join(";"));
+
+            res.append(QString("--PcapPort=") + QString::number(PcapPort));
 
             res.append("--InitialProxy");
             res.append(GetProxyForNextProfile());

@@ -8,12 +8,13 @@ class ProxySaver
 private:
 
     std::string ParentProcessId;
+    int PcapPort = 29815;
 
     std::string GenerateProxyConfig(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);
     void WriteConfigFile(const std::string& Filename, const std::string& Data);
 
 public:
-    void Initialize(const std::string &ParentProcessId);
+    void Initialize(const std::string &ParentProcessId, int PcapPort);
 
     /*Proxy*/
     void WriteProxyConfig(const std::string& Server, int Port, bool IsHttp, const std::string& Login, const std::string& Password);

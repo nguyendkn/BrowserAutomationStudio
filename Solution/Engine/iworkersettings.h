@@ -33,6 +33,9 @@ namespace BrowserAutomationStudioFramework
         virtual void Set(const QString& Key,const QString& Value) = 0;
         virtual QStringList Keys() = 0;
 
+        virtual int GetPcapPort() = 0;
+        virtual void SetPcapPort(int PcapPort) = 0;
+
         virtual QString GetWorkerPathSafe() = 0;
         virtual QString GetWorkerPathNotSafe() = 0;
         virtual QString GetWorkerPath() = 0;

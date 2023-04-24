@@ -14,8 +14,10 @@ class PcapDNSListenServer : public QObject
     //QMap<QString,unsigned int>Ids;
     unsigned int Id = 0;
     bool Started = false;
+    int Port = -1;
 public:
     explicit PcapDNSListenServer(QObject *parent = 0);
+    int GetPort();
 
 signals:
 public slots:

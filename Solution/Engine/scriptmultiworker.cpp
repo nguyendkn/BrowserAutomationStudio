@@ -467,6 +467,7 @@ namespace BrowserAutomationStudioFramework
     {
         connect(BrowserFactory->GetPCResourcesSmoothUsage(),SIGNAL(Log(QString)),this,SLOT(NoResources(QString)));
         _PcapDNSListenServer->Start();
+        PcapPort = _PcapDNSListenServer->GetPort();
         if(!Helper)
         {
             Helper = HelperFactory->GetHelper();
@@ -1562,6 +1563,7 @@ namespace BrowserAutomationStudioFramework
         worker->SetDoTrace(GetDoTrace());
 
         IWorkerSettings *NewWorkerSettings = WorkerSettings->Clone();
+        NewWorkerSettings->SetPcapPort(PcapPort);
         IBrowser * BrowserAtIndex = BrowsersList->at(index);
         NewWorkerSettings->setParent(BrowserAtIndex);
         BrowserAtIndex->SetWorkerSettings(NewWorkerSettings);

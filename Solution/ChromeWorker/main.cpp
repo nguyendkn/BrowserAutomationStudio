@@ -1851,6 +1851,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     std::string ParentProcessId;
     std::string UniqueProcessId;
     double DeviceScaleFactor = 1.0;
+    int PcapPort = 29815;
 
 
     //Parse command line
@@ -1893,6 +1894,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                 DeviceScaleFactor = std::stoi(DeviceScaleFactorString) * 0.01;
                 if(DeviceScaleFactor <= 0.0001)
                     DeviceScaleFactor = 1.0;
+
+                //Don't add to arguments list
+                continue;
+            }
+
+            if(Item.find(L"--PcapPort=") == 0)
+            {
+                std::string PcapPortString = ws2s(Item);
+                PcapPortString.erase(0,11);
+                PcapPort = std::stoi(PcapPortString);
 
                 //Don't add to arguments list
                 continue;
@@ -2121,7 +2132,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                     Data->MainRemoteDebuggingPort, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker\\chrome\\",
                     PrepareConstantStartupScript(Data),
                     ParseChromeCommandLine(Settings.AdditionalCommandLine()),
-                    Settings.InitialProxy()
+                    Settings.InitialProxy(), PcapPort
                     );
     WebScoketFactory.reset();
     if(Data->IsRecord)

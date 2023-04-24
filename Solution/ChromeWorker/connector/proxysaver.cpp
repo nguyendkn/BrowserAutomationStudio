@@ -9,8 +9,9 @@
 #include "md5.h"
 #include "aes.h"
 
-void ProxySaver::Initialize(const std::string &ParentProcessId)
+void ProxySaver::Initialize(const std::string &ParentProcessId, int PcapPort)
 {
+    this->PcapPort = PcapPort;
     this->ParentProcessId = ParentProcessId;
 
     //Create process folder inside "t" folder
@@ -91,7 +92,7 @@ std::string ProxySaver::GenerateProxyConfig(const std::string& Server, int Port,
         std::to_string(Port) + std::string("|") +
         ReplaceAll(Login, "|", "") + std::string("|") +
         ReplaceAll(Password, "|", "") + std::string("|") +
-        proxy_type_string + std::string("|2|29815|0|0|1111|1|SCAP_END!");
+        proxy_type_string + std::string("|2|") + std::to_string(PcapPort) + std::string("|0|0|1111|1|SCAP_END!");
     }
 
     data += std::string("\x4d\x43\x23\x23\x01\x01\x01\x01\x73\x6f\x63\x6b\x73\x63\x61\x70\x36\x34\x2e\x63\x6f\x6d\x23", 23);

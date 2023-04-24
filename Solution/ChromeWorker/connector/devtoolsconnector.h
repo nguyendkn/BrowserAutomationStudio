@@ -154,7 +154,7 @@ class DevToolsConnector : public IDevToolsConnector
                 int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
                 const std::string& ConstantStartupScript,
                 const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional,
-                const std::string& InitalProxy
+                const std::string& InitalProxy, int PcapPort
         );
         void SetProfilePath(const std::wstring& Path);
         void SetExtensionList(const std::vector<std::wstring>& Extensions);

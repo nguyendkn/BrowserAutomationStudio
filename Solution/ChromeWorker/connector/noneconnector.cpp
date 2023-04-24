@@ -21,11 +21,11 @@ void NoneConnector::Initialize(
     int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
     const std::string& ConstantStartupScript,
     const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional,
-    const std::string& InitalProxy
+    const std::string& InitalProxy, int PcapPort
 )
 {
     GlobalState.SaveProxy.reset(new ProxySaver());
-    GlobalState.SaveProxy->Initialize(ParentProcessId);
+    GlobalState.SaveProxy->Initialize(ParentProcessId, PcapPort);
 
     GlobalState.Port = Port;
     GlobalState.UniqueProcessId = UniqueProcessId;

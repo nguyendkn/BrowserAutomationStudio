@@ -34,6 +34,7 @@ namespace BrowserAutomationStudioFramework
         QString WebrtcIps;
         int MaxFPS = 30;
 
+        int PcapPort = -1;
 
         QString UniqueProcessId;
 
@@ -71,6 +72,9 @@ namespace BrowserAutomationStudioFramework
         virtual QString Get(const QString& Key);
         virtual void Set(const QString& Key,const QString& Value);
         virtual QStringList Keys();
+
+        virtual int GetPcapPort();
+        virtual void SetPcapPort(int PcapPort);
 
         virtual void SetTimezone(int Timezone);
         virtual int GetTimezone();

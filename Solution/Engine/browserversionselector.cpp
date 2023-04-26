@@ -109,6 +109,11 @@ namespace BrowserAutomationStudioFramework
                                 Item.Description = BrowserItemObject["description"].toString();
                             }
 
+                            if(BrowserItemObject.contains("architecture") && BrowserItemObject["architecture"].isString())
+                            {
+                                Item.Architecture = BrowserItemObject["architecture"].toString();
+                            }
+
                             Item.WorkerFolderName = QString("Worker.") + QString::number(Item.Id);
                             Item.WorkerExeRelativePath = Item.WorkerFolderName + QString("/Worker.exe");
                             Item.WorkerExeFullPath = QFileInfo(Item.WorkerExeRelativePath).absoluteFilePath();

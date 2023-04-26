@@ -25,6 +25,7 @@ namespace BrowserAutomationStudioFramework
             QString BasVersion;
             QString BrowserType;
             QString Description;
+            QString Architecture;
             bool IsNull = true;
         };
     

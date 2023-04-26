@@ -8,6 +8,9 @@
 #include "JlCompress.h"
 #include <bitset>
 #include <QCryptographicHash>
+
+#include "browserversionselector.h"
+
 #include "every_cpp.h"
 
 namespace BrowserAutomationStudioFramework
@@ -358,6 +361,17 @@ namespace BrowserAutomationStudioFramework
             Timer->start();
         }
 
+        //Using only latest browser version to download extension
+        //Practically using different version will still give same file
+        //TODO: use only current browser version.
+        QString DefaultVersionFull = QString("111.0.5563.65");
+        BrowserVersionSelector _BrowserVersionSelector;
+        IBrowserVersionSelector::BrowserItem _BrowserItem = _BrowserVersionSelector.GetDefaultBrowserItem();
+        if(!_BrowserItem.IsNull)
+        {
+            DefaultVersionFull = _BrowserItem.VersionFull;
+        }
+
         //Get http client
         if(HttpClient)
         {
@@ -373,7 +387,7 @@ namespace BrowserAutomationStudioFramework
 
         HttpClient->Connect(this,SLOT(OnDoneHttpRequest()));
 
-        QString ExtensionUrl = QString("https://clients2.google.com/service/update2/crx?response=redirect&prodversion=111.0.5563.65&acceptformat=crx2,crx3&x=id%3D") + Request.ExtensionId + QString("%26uc&acceptformat=crx2,crx3");
+        QString ExtensionUrl = QString("https://clients2.google.com/service/update2/crx?response=redirect&prodversion=") + DefaultVersionFull + QString("&acceptformat=crx2,crx3&x=id%3D") + Request.ExtensionId + QString("%26uc&acceptformat=crx2,crx3");
         QString ExtensionPath = Request.ExtensionPath + QString("/temp.crx");
         HttpClient->Download(ExtensionUrl, ExtensionPath);
     }

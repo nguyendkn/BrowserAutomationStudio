@@ -16,6 +16,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <Windows.h>
+#include "browserversionselector.h"
 #include "every_cpp.h"
 
 namespace BrowserAutomationStudioFramework
@@ -88,8 +89,22 @@ namespace BrowserAutomationStudioFramework
         return LatestVersion;
     }
 
+    QString SchedulerInstaller::GetWorkerFolderName()
+    {
+        QString WorkerFolderName = QString("Worker");
+        BrowserVersionSelector _BrowserVersionSelector;
+        IBrowserVersionSelector::BrowserItem _BrowserItem = _BrowserVersionSelector.GetDefaultBrowserItem();
+        if(!_BrowserItem.IsNull)
+        {
+            WorkerFolderName = _BrowserItem.WorkerFolderName;
+        }
+        return WorkerFolderName;
+    }
+
     void SchedulerInstaller::CopyFiles(const QString& From,const QString& To)
     {
+        QString WorkerFolderName = GetWorkerFolderName();
+
         //Root files
         CopyFileInternal(From,To,"Qt5Core.dll");
         CopyFileInternal(From,To,"zlib1.dll");
@@ -160,32 +175,34 @@ namespace BrowserAutomationStudioFramework
         //RemoteExecuteScript.exe
         CopyFileInternal(From,To + "/app","RemoteExecuteScript.exe");
 
+
+
         //Gui
-        CopyFileInternal(From + "/Worker",To + "/gui","zlib1.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","v8_context_snapshot.bin");
-        CopyFileInternal(From + "/Worker",To + "/gui","swiftshader/libEGL.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","swiftshader/libGLESv2.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","snapshot_blob.bin");
-        CopyFileInternal(From + "/Worker",To + "/gui","SchedulerGui.exe");
-        CopyFileInternal(From + "/Worker",To + "/gui","natives_blob.bin");
-        CopyFileInternal(From + "/Worker",To + "/gui","libGLESv2.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","libEGL.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","icudtl.dat");
-        CopyFileInternal(From + "/Worker",To + "/gui","libcef.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","devtools_resources.pak");
-        CopyFileInternal(From + "/Worker",To + "/gui","d3dcompiler_47.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","d3dcompiler_43.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","shedulericonbig.ico");
-        CopyFileInternal(From + "/Worker",To + "/gui","schedulericonsmall.ico");
-        CopyFileInternal(From + "/Worker",To + "/gui","chrome_elf.dll");
-        CopyFileInternal(From + "/Worker",To + "/gui","cef_extensions.pak");
-        CopyFileInternal(From + "/Worker",To + "/gui","cef_200_percent.pak");
-        CopyFileInternal(From + "/Worker",To + "/gui","cef_100_percent.pak");
-        CopyFileInternal(From + "/Worker",To + "/gui","cef.pak");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","zlib1.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","v8_context_snapshot.bin");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","swiftshader/libEGL.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","swiftshader/libGLESv2.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","snapshot_blob.bin");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","SchedulerGui.exe");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","natives_blob.bin");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","libGLESv2.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","libEGL.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","icudtl.dat");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","libcef.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","devtools_resources.pak");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","d3dcompiler_47.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","d3dcompiler_43.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","shedulericonbig.ico");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","schedulericonsmall.ico");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","chrome_elf.dll");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","cef_extensions.pak");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","cef_200_percent.pak");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","cef_100_percent.pak");
+        CopyFileInternal(From + QString("/") + WorkerFolderName,To + "/gui","cef.pak");
 
         //Locales
         {
-            QString FromPath = From + "/Worker/locales";
+            QString FromPath = From + QString("/") + WorkerFolderName + QString("/locales");
             QDirIterator it(FromPath, QStringList() << "*.*", QDir::Files, QDirIterator::Subdirectories);
             while (it.hasNext())
             {

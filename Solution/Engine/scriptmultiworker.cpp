@@ -59,6 +59,16 @@ namespace BrowserAutomationStudioFramework
         return CsvHelper;
     }
 
+    void ScriptMultiWorker::SetBrowserVersionSelector(IBrowserVersionSelector *BrowserVersionSelector)
+    {
+        this->_BrowserVersionSelector = BrowserVersionSelector;
+    }
+
+    IBrowserVersionSelector * ScriptMultiWorker::GetBrowserVersionSelector()
+    {
+        return _BrowserVersionSelector;
+    }
+
     void ScriptMultiWorker::SetProfilerData(IProfilerData *ProfilerData)
     {
         this->ProfilerData = ProfilerData;
@@ -1563,6 +1573,7 @@ namespace BrowserAutomationStudioFramework
         worker->SetDoTrace(GetDoTrace());
 
         IWorkerSettings *NewWorkerSettings = WorkerSettings->Clone();
+        NewWorkerSettings->SetBrowserVersionSelector(_BrowserVersionSelector);
         NewWorkerSettings->SetPcapPort(PcapPort);
         IBrowser * BrowserAtIndex = BrowsersList->at(index);
         NewWorkerSettings->setParent(BrowserAtIndex);

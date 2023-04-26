@@ -25,6 +25,7 @@
 #include "imodulemanager.h"
 #include "istringbuilder.h"
 #include "iworkersettings.h"
+#include "ibrowserversionselector.h"
 #include "iprofilerdata.h"
 #include "iembeddedlanguagemanager.h"
 
@@ -59,6 +60,9 @@ namespace BrowserAutomationStudioFramework
 
         virtual void SetCsvHelper(ICsvHelper *CsvHelper) = 0;
         virtual ICsvHelper * GetCsvHelper() = 0;
+
+        virtual void SetBrowserVersionSelector(IBrowserVersionSelector *BrowserVersionSelector) = 0;
+        virtual IBrowserVersionSelector * GetBrowserVersionSelector() = 0;
 
         virtual void SetReportData(IScriptMultiWorkerReportData *ReportData) = 0;
         virtual IScriptMultiWorkerReportData * GetReportData() = 0;

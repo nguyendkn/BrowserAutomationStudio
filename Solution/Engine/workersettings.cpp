@@ -52,6 +52,12 @@ namespace BrowserAutomationStudioFramework
         Settings = SettingsPreserved;
     }
 
+    void WorkerSettings::SetBrowserVersionSelector(IBrowserVersionSelector * _BrowserVersionSelector)
+    {
+        this->_BrowserVersionSelector = _BrowserVersionSelector;
+    }
+
+
     QString WorkerSettings::Get(const QString& Key)
     {
         if(!Settings.contains(Key))
@@ -321,6 +327,12 @@ namespace BrowserAutomationStudioFramework
     }
     QString WorkerSettings::GetWorkerPath()
     {
+        IBrowserVersionSelector::BrowserItem Item = _BrowserVersionSelector->GetBrowserItemById(CurrentBrowserVersion);
+        if(!Item.IsNull)
+        {
+            return QString("./") + Item.WorkerExeRelativePath;
+        }
+
         return PathSafe;
     }
     QString WorkerSettings::GetExtensions()

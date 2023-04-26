@@ -38,6 +38,7 @@ namespace BrowserAutomationStudioFramework
         private:
             void CopyFilesAndInstall();
             void UninstallInternal();
+            QString GetWorkerFolderName();
 
 
             void RemoveAllCorruptedVersions();

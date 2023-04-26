@@ -10,7 +10,7 @@ namespace BrowserAutomationStudioFramework
     {
         Q_OBJECT
 
-
+        IBrowserVersionSelector * _BrowserVersionSelector;
         QString PathSafe;
         QString PathNotSafe;
         QString Profile;
@@ -50,6 +50,8 @@ namespace BrowserAutomationStudioFramework
         QString CommandLine;
         QString ProxyForNextProfile;
 
+        int CurrentBrowserVersion = 0;
+
         void SetSettingWhichRestartsBrowser(const QString& Key, QJsonObject& Object, bool& NeedRestart, bool& NeedSend);
         void SetSettingWhichRestartsVirtualBrowser(const QString& Key, QJsonObject& Object, bool& NeedToRestartVirtual, bool& NeedSend);
         void MLAAddCommandLineSettings(QStringList& Arguments,const QString& SettingKey,const QString& Prefix);
@@ -58,6 +60,8 @@ namespace BrowserAutomationStudioFramework
 
     public:
         explicit WorkerSettings(QObject *parent = 0);
+
+        virtual void SetBrowserVersionSelector(IBrowserVersionSelector * _BrowserVersionSelector);
 
         virtual void SetWorkerPathSafe(const QString& PathSafe);
         virtual void SetWorkerPathNotSafe(const QString& PathNotSafe);

@@ -49,6 +49,7 @@ namespace BrowserAutomationStudioFramework
         IHelperFactory* HelperFactory;
         IHelper* Helper;
         ICsvHelper *CsvHelper;
+        IBrowserVersionSelector* _BrowserVersionSelector;
         IModuleManager *ModuleManager;
         IStringBuilder *StringBuilder;
         IWorkerSettings *WorkerSettings;
@@ -128,6 +129,9 @@ namespace BrowserAutomationStudioFramework
 
         virtual void SetCsvHelper(ICsvHelper *CsvHelper);
         virtual ICsvHelper * GetCsvHelper();
+
+        virtual void SetBrowserVersionSelector(IBrowserVersionSelector *BrowserVersionSelector);
+        virtual IBrowserVersionSelector * GetBrowserVersionSelector();
 
         virtual void SetReportData(IScriptMultiWorkerReportData *ReportData);
         virtual IScriptMultiWorkerReportData * GetReportData();

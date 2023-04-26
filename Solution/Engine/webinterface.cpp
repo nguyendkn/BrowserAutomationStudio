@@ -12,7 +12,7 @@
 #include <QMessageBox>
 #include "askifrunwithwebinterfacedialog.h"
 #include "premiumlogindialog.h"
-
+#include "browserversionselector.h"
 
 #include "every_cpp.h"
 
@@ -537,8 +537,22 @@ namespace BrowserAutomationStudioFramework
         }
     }
 
+    QString WebInterface::GetWorkerFolderName()
+    {
+        QString WorkerFolderName = QString("Worker");
+        BrowserVersionSelector _BrowserVersionSelector;
+        IBrowserVersionSelector::BrowserItem _BrowserItem = _BrowserVersionSelector.GetDefaultBrowserItem();
+        if(!_BrowserItem.IsNull)
+        {
+            WorkerFolderName = _BrowserItem.WorkerFolderName;
+        }
+        return WorkerFolderName;
+    }
+
+
     void WebInterface::StartServer()
     {
+        QString WorkerFolderName = GetWorkerFolderName();
 
         QString LoginHtml = Html;
 
@@ -584,13 +598,13 @@ namespace BrowserAutomationStudioFramework
         {
             if(IconImage.width()>=32)
             {
-                IconImage.scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save("Worker/iconbig.ico","ICO",100);
-                IconImage.scaled(16,16,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save("Worker/iconsmall.ico","ICO",100);
+                IconImage.scaled(32,32,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save(WorkerFolderName + QString("/iconbig.ico"),"ICO",100);
+                IconImage.scaled(16,16,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save(WorkerFolderName + QString("/iconsmall.ico"),"ICO",100);
 
             }else
             {
-                IconImage.scaled(16,16,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save("Worker/iconbig.ico","ICO",100);
-                IconImage.scaled(16,16,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save("Worker/iconsmall.ico","ICO",100);
+                IconImage.scaled(16,16,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save(WorkerFolderName + QString("/iconbig.ico"),"ICO",100);
+                IconImage.scaled(16,16,Qt::IgnoreAspectRatio,Qt::SmoothTransformation).save(WorkerFolderName + QString("/iconsmall.ico"),"ICO",100);
 
             }
 
@@ -624,7 +638,7 @@ namespace BrowserAutomationStudioFramework
             }
 
             QProcess::startDetached(
-                        "Worker/UserInterface.exe",ParamList,"Worker"
+                        WorkerFolderName + QString("/UserInterface.exe"),ParamList,WorkerFolderName
                  );
         }
     }

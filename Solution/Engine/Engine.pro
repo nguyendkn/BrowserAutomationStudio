@@ -29,9 +29,11 @@ DEFINES += IS_X64
 SOURCES += engine.cpp \
     avoidendlessloop.cpp \
     browserextensionmanager.cpp \
+    browserversionselector.cpp \
     checkscript.cpp \
     devicescalemanager.cpp \
     ibrowserextensionmanager.cpp \
+    ibrowserversionselector.cpp \
     icheckscript.cpp \
     idevicescalemanager.cpp \
     imodulecreator.cpp \
@@ -390,10 +392,12 @@ HEADERS += engine.h\
     EmbeddedDefinitions.h \
     avoidendlessloop.h \
     browserextensionmanager.h \
+    browserversionselector.h \
     checkscript.h \
     devicescalemanager.h \
         engine_global.h \
     ibrowserextensionmanager.h \
+    ibrowserversionselector.h \
     icheckscript.h \
     idevicescalemanager.h \
     imodulecreator.h \

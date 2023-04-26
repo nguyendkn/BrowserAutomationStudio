@@ -69,7 +69,7 @@ void DevToolsConnector::Initialize
 (
         std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
         std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
-        int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
+        int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId,
         const std::string& ConstantStartupScript,
         const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional,
         const std::string& InitalProxy, int PcapPort
@@ -98,7 +98,6 @@ void DevToolsConnector::Initialize
     GlobalState.Port = Port;
     GlobalState.UniqueProcessId = UniqueProcessId;
     GlobalState.ParentProcessId = ParentProcessId;
-    GlobalState.ChromeExecutableLocation = ChromeExecutableLocation;
     GlobalState.ConstantStartupScript = ConstantStartupScript;
 
     ImageData.clear();
@@ -219,7 +218,7 @@ void DevToolsConnector::OpenDevToolsInternal(bool IsInspect)
 
     if(!PageId.empty())
     {
-        std::wstring ChromePath = GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation));
+        std::wstring ChromePath = GetRelativePathToExe(L"chrome");
         std::wstring WorkerPath = ChromePath + std::wstring(L"/worker.exe");
 
 
@@ -392,7 +391,7 @@ void DevToolsConnector::StartProcess()
     CommandLine += std::wstring(L"about:blank");
 
 
-    std::wstring ChromePath = GetRelativePathToParentFolder(s2ws(GlobalState.ChromeExecutableLocation));
+    std::wstring ChromePath = GetRelativePathToExe(L"chrome");
     std::wstring WorkerPath = ChromePath + std::wstring(L"/worker.exe");
 
     ProcessLauncher.Start(WorkerPath, CommandLine, ChromePath);

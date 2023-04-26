@@ -34,6 +34,7 @@
 #include "databaseadmin.h"
 #include "mongodatabaseconnector.h"
 #include "csvhelper.h"
+#include "browserversionselector.h"
 #include "databasestate.h"
 #include "recordprocesscommunication.h"
 #include "modulemanager.h"
@@ -121,6 +122,7 @@ protected:
     QList<IRecordProcessCommunication::ResourceDescription> LastResourceList;
 
     CsvHelper *_CsvHelper;
+    BrowserVersionSelector *_BrowserVersionSelector;
     void closeEvent(QCloseEvent *event);
     bool nativeEvent(const QByteArray &eventType, void *message, long *result);
 

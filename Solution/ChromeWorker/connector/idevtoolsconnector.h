@@ -66,7 +66,7 @@ class IDevToolsConnector
         virtual void Initialize(
             std::shared_ptr<ISimpleHttpClientFactory> SimpleHttpClientFactory,
             std::shared_ptr<IWebSocketClientFactory> WebSocketClientFactory,
-            int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId, const std::string& ChromeExecutableLocation,
+            int Port, const std::string& UniqueProcessId, const std::string& ParentProcessId,
             const std::string& ConstantStartupScript,
             const std::vector<std::pair<std::string,std::string> >& CommandLineAdditional,
             const std::string& InitalProxy, int PcapPort

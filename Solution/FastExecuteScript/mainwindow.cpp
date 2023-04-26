@@ -185,6 +185,8 @@ void MainWindow::Abort()
 
 void MainWindow::Start()
 {
+    _BrowserVersionSelector = new BrowserVersionSelector(this);
+
     _EmbeddedLanguageManager = new EmbeddedLanguageManager(this);
 
     _ModuleManager = new ModuleManager(this);
@@ -668,6 +670,7 @@ void MainWindow::Start()
     worker->SetModuleManager(_ModuleManager);
     worker->SetStringBuilder(StringBuild);
     worker->SetEmbeddedLanguageManager(_EmbeddedLanguageManager);
+    worker->SetBrowserVersionSelector(_BrowserVersionSelector);
     worker->SetAdditionEngineScripts(_ModuleManager->GetModuleEngineCode(loader.GetUnusedModules()));
     _ModuleManager->CacheBrowserCode();
     worker->SetPreprocessor(_Preprocessor);

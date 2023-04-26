@@ -68,6 +68,9 @@ namespace BrowserAutomationStudioFramework
         QString RemoteControlScript;
         QString RemoteControlLogin;
         QString RemoteControlPassword;
+
+        QString GetWorkerFolderName();
+
     public:
         explicit WebInterface(QObject *parent = 0);
         ~WebInterface();

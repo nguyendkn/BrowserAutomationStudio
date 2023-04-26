@@ -31,6 +31,7 @@
 #include "databaseadmin.h"
 #include "mongodatabaseconnector.h"
 #include "csvhelper.h"
+#include "browserversionselector.h"
 #include "databasestate.h"
 #include "modulemanager.h"
 #include "mainwindowtabblink.h"
@@ -93,6 +94,7 @@ class MainWindow : public QMainWindow
     bool CaptchaWidgetPresent;
     ILanguageModel * LangModel;
     CsvHelper *_CsvHelper;
+    BrowserVersionSelector *_BrowserVersionSelector;
 
     ModuleManager *_ModuleManager;
 

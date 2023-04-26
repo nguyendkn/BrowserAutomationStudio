@@ -104,7 +104,7 @@ struct DevToolsGlobalState
     //Settings to change proxy
     std::string UniqueProcessId;
     std::string ParentProcessId;
-    std::string ChromeExecutableLocation;
+    //std::string ChromeExecutableLocation;
     std::string ConstantStartupScript;
     bool IsProxySet = false;
 

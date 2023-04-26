@@ -2129,7 +2129,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     Data->Connector->Initialize(
                     std::make_shared<RawCppHttpClientFactory>(),
                     WebScoketFactory,
-                    Data->MainRemoteDebuggingPort, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()), "Worker\\chrome\\",
+                    Data->MainRemoteDebuggingPort, Settings.UniqueProcessId(), std::to_string(GetCurrentProcessId()),
                     PrepareConstantStartupScript(Data),
                     ParseChromeCommandLine(Settings.AdditionalCommandLine()),
                     Settings.InitialProxy(), PcapPort

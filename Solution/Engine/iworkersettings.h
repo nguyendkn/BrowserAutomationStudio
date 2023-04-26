@@ -3,6 +3,8 @@
 
 #include "engine_global.h"
 
+#include "ibrowserversionselector.h"
+
 #include <QObject>
 #include <QSettings>
 
@@ -13,6 +15,8 @@ namespace BrowserAutomationStudioFramework
         Q_OBJECT
     public:
         explicit IWorkerSettings(QObject *parent = 0);
+
+        virtual void SetBrowserVersionSelector(IBrowserVersionSelector * _BrowserVersionSelector) = 0;
 
         virtual void SetWorkerPathSafe(const QString& PathSafe) = 0;
         virtual void SetWorkerPathNotSafe(const QString& PathNotSafe) = 0;

@@ -155,6 +155,8 @@ MainWindow::MainWindow(QWidget *parent) :
         _DataBaseConnector->SetDatabaseConnectionWindow(_DatabaseConnectionWindow);
     }
 
+    _BrowserVersionSelector = new BrowserVersionSelector(this);
+
     _CsvHelper = new CsvHelper(_DataBaseConnector);
     _DataBaseConnector->SetCsvHelper(_CsvHelper);
 
@@ -2771,6 +2773,7 @@ void MainWindow::RunInternal()
     worker->SetPop3ClientFactory(_Pop3ClientFactory);
     worker->SetImapClientFactory(_ImapClientFactory);
     worker->SetCsvHelper(_CsvHelper);
+    worker->SetBrowserVersionSelector(_BrowserVersionSelector);
     worker->SetDatabaseConnector(_DataBaseConnector3);
 
     worker->SetScriptSuspender(new ScriptSuspender(worker));

@@ -14,7 +14,7 @@ namespace BrowserAutomationStudioFramework
         virtual int MinorVersion() = 0;
         virtual int BuildVersion() = 0;
         virtual QString VersionString() = 0;
-        virtual void ShowAboutWindow() = 0;
+        virtual void ShowAboutWindow(const QStringList& BrowserVersionList) = 0;
     signals:
 
     public slots:

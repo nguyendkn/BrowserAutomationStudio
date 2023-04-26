@@ -18,7 +18,7 @@ namespace BrowserAutomationStudioFramework
         virtual int MinorVersion();
         virtual int BuildVersion();
         virtual QString VersionString();
-        virtual void ShowAboutWindow();
+        virtual void ShowAboutWindow(const QStringList& BrowserVersionList);
         void SetServerName(const QString& ServerName);
         void SetIsPremium();
 

@@ -40,10 +40,10 @@ namespace BrowserAutomationStudioFramework
         this->ServerName = ServerName;
     }
 
-    void VersionInfo::ShowAboutWindow()
+    void VersionInfo::ShowAboutWindow(const QStringList& BrowserVersionList)
     {
 
-        AboutBrowserStudio about(VersionString(), ServerName);
+        AboutBrowserStudio about(VersionString(), BrowserVersionList, ServerName);
         if(IsPremium)
             about.SetIsPremium();
         about.exec();

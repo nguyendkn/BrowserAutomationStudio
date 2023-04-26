@@ -763,7 +763,7 @@ void MainWindow::AboutEngine()
         info.SetIsPremium();
     #endif
     info.SetServerName(Server);
-    info.ShowAboutWindow();
+    info.ShowAboutWindow(_BrowserVersionSelector->GetAllBrowserFullVersions());
 }
 
 void MainWindow::RegexpConstructor()

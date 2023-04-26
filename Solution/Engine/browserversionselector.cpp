@@ -38,10 +38,10 @@ namespace BrowserAutomationStudioFramework
             }
 
             if(Item1Part < Item2Part)
-                return true;
+                return false;
 
             if(Item1Part > Item2Part)
-                return false;
+                return true;
         }
 
         return 0;

@@ -17,6 +17,9 @@ namespace BrowserAutomationStudioFramework
         explicit IWorkerSettings(QObject *parent = 0);
 
         virtual void SetBrowserVersionSelector(IBrowserVersionSelector * _BrowserVersionSelector) = 0;
+        virtual QString GetAllBrowserVersionInfo(const QString& Format) = 0;
+        virtual QString GetCurrentBrowserVersionInfo(const QString& Format) = 0;
+        virtual int FindBrowserVersionId(const QString& VersionString) = 0;
 
         virtual void SetWorkerPathSafe(const QString& PathSafe) = 0;
         virtual void SetWorkerPathNotSafe(const QString& PathNotSafe) = 0;

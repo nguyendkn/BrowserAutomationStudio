@@ -213,6 +213,26 @@ function _get_profile()
     return Browser.GetProfilePath()
 }
 
+function _get_all_browser_version_info(format)
+{
+    return Browser.GetAllBrowserVersionInfo(format)
+}
+
+function _get_current_browser_version_info(format)
+{
+    return Browser.GetCurrentBrowserVersionInfo(format)
+}
+
+function _find_browser_version_id(version_string)
+{
+    var Result = Browser.FindBrowserVersionId(version_string)
+    if(Result == -1)
+    {
+        fail("Failed to find browser version")
+    }
+    return Result
+}
+
 function mouse(x, y, callback)
 {
     _ARG = arguments

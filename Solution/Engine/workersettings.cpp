@@ -2,6 +2,7 @@
 #include <QJsonDocument>
 #include <QJsonParseError>
 #include <QJsonObject>
+#include <QJsonArray>
 #include <QDir>
 #include <QDirIterator>
 #include "devicescalemanager.h"
@@ -41,6 +42,7 @@ namespace BrowserAutomationStudioFramework
         ProxyPassword.clear();
         ProxyTarget.clear();
         Profile.clear();
+        CurrentBrowserVersion = 0;
         TempProfile = QString("prof/") + GetRandomString();
         Extensions.clear();
         CommandLine.clear();
@@ -335,6 +337,87 @@ namespace BrowserAutomationStudioFramework
 
         return PathSafe;
     }
+
+    QString WorkerSettings::GetAllBrowserVersionInfo(const QString& Format)
+    {
+        bool IsExtended = Format.toLower() == "extended";
+
+        QJsonArray ResultArray;
+
+        for(const IBrowserVersionSelector::BrowserItem& Item: _BrowserVersionSelector->GetAllBrowserItems())
+        {
+            if(IsExtended)
+            {
+                QJsonObject ResultItem;
+                ResultItem["architecture"] = Item.Architecture;
+                ResultItem["description"] = Item.Description;
+                ResultItem["bas_version"] = Item.BasVersion;
+                ResultItem["browser_type"] = Item.BrowserType;
+                ResultItem["browser_version"] = Item.VersionFull;
+                ResultItem["id"] = Item.Id;
+                ResultItem["is_null"] = Item.IsNull;
+                ResultArray.append(ResultItem);
+            }else
+            {
+                ResultArray.append(Item.VersionFull);
+            }
+        }
+
+        QJsonDocument Document;
+        Document.setArray(ResultArray);
+        return Document.toJson(QJsonDocument::Compact);
+    }
+
+    QString WorkerSettings::GetCurrentBrowserVersionInfo(const QString& Format)
+    {
+        bool IsExtended = Format.toLower() == "extended";
+
+        IBrowserVersionSelector::BrowserItem Item = _BrowserVersionSelector->GetBrowserItemById(CurrentBrowserVersion);
+
+        if(IsExtended)
+        {
+            QJsonObject ResultItem;
+
+            ResultItem["architecture"] = Item.Architecture;
+            ResultItem["description"] = Item.Description;
+            ResultItem["bas_version"] = Item.BasVersion;
+            ResultItem["browser_type"] = Item.BrowserType;
+            ResultItem["browser_version"] = Item.VersionFull;
+            ResultItem["id"] = Item.Id;
+            ResultItem["is_null"] = Item.IsNull;
+
+            QJsonDocument Document;
+            Document.setObject(ResultItem);
+            return Document.toJson(QJsonDocument::Compact);
+        }else
+        {
+            QJsonDocument Document;
+            QJsonArray ResultArray;
+            ResultArray.append(Item.VersionFull);
+
+            Document.setArray(ResultArray);
+            QString Result = Document.toJson(QJsonDocument::Compact);
+
+            Result = Result.replace("[", "");
+            Result = Result.replace("]", "");
+
+            return Result;
+        }
+
+    }
+
+    int WorkerSettings::FindBrowserVersionId(const QString& VersionString)
+    {
+        IBrowserVersionSelector::BrowserItem Item = _BrowserVersionSelector->GetBrowserItemByVersion(VersionString);
+
+        if(Item.IsNull)
+        {
+            return -1;
+        }
+
+        return Item.Id;
+    }
+
     QString WorkerSettings::GetExtensions()
     {
         return Extensions;
@@ -369,6 +452,7 @@ namespace BrowserAutomationStudioFramework
         res->SetUseSafeBrowsing(UseSafeBrowsing);
         res->SetUseComponents(UseComponents);
         res->SetProfile(Profile);
+        res->CurrentBrowserVersion = CurrentBrowserVersion;
         res->SetExtensions(Extensions);
         res->SetCommandLine(CommandLine);
         res->SetProxyForNextProfile(ProxyForNextProfile);
@@ -859,6 +943,34 @@ namespace BrowserAutomationStudioFramework
                     NeedRestart = true;
                 }
                 SetProfile(next);
+            }
+
+         }
+
+         if(object.contains("BrowserVersionId"))
+         {
+            int prev = CurrentBrowserVersion;
+            int next = object["BrowserVersionId"].toString().toInt();
+
+            bool PrevIsNull = false;
+            bool NextIsNull = false;
+
+            {
+                IBrowserVersionSelector::BrowserItem Item = _BrowserVersionSelector->GetBrowserItemById(prev);
+                PrevIsNull = Item.IsNull;
+                prev = Item.Id;
+            }
+
+            {
+                IBrowserVersionSelector::BrowserItem Item = _BrowserVersionSelector->GetBrowserItemById(next);
+                NextIsNull = Item.IsNull;
+                next = Item.Id;
+            }
+
+            if(!PrevIsNull && !NextIsNull && prev != next)
+            {
+                NeedRestart = true;
+                CurrentBrowserVersion = next;
             }
 
          }

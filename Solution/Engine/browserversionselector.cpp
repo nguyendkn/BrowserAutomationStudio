@@ -188,14 +188,40 @@ namespace BrowserAutomationStudioFramework
 
     IBrowserVersionSelector::BrowserItem BrowserVersionSelector::GetBrowserItemByVersion(const QString& Version)
     {
-        if(Version.isEmpty() || Version == QString("0"))
+        if(Version.isEmpty() || Version == QString("0") || Version.toLower() == "default")
         {
             return GetDefaultBrowserItem();
         }
 
-        for(BrowserItem& Item: GetAllBrowserItems())
+        QList<IBrowserVersionSelector::BrowserItem> AllItems = GetAllBrowserItems();
+
+        if(AllItems.isEmpty())
         {
-            if(Item.VersionFull == Version || Item.VersionMajorString == Version)
+            BrowserItem Item;
+            return Item;
+        }
+
+        if(Version == "random")
+        {
+            BrowserItem Item = AllItems.at(qrand() % AllItems.size());
+            return Item;
+        }
+
+        for(BrowserItem& Item: AllItems)
+        {
+            if(Item.VersionFull == Version)
+                return Item;
+        }
+
+        for(BrowserItem& Item: AllItems)
+        {
+            if(Item.VersionMajorString == Version)
+                return Item;
+        }
+
+        for(BrowserItem& Item: AllItems)
+        {
+            if(QString::number(Item.Id) == Version)
                 return Item;
         }
 

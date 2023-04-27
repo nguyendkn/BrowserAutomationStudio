@@ -1290,6 +1290,21 @@ namespace BrowserAutomationStudioFramework
         return WorkerSettings->GetRealProfile();
     }
 
+    QString SubprocessBrowser::GetCurrentBrowserVersionInfo(const QString& Format)
+    {
+        return WorkerSettings->GetCurrentBrowserVersionInfo(Format);
+    }
+
+    QString SubprocessBrowser::GetAllBrowserVersionInfo(const QString& Format)
+    {
+        return WorkerSettings->GetAllBrowserVersionInfo(Format);
+    }
+
+    int SubprocessBrowser::FindBrowserVersionId(const QString& VersionString)
+    {
+        return WorkerSettings->FindBrowserVersionId(VersionString);
+    }
+
     bool SubprocessBrowser::IsTemporaryProfile()
     {
         return WorkerSettings->IsTemporaryProfile();

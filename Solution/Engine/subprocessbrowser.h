@@ -125,6 +125,9 @@ namespace BrowserAutomationStudioFramework
         bool IsBASBrowserVirtual();
         bool NeedToCreateVirtualProcessCommunicator();
         QString GetProfilePath();
+        QString GetCurrentBrowserVersionInfo(const QString& Format);
+        QString GetAllBrowserVersionInfo(const QString& Format);
+        int FindBrowserVersionId(const QString& VersionString);
         bool IsTemporaryProfile();
 
         virtual void OnSupend();

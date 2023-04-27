@@ -36,17 +36,17 @@
             return res;
         }, t.prototype.getIdSelector = function(t) {
             var e, n;
-            return e = t.getAttribute("id"), null == e || "" === e || /\s/.exec(e) || (n = "#" + this.sanitizeItem(e), 1 !== _BAS_HIDE(BrowserAutomationStudio_Original)["querySelectorAll"].call(null, _BAS_HIDE(BrowserAutomationStudio_GetQuerySelectorHost)(t), n).length) ? null : n
+            return e = t.getAttribute("id"), null == e || "" === e || /\s/.exec(e) || (n = "#" + this.sanitizeItem(e), 1 !== _BAS_HIDE(BrowserAutomationStudio_Original).querySelectorAll(_BAS_HIDE(BrowserAutomationStudio_GetQuerySelectorHost)(t), n).length) ? null : n
         }, t.prototype.getClassSelectors = function(t) {
             var e, n, r;
-            return r = [], e = t.getAttribute("class"), null != e && (e = e.replace(/\s+/g, " "), e = e.replace(/^\s|\s$/g, ""), "" !== e && (r = function() {
+            return r = [], e = t.getAttribute("class"), null != e && (e = e.replace(/\s+/g, " "), e = e.replace(/^\s|\s$/g, ""), "" !== e && (r = (() => {
                 var t, r, o, i;
                 for (o = e.split(/\s+/), i = [], t = 0, r = o.length; r > t; t++) n = o[t], i.push("." + this.sanitizeItem(n));
                 return i
-            }.call(this))), r
+            })())), r
         }, t.prototype.getAttributeSelectors = function(t) {
             var e, r, o, i, s, l, u;
-            for (u = [], r = ["id", "class"], s = t.attributes, o = 0, i = s.length; i > o; o++) e = s[o], l = e.nodeName, n.call(r, l) < 0 && u.push("[" + e.nodeName + "=" + e.nodeValue + "]");
+            for (u = [], r = ["id", "class"], s = t.attributes, o = 0, i = s.length; i > o; o++) e = s[o], l = e.nodeName, r.indexOf(l) < 0 && u.push("[" + e.nodeName + "=" + e.nodeValue + "]");
             return u
         }, t.prototype.getNthChildSelector = function(t) {
             var e, n, r, o, i, s;
@@ -56,7 +56,7 @@
             return null
         }, t.prototype.testSelector = function(t, e) {
             var n, r;
-            return n = !1, null != e && "" !== e && (r = _BAS_HIDE(BrowserAutomationStudio_Original)["querySelectorAll"].call(null, _BAS_HIDE(BrowserAutomationStudio_GetQuerySelectorHost)(t, t.ownerDocument), e), 1 === r.length && r[0] === t && (n = !0)), n
+            return n = !1, null != e && "" !== e && (r = _BAS_HIDE(BrowserAutomationStudio_Original).querySelectorAll(_BAS_HIDE(BrowserAutomationStudio_GetQuerySelectorHost)(t, t.ownerDocument), e), 1 === r.length && r[0] === t && (n = !0)), n
         }, t.prototype.getAllSelectors = function(t) {
             var e;
             return e = {
@@ -65,10 +65,10 @@
                 c: null,
                 a: null,
                 n: null
-            }, n.call(this.options.selectors, "tag") >= 0 && (e.t = this.getTagSelector(t)), n.call(this.options.selectors, "id") >= 0 && (e.i = this.getIdSelector(t)), n.call(this.options.selectors, "class") >= 0 && (e.c = this.getClassSelectors(t)), n.call(this.options.selectors, "attribute") >= 0 && (e.a = this.getAttributeSelectors(t)), n.call(this.options.selectors, "nthchild") >= 0 && (e.n = this.getNthChildSelector(t)), e
+            }, this.options.selectors.indexOf("tag") >= 0 && (e.t = this.getTagSelector(t)), this.options.selectors.indexOf("id") >= 0 && (e.i = this.getIdSelector(t)), this.options.selectors.indexOf("class") >= 0 && (e.c = this.getClassSelectors(t)), this.options.selectors.indexOf("attribute") >= 0 && (e.a = this.getAttributeSelectors(t)), this.options.selectors.indexOf("nthchild") >= 0 && (e.n = this.getNthChildSelector(t)), e
         }, t.prototype.testUniqueness = function(t, e) {
             var n, r;
-            return r = t.parentNode, n = _BAS_HIDE(BrowserAutomationStudio_Original)["querySelectorAll"].call(null, r, e), 1 === n.length && n[0] === t
+            return r = t.parentNode, n = _BAS_HIDE(BrowserAutomationStudio_Original).querySelectorAll(r, e), 1 === n.length && n[0] === t
         }, t.prototype.testCombinations = function(t, e, n) {
             var r, o, i, s, l, u, c;
             for (u = this.getCombinations(e), o = 0, s = u.length; s > o; o++)

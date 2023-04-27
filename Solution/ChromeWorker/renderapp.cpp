@@ -1,7 +1,6 @@
 #include "renderapp.h"
 #include "log.h"
 #include "startwith.h"
-#include "javascriptextensions.h"
 #include "picojson.h"
 #include "ipcsimple.h"
 
@@ -218,21 +217,6 @@ void RenderApp::OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFra
             object->SetValue("BrowserAutomationStudio_SaveBlob", CefV8Value::CreateFunction("BrowserAutomationStudio_SaveBlob", v8handler), V8_PROPERTY_ATTRIBUTE_NONE);
             object->SetValue("BrowserAutomationStudio_RecaptchaV3", CefV8Value::CreateFunction("BrowserAutomationStudio_RecaptchaV3", v8handler), V8_PROPERTY_ATTRIBUTE_NONE);
         }
-
-
-        /*if(!Jscode.empty())
-        {
-            JavaScriptExtensions extensions;
-            std::string extensionCode = extensions.GetBasicExtension(IsRecord);
-
-            CefRefPtr<CefV8Value> retval;
-            CefRefPtr<CefV8Exception> exc;
-
-            std::string AllScript = extensions.GetHideExtensionFirst(UniqueProcessId) + std::string(";") + extensionCode + std::string(";") + Jscode + std::string(";") + extensions.GetHideExtensionLast(UniqueProcessId) + std::string(";0;");
-            AllScript = extensions.ProcessJs(AllScript,UniqueProcessId);
-
-            context->Eval(AllScript,"",0,retval,exc);
-        }*/
     }
 }
 

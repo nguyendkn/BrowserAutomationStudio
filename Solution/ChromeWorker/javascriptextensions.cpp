@@ -1,4 +1,5 @@
 #include "javascriptextensions.h"
+#include "processjavascript.h"
 #include <fstream>
 #include "log.h"
 #include "picojson.h"
@@ -12,8 +13,6 @@ JavaScriptExtensions::JavaScriptExtensions()
 {
 
 }
-
-
 
 std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
 {
@@ -29,6 +28,11 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         try
         {
             std::ifstream ifs("html/main/xpath_path.js");
+            additional += std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
+        }catch(...){}
+         try
+        {
+            std::ifstream ifs("html/main/diff_match.js");
             additional += std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
         }catch(...){}
         try
@@ -190,7 +194,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "var r = _BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(el);"
                 "var x_with_padding = r.left;"
                 "var y_with_padding = r.top;"
-                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, el);"
+                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original).getBoundingClientRect(el);"
                 "var is_frame=false;"
                 "var frame_element=null;"
                 "if(el.tagName.toLowerCase()=='iframe' || el.tagName.toLowerCase()=='frame')"
@@ -591,7 +595,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "var r = _BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(el);"
                 "var x_with_padding = r.left;"
                 "var y_with_padding = r.top;"
-                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, el);"
+                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original).getBoundingClientRect(el);"
                 "var is_frame=false;"
                 "var frame_element=null;"
                 "if(el.tagName.toLowerCase()=='iframe' || el.tagName.toLowerCase()=='frame')"
@@ -650,13 +654,17 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
     additional +
     inspect_script
      + std::string(
+    "; _BAS_HIDE(BrowserAutomationStudio_Evaluate) = function (expression, element) {"
+        "return _BAS_HIDE(BrowserAutomationStudio_Original).evaluate(expression, element, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);"
+    "};"
     "; _BAS_HIDE(BrowserAutomationStudio_GetScrollingNode) = function () {"
         "return document.scrollingElement || document.documentElement;"
     "};"
     "; _BAS_HIDE(BrowserAutomationStudio_GetFrameIndex) = function(element){"
         "try{"
-        "var frame_index = Array.prototype.slice.call(window.frames).indexOf(element.contentWindow);if(frame_index<0)frame_index=0;"
-        "return frame_index;"
+            "var frame_index = Array.prototype.slice.call(window.frames).indexOf(element.contentWindow);"
+            "if(frame_index<0)frame_index=0;"
+            "return frame_index;"
         "}catch(e){};"
         "return 0;"
     "};"
@@ -675,7 +683,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "var margin = { left: parseInt(style['margin-left']), right: parseInt(style['margin-right']), top: parseInt(style['margin-top']), bottom: parseInt(style['margin-bottom'])};"
         "var padding = { left: parseInt(style['padding-left']), right: parseInt(style['padding-right']), top: parseInt(style['padding-top']), bottom: parseInt(style['padding-bottom'])};"
         "var border = { left: parseInt(style['border-left']), right: parseInt(style['border-right']), top: parseInt(style['border-top']), bottom: parseInt(style['border-bottom']) };"
-        "var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, element);"
+        "var rect = _BAS_HIDE(BrowserAutomationStudio_Original).getBoundingClientRect(element);"
         "rect = {left: parseInt(rect.left + padding.left + border.left),right: parseInt(rect.right - padding.right - border.right),top: parseInt(rect.top + padding.top + border.top),bottom: parseInt(rect.bottom  - padding.top - border.top)};"
         "rect.width = rect.right - rect.left;"
         "rect.height = rect.bottom - rect.top;"
@@ -686,7 +694,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
         "if(el)"
         "{"
             "{"
-                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original)['getBoundingClientRect'].call(null, el);"
+                "var rect = _BAS_HIDE(BrowserAutomationStudio_Original).getBoundingClientRect(el);"
 
                 "var xc = Math.floor(rect.left + rect.width/2);"
                 "var yc = Math.floor(rect.top + rect.height/2);"
@@ -713,11 +721,9 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
 
                 "return res;"
             "}"
-
         "}else{"
             "throw 'BAS_NOT_EXISTS';"
         "}"
-
     "};"
     ";_BAS_HIDE(BrowserAutomationStudio_GenerateMenu) = function(x,y)"
     "{"
@@ -940,7 +946,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "{"
                     "if(!(res instanceof ShadowRoot))"
                     "{"
-                        "res = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null ).snapshotItem(0);"
+                        "res = _BAS_HIDE(BrowserAutomationStudio_Evaluate)(select_value, res).snapshotItem(0);"
                     "}else"
                     "{"
                         "var found = false;"
@@ -948,7 +954,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                         "{"
                             "try"
                             "{"
-                                "var q = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res.children[j], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
+                                "var q = _BAS_HIDE(BrowserAutomationStudio_Evaluate)(select_value, res.children[j]);"
                                 "if(q.snapshotLength > 0)"
                                 "{"
                                     "res = q.snapshotItem(0);"
@@ -968,7 +974,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "{"
                     "if(!(res instanceof ShadowRoot))"
                     "{"
-                        "var q = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
+                        "var q = _BAS_HIDE(BrowserAutomationStudio_Evaluate)(select_value, res);"
                         "var len = q.snapshotLength;res=[];"
                         "for(var it = 0;it<len;it++)res.push(q.snapshotItem(it));"
                     "}else"
@@ -978,7 +984,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                         "{"
                             "try"
                             "{"
-                                "var q = _BAS_HIDE(BrowserAutomationStudio_Original)['evaluate'].call(document, select_value, res.children[j], null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null );"
+                                "var q = _BAS_HIDE(BrowserAutomationStudio_Evaluate)(select_value, res.children[j]);"
                                 "var len = q.snapshotLength;"
                                 "for(var it = 0;it<len;it++){if(r.indexOf(q.snapshotItem(it))<0)r.push(q.snapshotItem(it));}"
                             "}catch(e){}"
@@ -988,11 +994,11 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                 "}"
                 "if(select_type == 'css')"
                 "{"
-                    "res = _BAS_HIDE(BrowserAutomationStudio_Original)['querySelector'].call(null, res, select_value);"
+                    "res = _BAS_HIDE(BrowserAutomationStudio_Original).querySelector(res, select_value);"
                 "}"
                 "if(select_type == 'all')"
                 "{"
-                    "res = _BAS_HIDE(BrowserAutomationStudio_Original)['querySelectorAll'].call(null, res, select_value);"
+                    "res = _BAS_HIDE(BrowserAutomationStudio_Original).querySelectorAll(res, select_value);"
                 "}"
                 "if(select_type == 'at')"
                 "{"
@@ -1035,22 +1041,10 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
 
 std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std::string& UniqueProcessId)
 {
-    std::string Res = Script;
-    try{
-        static std::regex Replacer("_BAS_HIDE\\(([^\\)]+)\\)");
-        return std::regex_replace(Res,Replacer,std::string("((atob[Symbol.for('_bas_hide_") + UniqueProcessId + std::string("')])[\"$1\"])"));
-    }catch(...)
-    {
-
-    }
-
-    return Res;
+    return ProcessJavaScript(Script, UniqueProcessId);
 }
-
 
 std::string JavaScriptExtensions::GetHideExtension(const std::string& UniqueProcessId)
 {
-    std::string res = std::string("(function(){atob[Symbol.for('_bas_hide_") + UniqueProcessId + std::string("')] = {};})();");
-    return res;
+    return std::string("(function(){atob[Symbol.for('_bas_hide_") + UniqueProcessId + std::string("')] = {};})();");
 }
-

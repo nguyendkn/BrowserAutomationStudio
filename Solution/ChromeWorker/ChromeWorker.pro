@@ -65,6 +65,7 @@ SOURCES += main.cpp \
     connector/sharedmemoryipc.cpp \
     connector/devtoolsactiongetnavigationhistory.cpp \
     connector/devtoolsactionresizewithcorrection.cpp \
+    connector/processjavascript.cpp \
     copyfolder.cpp \
     createemptyprofile.cpp \
     deletefolder.cpp \
@@ -235,6 +236,7 @@ HEADERS += \
     connector/sharedmemoryipc.h \
     connector/devtoolsactiongetnavigationhistory.h \
     connector/devtoolsactionresizewithcorrection.h \
+    connector/processjavascript.h \
     copyfolder.h \
     createemptyprofile.h \
     deletefolder.h \

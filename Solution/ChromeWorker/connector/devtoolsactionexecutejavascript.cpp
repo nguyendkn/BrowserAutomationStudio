@@ -1,4 +1,5 @@
 #include "devtoolsactionexecutejavascript.h"
+#include "processjavascript.h"
 #include <regex>
 
 void DevToolsActionExecuteJavascript::Run()
@@ -179,16 +180,7 @@ std::string DevToolsActionExecuteJavascript::SerializeSelector(const std::vector
 
 std::string DevToolsActionExecuteJavascript::Javascript(const std::string& Script)
 {
-    std::string Res = Script;
-    try{
-        static std::regex Replacer("_BAS_HIDE\\(([^\\)]+)\\)");
-        return std::regex_replace(Res,Replacer,std::string("((atob[Symbol.for('_bas_hide_") + GlobalState->UniqueProcessId + std::string("')])[\"$1\"])"));
-    }catch(...)
-    {
-
-    }
-
-    return Res;
+    return ProcessJavaScript(Script, GlobalState->UniqueProcessId);
 }
 
 void DevToolsActionExecuteJavascript::Next()

@@ -99,7 +99,7 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
                           "return _BAS_HIDE(BrowserAutomationStudio_OriginalData)['ElementGetBoundingClientRect'].call(element);"
                       "}"
                  "},"
-                "evaluate: Document.prototype.evaluate"
+                "evaluate: Document.prototype.evaluate.bind(document),"
             "};";
 
 

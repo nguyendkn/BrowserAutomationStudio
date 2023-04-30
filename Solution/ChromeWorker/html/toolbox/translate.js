@@ -506,7 +506,7 @@ _L =
 
 
 	"If you want to change settings for every thread, it is better to use settings tab.": {"ru": "Если вы хотите поменять настройки для всех потоков, то лучше воспользоваться вкладкой настройки."},
-	"\"Components\", \"Extensions\", \"Widevine\" or \"Command line\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "Смена параметров \"Компоненты\", \"Расширения\", \"Widevine\" или \"Командная строка\" перезапустит браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
+	"\"Components\", \"Extensions\", \"Widevine\", \"Command line\" or \"Browser version\" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.": {"ru": "Смена параметров \"Компоненты\", \"Расширения\", \"Widevine\", \"Командная строка\" или \"Версия браузера\" перезапустит браузер и таким образом обнулят остальные настройки(прокси, заголовки, и т.д.), так что лучшее место для этого действия - начало работы потока."},
 	"Empty string or 0 means, that value wont be changed.": {"ru": "Пустая строка или 0 означает, что значение изменяться не будут."},
 	"Changes browser settings: network, canvas, webgl, etc. Use \"Get Fingerprint\" action to change browser fingerprint.": {"ru": "Изменяет настройки браузера: работа с сетью, canvas, webgl и другое. Используйте действие \"Получить отпечаток\" чтобы поменять отпечаток браузера."},
 	"BAS allows to set timeout for every action individually, to do that click on hourglass icon near cancel button inside action interface.": {"ru": "BAS позволяет установить таймаут для каждого действия индивидуально, для этого щелкните на значок песочных часов возле кнопки отмены внутри интерфейса конкретного действия."},
@@ -1628,7 +1628,7 @@ _L =
 
 "Line break, join into multiline text": {"ru": "Перенос строки, объединение в многострочный текст"},
 "Carriage return and line break, join into multiline text": {"ru": "Возврат каретки и перенос строки, объединение в многострочный текст"},
-
+	
 
 	"Components": {"ru": "Компоненты"},
 	"Enable Safe Browsing. It is technology embedded in Chrome, helps to protect users from malicious web sites. Its absence can be detected.": {"ru": "Включить Safe Browsing. Эта технология, встроенная в Chrome, помогает защитить пользователей от вредоносных сайтов. Ее отсутствие можно обнаружить."},
@@ -1645,7 +1645,59 @@ _L =
 	"Nothing found": {"ru": "Ничего не найдено"},
 
 	/* Other */
-	"Advanced settings.": {"ru": "Дополнительные настройки."} 
+	"Advanced settings.": {"ru": "Дополнительные настройки."},
+
+	/* Get list of available browser versions */
+	"Format": {"ru": "Формат"},
+	"Returns list of strings": {"ru": "Возвращает список строк"},
+	"Returns list of objects": {"ru": "Возвращает список объектов"},
+	"Format of returned result. Results are always sorted descending by version, i.e. the latest version will appear first in the list.": {"ru": "Формат возвращаемого результата. Результаты всегда сортируются по версии в порядке убывания, т. е. последняя версия будет первой в списке."},
+	"returns list of strings, for example": {"ru": "возвращает список строк, например"},
+	"returns list of object, each object has info about specific version, for example": {"ru": "возвращает список объектов, каждый объект имеет информацию о конкретной версии, например"},
+	"More info about each property of these objects can be found below.": {"ru": "Более подробную информацию о каждом свойстве этих объектов можно найти ниже."},
+	"Variable in which, after successful execution of the action, the list of all available Chrome versions will be stored. Results are always sorted descending by version, i.e. the latest version will appear first in the list.": {"ru": "Переменная, в которой после успешного выполнения действия будет храниться список всех доступных версий Chrome. Результаты всегда сортируются по версии в порядке убывания, т. е. последняя версия будет первой в списке."},
+	"Get list of all available Chrome versions.": {"ru": "Получить список всех доступных версий Chrome."},
+	"Each BAS version may be shipped with one or several browser versions. This action can obtain list of all available versions programmatically. You can get this list manually as well by visiting Menu -&gt; Help -&gt; About Engine.": {"ru": "Каждая версия BAS поставляется с одной или несколькими версиями браузера. Это действие позволяет программно получить список всех доступных версий. Вы также можете получить этот список вручную, открыв Меню -&gt; Помощь -&gt; О движке."},
+	"In order to get Chrome version, which is used for current thread, use \"Get current browser version\" action.": {"ru": "Чтобы получить версию Chrome, которая используется для текущего потока, выполните действие \"Получить текущую версию браузера\"."},
+	"If you want to switch browser version for current thread, use \"Browser Settings\" action with \"Browser Version\" parameter.": {"ru": "Если вы хотите переключить версию браузера для текущего потока, используйте действие \"Настройки Браузера\" с параметром \"Версия браузера\"."},
+	"One of possible use case would be to get list of all versions with this action, select certain version with \"Browser Settings\" action and then use \"Get fingerprint\" action with \"Minimum browser version\" and \"Maximum browser version\" parameters which matches previously selected browser version. This way used actual browser version will always match browser version of fingerprint, and these versions won't be the same for each thread. With this example you are free to use any algorithm for browser version selection, it could be just random value, or selection based on probability, for example, latest version may be selected more often than outdated.": {"ru": "Одним из возможных вариантов использования может быть получение списка всех версий с помощью этого действия, выбор определенной версии с помощью действия \"Настройки Браузера\", а затем использование действия \"Получить отпечаток\" с параметрами \"Минимальная версия браузера\" и \"Максимальная версия браузера\", которые соответствуют ранее выбранной версии браузера. Таким образом, используемая фактическая версия браузера всегда будет соответствовать версии браузера из отпечатка, и эти версии не будут одинаковыми для каждого потока. В этом примере вы можете использовать любой алгоритм выбора версии браузера, это может быть просто случайное значение или выбор на основе вероятности, например, последняя версия может быть выбрана чаще, чем устаревшая."},
+	"Depending on selected format this action will return either list of strings or list of objects.": {"ru": "В зависимости от выбранного формата это действие вернет либо список строк, либо список объектов."},
+	"With \"default\" format output will contain list of strings with full browser versions, for example": {"ru": "В формате \"default\" результат будет содержать список строк с полными версиями браузера, например"},
+	"With \"extended\" format output will contain list of object, each object has info about specific version, for example": {"ru": "В формате \"extended\" результат будет содержать список объектов, в котором каждый объект содержит информацию о конкретной версии, например"},
+	"Here is a list of properties for these objects:": {"ru": "Вот список свойств таких объектов:"},
+	"\"browser_version\" - full browser version, for example 111.0.5563.65. Can be used later to switch current thread to this version.": {"ru": "\"browser_version\" - полная версия браузера, например 111.0.5563.65. Может использоваться позже для переключения на эту версию в текущем потоке."},
+	"\"id\" - internal identifier of Chrome build, for example, 1, 2, 3, ...": {"ru": "\"id\" - внутренний идентификатор сборки Chrome, например, 1, 2, 3, ..."},
+	"\"bas_version\" - BAS version in which corresponding Chrome version was introduced, for example, 25.5.1.": {"ru": "\"bas_version\" - версия BAS, для которой была собрана соответствующая версия Chrome, например, 25.5.1."},
+	"\"architecture\" - browser architecture, can be \"x64\" or \"x86\".": {"ru": "\"architecture\" - архитектура браузера, может быть \"x64\" или \"x86\"."},
+	"Result obtained with \"extended\" format can be parsed with JSON module, while \"default\" format is easier to parse with List module.": {"ru": "Результат, полученный с \"extended\" форматом, можно парсить с помощью модуля JSON, в то время как из результата в формате \"default\" легче получать значения с помощью модуля List."},
+	"Results are always sorted descending by version, i.e. the latest version will appear first in the list.": {"ru": "Результаты всегда сортируются по версии в порядке убывания, т. е. последняя версия будет первой в списке."},
+	
+	/* Get current browser version */
+	"Browser version string": {"ru": "Версия браузера"},
+	"Variable in which, after successful execution of the action, Chrome version will be stored. Version string is obtained for current thread. Other threads can use different versions. It can be changed by using \"Browser settings\" action.": {"ru": "Переменная, в которой после успешного выполнения действия будет храниться версия Chrome. Получение версии происходит для текущего потока. Другие потоки могут использовать другие версии. Версию браузера можно изменить с помощью действия \"Настройки Браузера\"."},
+	"current thread uses 111.0.5563.65 Chrome version.": {"ru": "текущий поток использует версию Chrome 111.0.5563.65."},
+	"current thread uses 113.0.5563.65 Chrome version.": {"ru": "текущий поток использует версию Chrome 113.0.5563.65."},
+	"Browser version id": {"ru": "Идентификатор версии браузера"},
+	"Variable in which, after successful execution of the action, internal identifier of browser build will be stored. Version id is obtained for current thread. Other threads can use different versions. IDs are always integers starting from 1.": {"ru": "Переменная, в которой после успешного выполнения действия будет храниться внутренний идентификатор сборки браузера. Получение идентификатора происходит для текущего потока. Другие потоки могут использовать другие версии. Идентификаторы всегда являются целыми числами, начиная с 1."},
+	"Variable in which, after successful execution of the action, browser architecture will be stored.": {"ru": "Переменная, в которой после успешного выполнения действия будет сохранена строка архитектуры браузера."},
+	"Get info about current Chrome version.": {"ru": "Получить информацию о текущей версии Chrome."},
+	"Each BAS distribution may be shipped with one or several browser versions. This action can obtain Chrome version used in current thread. Other threads can use different versions.": {"ru": "Каждый дистрибутив BAS поставляется с одной или несколькими версиями браузера. Это действие может получить версию Chrome, используемую в текущем потоке. Другие потоки могут использовать другие версии."},
+	"By default BAS will choose latest browser version available.": {"ru": "По умолчанию BAS выберет самую последнюю доступную версию браузера и использует ее."},
+	"In order to get all available versions for current BAS build, use \"Get list of available browser versions\" action.": {"ru": "Чтобы получить все доступные версии для текущей сборки BAS, используйте действие \"Получить список доступных версий браузера\"."},
+	"Browser architecture": {"ru": "Архитектура браузера"},
+
+	/* Browser Settings - Browser Version */
+	"Browser version": {"ru": "Версия браузера"},
+	"Use latest Chrome version": {"ru": "Использовать последнюю версию Chrome"},
+	"Select random Chrome version of all available": {"ru": "Выбрать случайную версию Chrome из всех доступных"},
+	"Select specific version based on full vesrion string": {"ru": "Выбрать по полной строке версии"},
+	"Select specific version based on major version string": {"ru": "Выбрать по основной строке версии"},
+	"Select specific version based on version id": {"ru": "Выбрать по id версии"},
+	"Changes browser version for current thread. This setting will restart browser and therefore reset all settings, so it is better to use it when thread starts.": {"ru": "Изменить версию браузера для текущего потока. Этот параметр перезапустит браузер и, следовательно, сбросит все настройки, поэтому лучше использовать его в начале работы потока."},
+	"Each BAS version may be shipped with one or several browser versions. This action can change browser version used in current thread. Use \"Browser version\" param to do that.": {"ru": "Каждая версия BAS может поставляться с одной или несколькими версиями браузера. Это действие может изменить версию браузера, используемую в текущем потоке. Для этого задайте параметр \"Версия браузера\"."},
+	"One of use case for changing browser version would be to select random version with this action first. You can use \"random\" string as input parameter. Then get fingerprint which was obtained from browser with same version. Use \"Get fingerprint\" action with \"Minimum browser version\" and \"Maximum browser version\" parameters. This way used actual browser version will always match browser version of fingerprint, and these versions won't be the same for each thread.": {"ru": "Одним из вариантов использования для изменения версии браузера будет выбор случайной версии с помощью этого действия. Вы можете использовать строку \"random\" в качестве входного параметра. Затем запросить отпечаток, который получен из браузера выбранной версии. Для этого необходимо использовать действие \"Получить отпечаток\" с параметрами \"Минимальная версия браузера\" и \"Максимальная версия браузера\". Таким образом, используемая фактическая версия браузера всегда будет соответствовать версии браузера из отпечатка, и эти версии не будут одинаковыми для каждого потока."}
+
+	
 }
 
 /*window.un = {}

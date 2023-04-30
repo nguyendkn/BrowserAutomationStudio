@@ -215,12 +215,12 @@ function _get_profile()
 
 function _get_all_browser_version_info(format)
 {
-    return Browser.GetAllBrowserVersionInfo(format)
+    return JSON.parse(Browser.GetAllBrowserVersionInfo(format))
 }
 
 function _get_current_browser_version_info(format)
 {
-    return Browser.GetCurrentBrowserVersionInfo(format)
+    return JSON.parse(Browser.GetCurrentBrowserVersionInfo(format))
 }
 
 function _find_browser_version_id(version_string)

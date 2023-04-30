@@ -337,6 +337,26 @@ _A = {
       },
       "group":"browser"
    },
+   "getbrowserversionlist":{  
+      "name":"Get list of available browser versions",
+      "description":"Get list of available browser versions",
+      "template":"{{Save}}",
+      "suggestion":{  
+         "en":"chrome version",
+         "ru":"версия chrome"
+      },
+      "group":"browser"
+   },
+   "getcurrentbrowserversion":{  
+      "name":"Get current browser version",
+      "description":"Get current browser version",
+      "template":"{{Save2}}",
+      "suggestion":{  
+         "en":"chrome version",
+         "ru":"версия chrome"
+      },
+      "group":"browser"
+   },
    "clickextensionbutton":{  
       "name":"Click extension button",
       "description":"Click extension button",
@@ -1141,6 +1161,9 @@ _AL =
    "Receive email and search in mailbox.": {"ru": "Получать электронную почту и искать письма в почтовом ящике."},
    "HTTP client, very fast alternative to browser.": {"ru": "HTTP-клиент, очень быстрая альтернатива браузеру."},
    "Running browser is very resource-intensive task. This module can create and destroy browser during thread lifetime and thereby save some memory and processor time.": {"ru": "Запуск браузера является очень ресурсоемкой задачей. Этот модуль может создавать и удалять браузер в течение работы потока и тем самым экономить часть памяти и процессорного времени."},
+
+   "Get list of available browser versions": {"ru": "Получить список доступных версий браузера"},
+   "Get current browser version": {"ru": "Получить текущую версию браузера"},
 
    "Screenshot": {"ru": "Скриншот"},
    "Thread number": {"ru": "Количество потоков"},

@@ -3757,20 +3757,20 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
     <div class="container-fluid">
 
       <div class="col-xs-12">
-        <form class="form-horizontal">
-           <div class="form-group">
-             <hr style="margin-top:5px;margin-bottom:5px"/>
+       <form class="form-horizontal">
+          <div class="form-group">
+            <hr style="margin-top:5px;margin-bottom:5px"/>
              <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Components</span></span>:
-             <hr style="margin-top:5px;margin-bottom:5px"/>
-           </div>
-         </form>
-       </div>
- 
-      
+            <hr style="margin-top:5px;margin-bottom:5px"/>
+          </div>
+        </form>
+      </div>
+
+     
        <%= _.template($('#input_constructor').html())({id:"Widevine", description:tr("Widevine"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable or disable Widevine plugin."), examples:[{code:"enable",description:tr("Use Widevine")},{code:"disable",description:tr("Don't use Widevine")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
-
+ 
        <%= _.template($('#input_constructor').html())({id:"SafeBrowsing", description:tr("Safe Browsing"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable Safe Browsing. It is technology embedded in Chrome, helps to protect users from malicious web sites. Its absence can be detected."), examples:[{code:"enable",description:tr("Enable Safe Browsing")},{code:"disable",description:tr("Disable Safe Browsing")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
-
+      
        <%= _.template($('#input_constructor').html())({id:"Components", description:tr("Components"), default_selector: "string", disable_int:true, value_string: "", variants: ["enable", "disable"], help: { description: tr("Enable Chrome components. Increase profile size, but its absence can be detected."), examples:[{code:"enable",description:tr("Enable components")},{code:"disable",description:tr("Disable components")}, {code:tr("Empty string"),description:tr("Don't change this setting")}]}}) %>
 
       <div class="col-xs-12">
@@ -3890,6 +3890,34 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         <form class="form-horizontal">
            <div class="form-group">
              <hr style="margin-top:5px;margin-bottom:5px"/>
+             <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Browser version</span></span>:
+             <hr style="margin-top:5px;margin-bottom:5px"/>
+           </div>
+         </form>
+       </div>
+ 
+       <%= _.template($('#input_constructor').html())({id:"BrowserVersion", description:tr("Browser version"), default_selector: "string", disable_int:true, value_string: "",
+       variants:
+       [
+        "default<br/><span style='color:gray;font-size:small'>" + tr("Use latest Chrome version") + "</span>", 
+        "random<br/><span style='color:gray;font-size:small'>" + tr("Select random Chrome version of all available") + "</span>",
+        "111.0.5563.65<br/><span style='color:gray;font-size:small'>" + tr("Select specific version based on full vesrion string") + "</span>",
+        "111<br/><span style='color:gray;font-size:small'>" + tr("Select specific version based on major version string") + "</span>",
+        "1<br/><span style='color:gray;font-size:small'>" + tr("Select specific version based on version id") + "</span>",
+       ], 
+       help: { description: tr("Changes browser version for current thread. This setting will restart browser and therefore reset all settings, so it is better to use it when thread starts."), examples:[
+        {code:"default",description:tr("Use latest Chrome version")},
+        {code:"random",description:tr("Select random Chrome version of all available")},
+        {code:"111.0.5563.65",description:tr("Select specific version based on full vesrion string")},
+        {code:"111",description:tr("Select specific version based on major version string")},
+        {code:"1",description:tr("Select specific version based on version id")},
+        {code:tr("Empty string"),description:tr("Don't change this setting")}
+       ]}}) %>
+
+      <div class="col-xs-12">
+        <form class="form-horizontal">
+           <div class="form-group">
+             <hr style="margin-top:5px;margin-bottom:5px"/>
              <span style="margin-left:15px;"><span class="tr" style="font-weight: bold;">Command line</span></span>:
              <hr style="margin-top:5px;margin-bottom:5px"/>
            </div>
@@ -3901,20 +3929,109 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
 
 
+
     </div>
 
 
     <div class="tooltipinternal">
       <div class="tr tooltip-paragraph-first-fold">Changes browser settings: network, canvas, webgl, etc. Use "Get Fingerprint" action to change browser fingerprint.</div>
       <div class="tr tooltip-paragraph-fold">Empty string or 0 means, that value wont be changed.</div>
-      <div class="tr tooltip-paragraph-fold">"Components", "Extensions", "Widevine" or "Command line" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
+      <div class="tr tooltip-paragraph-fold">"Components", "Extensions", "Widevine", "Command line" or "Browser version" options will restart browser process and thereby reset all settings(proxies, headers, etc), so the best place to use this action is thread start.</div> 
       <div class="tooltip-paragraph-fold"><span class="tr">Chrome extension can be used in BAS by inputting either extension id or extension url or extension path into "Extensions" field. Extension id is a unique string with 32 length, for example, padekgcemlokbadohgkifijomclgjgif. Extension url is the main url of extension in</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://chrome.google.com/webstore/category/extensions');return false" class="tr">chrome web store</a>. <span class="tr">It has chrome.google.com domain, for example: https://chrome.google.com/webstore/detail/proxy-switchyomega/padekgcemlokbadohgkifijomclgjgif. Extension path is path to unpacked extension. Each path must contain extracted extension, a folder with manifest.json and other files. See</span> <a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=using_extensions');return false" class="tr-en">this link</a><a href="#" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/doku.php?id=ru:using_extensions');return false" class="tr-ru">эту ссылку</a>, <span class="tr">for information about unpacking extensions and other info about using them</span>.</div>
 
+      <div class="tr tooltip-paragraph-fold">Each BAS version may be shipped with one or several browser versions. This action can change browser version used in current thread. Use "Browser version" param to do that.</div>
+      <div class="tr tooltip-paragraph-fold">In order to get Chrome version, which is used for current thread, use "Get current browser version" action.</div>
+      <div class="tr tooltip-paragraph-fold">In order to get all available versions for current BAS build, use "Get list of available browser versions" action.</div>
+      <div class="tr tooltip-paragraph-fold">One of use case for changing browser version would be to select random version with this action first. You can use "random" string as input parameter. Then get fingerprint which was obtained from browser with same version. Use "Get fingerprint" action with "Minimum browser version" and "Maximum browser version" parameters. This way used actual browser version will always match browser version of fingerprint, and these versions won't be the same for each thread.</div>
 
       <div class="tr tooltip-paragraph-last-fold">If you want to change settings for every thread, it is better to use settings tab.</div>
     </div>
 
 
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
+
+  <script type="text/template" id="getbrowserversionlist">
+    <div class="container-fluid">
+      <%= _.template($('#input_constructor').html())({id:"Format", description:tr("Format"), default_selector: "string", disable_int:true, value_string: "default", variants: 
+      [
+        "default<br/><span style='color:gray;font-size:small'>" + tr("Returns list of strings") + "</span>",
+        "extended<br/><span style='color:gray;font-size:small'>" + tr("Returns list of objects") + "</span>"
+      ], help: {description: tr("Format of returned result. Results are always sorted descending by version, i.e. the latest version will appear first in the list."), examples:[
+        {code:("default"), description:(tr("returns list of strings, for example") + (" <code style=\"font-size:85%\">[\"113.0.5563.65\", \"111.0.5563.65\", ...]</code>"))},
+        {code:("extended"), description:(tr("returns list of object, each object has info about specific version, for example") + ("<code style=\"font-size:85%\">[{\"id\": 1, \"browser_version\": \"113.0.5563.65\", ...}]</code>. ") + tr("More info about each property of these objects can be found below."))}
+      ]}}) %>
+    
+      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Variable to save the result"), default_variable: "AVAILABLE_CHROME_VERSIONS", help: {description: tr("Variable in which, after successful execution of the action, the list of all available Chrome versions will be stored. Results are always sorted descending by version, i.e. the latest version will appear first in the list."), examples:[
+        {code:("default"), description:(tr("returns list of strings, for example") + (" <code style=\"font-size:85%\">[\"113.0.5563.65\", \"111.0.5563.65\", ...]</code>"))},
+        {code:("extended"), description:(tr("returns list of object, each object has info about specific version, for example") + ("<code style=\"font-size:85%\">[{\"id\": 1, \"browser_version\": \"113.0.5563.65\", ...}]</code>. ") + tr("More info about each property of these objects can be found below."))}
+      ]} }) %>
+    
+    </div>
+    
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get list of all available Chrome versions.</div>
+      <div class="tr tooltip-paragraph-fold">Each BAS version may be shipped with one or several browser versions. This action can obtain list of all available versions programmatically. You can get this list manually as well by visiting Menu -&gt; Help -&gt; About Engine.</div>
+      <div class="tr tooltip-paragraph-fold">In order to get Chrome version, which is used for current thread, use "Get current browser version" action.</div>
+      <div class="tr tooltip-paragraph-fold">If you want to switch browser version for current thread, use "Browser Settings" action with "Browser Version" parameter.</div>
+      <div class="tr tooltip-paragraph-fold">One of possible use case would be to get list of all versions with this action, select certain version with "Browser Settings" action and then use "Get fingerprint" action with "Minimum browser version" and "Maximum browser version" parameters which matches previously selected browser version. This way used actual browser version will always match browser version of fingerprint, and these versions won't be the same for each thread. With this example you are free to use any algorithm for browser version selection, it could be just random value, or selection based on probability, for example, latest version may be selected more often than outdated.</div>
+      <div class="tr tooltip-paragraph-fold">Depending on selected format this action will return either list of strings or list of objects.</div>
+      <div class="tooltip-paragraph-fold"><span class="tr">With "default" format output will contain list of strings with full browser versions, for example</span> <code style="font-size:85%">["113.0.5563.65", "111.0.5563.65", ...]</code></div> 
+      <div class="tooltip-paragraph-fold"><span class="tr">With "extended" format output will contain list of object, each object has info about specific version, for example</span> <code style="font-size:85%">[{"id": 1, "browser_version": "113.0.5563.65", ...}]</code></div>
+      <div class="tr tooltip-paragraph-fold">Here is a list of properties for these objects:</div>
+      <div class="tr tooltip-paragraph-fold">"browser_version" - full browser version, for example 111.0.5563.65. Can be used later to switch current thread to this version.</div>
+      <div class="tr tooltip-paragraph-fold">"id" - internal identifier of Chrome build, for example, 1, 2, 3, ...</div>
+      <div class="tr tooltip-paragraph-fold">"bas_version" - BAS version in which corresponding Chrome version was introduced, for example, 25.5.1.</div>
+      <div class="tr tooltip-paragraph-fold">"architecture" - browser architecture, can be "x64" or "x86".</div>
+      <div class="tr tooltip-paragraph-fold">Result obtained with "extended" format can be parsed with JSON module, while "default" format is easier to parse with List module.</div>
+      <div class="tr tooltip-paragraph-last-fold">Results are always sorted descending by version, i.e. the latest version will appear first in the list.</div>
+    
+      
+    </div>
+    
+    <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
+  </script>
+
+  <script type="text/template" id="getcurrentbrowserversion">
+    <div class="container-fluid">
+      <%= _.template($('#variable_constructor').html())({id:"Save2", description:tr("Browser version string"), default_variable: "BROWSER_VERSION_STRING", help: {description: tr("Variable in which, after successful execution of the action, Chrome version will be stored. Version string is obtained for current thread. Other threads can use different versions. It can be changed by using \"Browser settings\" action."), examples:[
+        {
+          code:("111.0.5563.65"), description: tr("current thread uses 111.0.5563.65 Chrome version.")
+        },
+        {
+          code:("113.0.5563.65"), description: tr("current thread uses 113.0.5563.65 Chrome version.")
+        }
+
+      ]} }) %>
+    </div>
+    <div class="container-fluid">
+      <%= _.template($('#variable_constructor').html())({id:"Save", description:tr("Browser version id"), default_variable: "BROWSER_VERSION_ID", help: {description: tr("Variable in which, after successful execution of the action, internal identifier of browser build will be stored. Version id is obtained for current thread. Other threads can use different versions. IDs are always integers starting from 1."), examples:[
+        {code:("1, 2, 3 ...")}
+      ]} }) %>
+    </div>
+    <div class="container-fluid">
+      <%= _.template($('#variable_constructor').html())({id:"Save3", description:tr("Browser architecture"), default_variable: "BROWSER_ARCHITECTURE", help: {description: tr("Variable in which, after successful execution of the action, browser architecture will be stored."), examples:[
+        {
+          code:("x64")
+        },
+        {
+          code:("x86")
+        }
+      ]} }) %>
+    </div>
+
+    
+    
+    <div class="tooltipinternal">
+      <div class="tr tooltip-paragraph-first-fold">Get info about current Chrome version.</div>
+      <div class="tr tooltip-paragraph-fold">Each BAS distribution may be shipped with one or several browser versions. This action can obtain Chrome version used in current thread. Other threads can use different versions.</div>
+      <div class="tr tooltip-paragraph-fold">By default BAS will choose latest browser version available.</div>
+      <div class="tr tooltip-paragraph-fold">In order to get all available versions for current BAS build, use "Get list of available browser versions" action.</div>
+      <div class="tr tooltip-paragraph-last-fold">If you want to switch browser version for current thread, use "Browser Settings" action with "Browser Version" parameter.</div>
+    
+      
+    </div>
+    
     <%= _.template($('#back').html())({action:"executeandadd", visible:true}) %>
   </script>
 
@@ -5505,9 +5622,16 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
       var MaxFPS = (<%= MaxFPS %>);
       var Webgl = (<%= Webgl %>);
       var WebglNoise = (<%= WebglNoise %>);
+      var BrowserVersion = (<%= BrowserVersion %>);
 
       var WebglVendor = (<%= WebglVendor %>);
       var WebglRenderer = (<%= WebglRenderer %>);
+
+      if(BrowserVersion.length > 0)
+      {
+        var id = _find_browser_version_id(BrowserVersion.toString())
+        Params["BrowserVersionId"] = id.toString()
+      }
 
       if(Widevine.length > 0)
         Params["UseWidevine"] = Widevine == "enable"
@@ -5569,6 +5693,19 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
 
       _settings(Params)!
       
+  </script>
+
+  <script type="text/template" id="getbrowserversionlist_code">
+    <%= variable %> = _get_all_browser_version_info(<%= format %>)
+  </script>
+
+  <script type="text/template" id="getcurrentbrowserversion_code">
+    {
+      var info = _get_current_browser_version_info("extended")
+      <%= variable %> = info.id
+      <%= variable2 %> = info.browser_version
+      <%= variable3 %> = info.architecture
+    }
   </script>
 
   <script type="text/template" id="resize_code">
@@ -9581,6 +9718,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             var SkipFrames = GetInputConstructorValue("SkipFrames", loader);
             var Extensions = GetInputConstructorValue("Extensions", loader);
             var CommandLine = GetInputConstructorValue("CommandLine", loader);
+            var BrowserVersion = GetInputConstructorValue("BrowserVersion", loader);
             
 
             try{
@@ -9593,6 +9731,7 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                   SkipFrames:SkipFrames["updated"],
                   Extensions:Extensions["updated"],
                   CommandLine:CommandLine["updated"],
+                  BrowserVersion:BrowserVersion["updated"],
 
                   Webrtc:Webrtc["updated"],
                   WebrtcIps:WebrtcIps["updated"],
@@ -9611,6 +9750,66 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
               BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
             }catch(e)
             {}
+          }else if(State == "getbrowserversionlist")
+          {
+            
+            var Format = GetInputConstructorValue("Format", loader);
+            var Save = this.$el.find("#Save").val().toUpperCase();
+
+            if(Format["original"].length == 0)
+            {
+              Invalid("Format is empty");
+              return;
+            }
+
+            if(Save.length == 0)
+            {
+              Invalid("Variable is empty");
+              return;
+            }
+
+
+            try{
+              var code = loader.GetAdditionalData() + _.template($('#' + State + '_code').html())({format:Format["updated"], variable:"VAR_" + Save});
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
+            }catch(e)
+            {}
+          }else if(State == "getcurrentbrowserversion")
+          {
+            var Save = this.$el.find("#Save").val().toUpperCase();
+            var Save2 = this.$el.find("#Save2").val().toUpperCase();
+            var Save3 = this.$el.find("#Save3").val().toUpperCase();
+
+
+            if(Save.length == 0)
+            {
+              Invalid("Variable is empty");
+              return;
+            }
+
+            if(Save2.length == 0)
+            {
+              Invalid("Variable2 is empty");
+              return;
+            }
+
+
+            if(Save3.length == 0)
+            {
+              Invalid("Variable3 is empty");
+              return;
+            }
+
+
+
+            try{
+              var code = loader.GetAdditionalData() + _.template($('#' + State + '_code').html())({variable:"VAR_" + Save, variable2:"VAR_" + Save2, variable3:"VAR_" + Save3});
+              code = Normalize(code,0);
+              BrowserAutomationStudio_Append("", BrowserAutomationStudio_SaveControls() + code, action, DisableIfAdd, "", true);
+            }catch(e)
+            {}
+            
           }
           else if(State == "scroll")
           {
@@ -9893,6 +10092,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
           "notification": _.template($('#notification').html()),
 
           "browsersettings": _.template($('#browsersettings').html()),
+          "getbrowserversionlist": _.template($('#getbrowserversionlist').html()),
+          "getcurrentbrowserversion": _.template($('#getcurrentbrowserversion').html()),
           "executefunctioninseveralthreads": _.template($('#executefunctioninseveralthreads').html())
           _MACRO_INSERT_TEMPLATES_
         }
@@ -10146,6 +10347,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
             "!/notification": "notification",
 
             "!/browsersettings": "browsersettings",
+            "!/getbrowserversionlist": "getbrowserversionlist",
+            "!/getcurrentbrowserversion": "getcurrentbrowserversion",
             "!/executefunctioninseveralthreads": "executefunctioninseveralthreads"
             _MACRO_INSERT_ROUTER_DEF_
         },
@@ -10599,6 +10802,12 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
         }
         ,browsersettings: function(){
           _GobalModel.set({ state: "browsersettings" });
+        }
+        ,getbrowserversionlist: function(){
+          _GobalModel.set({ state: "getbrowserversionlist" });
+        },
+        getcurrentbrowserversion: function(){
+          _GobalModel.set({ state: "getcurrentbrowserversion" });
         },
         executefunctioninseveralthreads: function(){
           _GobalModel.set({ state: "executefunctioninseveralthreads" });
@@ -10636,6 +10845,8 @@ base64:[[VARIABLE_WITH_BASE64_ENCODING]]
                 { name: tr(_A["solverfailed"]["name"]), description: tr(_A["solverfailed"]["description"]), ref: "solverfailed" },
                 { name: tr(_A["timeout"]["name"]), description: tr(_A["timeout"]["description"]), ref: "timeout" },
                 { name: tr(_A["browsersettings"]["name"]), description: tr(_A["browsersettings"]["description"]), ref: "browsersettings" },
+                { name: tr(_A["getcurrentbrowserversion"]["name"]), description: tr(_A["getcurrentbrowserversion"]["description"]), ref: "getcurrentbrowserversion" },
+                { name: tr(_A["getbrowserversionlist"]["name"]), description: tr(_A["getbrowserversionlist"]["description"]), ref: "getbrowserversionlist" },
                 { name: tr(_A["clickextensionbutton"]["name"]), description: tr(_A["clickextensionbutton"]["description"]), ref: "clickextensionbutton" },
                 { name: tr(_A["touch"]["name"]), description: tr(_A["touch"]["description"]), ref: "touch" },
                 { name: tr(_A["mousesettings"]["name"]), description: tr(_A["mousesettings"]["description"]), ref: "mousesettings" },

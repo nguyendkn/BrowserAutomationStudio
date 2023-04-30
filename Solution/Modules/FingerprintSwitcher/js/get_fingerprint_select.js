@@ -4,6 +4,7 @@ var Save = this.$el.find("#Save").val().toUpperCase();
 
 var AddedDate = GetInputConstructorValue("AddedDate", loader);
 var BrowserVersion = GetInputConstructorValue("BrowserVersion", loader);
+var MaxBrowserVersion = GetInputConstructorValue("MaxBrowserVersion", loader);
 var MinimumWidth = GetInputConstructorValue("MinimumWidth", loader);
 var MinimumHeight = GetInputConstructorValue("MinimumHeight", loader);
 var MaximumWidth = GetInputConstructorValue("MaximumWidth", loader);
@@ -29,6 +30,11 @@ if(AddedDate["original"].length == 0)
 if(BrowserVersion["original"].length == 0)
 {
   Invalid("BrowserVersion are empty");
+  return;
+}
+if(MaxBrowserVersion["original"].length == 0)
+{
+  Invalid("MaxBrowserVersion are empty");
   return;
 }
 if(MinimumWidth["original"].length == 0)
@@ -76,6 +82,7 @@ try{
       variable:"VAR_" + Save, 
       key: Key["updated"],
       min_browser_version: BrowserVersion["updated"],
+      max_browser_version: MaxBrowserVersion["updated"],
       min_width: MinimumWidth["updated"],
       min_height: MinimumHeight["updated"],
       max_width: MaximumWidth["updated"],

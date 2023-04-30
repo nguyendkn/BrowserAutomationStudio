@@ -29,6 +29,16 @@ function BrowserAutomationStudio_GetFingerprint()
 
 	FINGERPRINT_JSON = _arguments()[0]
 
+	if(typeof(FINGERPRINT_JSON.min_browser_version) == "string" && FINGERPRINT_JSON.min_browser_version == "current")
+	{
+		FINGERPRINT_JSON.min_browser_version = _get_current_browser_version_info("minimal")
+	}
+
+	if(typeof(FINGERPRINT_JSON.max_browser_version) == "string" && FINGERPRINT_JSON.max_browser_version == "current")
+	{
+		FINGERPRINT_JSON.max_browser_version = _get_current_browser_version_info("minimal")
+	}
+
 	var q = (FINGERPRINT_JSON.tags).split(",").map(function(el){return el.trim()})
 	if(q.length == 0 || q.length == 1 && q[0] == "*")
 	{
@@ -44,6 +54,9 @@ function BrowserAutomationStudio_GetFingerprint()
 
 	if(FINGERPRINT_JSON.min_browser_version != "*")
 		q += "&min_browser_version=" + parseInt(FINGERPRINT_JSON.min_browser_version)
+
+	if(FINGERPRINT_JSON.max_browser_version != "*")
+		q += "&max_browser_version=" + parseInt(FINGERPRINT_JSON.max_browser_version)
 
 	if(FINGERPRINT_JSON.min_width != "*")
 		q += "&min_width=" + parseInt(FINGERPRINT_JSON.min_width)	

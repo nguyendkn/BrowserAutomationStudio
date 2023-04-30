@@ -116,16 +116,45 @@
 				}
 			]
 		} }) %>
-		<%= _.template($('#input_constructor').html())({id:"BrowserVersion", description:tr("Minimum browser version"), default_selector: "string", value_string:"*", variants: ["*", "75"], help: 
+		<%= _.template($('#input_constructor').html())({id:"BrowserVersion", description:tr("Minimum browser version"), default_selector: "string", value_string:"*", variants: 
+		[
+			"*", 
+			"111<br/><span style='color:gray;font-size:small'>" + tr("Specific browser version or higher") + "</span>",
+			"current<br/><span style='color:gray;font-size:small'>" + tr("Browser version equals to BAS browser version or higher") + "</span>"
+		], help: 
 		{
-			description: tr("Select only fingerprints, which has certain browser version. It is recommended to use this option together with explicitly specifying browser name. For example, you can select fingerprints for Chrome browser with version greater than 75."), examples:
+			description: tr("Select only fingerprints, which has certain browser version. It is recommended to use this option together with explicitly specifying browser name. For example, you can select fingerprints for Chrome browser with version greater than 75. By setting \"Minimum browser version\" and \"Maximum browser version\" to same value, you can select exact version. If you use \"current\" as input parameter for both minimum and maximum browser version, it will help to avoid discrepancy between BAS browser version and browser version from fingerprint. Therefore browser authenticity will be significantly increased."), examples:
 			[
 				{
 					code:"*",description:tr("Doesn't filter on browser version")
 				},
 				{
-					code:"75",description:tr("Browser version must be equal or greater than 75")
+					code:"111",description:tr("Browser version must be equal or greater than 111")
+				},
+				{
+					code:"current",description:tr("Browser version must be equal or greater than BAS browser version")
 				}
+			]
+		} }) %>
+		<%= _.template($('#input_constructor').html())({id:"MaxBrowserVersion", description:tr("Maximum browser version"), default_selector: "string", value_string:"*", variants: 
+		[
+			"*", 
+			"111<br/><span style='color:gray;font-size:small'>" + tr("Specific browser version or lower") + "</span>",
+			"current<br/><span style='color:gray;font-size:small'>" + tr("Browser version equals to BAS browser version or lower") + "</span>"
+		], help: 
+		{
+			description: tr("Select only fingerprints, which has certain browser version. It is recommended to use this option together with explicitly specifying browser name. For example, you can select fingerprints for Chrome browser with version less than 75. By setting \"Minimum browser version\" and \"Maximum browser version\" to same value, you can select exact version. If you use \"current\" as input parameter for both minimum and maximum browser version, it will help to avoid discrepancy between BAS browser version and browser version from fingerprint. Therefore browser authenticity will be significantly increased."), examples:
+			[
+				{
+					code:"*",description:tr("Doesn't filter on browser version")
+				},
+				{
+					code:"111",description:tr("Browser version must be equal or less than 111")
+				},
+				{
+					code:"current",description:tr("Browser version must be equal or less than BAS browser version")
+				}
+				
 			]
 		} }) %>
 		<%= _.template($('#input_constructor').html())({id:"MinimumWidth", description:tr("Minimum browser width"), default_selector: "string", value_string:"*", variants: ["*", "1600"], help: 
@@ -268,10 +297,19 @@
 
 	  <div class="tr tooltip-paragraph-fold">If you have "PerfectCanvas request" field prepared for "site A", and you visit "site B" then canvas data for "site B" will be replaced by adding noise. If you want canvas data to be replaced for both sites, you have to prepare request for both "site A" and "site B".</div>
 
-	  
-
 	  <div class="tr tooltip-paragraph-fold">In order to check if data for PerfectCanvas was actually replaced check log at BrowserAutomationStudio/apps/CURRENT_BAS_VERSION/s/PROCESS_ID.txt file.</div>
 
+
+	  <div class="tooltip-paragraph-fold"><span class="tr">If you want to select fingerprint with specific browser version, set "Minimum browser version" and "Maximum browser version" parameter to same value. Instead of selecting specific version, you can use special word "current". By using "current" in both minium and maximum version parameters you can unsure that BAS browser version will match browser version from fingerprint. Therefore browser authenticity will be significantly increased.</span>
+		<span class="tr-en">
+			<a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserautomationstudio_2023-04-30_07-34-05.png'); return false;">screen</a>.
+		</span>
+		<span class="tr-ru">
+			<a href="#" class="tr" onclick="BrowserAutomationStudio_OpenUrl('https://wiki.bablosoft.com/lib/exe/fetch.php?cache=&media=browserautomationstudio_2023-04-30_08-24-55.png'); return false;">скрин</a>.
+		</span>
+	  </div>
+
+	  <div class="tr tooltip-paragraph-fold">Each BAS version may be shipped with one or several browser versions. You can change browser version for current thread, in order to do that use "Browser Settings" action with "Browser Version" parameter. After browser version for current thread will be changed, using special word "current" will select fingerprints of changed version.</div>
 
 
       <div class="tooltip-paragraph-last-fold"><span class="tr">You can find more information and get test fingerprints on following page</span> <a href="#"  onclick="BrowserAutomationStudio_OpenUrl('https://fingerprints.bablosoft.com'); return false;">

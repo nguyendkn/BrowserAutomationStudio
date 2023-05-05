@@ -25,7 +25,7 @@ void settings::Init()
     force_utf8 = true;
     canvas = "enable";
     audio = "enable";
-    quic = "disable";
+    quic = "enable";
     webrtc = "enable";
     webgl = "enable";
     initial_proxy = "block";

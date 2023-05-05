@@ -30,7 +30,7 @@ namespace BrowserAutomationStudioFramework
         Webrtc = "enable";
         Canvas = "enable";
         Audio = "enable";
-        QUIC = "disable";
+        QUIC = "enable";
         UseWidevine = true;
         UseSafeBrowsing = true;
         UseComponents = true;

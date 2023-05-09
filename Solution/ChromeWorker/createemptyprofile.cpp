@@ -13,7 +13,7 @@ void CreateEmptyProfile(const std::wstring& ProfilePath)
     if(FolderExists(ProfilePath) && FolderExists(ProfilePath + L"/Default") + FileExists(ProfilePath + L"/Login Data"))
         return;
 
-    std::wstring From = GetRelativePathToParentFolder(L"ep\\*");
+    std::wstring From = GetRelativePathToExe(L"ep\\*");
     std::wstring To = ProfilePath;
 
     ReplaceAllInPlace(From, L"/", L"\\");

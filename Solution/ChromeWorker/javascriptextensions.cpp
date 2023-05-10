@@ -1046,5 +1046,5 @@ std::string JavaScriptExtensions::ProcessJs(const std::string& Script, const std
 
 std::string JavaScriptExtensions::GetHideExtension(const std::string& UniqueProcessId)
 {
-    return std::string("(function(){atob[Symbol.for('_bas_hide_") + UniqueProcessId + std::string("')] = {};})();");
+    return std::string("Object.defineProperty(location.reload, '_bas_hide_") + UniqueProcessId + std::string("', { value: {} });");
 }

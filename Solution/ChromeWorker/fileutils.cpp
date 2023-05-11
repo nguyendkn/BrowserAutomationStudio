@@ -2,6 +2,7 @@
 #include <vector>
 #include <windows.h>
 #include <algorithm>
+#include "converter.h"
 
 std::wstring GetRelativePathToExe(const std::wstring& RelativePath)
 {
@@ -36,6 +37,21 @@ std::wstring GetRelativePathToParentFolder(const std::wstring& RelativePath)
     //buffer.push_back(0);
 
     return std::wstring(buffer.data(),buffer.size());
+}
+
+int GetBrowserVersionIdFromPath()
+{
+    std::vector<wchar_t> buffer(MAX_PATH);
+    int size = GetModuleFileName(NULL, buffer.data(), MAX_PATH);
+    buffer.resize(size);
+    wchar_t separator[] = {L'\\'};
+    std::vector<wchar_t>::iterator it = std::find_end(buffer.begin(), buffer.end(), separator, separator + 1);
+    size = it - buffer.begin();
+    buffer.resize(size);
+    wchar_t separator2[] = {L'.'};
+    it = std::find_end(buffer.begin(), buffer.end(), separator2, separator2 + 1);
+    std::wstring IdString = std::wstring(it + 1,buffer.end());
+    return std::stoi(IdString);
 }
 
 std::wstring ExtractFilenameFromPath(const std::wstring& Path)

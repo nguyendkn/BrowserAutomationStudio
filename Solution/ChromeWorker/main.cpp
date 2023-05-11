@@ -2070,7 +2070,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     if(Settings.UseWidevine())
     {
-        InstallWidevine(Settings.Profile());
+        InstallWidevine(Settings.Profile(), GetBrowserVersionIdFromPath());
     }else
     {
         DeinstallWidevine(Settings.Profile());
@@ -2078,7 +2078,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     if(Settings.UseSafeBrowsing())
     {
-        InstallSafeBrowsing(Settings.Profile());
+        InstallSafeBrowsing(Settings.Profile(), GetBrowserVersionIdFromPath());
     }else
     {
         DeinstallSafeBrowsing(Settings.Profile());
@@ -2086,7 +2086,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
     if(Settings.UseComponents())
     {
-        InstallComponents(Settings.Profile());
+        InstallComponents(Settings.Profile(), GetBrowserVersionIdFromPath());
     }else
     {
         DeinstallComponents(Settings.Profile());

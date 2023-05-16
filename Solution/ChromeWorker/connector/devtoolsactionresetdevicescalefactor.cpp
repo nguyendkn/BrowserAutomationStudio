@@ -9,6 +9,7 @@ using namespace std::chrono;
 void DevToolsActionResetDeviceScaleFactor::Run()
 {
     GlobalState->SaveProxy->ResetDPI();
+    Path = GlobalState->SaveProxy->GetConfigFilePath("dpi");
 
     //Wait 3 seconds
     NextCheck = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count() + 1000;

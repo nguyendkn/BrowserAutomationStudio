@@ -6,7 +6,7 @@
 class DevToolsActionResetDeviceScaleFactor : public IDevToolsAction
 {
     long long NextCheck = 0;
-    std::string Path;
+    std::wstring Path;
 
 public:
     virtual void Run();

@@ -82,16 +82,27 @@ std::string ProxySaver::GenerateProxyConfig(const std::string& Server, int Port,
         proxy = "127.0.0.1|1000|||5|2|0|1|0|1111|1|SCAP_END!";
     }else
     {
+        std::string LoginPrepared = ReplaceAll(Login, "|", "");
+        std::string PasswordPrepared = ReplaceAll(Password, "|", "");
 
+        int MaxAuthData = 500;
         std::string proxy_type_string = "3";
         if (!IsHttp)
         {
+            MaxAuthData = 250;
             proxy_type_string = "5";
         }
+
+        if(LoginPrepared.size() > MaxAuthData)
+            LoginPrepared.resize(MaxAuthData);
+
+        if(PasswordPrepared.size() > MaxAuthData)
+            PasswordPrepared.resize(MaxAuthData);
+
         proxy = Server + std::string("|") +
         std::to_string(Port) + std::string("|") +
-        ReplaceAll(Login, "|", "") + std::string("|") +
-        ReplaceAll(Password, "|", "") + std::string("|") +
+        LoginPrepared + std::string("|") +
+        PasswordPrepared + std::string("|") +
         proxy_type_string + std::string("|2|") + std::to_string(PcapPort) + std::string("|0|0|1111|1|SCAP_END!");
     }
 

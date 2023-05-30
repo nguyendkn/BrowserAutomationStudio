@@ -6,7 +6,9 @@
 #include "replaceall.h"
 #include "split.h"
 #include "languagemanager.h"
+#include "readallfile.h"
 #include "replaceall.h"
+#include "fileutils.h"
 #include <regex>
 
 JavaScriptExtensions::JavaScriptExtensions()
@@ -20,27 +22,10 @@ std::string JavaScriptExtensions::GetBasicExtension(bool IsRecord)
     std::string additional;
     if(IsRecord)
     {
-        try
-        {
-            std::ifstream ifs("html/main/css_path.js");
-            additional = std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        }catch(...){}
-        try
-        {
-            std::ifstream ifs("html/main/xpath_path.js");
-            additional += std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        }catch(...){}
-         try
-        {
-            std::ifstream ifs("html/main/diff_match.js");
-            additional += std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        }catch(...){}
-        try
-        {
-            std::ifstream ifs("html/main/multiselect.js");
-            additional += std::string((std::istreambuf_iterator<char>(ifs)),(std::istreambuf_iterator<char>()));
-        }catch(...){}
-        //WORKER_LOG(additional);
+        additional += ReadAllString(GetRelativePathToExe(std::wstring(L"html/main/css_path.js")));
+        additional += ReadAllString(GetRelativePathToExe(std::wstring(L"html/main/xpath_path.js")));
+        additional += ReadAllString(GetRelativePathToExe(std::wstring(L"html/main/diff_match.js")));
+        additional += ReadAllString(GetRelativePathToExe(std::wstring(L"html/main/multiselect.js")));
     }
 
     std::string original_functions;

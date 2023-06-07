@@ -425,7 +425,7 @@ class HelpManager
 
 		var	ContentData =	{"s":"html","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"Save","type":"var","data":"SAVED_PAGE_HTML"}]}
 		var ContentCode = `/*Browser*/
-   page().script("document.documentElement.outerHTML")!
+   page().script("_BAS_HIDE(BrowserAutomationStudio_GetPageContent)()")!
    VAR_SAVED_PAGE_HTML = _result()`		
 
 		this.ChangeStart()
@@ -462,7 +462,7 @@ class HelpManager
 
 		var	ContentData =	{"s":"html","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"Save","type":"var","data":"SAVED_PAGE_HTML"}]}
 		var ContentCode = `/*Browser*/
-   page().script("document.documentElement.outerHTML")!
+   page().script("_BAS_HIDE(BrowserAutomationStudio_GetPageContent)()")!
    VAR_SAVED_PAGE_HTML = _result()`		
 
 	    var XpathData = {"s":"XpathText","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"Text","type":"constr","data":"[[SAVED_PAGE_HTML]]","class":"string"},{"id":"Value","type":"constr","data":"//title","class":"string"},{"id":"Save","type":"var","data":"XPATH_TEXT"},{"id":"Check","type":"check","data":true}]}
@@ -705,7 +705,7 @@ class HelpManager
 		
 		var	ContentData =	{"s":"html","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"Save","type":"var","data":"SAVED_PAGE_HTML"}]}
 		var ContentCode = `/*Browser*/
-   page().script("document.documentElement.outerHTML")!
+   page().script("_BAS_HIDE(BrowserAutomationStudio_GetPageContent)()")!
    VAR_SAVED_PAGE_HTML = _result()`	
 
    		this.ChangeStart()
@@ -749,7 +749,7 @@ class HelpManager
 		
 		var	ContentData =	{"s":"html","v":1,"f":[],"uw":"0","ut":"0","uto":"0","um":"0","d":[{"id":"Save","type":"var","data":"SAVED_PAGE_HTML"}]}
 		var ContentCode = `/*Browser*/
-   page().script("document.documentElement.outerHTML")!
+   page().script("_BAS_HIDE(BrowserAutomationStudio_GetPageContent)()")!
    VAR_SAVED_PAGE_HTML = _result()`	
 
    		this.ChangeStart()

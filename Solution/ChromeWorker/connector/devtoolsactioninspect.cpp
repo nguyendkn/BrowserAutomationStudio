@@ -215,7 +215,7 @@ void DevToolsActionInspect::Next()
 
         std::string Script;
 
-        Script += Javascript(std::string("JSON.stringify(_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(X - x_with_padding) + std::string(",") + std::to_string(Y - y_with_padding) + std::string(",") + std::to_string(Position) + std::string(", false))"));
+        Script += Javascript(std::string("_BAS_SAFE(JSON.stringify)(_BAS_HIDE(BrowserAutomationStudio_InspectElement)(") + std::to_string(X - x_with_padding) + std::string(",") + std::to_string(Y - y_with_padding) + std::string(",") + std::to_string(Position) + std::string(", false))"));
 
         CurrentParams["expression"] = Variant(Script);
         CurrentParams["replMode"] = Variant(true);

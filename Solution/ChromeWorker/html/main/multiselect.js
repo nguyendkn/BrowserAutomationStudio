@@ -1,21 +1,26 @@
     ;_BAS_HIDE(DomPredictionHelper) = function(_bas_use_css, _bas_use_ids, _bas_check_density, _query_selector_host) {
       this.recursiveNodes = function(e) {
         var n;
-        if (e.nodeName && e.parentNode && e !== document.body && !(e instanceof ShadowRoot) && !(e.parentNode instanceof ShadowRoot)) {
-          n = this.recursiveNodes(e.parentNode);
+        if (_BAS_SAFE($Node.nodeName)(e) && _BAS_SAFE($Node.parentNode)(e) && e !== _BAS_SAFE($Document.body)(document) && !(e instanceof _BAS_SAFE(ShadowRoot)) && !(_BAS_SAFE($Node.parentNode)(e) instanceof _BAS_SAFE(ShadowRoot))) {
+          n = this.recursiveNodes(_BAS_SAFE($Node.parentNode)(e));
         } else {
-          n = new Array();
+          n = [];
         }
-        n.push(e);
+        _BAS_SAFE($Array.push)(n, e);
         return n;
       };
   
       this.escapeCssNames = function(name) {
         if (name) {
           try {
-            return name.replace(/\bselectorgadget_\w+\b/g, '').replace(/\\/g, '\\\\').replace(/[\#\;\&\,\.\+\*\~\'\:\"\!\^\$\[\]\(\)\=\>\|\/]/g, function(e) {
-              return '\\' + e;
-            }).replace(/\s+/, '');
+            let replacements = [
+              [/\bselectorgadget_\w+\b/g, ''],
+              [/\\/g, '\\\\'],
+              [/[\#\;\&\,\.\+\*\~\'\:\"\!\^\$\[\]\(\)\=\>\|\/]/g, (e) => '\\' + e],
+              [/\s+/, '']
+            ]
+            for (let replacement of replacements) name = _BAS_SAFE($String.replace)(name, ...replacement);
+            return name;
           } catch (e) {
             return '';
           }
@@ -27,8 +32,8 @@
       this.childElemNumber = function(elem) {
         var count;
         count = 0;
-        while (elem.previousSibling && (elem = elem.previousSibling)) {
-          if (elem.nodeType === 1) {
+        while (_BAS_SAFE($Node.previousSibling)(elem) && (elem = _BAS_SAFE($Node.previousSibling)(elem))) {
+          if (_BAS_SAFE($Node.nodeType)(elem) === 1) {
             count++;
           }
         }
@@ -37,20 +42,22 @@
   
       this.siblingsWithoutTextNodes = function(e) {
         var filtered_nodes, node, nodes, _i, _len;
-        if(e.parentNode)
-          nodes = e.parentNode.childNodes;
+        if(_BAS_SAFE($Node.parentNode)(e))
+          nodes = _BAS_HIDE(BrowserAutomationStudio_ConvertIfNeeded)(
+            _BAS_SAFE($Node.childNodes)(_BAS_SAFE($Node.parentNode)(e))
+          );
         else
           nodes = []
         filtered_nodes = [];
         for (_i = 0, _len = nodes.length; _i < _len; _i++) {
           node = nodes[_i];
-          if (node.nodeName.substring(0, 1) === "#") {
+          if (_BAS_SAFE($String.substring)(_BAS_SAFE($Node.nodeName)(node), 0, 1) === "#") {
             continue;
           }
           if (node === e) {
             break;
           }
-          filtered_nodes.push(node);
+          _BAS_SAFE($Array.push)(filtered_nodes, node);
         }
         return filtered_nodes;
       };
@@ -63,13 +70,13 @@
           e = _ref[_i];
           if (e) {
             siblings = this.siblingsWithoutTextNodes(e);
-            if (e.nodeName.toLowerCase() !== "body") {
+            if (_BAS_SAFE($String.toLowerCase)(_BAS_SAFE($Node.nodeName)(e)) !== "body") {
               j = siblings.length - 2 < 0 ? 0 : siblings.length - 2;
               while (j < siblings.length) {
                 if (siblings[j] === e) {
                   break;
                 }
-                if (!siblings[j].nodeName.match(/^(script|#.*?)$/i)) {
+                if (!_BAS_SAFE($String.match)(_BAS_SAFE($Node.nodeName)(siblings[j]), /^(script|#.*?)$/i)) {
                   path += this.cssDescriptor(siblings[j]) + (j + 1 === siblings.length ? "+ " : "~ ");
                 }
                 j++;
@@ -83,8 +90,9 @@
   
       this.cssDescriptor = function(node) {
         var cssName, escaped, path, _i, _len, _ref;
-        path = node.nodeName.toLowerCase();
-        escaped = node.id && this.escapeCssNames(new String(node.id));
+        path = _BAS_SAFE($String.toLowerCase)(_BAS_SAFE($Node.nodeName)(node));
+        let nodeId = _BAS_SAFE($Element.id)(node);
+        escaped = nodeId && this.escapeCssNames(nodeId);
         if(_bas_use_ids)
         {
             if (escaped && escaped.length > 0)
@@ -94,8 +102,9 @@
         }
         if(_bas_use_css)
         {
-            if (node.className) {
-            _ref = node.className.split(" ");
+            let className = _BAS_SAFE($Element.className)(node);
+            if (className) {
+            _ref = _BAS_SAFE($String.split)(className, " ");
                 for (_i = 0, _len = _ref.length; _i < _len; _i++) {
                     cssName = _ref[_i];
                     escaped = this.escapeCssNames(cssName);
@@ -105,7 +114,7 @@
                 }
             }
         }
-        if (node.nodeName.toLowerCase() !== "body") {
+        if (_BAS_SAFE($String.toLowerCase)(_BAS_SAFE($Node.nodeName)(node)) !== "body") {
           path += ':nth-child(' + (this.childElemNumber(node) + 1) + ')';
         }
         return path;
@@ -123,7 +132,7 @@
         }
         existing_tokens = {};
         encoded_css_array = this.encodeCssForDiff(array, existing_tokens);
-        collective_common = encoded_css_array.pop();
+        collective_common = _BAS_SAFE($Array.pop)(encoded_css_array);
         for (_i = 0, _len = encoded_css_array.length; _i < _len; _i++) {
           cssElem = encoded_css_array[_i];
           diff = dmp.diff_main(collective_common, cssElem);
@@ -152,18 +161,18 @@
             skip = true;
           } else if (char === '.' || char === ' ' || char === '#' || char === '>' || char === ':' || char === ',' || char === '+' || char === '~') {
             if (word.length > 0) {
-              tokens.push(word);
+              _BAS_SAFE($Array.push)(tokens, word);
             }
             word = '';
           }
           word += char;
           if (char === ' ' || char === ',') {
-            tokens.push(word);
+            _BAS_SAFE($Array.push)(tokens, word);
             word = '';
           }
         }
         if (word.length > 0) {
-          tokens.push(word);
+          _BAS_SAFE($Array.push)(tokens, word);
         }
         return tokens;
       };
@@ -175,16 +184,16 @@
         _ref = this.tokenizeCss(css_string);
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           token = _ref[_i];
-          block.push(token);
+          _BAS_SAFE($Array.push)(block, token);
           if (token === ' ' && block.length > 0) {
-            combined_tokens = combined_tokens.concat(block);
+            combined_tokens = _BAS_SAFE($Array.concat)(combined_tokens, block);
             block = [];
           } else if (token === '+' || token === '~') {
-            block = [block.join('')];
+            block = [_BAS_SAFE($Array.join)(block, '')];
           }
         }
         if (block.length > 0) {
-          return combined_tokens.concat(block);
+          return _BAS_SAFE($Array.concat)(combined_tokens, block);
         } else {
           return combined_tokens;
         }
@@ -194,7 +203,7 @@
         var character, inverted, out, _i, _len, _ref;
         inverted = this.invertObject(existing_tokens);
         out = '';
-        _ref = string.split('');
+        _ref = _BAS_SAFE($String.split)(string, '');
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           character = _ref[_i];
           out += inverted[character];
@@ -208,16 +217,16 @@
         strings_out = [];
         for (_i = 0, _len = strings.length; _i < _len; _i++) {
           string = strings[_i];
-          out = new String();
+          out = '';
           _ref = this.tokenizeCssForDiff(string);
           for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
             token = _ref[_j];
             if (!existing_tokens[token]) {
-              existing_tokens[token] = String.fromCharCode(codepoint++);
+              existing_tokens[token] = _BAS_SAFE(String.fromCharCode)(codepoint++);
             }
             out += existing_tokens[token];
           }
-          strings_out.push(out);
+          _BAS_SAFE($Array.push)(strings_out, out);
         }
         return strings_out;
       };
@@ -225,12 +234,12 @@
       this.tokenPriorities = function(tokens) {
         var epsilon, first, i, priorities, second, token, _i, _len;
         epsilon = 0.001;
-        priorities = new Array();
+        priorities = [];
         i = 0;
         for (_i = 0, _len = tokens.length; _i < _len; _i++) {
           token = tokens[_i];
-          first = token.substring(0, 1);
-          second = token.substring(1, 2);
+          first = _BAS_SAFE($String.substring)(token, 0, 1);
+          second = _BAS_SAFE($String.substring)(token, 1, 2);
           if (first === ':' && second === 'n') {
             priorities[i] = 0;
           } else if (first === '>') {
@@ -243,7 +252,7 @@
             priorities[i] = 5;
           } else if (first = '#') {
             priorities[i] = 6;
-            if (token.match(/\d{3,}/)) {
+            if (_BAS_SAFE($String.match)(token, /\d{3,}/)) {
               priorities[i] = 2.5;
             }
           } else {
@@ -257,15 +266,15 @@
   
       this.orderFromPriorities = function(priorities) {
         var i, ordering, tmp, _i, _j, _ref, _ref1;
-        tmp = new Array();
-        ordering = new Array();
+        tmp = [];
+        ordering = [];
         for (i = _i = 0, _ref = priorities.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
           tmp[i] = {
             value: priorities[i],
             original: i
           };
         }
-        tmp.sort(function(a, b) {
+        _BAS_SAFE($Array.sort)(tmp, function(a, b) {
           return a.value - b.value;
         });
         for (i = _j = 0, _ref1 = priorities.length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
@@ -295,8 +304,8 @@
             if (parts[part].length === 0) {
               continue;
             }
-            first = parts[part].substring(0, 1);
-            second = parts[part].substring(1, 2);
+            first = _BAS_SAFE($String.substring)(parts[part], 0, 1);
+            second = _BAS_SAFE($String.substring)(parts[part], 1, 2);
             if (first === ' ') {
               continue;
             }
@@ -328,11 +337,11 @@
         } else {
           look_back_index = part;
         }
-        tmp = parts.slice(look_back_index, part + 1);
+        tmp = _BAS_SAFE($Array.slice)(parts, look_back_index, part + 1);
         for (j = _i = look_back_index; look_back_index <= part ? _i <= part : _i >= part; j = look_back_index <= part ? ++_i : --_i) {
           parts[j] = '';
         }
-        selector = this.cleanCss(parts.join(''));
+        selector = this.cleanCss(_BAS_SAFE($Array.join)(parts, ''));
         if (selector === '' || !callback(selector)) {
           for (j = _j = look_back_index; look_back_index <= part ? _j <= part : _j >= part; j = look_back_index <= part ? ++_j : --_j) {
             parts[j] = tmp[j - look_back_index];
@@ -360,7 +369,7 @@
         while (i < parts.length && parts[i].length === 0) {
           i++;
         }
-        if (i < parts.length && parts[i].substring(0, 2) === ':n') {
+        if (i < parts.length && _BAS_SAFE($String.substring)(parts[i], 0, 2) === ':n') {
           nth_child_is_on_right = true;
         }
         i = part - 1;
@@ -377,9 +386,25 @@
         var cleaned_css, last_cleaned_css;
         cleaned_css = css;
         last_cleaned_css = null;
+        let replacements = [
+          [/(^|\s+)(\+|\~)/, ''],
+          [/(\+|\~)\s*$/, ''],
+          [/>/g, ' > '],
+          [/\s*(>\s*)+/g, ' > '],
+          [/,/g, ' , '],
+          [/\s+/g, ' '],
+          [/^\s+|\s+$/g, ''],
+          [/\s*,$/g, ''],
+          [/^\s*,\s*/g, ''],
+          [/\s*>$/g, ''],
+          [/^>\s*/g, ''],
+          [/[\+\~\>]\s*,/g, ','],
+          [/[\+\~]\s*>/g, '>'],
+          [/\s*(,\s*)+/g, ' , '],
+        ]
         while (last_cleaned_css !== cleaned_css) {
           last_cleaned_css = cleaned_css;
-          cleaned_css = cleaned_css.replace(/(^|\s+)(\+|\~)/, '').replace(/(\+|\~)\s*$/, '').replace(/>/g, ' > ').replace(/\s*(>\s*)+/g, ' > ').replace(/,/g, ' , ').replace(/\s+/g, ' ').replace(/^\s+|\s+$/g, '').replace(/\s*,$/g, '').replace(/^\s*,\s*/g, '').replace(/\s*>$/g, '').replace(/^>\s*/g, '').replace(/[\+\~\>]\s*,/g, ',').replace(/[\+\~]\s*>/g, '>').replace(/\s*(,\s*)+/g, ' , ');
+          for (let replacement of replacements) cleaned_css = _BAS_SAFE($String.replace)(cleaned_css, ...replacement);
         }
         return cleaned_css;
       };
@@ -389,8 +414,8 @@
         out = [];
         for (_i = 0, _len = nodeset.length; _i < _len; _i++) {
           node = nodeset[_i];
-          if (node && node.nodeName) {
-            out.push(this.pathOf(node));
+          if (node && _BAS_SAFE($Node.nodeName)(node)) {
+            _BAS_SAFE($Array.push)(out, this.pathOf(node));
           }
         }
         return out;
@@ -433,7 +458,7 @@
                 var matches = false;
                 try
                 {
-                  matches = el.matches(the_selector)
+                  matches = _BAS_SAFE($Element.matches)(el, the_selector)
                 }catch(e)
                 {
                   matches = false
@@ -454,7 +479,7 @@
                 var matches = false;
                 try
                 {
-                  matches = el.matches(the_selector)
+                  matches = _BAS_SAFE($Element.matches)(el, the_selector)
                 }catch(e)
                 {
                   matches = false
@@ -486,10 +511,10 @@
         var css_block, out, token, tokens, _i, _len;
         tokens = this.tokenizeCss(css_string);
         if (tokens[0] && tokens[0] === ' ') {
-          tokens.splice(0, 1);
+          _BAS_SAFE($Array.splice)(tokens, 0, 1);
         }
         if (tokens[tokens.length - 1] && tokens[tokens.length - 1] === ' ') {
-          tokens.splice(tokens.length - 1, 1);
+          _BAS_SAFE($Array.splice)(tokens, tokens.length - 1, 1);
         }
         css_block = [];
         out = "";
@@ -499,7 +524,7 @@
             out += this.cssToXPathBlockHelper(css_block);
             css_block = [];
           } else {
-            css_block.push(token);
+            _BAS_SAFE($Array.push)(css_block, token);
           }
         }
         return out + this.cssToXPathBlockHelper(css_block);
@@ -511,7 +536,7 @@
           return '//';
         }
         out = '//';
-        first = css_block[0].substring(0, 1);
+        first = _BAS_SAFE($String.substring)(css_block[0], 0, 1);
         if (first === ',') {
           return " | ";
         }
@@ -522,16 +547,16 @@
         re = null;
         for (_i = 0, _len = css_block.length; _i < _len; _i++) {
           current = css_block[_i];
-          first = current.substring(0, 1);
-          rest = current.substring(1);
+          first = _BAS_SAFE($String.substring)(current, 0, 1);
+          rest = _BAS_SAFE($String.substring)(current, 1);
           if (first === ':') {
-            if (re = rest.match(/^nth-child\((\d+)\)$/)) {
-              expressions.push('(((count(preceding-sibling::*) + 1) = ' + re[1] + ') and parent::*)');
+            if (re = _BAS_SAFE($String.match)(rest, /^nth-child\((\d+)\)$/)) {
+              _BAS_SAFE($Array.push)(expressions, '(((count(preceding-sibling::*) + 1) = ' + re[1] + ') and parent::*)');
             }
           } else if (first === '.') {
-            expressions.push('contains(concat( " ", @class, " " ), concat( " ", "' + rest + '", " " ))');
+            _BAS_SAFE($Array.push)(expressions, 'contains(concat( " ", @class, " " ), concat( " ", "' + rest + '", " " ))');
           } else if (first === '#') {
-            expressions.push('(@id = "' + rest + '")');
+            _BAS_SAFE($Array.push)(expressions, '(@id = "' + rest + '")');
           } else if (first === ',') {
   
           } else {
@@ -560,11 +585,11 @@
         for(var i = 0;i<len;i++)
         {
           var element = elements[i]
-          if(element && window.getComputedStyle(element)['display'] != 'none' && window.getComputedStyle(element)['visibility'] != 'hidden')
+          if(element && _BAS_HIDE(BrowserAutomationStudio_IsVisible)(element, false))
           {
             var rect = _BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(element);
             if(rect.width > 0 && rect.height > 0)
-              res.push(rect)
+              _BAS_SAFE($Array.push)(res, rect)
           }
         }
         return res;
@@ -572,7 +597,7 @@
 
       this.getRandomBetween = function(min, max)
       {
-        return Math.floor(Math.random() * (max + 1 - min) + min);
+        return _BAS_SAFE(Math.floor)(_BAS_SAFE(Math.random)() * (max + 1 - min) + min);
       }
 
       this.getRandomPoint = function(rectangle)
@@ -598,7 +623,9 @@
         
         try
         {
-          elements = _BAS_HIDE(BrowserAutomationStudio_Original).querySelectorAll(_query_selector_host, query)
+          elements = _BAS_HIDE(BrowserAutomationStudio_ConvertIfNeeded)(
+            _BAS_SAFE($Node.querySelectorAll)(_query_selector_host, query)
+          );
         }catch(e)
         {
           elements = []
@@ -682,8 +709,8 @@
             xpath_normalize_space  = 'normalize-space()',
             xpath_internal         = '[not(' + xpath_has_protocal + ') or ' + xpath_is_internal + ']',
             xpath_external         = '[' + xpath_has_protocal + ' and not(' + xpath_is_internal + ')]',
-            escape_literal         = String.fromCharCode(30),
-            escape_parens          = String.fromCharCode(31),
+            escape_literal         = _BAS_SAFE(String.fromCharCode)(30),
+            escape_parens          = _BAS_SAFE(String.fromCharCode)(31),
             regex_string_literal   = /("[^"\x1E]*"|'[^'\x1E]*'|=\s*[^\s\]\'\"]+)/g,
             regex_escaped_literal  = /['"]?(\x1E+)['"]?/g,
             regex_css_wrap_pseudo  = /(\x1F\)|[^\)])\:(first|limit|last|gt|lt|eq|nth)([^\-]|$)/,
@@ -717,7 +744,7 @@
                   return match;
                 }
       
-                var prevChar = orig.charAt(offset - 1);
+                var prevChar = _BAS_SAFE($String.charAt)(orig, offset - 1);
       
                 if (prevChar.length === 0 ||
                       prevChar === '(' ||
@@ -772,7 +799,7 @@
             css_attributes_regex = /\[([^\@\|\*\=\^\~\$\!\(\/\s\x1C-\x1F]+)\s*(([\|\*\~\^\$\!]?)=?\s*(\x1E+))?\]/g,
             css_attributes_callback = function (str, attr, comp, op, val, offset, orig) {
               var axis = '';
-              var prevChar = orig.charAt(offset - 1);
+              var prevChar = _BAS_SAFE($String.charAt)(orig, offset - 1);
       
               /*
               if (prevChar === '/' || // found after an axis shortcut ("/", "//", etc.)
@@ -794,7 +821,7 @@
                 return axis + '[@' + attr + '="' + val + '" or starts-with(@' + attr + ',concat("' + val + '","-"))]';
               default:
                 if (comp === undefined) {
-                  if (attr.charAt(attr.length - 1) === '(' || attr.search(/^[0-9]+$/) !== -1 || attr.indexOf(':') !== -1)                        {
+                  if (_BAS_SAFE($String.charAt)(attr, attr.length - 1) === '(' || _BAS_SAFE($String.search)(attr, /^[0-9]+$/) !== -1 || _BAS_SAFE($String.indexOf)(attr, ':') !== -1)                        {
                     return str;
                   }
                   return axis + '[@' + attr + ']';
@@ -806,7 +833,7 @@
       
             css_pseudo_classes_regex = /:([a-z\-]+)(\((\x1F+)(([^\x1F]+(\3\x1F+)?)*)(\3\)))?/g,
             css_pseudo_classes_callback = function (match, name, g1, g2, arg, g3, g4, g5, offset, orig) {
-              if (orig.charAt(offset - 1) === ':' && orig.charAt(offset - 2) !== ':') {
+              if (_BAS_SAFE($String.charAt)(orig, offset - 1) === ':' && _BAS_SAFE($String.charAt)(orig, offset - 2) !== ':') {
                   // XPath "axis::node-name" will match
                   // Detect false positive ":node-name"
                 return match;
@@ -848,10 +875,10 @@
                 return '[1]';
               case 'gt':
                       // Position starts at 0 for consistency with Sizzle selectors
-                return '[position()>' + (parseInt(arg, 10) + 1) + ']';
+                return '[position()>' + (_BAS_SAFE(Window.parseInt)(arg, 10) + 1) + ']';
               case 'lt':
                       // Position starts at 0 for consistency with Sizzle selectors
-                return '[position()<' + (parseInt(arg, 10) + 1) + ']';
+                return '[position()<' + (_BAS_SAFE(Window.parseInt)(arg, 10) + 1) + ']';
               case 'last-child':
                 return '[not(following-sibling::*)]';
               case 'only-child':
@@ -868,7 +895,7 @@
                 case 'odd':
                   return '[(count(preceding-sibling::*)+1) mod 2=1]';
                 default:
-                  var a = (arg || '0').replace(regex_nth_equation, '$1+$2').split('+');
+                  var a = _BAS_SAFE($String.split)(_BAS_SAFE($String.replace)(arg || '0', regex_nth_equation, '$1+$2'), '+');
       
                   a[0] = a[0] || '1';
                   a[1] = a[1] || '0';
@@ -884,7 +911,7 @@
                 case 'even':
                   return '[position() mod 2=0 and position()>=0]';
                 default:
-                  var a = (arg || '0').replace(regex_nth_equation, '$1+$2').split('+');
+                  var a = _BAS_SAFE($String.split)(_BAS_SAFE($String.replace)(arg || '0', regex_nth_equation, '$1+$2'), '+');
       
                   a[0] = a[0] || '1';
                   a[1] = a[1] || '0';
@@ -894,7 +921,7 @@
               case 'nth':
                 // Position starts at 0 for consistency with Sizzle selectors
                 if (isNumeric(arg)) {
-                  return '[' + (parseInt(arg, 10) + 1) + ']';
+                  return '[' + (_BAS_SAFE(Window.parseInt)(arg, 10) + 1) + ']';
                 }
       
                 return '[1]';
@@ -915,7 +942,7 @@
               case 'has-sibling':
                 var xpath = css2xpath('preceding-sibling::' + arg, true);
       
-                return '[count(' + xpath + ') > 0 or count(following-sibling::' + xpath.substr(19) + ') > 0]';
+                return '[count(' + xpath + ') > 0 or count(following-sibling::' + _BAS_SAFE($String.substr)(xpath, 19) + ') > 0]';
               case 'has-parent':
                 return '[count(' + css2xpath('parent::' + arg, true) + ') > 0]';
               case 'has-ancestor':
@@ -939,7 +966,7 @@
               case 'root':
                 return '/ancestor::[last()]';
               case 'range':
-                var arr = arg.split(',');
+                var arr = _BAS_SAFE($String.split)(arg, ',');
       
                 return '[' + arr[0] + '<=position() and position()<=' + arr[1] + ']';
               case 'input': // Sizzle: "input, button, select, and textarea are all considered to be input elements."
@@ -960,7 +987,7 @@
               case 'not':
                 var xpath = css2xpath(arg, true);
       
-                if (xpath.charAt(0) === '[')                    {
+                if (_BAS_SAFE($String.charAt)(xpath, 0) === '[')                    {
                   xpath = 'self::node()' + xpath;
                 }
                 return '[not(' + xpath + ')]';
@@ -978,7 +1005,7 @@
                 return '[@lang="' + arg + '"]';
               case 'read-only':
               case 'read-write':
-                return '[@' + name.replace('-', '') + ']';
+                return '[@' + _BAS_SAFE($String.replace)(name, '-', '') + ']';
               case 'valid':
               case 'required':
               case 'in-range':
@@ -992,7 +1019,7 @@
             css_ids_classes_regex = /(#|\.)([^\#\@\.\/\(\[\)\]\|\:\s\+\>\<\'\"\x1D-\x1F]+)/g,
             css_ids_classes_callback = function (str, op, val, offset, orig) {
               var axis = '';
-              /* var prevChar = orig.charAt(offset-1);
+              /* var prevChar = _BAS_SAFE($String.charAt)(orig, offset - 1);
               if (prevChar.length === 0 ||
                   prevChar === '/' ||
                   prevChar === '(')
@@ -1007,16 +1034,16 @@
       
           // Prepend descendant-or-self if no other axis is specified
         function prependAxis(s, axis) {
-          return s.replace(regex_first_axis, function (match, start, literal) {
-            if (literal.substr(literal.length - 2) === '::') // Already has axis::
+          return _BAS_SAFE($String.replace)(s, regex_first_axis, function (match, start, literal) {
+            if (_BAS_SAFE($String.substr)(literal, literal.length - 2) === '::') // Already has axis::
                   {
               return match;
             }
       
-            if (literal.charAt(0) === '[')            {
+            if (_BAS_SAFE($String.charAt)(literal, 0) === '[')            {
               axis += '*';
             }
-              // else if (axis.charAt(axis.length-1) === ')')
+              // else if (_BAS_SAFE($String.charAt)(axis, axis.length - 1) === ')')
               //    axis += '/';
             return start + axis + literal;
           });
@@ -1028,7 +1055,7 @@
           var offset = 0;
       
           while (i--) {
-            switch (s.charAt(i)) {
+            switch (_BAS_SAFE($String.charAt)(s, i)) {
             case ' ':
             case escape_parens:
               offset++;
@@ -1060,16 +1087,16 @@
       
           // Check if string is numeric
         function isNumeric(s) {
-          var num = parseInt(s, 10);
+          var num = _BAS_SAFE(Window.parseInt)(s, 10);
       
-          return (!isNaN(num) && '' + num === s);
+          return (num === num && '' + num === s);
         }
       
           // Append escape "char" to "open" or "close"
         function escapeChar(s, open, close, char) {
           var depth = 0;
       
-          return s.replace(new RegExp('[\\' + open + '\\' + close + ']', 'g'), function (a) {
+          return _BAS_SAFE($String.replace)(s, new _BAS_SAFE(RegExp)('[\\' + open + '\\' + close + ']', 'g'), function (a) {
             if (a === open)            {
               depth++;
             }
@@ -1083,7 +1110,6 @@
         }
       
         function repeat(str, num) {
-          num = Number(num);
           var result = '';
       
           while (true) {
@@ -1102,14 +1128,14 @@
         }
       
         function css2xpath(s, nested) {
-          // s = s.trim();
+          // s = _BAS_SAFE($String.trim)(s);
       
           if (nested === true) {
               // Replace :pseudo-classes
-            s = s.replace(css_pseudo_classes_regex, css_pseudo_classes_callback);
+            s = _BAS_SAFE($String.replace)(s, css_pseudo_classes_regex, css_pseudo_classes_callback);
       
               // Replace #ids and .classes
-            s = s.replace(css_ids_classes_regex, css_ids_classes_callback);
+            s = _BAS_SAFE($String.replace)(s, css_ids_classes_regex, css_ids_classes_callback);
       
             return s;
           }
@@ -1120,67 +1146,67 @@
           // Remove and save any string literals
           var literals = [];
       
-          s = s.replace(regex_string_literal, function (s, a) {
-            if (a.charAt(0) === '=') {
-              a = a.substr(1).trim();
+          s = _BAS_SAFE($String.replace)(s, regex_string_literal, function (s, a) {
+            if (_BAS_SAFE($String.charAt)(a, 0) === '=') {
+              a = _BAS_SAFE($String.trim)(_BAS_SAFE($String.substr)(a, 1));
       
               if (isNumeric(a))                {
                 return s;
               }
             } else {
-              a = a.substr(1, a.length - 2);
+              a = _BAS_SAFE($String.substr)(a, 1, a.length - 2);
             }
       
-            return repeat(escape_literal, literals.push(a));
+            return repeat(escape_literal, _BAS_SAFE($Array.push)(literals, a));
           });
       
           // Replace CSS combinators (" ", "+", ">", "~", ",") and reverse combinators ("!", "!+", "!>", "!~")
-          s = s.replace(css_combinators_regex, css_combinators_callback);
+          s = _BAS_SAFE($String.replace)(s, css_combinators_regex, css_combinators_callback);
       
           // Replace CSS attribute filters
-          s = s.replace(css_attributes_regex, css_attributes_callback);
+          s = _BAS_SAFE($String.replace)(s, css_attributes_regex, css_attributes_callback);
       
           // Wrap certain :pseudo-classes in parens (to collect node-sets)
           while (true) {
-            var index = s.search(regex_css_wrap_pseudo);
+            var index = _BAS_SAFE($String.search)(s, regex_css_wrap_pseudo);
       
             if (index === -1) {
               break;
             }
-            index = s.indexOf(':', index);
+            index = _BAS_SAFE($String.indexOf)(s, ':', index);
             var start = selectorStart(s, index);
       
-            s = s.substr(0, start) +
-                  '(' + s.substring(start, index) + ')' +
-                  s.substr(index);
+            s = _BAS_SAFE($String.substr)(s, 0, start) +
+                  '(' + _BAS_SAFE($String.substring)(s, start, index) + ')' +
+                  _BAS_SAFE($String.substr)(s, index);
           }
       
           // Replace :pseudo-classes
-          s = s.replace(css_pseudo_classes_regex, css_pseudo_classes_callback);
+          s = _BAS_SAFE($String.replace)(s, css_pseudo_classes_regex, css_pseudo_classes_callback);
       
           // Replace #ids and .classes
-          s = s.replace(css_ids_classes_regex, css_ids_classes_callback);
+          s = _BAS_SAFE($String.replace)(s, css_ids_classes_regex, css_ids_classes_callback);
       
           // Restore the saved string literals
-          s = s.replace(regex_escaped_literal, function (s, a) {
+          s = _BAS_SAFE($String.replace)(s, regex_escaped_literal, function (s, a) {
             var str = literals[a.length - 1];
       
             return '"' + str + '"';
           })
       
           // Remove any special characters
-          s = s.replace(regex_specal_chars, '');
+          s = _BAS_SAFE($String.replace)(s, regex_specal_chars, '');
       
           // add * to stand-alone filters
-          s = s.replace(regex_filter_prefix, '$1*[');
+          s = _BAS_SAFE($String.replace)(s, regex_filter_prefix, '$1*[');
       
           // add "/" between @attribute selectors
-          s = s.replace(regex_attr_prefix, '$1/@');
+          s = _BAS_SAFE($String.replace)(s, regex_attr_prefix, '$1/@');
       
           /*
           Combine multiple filters?
           s = escapeChar(s, '[', ']', filter_char);
-          s = s.replace(/(\x1D+)\]\[\1(.+?[^\x1D])\1\]/g, ' and ($2)$1]')
+          s = _BAS_SAFE($String.replace)(s, /(\x1D+)\]\[\1(.+?[^\x1D])\1\]/g, ' and ($2)$1]')
           */
       
           s = prependAxis(s, './/'); // prepend ".//" axis to begining of CSS selector
@@ -1222,15 +1248,15 @@ _BAS_HIDE(BrowserAutomationStudio_GenerateMultiSelectors) = function(include,exc
         Helper = new _BAS_HIDE(DomPredictionHelper)(Input[0], Input[1], true, _query_selector_host)
         Selector = Helper.predictCss(include,exclude)
       }
-      CssResultsRaw.push(Selector)
+      _BAS_SAFE($Array.push)(CssResultsRaw, Selector)
     }
     
     for(var i = 0;i<CssResultsRaw.length;i++)
     {
         var Result = CssResultsRaw[i]
         var ToAdd = selector_prefix + shadow_prefix + ">CSS>" + Result
-        if(Result && CssResults.indexOf(ToAdd) < 0)
-          CssResults.push(ToAdd)
+        if(Result && _BAS_SAFE($Array.indexOf)(CssResults, ToAdd) < 0)
+          _BAS_SAFE($Array.push)(CssResults, ToAdd)
 
         if(Result && XpathResults.length == 0)
         {
@@ -1256,7 +1282,7 @@ _BAS_HIDE(BrowserAutomationStudio_GenerateMultiSelectors) = function(include,exc
           }
           
           if(ResultXpath)
-            XpathResults.push(selector_prefix + shadow_prefix + ">XPATH>" + ResultXpath)
+            _BAS_SAFE($Array.push)(XpathResults, selector_prefix + shadow_prefix + ">XPATH>" + ResultXpath)
         }
         
     }

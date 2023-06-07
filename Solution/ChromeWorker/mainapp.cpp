@@ -2515,7 +2515,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
     if(LastCommand.CommandName == "script")
     {
-        std::string Script = Javascript(std::string("[[RESULT]] = ") + LastCommand.CommandParam1 + std::string(";[[RESULT]] = [[RESULT]].toString();"),"main");
+        std::string Script = Javascript(std::string("[[RESULT]] = ") + LastCommand.CommandParam1 + std::string(";[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ToString)([[RESULT]]);"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
@@ -2586,7 +2586,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
             Data->_MultiSelectData.IsDirty = false;
         }
 
-        std::string Script = Javascript(MultiselectScript + std::string(";[[RESULT]] = '0';if(typeof(self.length) == 'number')[[RESULT]] = self.length.toString(); else if(self)[[RESULT]] = '1'; else [[RESULT]] = '0';"),"main");
+        std::string Script = Javascript(MultiselectScript + std::string(";[[RESULT]] = '0';if(typeof(self.length) == 'number')[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ToString)(self.length); else if(self)[[RESULT]] = '1'; else [[RESULT]] = '0';"),"main");
 
         std::string Path = LastCommand.SerializePath();
         HighlightSelector = Path;
@@ -2627,7 +2627,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
     if(LastCommand.CommandName == "length")
     {
-        std::string Script = Javascript(std::string("[[RESULT]] = self.length.toString()"),"main");
+        std::string Script = Javascript(std::string("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_ToString)(self.length)"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
@@ -2657,7 +2657,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
     if(LastCommand.CommandName == "xml")
     {
-        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]] = self.outerHTML"),"main");
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]] = _BAS_SAFE($Node.outerHTML)(self)"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
@@ -2691,10 +2691,10 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
 
     if(LastCommand.CommandName == "text")
     {
-        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';if(self.tagName.toLowerCase()=='input'||self.tagName.toLowerCase()=='textarea')"
-                                                        "[[RESULT]]=self.value;"
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';if(_BAS_SAFE($String.toLowerCase)(_BAS_SAFE($Node.tagName)(self))=='input'||_BAS_SAFE($String.toLowerCase)(_BAS_SAFE($Node.tagName)(self))=='textarea')"
+                                                        "[[RESULT]]=_BAS_SAFE($Node.value)(self);"
                                                     "else "
-                                                        "[[RESULT]]=self.textContent;"),"main");
+                                                        "[[RESULT]]=_BAS_SAFE($Node.textContent)(self);"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
@@ -2783,16 +2783,18 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string get_point;
         if(Settings->EmulateMouse())
         {
-            get_point = std::string("var x=0;for(var i=0;i<10;i++){x+=Math.random()*((rect.right-2-rect.left+1)/10);};x=Math.floor(x)+rect.left+1;if(x>rect.right-1)x=rect.right-1;if(x<rect.left+1)x=rect.left+1;"
-                                    "var y=0;for(var i=0;i<10;i++){y+=Math.random()*((rect.bottom-2-rect.top+1)/10);};y=Math.floor(y)+rect.top+1;if(y>rect.bottom-1)y=rect.bottom-1;if(y<rect.top+1)y=rect.top+1;");
+            get_point = std::string("var x=0;for(var i=0;i<10;i++){x+=_BAS_SAFE(Math.random)()*((rect.right-2-rect.left+1)/10);};x=_BAS_SAFE(Math.floor)(x)+rect.left+1;if(x>rect.right-1)x=rect.right-1;if(x<rect.left+1)x=rect.left+1;"
+                                    "var y=0;for(var i=0;i<10;i++){y+=_BAS_SAFE(Math.random)()*((rect.bottom-2-rect.top+1)/10);};y=_BAS_SAFE(Math.floor)(y)+rect.top+1;if(y>rect.bottom-1)y=rect.bottom-1;if(y<rect.top+1)y=rect.top+1;");
         }else
         {
-            get_point = std::string("var x=Math.floor((rect.right + rect.left)/2);"
-                                    "var y=Math.floor((rect.bottom + rect.top)/2);");
+            get_point = std::string("var x=_BAS_SAFE(Math.floor)((rect.right + rect.left)/2);"
+                                    "var y=_BAS_SAFE(Math.floor)((rect.bottom + rect.top)/2);");
         }
         std::string script = std::string("{if(!self)throw 'BAS_NOT_EXISTS';"
-                                "var items=self.getClientRects();if(items.length == 0){throw 'BAS_NOT_EXISTS'};"
-                                "var rect=items[Math.floor(Math.random()*items.length)];")
+                                "var items=_BAS_SAFE($Element.getClientRects)(self);"
+                                "var len = _BAS_SAFE($DOMRectList.length)(items);"
+                                "if(len == 0){throw 'BAS_NOT_EXISTS'};"
+                                "var rect=_BAS_SAFE($DOMRectReadOnly.toJSON)(items[_BAS_SAFE(Math.floor)(_BAS_SAFE(Math.random)()*len)]);")
                                 + get_point +
                                 std::string("x += positionx + scrollx;"
                                 "y += positiony + scrolly;"
@@ -2833,19 +2835,20 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string get_point;
         if(Settings->EmulateMouse())
         {
-            get_point = std::string("var x=0;for(var i=0;i<10;i++){x+=Math.random()*((rect.right-2-rect.left+1)/10);};x=Math.floor(x)+rect.left+1;if(x>rect.right-1)x=rect.right-1;if(x<rect.left+1)x=rect.left+1;"
-                                    "var y=0;for(var i=0;i<10;i++){y+=Math.random()*((rect.bottom-2-rect.top+1)/10);};y=Math.floor(y)+rect.top+1;if(y>rect.bottom-1)y=rect.bottom-1;if(y<rect.top+1)y=rect.top+1;");
+            get_point = std::string("var x=0;for(var i=0;i<10;i++){x+=_BAS_SAFE(Math.random)()*((rect.right-2-rect.left+1)/10);};x=_BAS_SAFE(Math.floor)(x)+rect.left+1;if(x>rect.right-1)x=rect.right-1;if(x<rect.left+1)x=rect.left+1;"
+                                    "var y=0;for(var i=0;i<10;i++){y+=_BAS_SAFE(Math.random)()*((rect.bottom-2-rect.top+1)/10);};y=_BAS_SAFE(Math.floor)(y)+rect.top+1;if(y>rect.bottom-1)y=rect.bottom-1;if(y<rect.top+1)y=rect.top+1;");
         }else
         {
-            get_point = std::string("var x=Math.floor((rect.right + rect.left)/2);"
-                                    "var y=Math.floor((rect.bottom + rect.top)/2);");
+            get_point = std::string("var x=_BAS_SAFE(Math.floor)((rect.right + rect.left)/2);"
+                                    "var y=_BAS_SAFE(Math.floor)((rect.bottom + rect.top)/2);");
         }
         std::string script = std::string("{if(!self)throw 'BAS_NOT_EXISTS';"
-                                "var items=self.getClientRects();if(items.length == 0){throw 'BAS_NOT_EXISTS'};"
-                                "var len = items.length;"
+                                "var items=_BAS_SAFE($Element.getClientRects)(self);"
+                                "var len = _BAS_SAFE($DOMRectList.length)(items);"
+                                "if(len == 0){throw 'BAS_NOT_EXISTS'};"
                                 "for(var i = 0;i<len;i++)"
                                 "{"
-                                    "var item = items[i];"
+                                    "var item = _BAS_SAFE($DOMRectReadOnly.toJSON)(items[i]);"
                                     "var x = ") + x + std::string(" - positionx - scrollx") + std::string(
                                     ";var y = ") + y + std::string(" - positiony - scrolly") + std::string(
                                     ";if(y >= item.top && y <= item.bottom && x >= item.left && x <= item.right)"
@@ -2854,7 +2857,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
                                         "return;"
                                     "}"
                                 "}"
-                                "var rect=items[Math.floor(Math.random()*items.length)];")
+                                "var rect=_BAS_SAFE($DOMRectReadOnly.toJSON)(items[_BAS_SAFE(Math.floor)(_BAS_SAFE(Math.random)()*len)]);")
                                 + get_point +
                                 std::string("x+=positionx + scrollx;"
                                 "y+=positiony + scrolly;"
@@ -2974,7 +2977,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
     if(LastCommand.CommandName == "attr")
     {
         std::string attr_escaped = picojson::value(LastCommand.CommandParam1).serialize();
-        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]] = '';var attr=") + attr_escaped + std::string(";if(self.hasAttribute(attr))[[RESULT]]=self.getAttribute(attr);"),"main");
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';[[RESULT]] = '';var attr=") + attr_escaped + std::string(";if(_BAS_SAFE($Node.hasAttribute)(self, attr))[[RESULT]]=_BAS_SAFE($Node.getAttribute)(self, attr);"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);
@@ -3013,7 +3016,7 @@ void MainApp::ElementCommandCallback(const ElementCommand &Command)
         std::string attr_escaped = picojson::value(LastCommand.CommandParam1).serialize();
         std::string val_escaped = picojson::value(LastCommand.CommandParam2).serialize();
 
-        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';var attr=") + attr_escaped + std::string(";var val=") + val_escaped + std::string(";if(val.length === 0)self.removeAttribute(attr);else self.setAttribute(attr,val);"),"main");
+        std::string Script = Javascript(std::string("if(!self)throw 'BAS_NOT_EXISTS';var attr=") + attr_escaped + std::string(";var val=") + val_escaped + std::string(";if(val.length === 0)_BAS_SAFE($Node.removeAttribute)(self, attr);else _BAS_SAFE($Node.setAttribute)(self, attr, val);"),"main");
 
         std::string Path = LastCommand.SerializePath();
         Async Result = Data->Connector->ExecuteJavascript(Script,std::string(),Path);

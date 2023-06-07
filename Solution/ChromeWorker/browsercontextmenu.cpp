@@ -195,7 +195,7 @@ void BrowserContextMenu::OnFind(IDevToolsConnector* Connector, LPFINDREPLACE Dat
             find_what_last_ = find_buff_;
         }
         //Browser->GetHost()->Find(0, find_what, (find_state_.Flags & FR_DOWN) ? true : false, match_case, find_next_);
-        std::string Script = std::string("window.find(") + picojson::value(ws2s(find_what)).serialize() + std::string(", ")
+        std::string Script = std::string("_BAS_SAFE(Window.find)(") + picojson::value(ws2s(find_what)).serialize() + std::string(", ")
         + ((match_case) ? std::string("true") : std::string("false"))
         + std::string(", ")
         + ((find_state_.Flags & FR_DOWN) ? std::string("false") : std::string("true"))
@@ -241,7 +241,7 @@ void BrowserContextMenu::Process(HWND hwnd, int Command, IDevToolsConnector* Con
         Connector->Reload(true);
     }else if(Command == IdGetPageSource)
     {
-        Connector->ExecuteJavascript("[[RESULT]] = document.documentElement.outerHTML;", std::string(), std::string("[]"))->Then([this](AsyncResult* Result)
+        Connector->ExecuteJavascript("[[RESULT]] = _BAS_HIDE(BrowserAutomationStudio_GetPageContent)();", std::string(), std::string("[]"))->Then([this](AsyncResult* Result)
         {
             JsonParser Parser;
             std::string TextResult = Parser.GetStringFromJson(Result->GetString(),"RESULT");

@@ -18,7 +18,7 @@ std::string PrepareConstantStartupScript(BrowserData* Data)
 
 
     std::string AllScript = hide + std::string(";") + extension + std::string(";") + modules + std::string(";");
-    AllScript = Extensions.ProcessJs(AllScript,Data->_UniqueProcessId);
+    AllScript = Extensions.ProcessJs(std::string(";(function () {") + AllScript + std::string("})();"), Data->_UniqueProcessId);
     return AllScript;
 }
 

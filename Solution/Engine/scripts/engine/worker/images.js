@@ -123,7 +123,7 @@ function _wait_image(params, callback)
 
                 /*Get viewport stats*/
 
-                page().script("document.body.scrollTop + '|' + document.body.scrollHeight + '|' + document.documentElement.clientHeight", function(){
+                page().script("_BAS_HIDE(BrowserAutomationStudio_GetViewportStats)()", function(){
                     //log("Viewport stats " + _result())
 
                     if(_result().length == 0)
@@ -181,7 +181,7 @@ function _wait_image(params, callback)
 
 
                                 }, function(){
-                                    page().script("document.body.scrollTop + '|' + document.body.scrollHeight + '|' + document.documentElement.clientHeight", function(){
+                                    page().script("_BAS_HIDE(BrowserAutomationStudio_GetViewportStats)()", function(){
                                         //log("Viewport stats " + _result())
                                         if(_result().length == 0)
                                         {

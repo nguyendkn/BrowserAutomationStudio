@@ -914,11 +914,11 @@ function _random_point()
         if(typeof(_SELECTOR) == "string")
         {
             Selector = _SELECTOR.split(">FRAME>")[0];
-            Code = "(function(){if(!(Math.round(_BAS_HIDE(BrowserAutomationStudio_Original).getBoundingClientRect(self).height) > 0 && Math.round(_BAS_HIDE(BrowserAutomationStudio_Original).getBoundingClientRect(self).width) > 0&& window.getComputedStyle(self)['display']!='none'&&window.getComputedStyle(self)['visibility'] != 'hidden'))return '';var rect = _BAS_HIDE(BrowserAutomationStudio_Original).getBoundingClientRect(self);var top = rect.top;var bottom = rect.bottom;var height = window.innerHeight; var center_element = Math.floor((top + bottom) * 0.5); var center_viewport = Math.floor((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return Math.floor(center_element - center_viewport).toString();})()";
+            Code = "(function(){if(!_BAS_HIDE(BrowserAutomationStudio_IsVisible)(self))return '';var rect = _BAS_HIDE(BrowserAutomationStudio_GetBoundingClientRect)(self);var top = rect.top;var bottom = rect.bottom;var height = _BAS_SAFE(Window.innerHeight); var center_element = _BAS_SAFE(Math.floor)((top + bottom) * 0.5); var center_viewport = _BAS_SAFE(Math.floor)((height) * 0.5); if((top < 0 && bottom > height) || (top >=0 && bottom <= height)) return '0'; return _BAS_HIDE(BrowserAutomationStudio_ToString)(_BAS_SAFE(Math.floor)(center_element - center_viewport));})()";
         }else
         {
             Selector = "";
-            Code = "(function(){var height = window.innerHeight;var current_position = _BAS_HIDE(BrowserAutomationStudio_GetScrollingNode)().scrollTop;var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return Math.floor(target_position - (current_position + height * 0.5)).toString();})()";
+            Code = "(function(){var height = _BAS_SAFE(Window.innerHeight);var current_position = _BAS_SAFE($Element.scrollTop)(_BAS_HIDE(BrowserAutomationStudio_GetScrollingNode)());var target_position = " + _SELECTOR.toString() + ";if ((target_position >= current_position) && (target_position <= height + current_position))return '0';return _BAS_HIDE(BrowserAutomationStudio_ToString)(_BAS_SAFE(Math.floor)(target_position - (current_position + height * 0.5)));})()";
         }
         get_element_selector(Selector, false).script(Code,function(){
             if(_result() == "")

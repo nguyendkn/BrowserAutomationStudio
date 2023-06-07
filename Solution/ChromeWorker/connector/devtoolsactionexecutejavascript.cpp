@@ -299,7 +299,7 @@ void DevToolsActionExecuteJavascript::Next()
             {
                 RequestType = FrameSearchGetPosition;
                 std::map<std::string, Variant> CurrentParams;
-                std::string Script = std::string("{JSON.stringify(_BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(")));}");
+                std::string Script = std::string("{_BAS_SAFE(JSON.stringify)(_BAS_HIDE(BrowserAutomationStudio_GetInternalBoundingRect)(_BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(CurrentPrefix) + std::string(")));}");
                 CurrentParams["expression"] = Variant(Javascript(Script));
                 if(!CurrentContextId.empty())
                     CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
@@ -363,7 +363,7 @@ void DevToolsActionExecuteJavascript::Next()
         DoScroll = false;
         IsDoingScroll = true;
         std::map<std::string, Variant> CurrentParams;
-        std::string Script = std::string("(function(){var self = null; try{ self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");}catch(e){};if(self)self.scrollIntoViewIfNeeded(true);})();");
+        std::string Script = std::string("(function(){var self = null; try{ self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");}catch(e){};if(self)_BAS_SAFE($Element.scrollIntoViewIfNeeded)(self, true);})();");
         CurrentParams["expression"] = Variant(Javascript(Script));
         if(!CurrentContextId.empty())
             CurrentParams["uniqueContextId"] = Variant(CurrentContextId);
@@ -410,7 +410,7 @@ void DevToolsActionExecuteJavascript::Next()
         Script += Javascript(std::string("var self = null; try{ self = _BAS_HIDE(BrowserAutomationStudio_FindElement)(") + SerializeSelector(ElementSelector) + std::string(");}catch(e){};"));
     }else
     {
-        Script += Javascript(std::string("var self = document.body;"));
+        Script += Javascript(std::string("var self = _BAS_SAFE($Document.body)(document);"));
     }
     
     Script += std::string("var _BAS_VARIABLES = ") + InitialVariables;
@@ -445,17 +445,17 @@ void DevToolsActionExecuteJavascript::Next()
     
     Script += "\n";
 
-    Script += Expression;
+    Script += Javascript(Expression);
 
-    Script += "}catch(e){_BAS_RESULT.error = e.toString();_BAS_RESULT.is_success = false;}";
-
-    Script += "\n";
-
-    Script += "_BAS_RESULT.variables = JSON.stringify(_BAS_RESULT.variables);";
+    Script += Javascript("}catch(e){_BAS_RESULT.error = _BAS_HIDE(BrowserAutomationStudio_ToString)(e);_BAS_RESULT.is_success = false;}");
 
     Script += "\n";
 
-    Script += "return JSON.stringify(_BAS_RESULT)})();";
+    Script += Javascript("_BAS_RESULT.variables = _BAS_SAFE(JSON.stringify)(_BAS_RESULT.variables);");
+
+    Script += "\n";
+
+    Script += Javascript("return _BAS_SAFE(JSON.stringify)(_BAS_RESULT)})();");
 
     Script += "\n";
 

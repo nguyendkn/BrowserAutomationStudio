@@ -39,7 +39,7 @@ void DevToolsActionResizeWithCorrection::OnActionFinished()
 
         IsResizing = false;
         IsCheckingSize = true;
-        RunJavascriptAction("[[WIDTH]] = window.innerWidth;[[HEIGHT]] = window.innerHeight;", std::string(), std::string("[]"));
+        RunJavascriptAction("[[WIDTH]] = _BAS_SAFE(Window.innerWidth);[[HEIGHT]] = _BAS_SAFE(Window.innerHeight);", std::string(), std::string("[]"));
     }else if(IsCheckingSize)
     {
         if(!CurrentAction->GetResult()->GetIsSuccess())

@@ -33,6 +33,7 @@ Tài liệu này theo dõi tiến độ dịch các file tài liệu BrowserAuto
 - **[Documents/TechnicalAnalysis/NetworkAnalysis.md](./TechnicalAnalysis/NetworkAnalysis.md)** - Phân tích mạng ⏳
 - **[Documents/TechnicalAnalysis/FingerprintAnalysis.md](./TechnicalAnalysis/FingerprintAnalysis.md)** - Phân tích hệ thống fingerprint ✅
 - **[Documents/TechnicalAnalysis/ProfileManagementAnalysis.md](./TechnicalAnalysis/ProfileManagementAnalysis.md)** - Phân tích quản lý profile ✅
+- **[Documents/TechnicalAnalysis/ChromeWorkerFingerprintAnalysis.md](./TechnicalAnalysis/ChromeWorkerFingerprintAnalysis.md)** - Phân tích ChromeWorker fingerprint ✅
 
 ## 🎯 Ưu Tiên Dịch
 
@@ -121,17 +122,18 @@ Tài liệu này theo dõi tiến độ dịch các file tài liệu BrowserAuto
 
 ## 📊 Thống Kê
 
-- **Tổng số file**: 17 file chính
-- **Đã dịch hoàn thành**: 7 file (41%)
-- **Đang dịch**: 3 file (18%)
-- **Chưa dịch**: 7 file (41%)
-- **Tổng số từ ước tính**: ~60,000 từ
-- **Đã dịch ước tính**: ~30,000 từ (50%)
+- **Tổng số file**: 18 file chính
+- **Đã dịch hoàn thành**: 8 file (44%)
+- **Đang dịch**: 3 file (17%)
+- **Chưa dịch**: 7 file (39%)
+- **Tổng số từ ước tính**: ~70,000 từ
+- **Đã dịch ước tính**: ~40,000 từ (57%)
 
 ### 🆕 Tài Liệu Mới Được Thêm
 
 - **FingerprintAnalysis.md**: Phân tích chi tiết hệ thống fingerprint và anti-detection
 - **ProfileManagementAnalysis.md**: Phân tích hệ thống quản lý profile và session
+- **ChromeWorkerFingerprintAnalysis.md**: Phân tích sâu ChromeWorker và kỹ thuật patch fingerprint
 
 ---
 

@@ -103,6 +103,7 @@ Tài liệu này được tổ chức thành các phần sau:
 - **[Phân Tích Mạng](./TechnicalAnalysis/NetworkAnalysis.md)** - Giao thức truyền thông và mạng
 - **[Phân Tích Hệ Thống Fingerprint](./TechnicalAnalysis/FingerprintAnalysis.md)** - Anti-detection và browser fingerprinting
 - **[Phân Tích Quản Lý Profile](./TechnicalAnalysis/ProfileManagementAnalysis.md)** - Profile isolation và session management
+- **[Phân Tích ChromeWorker Fingerprint](./TechnicalAnalysis/ChromeWorkerFingerprintAnalysis.md)** - Kỹ thuật patch fingerprint và detection chi tiết
 
 ## 🔗 Liên Kết Nhanh
 

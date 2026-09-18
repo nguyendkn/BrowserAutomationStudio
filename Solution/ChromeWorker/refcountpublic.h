@@ -12,28 +12,28 @@ class CefRefCountPublic {
   // Increment the reference count.
   ///
   void AddRef() const {
-    base::AtomicRefCountInc(&ref_count_);
+    ref_count_.Increment();
   }
 
   ///
   // Decrement the reference count. Returns true if the reference count is 0.
   ///
   bool Release() const {
-    return !base::AtomicRefCountDec(&ref_count_);
+    return !ref_count_.Decrement();
   }
 
   ///
   // Returns true if the reference count is 1.
   ///
   bool HasOneRef() const {
-    return base::AtomicRefCountIsOne(&ref_count_);
+    return ref_count_.IsOne();
   }
 
   ///
   // Returns true if the reference count is at least 1.
   ///
   bool HasAtLeastOneRef() const {
-    return !base::AtomicRefCountIsZero(&ref_count_);
+    return !ref_count_.IsZero();
   }
 
  public:

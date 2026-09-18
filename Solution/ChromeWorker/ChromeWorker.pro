@@ -6,6 +6,7 @@ CONFIG -= qt
 DEFINES+=CURL_STATICLIB
 
 DEFINES+=NOT_BAS_DEBUG
+DEFINES+=NOMINMAX
 
 QMAKE_LFLAGS += /LARGEADDRESSAWARE
 
@@ -169,6 +170,7 @@ LIBS += -L$$(BAS_PATH_WORKER)/lib -llibiconv -llibcef -llibcef_dll_wrapper -lAdv
 win32:LIBS += -lMsimg32
 
 
+QMAKE_CXXFLAGS += /std:c++17 /FI"$$(BAS_PATH_WORKER)/include/bas_cef_compat.h"
 QMAKE_CXXFLAGS_RELEASE += /MT
 
 QMAKE_CXXFLAGS_DEBUG += /MTd

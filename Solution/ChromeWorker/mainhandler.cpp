@@ -1,4 +1,5 @@
 #include "mainhandler.h"
+#include "include/cef_callback.h"
 #include "include/base/cef_bind.h"
 #include "include/cef_app.h"
 #include "include/wrapper/cef_closure_task.h"
@@ -344,7 +345,7 @@ bool MainHandler::GetAuthCredentials(CefRefPtr<CefBrowser> browser, const CefStr
     return false;
 }
 
-bool MainHandler::OnCertificateError(CefRefPtr<CefBrowser> browser,cef_errorcode_t cert_error,const CefString& request_url,CefRefPtr<CefSSLInfo> ssl_info,CefRefPtr<CefRequestCallback> callback)
+bool MainHandler::OnCertificateError(CefRefPtr<CefBrowser> browser,cef_errorcode_t cert_error,const CefString& request_url,CefRefPtr<CefSSLInfo> ssl_info,CefRefPtr<CefCallback> callback)
 {
     WORKER_LOG(std::string("OnCertificateError<<") + request_url.ToString());
 
@@ -353,7 +354,7 @@ bool MainHandler::OnCertificateError(CefRefPtr<CefBrowser> browser,cef_errorcode
 }
 
 
-bool MainHandler::OnFileDialog(CefRefPtr<CefBrowser> browser, FileDialogMode mode, const CefString& title, const CefString& default_file_path, const std::vector<CefString>& accept_filters, int selected_accept_filter, CefRefPtr<CefFileDialogCallback> callback)
+bool MainHandler::OnFileDialog(CefRefPtr<CefBrowser> browser, FileDialogMode mode, const CefString& title, const CefString& default_file_path, const std::vector<CefString>& accept_filters, CefRefPtr<CefFileDialogCallback> callback)
 {
     return false;
 }
@@ -472,7 +473,7 @@ bool MainHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFram
     return false;
 }
 
-CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefRequestCallback> callback)
+CefResourceRequestHandler::ReturnValue MainHandler::OnBeforeResourceLoad(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, CefRefPtr<CefCallback> callback)
 {
     //THREAD TID_IO
     bool Accept = true;
@@ -614,7 +615,7 @@ void MainHandler::OnResourceRedirect(CefRefPtr<CefBrowser> browser, CefRefPtr<Ce
     }
 }
 
-void MainHandler::OnCursorChange(CefRefPtr<CefBrowser> browser, CefCursorHandle cursor, CursorType type, const CefCursorInfo& custom_cursor_info)
+bool MainHandler::OnCursorChange(CefRefPtr<CefBrowser> browser, CefCursorHandle cursor, cef_cursor_type_t type, const CefCursorInfo& custom_cursor_info)
 {
     //THREAD TID_UI
     if(Data->ManualControl != BrowserData::Indirect)
@@ -622,6 +623,7 @@ void MainHandler::OnCursorChange(CefRefPtr<CefBrowser> browser, CefCursorHandle 
         for(auto f:EventCursorChanged)
             f((int)type);
     }
+    return false;
 }
 
 

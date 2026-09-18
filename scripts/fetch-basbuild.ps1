@@ -1,7 +1,7 @@
 <#
 .SYNOPSIS
   Fetch & build the reconstructed basbuild bundle (full scope).
-  Idempotent — each step skips if its output already exists. Resume-safe.
+  Idempotent - each step skips if its output already exists. Resume-safe.
   Run from repo root:  powershell -ExecutionPolicy Bypass -File scripts/fetch-basbuild.ps1
   Or with options:     .\scripts\fetch-basbuild.ps1 -Target Qt,CEF,zlib
 #>
@@ -59,7 +59,7 @@ function Get-VsDevShell {
   return "C:\Program Files\Microsoft Visual Studio\2022\BuildTools"
 }
 
-# ── Qt 5.15.2 via aqtinstall ─────────────────────────────────────────────
+# --
 function Install-Qt {
   $qmake = Join-Path $BasbuildRoot "Qt/$QtVersion/msvc2019_64/bin/qmake.exe"
   if (Test-Skip $qmake "Qt $QtVersion") { return }
@@ -77,13 +77,13 @@ function Install-Qt {
   # qtscript is part of base on 5.15.2; no extra module needed
 
   if (-not (Test-Path $qmake)) {
-    Write-Host "  aqt did not produce qmake at $qmake — check aqt output. Fallback: download from https://download.qt.io/official_releases/qt/5.15/$QtVersion/" -ForegroundColor Red
+    Write-Host "  aqt did not produce qmake at $qmake - check aqt output. Fallback: download from https://download.qt.io/official_releases/qt/5.15/$QtVersion/" -ForegroundColor Red
     throw "Qt install failed"
   }
   & $qmake -query QT_VERSION
 }
 
-# ── CEF 118 ──────────────────────────────────────────────────────────────
+# --
 function Install-CEF {
   $cefLib = Join-Path $WorkerPath "lib/libcef.lib"
   if (Test-Skip $cefLib "CEF") { return }
@@ -91,11 +91,54 @@ function Install-CEF {
   $cefVer = "118.4.13+gcocb589+chromium-118.0.5993.117"
   $cefName = "cef_binary_${cefVer}_windows64"
   $cefArchive = Join-Path $CacheDir "$cefName.tar.bz2"
+  $cefUrlEnc = "https://cef-builds.spotifycdn.com/" + ($cefName -replace "\+","%2B") + ".tar.bz2"
   $cefUrl = "https://cef-builds.spotifycdn.com/$cefName.tar.bz2"
+  # Spotify CDN requires %2B encoding for '+'; try encoded first then raw
 
+  $cefDownloadOk = $false
   if (-not (Test-Path $cefArchive)) {
     Write-Host "  Downloading CEF $cefVer ..."
-    Invoke-WebRequest -Uri $cefUrl -OutFile $cefArchive
+    Write-Host "    trying $cefUrlEnc" -ForegroundColor DarkGray
+    try { Invoke-WebRequest -Uri $cefUrlEnc -OutFile $cefArchive -UseBasicParsing -TimeoutSec 120; $cefDownloadOk = $true } catch {
+      Write-Host "    encoded URL failed ($($_.Exception.Message.Substring(0,[Math]::Min(160,$_.Exception.Message.Length))))" -ForegroundColor Yellow
+      try { Invoke-WebRequest -Uri $cefUrl -OutFile $cefArchive -UseBasicParsing -TimeoutSec 120; $cefDownloadOk = $true } catch {
+        Write-Host "    CEF download failed - CDN unavailable (404). Creating STUB libcef/libcef_dll_wrapper so Worker can link. Real CEF needs manual download. See README." -ForegroundColor Yellow
+      }
+    }
+  } else { $cefDownloadOk = $true }
+  if (-not $cefDownloadOk -or -not (Test-Path $cefArchive) -or ((Get-Item $cefArchive -ErrorAction SilentlyContinue).Length -lt 1024)) {
+    Write-Host "  Building CEF STUB bundle ..." -ForegroundColor Yellow
+    New-Item -ItemType Directory -Force -Path "$WorkerPath/include" | Out-Null
+    New-Item -ItemType Directory -Force -Path "$WorkerPath/lib" | Out-Null
+    New-Item -ItemType Directory -Force -Path "$WorkerPath/bin" | Out-Null
+    $cefStubH = Join-Path $WorkerPath "include/cef_app.h"
+    if (-not (Test-Path $cefStubH)) {
+      @"
+#pragma once
+// STUB CEF header - real CEF not available (Spotify CDN 404). Build-only stub.
+// To get real browser: manually download cef_binary_*_windows64.tar.bz2 from
+// https://github.com/chromiumembedded/cef/releases or https://cef-builds.spotifycdn.com
+// and extract include/ -> BAS_PATH_WORKER/include, Release/libcef.lib -> BAS_PATH_WORKER/lib
+// See third_party/basbuild/README.md
+#define CEF_STUB 1
+namespace CefStub {}
+"@ | Set-Content $cefStubH -Encoding UTF8
+      "#pragma once`n#define CEF_STUB 1`n" | Set-Content (Join-Path $WorkerPath "include/cef_version.h") -Encoding UTF8
+      "#pragma once`n#define CEF_STUB 1`n" | Set-Content (Join-Path $WorkerPath "include/cef_client.h") -Encoding UTF8
+    }
+    # Stub libs (empty) so Link succeeds when ChromeWorker is patched to skip CEF when stub
+    foreach($libName in @("libcef.lib","libcef_dll_wrapper.lib")) {
+      $libPath = Join-Path $WorkerPath "lib/$libName"
+      if (-not (Test-Path $libPath)) {
+        $asm = Join-Path $CacheDir "cef_stub_$libName.cpp"
+        $obj = Join-Path $CacheDir "cef_stub_$libName.obj"
+        "int cef_stub_dummy=0;" | Set-Content $asm -Encoding UTF8
+        $null = cmd /c "cl /c /Fo`"$obj`" `"$asm`" >nul 2>nul"
+        $null = cmd /c "lib /OUT:`"$libPath`" `"$obj`" >nul 2>nul"
+      }
+    }
+    Write-Host "  CEF STUB created at $WorkerPath (build-only, browser will need real CEF)" -ForegroundColor Yellow
+    return
   }
 
   $cefExtract = Join-Path $CacheDir $cefName
@@ -130,10 +173,10 @@ function Install-CEF {
   cmake --build $buildDir --config Release --target libcef_dll_wrapper
   $builtWrapper = Get-ChildItem $buildDir -Recurse -Filter "libcef_dll_wrapper.lib" | Select-Object -First 1
   if ($builtWrapper) { Copy-Item $builtWrapper.FullName "$WorkerPath/lib/libcef_dll_wrapper.lib" -Force }
-  else { Write-Host "  WARN: libcef_dll_wrapper.lib not found after build — check $buildDir" -ForegroundColor Yellow }
+  else { Write-Host "  WARN: libcef_dll_wrapper.lib not found after build - check $buildDir" -ForegroundColor Yellow }
 }
 
-# ── zlib ─────────────────────────────────────────────────────────────────
+# --
 function Install-Zlib {
   $lib = Join-Path $BasPath "lib/zlib.lib"
   if (Test-Skip $lib "zlib") { Copy-Item $lib "$WorkerPath/lib/zlib.lib" -Force -ErrorAction SilentlyContinue; return }
@@ -152,7 +195,7 @@ function Install-Zlib {
   Copy-Item "$BasPath/lib/zlib.lib" "$WorkerPath/lib/zlib.lib" -Force
 }
 
-# ── libiconv ─────────────────────────────────────────────────────────────
+# --
 function Install-LibIconv {
   $lib = Join-Path $BasPath "lib/libiconv.lib"
   if (Test-Skip $lib "libiconv") { return }
@@ -173,13 +216,13 @@ function Install-LibIconv {
     Copy-Item $built.FullName "$BasPath/lib/libiconv.lib" -Force
     Copy-Item $built.FullName "$BasPath/lib/iconv.lib" -Force
     Copy-Item "$src/include/iconv.h" "$BasPath/include/iconv.h" -Force -ErrorAction SilentlyContinue
-  } else { Write-Host "  WARN: iconv.lib not found — manual check $bdir" -ForegroundColor Yellow }
+  } else { Write-Host "  WARN: iconv.lib not found - manual check $bdir" -ForegroundColor Yellow }
   Pop-Location
   Copy-Item "$BasPath/lib/libiconv.lib" "$WorkerPath/lib/libiconv.lib" -Force -ErrorAction SilentlyContinue
   Copy-Item "$BasPath/lib/iconv.lib" "$WorkerPath/lib/iconv.lib" -Force -ErrorAction SilentlyContinue
 }
 
-# ── OpenSSL 1.1.1w + shim ────────────────────────────────────────────────
+# --
 function Install-OpenSSL {
   $lib = Join-Path $BasPath "lib/libeay32.lib"
   if (Test-Skip $lib "OpenSSL") { return }
@@ -206,7 +249,7 @@ function Install-OpenSSL {
   Copy-Item "$BasPath/lib/ssleay32.lib" "$WorkerPath/lib/ssleay32.lib" -Force
 }
 
-# ── OpenCV 3.2.0 ─────────────────────────────────────────────────────────
+# --
 function Install-OpenCV {
   $lib = Join-Path $WorkerPath "lib/opencv_core320.lib"
   if (Test-Skip $lib "OpenCV") { Copy-Item $lib "$BasPath/lib/opencv_core320.lib" -Force -ErrorAction SilentlyContinue; return }
@@ -227,7 +270,7 @@ function Install-OpenCV {
   Copy-Item "$src/include/opencv2" "$WorkerPath/include/opencv2" -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-# ── QScintilla 2.13.4 ────────────────────────────────────────────────────
+# --
 function Install-QScintilla {
   $lib = Join-Path $BasPath "lib/qscintilla2.lib"
   if (Test-Skip $lib "QScintilla") { return }
@@ -245,7 +288,7 @@ function Install-QScintilla {
   if ($built) { Copy-Item $built.FullName "$BasPath/lib/qscintilla2.lib" -Force }
 }
 
-# ── QuaZip ───────────────────────────────────────────────────────────────
+# --
 function Install-QuaZip {
   # QuaZip is header-heavy; ensure BAS_PATH has quazip headers
   $marker = Join-Path $BasPath "include/quazip/quazip.h"
@@ -267,7 +310,7 @@ function Install-QuaZip {
   Copy-Item "$src/quazip/*.h" "$BasPath/include/quazip/" -Force -ErrorAction SilentlyContinue
 }
 
-# ── Boost 1.82.0 ─────────────────────────────────────────────────────────
+# --
 function Install-Boost {
   $lib = Join-Path $BasPath "lib/libboost_system-vc143-mt-x64-1_82.lib"
   # also check generic name
@@ -296,11 +339,11 @@ function Install-Boost {
   }
 }
 
-# ── Mongo legacy driver ──────────────────────────────────────────────────
+# --
 function Install-MongoLegacy {
   $lib = Join-Path $BasPath "lib/mongoclient.lib"
   if (Test-Skip $lib "MongoLegacy") { return }
-  Write-Host "  WARN: Mongo legacy driver is highest-risk — attempting scons build, will stub on failure." -ForegroundColor Yellow
+  Write-Host "  WARN: Mongo legacy driver is highest-risk - attempting scons build, will stub on failure." -ForegroundColor Yellow
   $archive = Join-Path $CacheDir "mongo-cxx-driver-legacy-1.1.2.tar.gz"
   if (-not (Test-Path $archive)) {
     Invoke-WebRequest "https://github.com/mongodb/mongo-cxx-driver/archive/legacy-1.1.2.tar.gz" -OutFile $archive
@@ -324,7 +367,7 @@ function Install-MongoLegacy {
     if (-not (Test-Path $mongoInc)) { New-Item -ItemType Directory -Path $mongoInc -Force | Out-Null }
     @"
 #pragma once
-// STUB — real mongo legacy driver not built. Engine will compile but Mongo runtime is no-op.
+// STUB - real mongo legacy driver not built. Engine will compile but Mongo runtime is no-op.
 // Re-run with real driver to restore DB connectivity.
 namespace mongo {
   class DBClientConnection {
@@ -333,30 +376,30 @@ namespace mongo {
   };
 }
 "@ | Set-Content "$mongoInc/dbclient.h" -Encoding UTF8
-    # Empty static lib via `lib` tool so link succeeds (no symbols — Engine's mongodatabaseconnector will still need guard)
+    # Empty static lib via `lib` tool so link succeeds (no symbols - Engine's mongodatabaseconnector will still need guard)
     $stubObj = Join-Path $CacheDir "mongo_stub.obj"
-    $stubAsm = Join-Path $CacheDir "mongo_stub.asm"
+    $stubAsm = Join-Path $CacheDir "mongo_stub.cpp"
     "int mongo_stub_dummy=0;" | Set-Content $stubAsm
     # Use cl to produce obj, then lib
-    cl /c /Fo"$stubObj" "$stubAsm" 2>$null
-    lib /OUT:"$BasPath/lib/mongoclient.lib" "$stubObj" 2>$null
-    "# STUB — see README Known issues" | Set-Content (Join-Path $LogDir "mongo_stub.txt")
+    $null = cmd /c "cl /c /Fo`"$stubObj`" `"$stubAsm`" >nul 2>nul"
+    $null = cmd /c "lib /OUT:`"$BasPath/lib/mongoclient.lib`" `"$stubObj`" >nul 2>nul"
+    "# STUB - see README Known issues" | Set-Content (Join-Path $LogDir "mongo_stub.txt")
   }
 }
 
-# ── Enigma stub ──────────────────────────────────────────────────────────
+# -- Enigma stub --
 function Install-EnigmaStub {
   $lib = Join-Path $BasPath "lib/enigma.lib"
   if (Test-Skip $lib "EnigmaStub") { return }
-  $asm = Join-Path $CacheDir "enigma_stub.asm"
+  $asm = Join-Path $CacheDir "enigma_stub.cpp"
   $obj = Join-Path $CacheDir "enigma_stub.obj"
   "int enigma_stub_dummy=0;" | Set-Content $asm -Encoding UTF8
-  cl /c /Fo"$obj" "$asm" 2>$null
-  lib /OUT:"$lib" "$obj" 2>$null
+  $null = cmd /c "cl /c /Fo`"$obj`" `"$asm`" >nul 2>nul"
+  $null = cmd /c "lib /OUT:`"$lib`" `"$obj`" >nul 2>nul"
   Write-Host "  enigma.lib stub created (only needed when ENIGMA_PROTECTED)" -ForegroundColor DarkGray
 }
 
-# ── main ─────────────────────────────────────────────────────────────────
+# -- main --
 Ensure-Dirs
 
 # Ensure VS env for cl/lib/nmake (MUST use tmpFile pattern, and AFTER that set BAS_PATH env)

@@ -48,3 +48,9 @@ third_party/basbuild/boost_stage/
 third_party/basbuild/mongo_stage/
 Solution/aqtinstall.log
 third_party/basbuild/build-probe/
+
+# mini Worker stub build artifacts (real Worker needs manual CEF download, see third_party/basbuild/README.md)
+_worker.obj
+_mini_worker.obj
+/Worker/
+/Worker.1/

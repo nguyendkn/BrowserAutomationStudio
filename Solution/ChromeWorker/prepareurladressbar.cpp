@@ -2,6 +2,7 @@
 #include <network/uri.hpp>
 #include <network/uri/uri_builder.hpp>
 #include <cctype>
+#include <algorithm>
 #include <iomanip>
 #include <sstream>
 #include <string>

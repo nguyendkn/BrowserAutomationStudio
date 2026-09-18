@@ -5,12 +5,15 @@
 #include "log.h"
 #include <functional>
 #include "picojson.h"
+#include "include/internal/cef_time.h"
 
 class CookieVisitor : public CefCookieVisitor
 {
     picojson::array cookies_json;
 
+public:
     static picojson::value SerializeTime(cef_time_t time);
+private:
     static cef_time_t DeserializeTime(picojson::value::object val);
 
     std::string UrlToVisit;

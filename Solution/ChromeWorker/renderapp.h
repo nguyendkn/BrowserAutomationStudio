@@ -32,13 +32,13 @@ class RenderApp: public CefApp, public CefRenderProcessHandler
 public:
     RenderApp();
 
-    virtual CefRefPtr<CefRenderProcessHandler> GetRenderProcessHandler() OVERRIDE;
+    virtual CefRefPtr<CefRenderProcessHandler> GetRenderProcessHandler() ;
 
     //CefRenderProcessHandler
-    virtual void OnBrowserCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDictionaryValue> extra_info) OVERRIDE;
-    virtual void OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) OVERRIDE;
-    virtual void OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info) OVERRIDE;
-    virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) OVERRIDE;
+    virtual void OnBrowserCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefDictionaryValue> extra_info) ;
+    virtual void OnContextCreated(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefV8Context> context) ;
+    void OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info);
+    virtual bool OnProcessMessageReceived(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefProcessId source_process, CefRefPtr<CefProcessMessage> message) ;
 
 private:
     IMPLEMENT_REFCOUNTING(RenderApp);

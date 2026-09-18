@@ -35,7 +35,7 @@ void DevToolsHandler::Timer()
             OpenAfterClose = false;
             CefWindowInfo window_info;
 
-            window_info.SetAsChild(Data->_MainWindowHandle, rect);
+            window_info.SetAsChild(Data->_MainWindowHandle, CefRect(rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top));
             CefBrowserSettings browser_settings;
 
             _HandlersManager->GetBrowser()->GetHost()->ShowDevTools(window_info, this, browser_settings, Point);
@@ -61,7 +61,7 @@ void DevToolsHandler::OpenDevTools()
         return;
     CefWindowInfo window_info;
     RECT rect = Layout->GetDevToolsRectangle(Data->WidthBrowser,Data->HeightBrowser,Data->WidthAll,Data->HeightAll);
-    window_info.SetAsChild(Data->_MainWindowHandle, rect);
+    window_info.SetAsChild(Data->_MainWindowHandle, CefRect(rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top));
     CefBrowserSettings browser_settings;
     _HandlersManager->GetBrowser()->GetHost()->ShowDevTools(window_info, this, browser_settings, CefPoint(0,0));
     DevToolsBrowserId = _HandlersManager->GetBrowser()->GetIdentifier();

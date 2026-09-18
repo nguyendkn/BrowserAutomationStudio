@@ -29,7 +29,7 @@ MainHandler::MainHandler()
 
     NeedQuit = false;
     WaitForLoadEvent = false;
-    Browser = 0;
+    Browser = nullptr;
     IsVisible = false;
     IsPopup = false;
     ConfirmResultTime = -1;
@@ -207,7 +207,7 @@ void MainHandler::Timer()
     {
         WORKER_LOG("SLEEP_END");
         ConfirmResult->Continue(true,"");
-        ConfirmResult = 0;
+        ConfirmResult = nullptr;
         ConfirmResultWait = false;
         ConfirmResultTime = -1;
     }
@@ -217,9 +217,9 @@ void MainHandler::Timer()
     {
         if(clock() > OpenFileWait)
         {
-            OpenFileCallback->Continue(0,OpenFileResult);
+            OpenFileCallback->Continue(OpenFileResult);
             OpenFileResult.clear();
-            OpenFileCallback = 0;
+            OpenFileCallback = nullptr;
             OpenFilePostpond = false;
             OpenFileWait = 0;
         }
@@ -304,7 +304,7 @@ CefRefPtr<CefResourceHandler> MainHandler::GetResourceHandler(CefRefPtr<CefBrows
         WORKER_LOG(std::string("use cache>>") + url);
         return new_handler;
     }
-    return 0;
+    return nullptr;
 
 }
 
@@ -349,7 +349,7 @@ bool MainHandler::OnCertificateError(CefRefPtr<CefBrowser> browser,cef_errorcode
 {
     WORKER_LOG(std::string("OnCertificateError<<") + request_url.ToString());
 
-    callback->Continue(true);
+    callback->Continue();
     return true;
 }
 
@@ -440,7 +440,7 @@ void MainHandler::OnBeforeClose(CefRefPtr<CefBrowser> browser)
         for(auto f: EventPopupClosedCopy)
             f(GetBrowserId());
     }
-    Browser = 0;
+    Browser = nullptr;
 }
 
 bool MainHandler::OnOpenURLFromTab(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, const CefString& target_url, CefRequestHandler::WindowOpenDisposition target_disposition, bool user_gesture)

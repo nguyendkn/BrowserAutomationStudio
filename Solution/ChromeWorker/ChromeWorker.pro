@@ -164,6 +164,7 @@ SOURCES += main.cpp \
     popup.cpp
 
 INCLUDEPATH += $$(BAS_PATH_WORKER)/include
+INCLUDEPATH += $$(BAS_PATH)/include
 
 
 LIBS += -L$$(BAS_PATH_WORKER)/lib -llibiconv -llibcef -llibcef_dll_wrapper -lAdvapi32 -luser32 -lPsapi -lshell32 -lDbgHelp -lComdlg32 -lgdi32 -llibcurl -llibeay32 -lssleay32 -lnetwork-uri
@@ -347,7 +348,7 @@ INCLUDEPATH += xml json png snappy tooltip connector
 
 win32:RC_FILE = main.rc
 
-win32:LIBS += -lopencv_core320 -lopencv_imgproc320 -lzlib -lixwebsocket
+win32:LIBS += -lzlib  # opencv stub header-only, no binary
 
 win32:LIBS += -lWs2_32
 

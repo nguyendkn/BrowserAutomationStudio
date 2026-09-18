@@ -233,19 +233,19 @@ public:
     void ContextMenu(int X, int Y);
 
 
-    virtual CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() OVERRIDE;
+    virtual CefRefPtr<CefBrowserProcessHandler> GetBrowserProcessHandler() ;
 
     //CefBrowserProcessHandler
-    virtual void OnBeforeCommandLineProcessing(const CefString& process_type,CefRefPtr<CefCommandLine> command_line) OVERRIDE;
-    virtual void OnContextInitialized() OVERRIDE;
-    virtual void OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info) OVERRIDE;
-    virtual void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) OVERRIDE;
+    virtual void OnBeforeCommandLineProcessing(const CefString& process_type,CefRefPtr<CefCommandLine> command_line) ;
+    virtual void OnContextInitialized() ;
+    void OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info);
+    virtual void OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line) ;
 
     //CefCompletionCallback
-    virtual void OnComplete() OVERRIDE;
+    virtual void OnComplete() ;
 
     //CefRequestContextHandler
-    virtual CefRefPtr<CefResourceRequestHandler> GetResourceRequestHandler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool is_navigation, bool is_download, const CefString& request_initiator, bool& disable_default_handling) OVERRIDE;
+    virtual CefRefPtr<CefResourceRequestHandler> GetResourceRequestHandler(CefRefPtr<CefBrowser> browser, CefRefPtr<CefFrame> frame, CefRefPtr<CefRequest> request, bool is_navigation, bool is_download, const CefString& request_initiator, bool& disable_default_handling) ;
 
     bool IsNeedQuit();
 

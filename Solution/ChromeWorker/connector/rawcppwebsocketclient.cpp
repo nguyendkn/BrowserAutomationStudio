@@ -1,4 +1,5 @@
 #include "rawcppwebsocketclient.h"
+#include <chrono>
 #include "ixwebsocket/IXNetSystem.h"
 #include <fstream>
 #include "converter.h"

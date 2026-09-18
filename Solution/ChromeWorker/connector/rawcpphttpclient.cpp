@@ -1,3 +1,4 @@
+#include <mutex>
 #include "rawcpphttpclient.h"
 #include "ixwebsocket/IXNetSystem.h"
 

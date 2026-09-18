@@ -262,43 +262,43 @@ void MainApp::OnContextInitialized()
     CefRegisterSchemeHandlerFactory("tab", "new", new NewTabSchemeHandlerFactory());
 }
 
-void MainApp::OnRenderProcessThreadCreated(CefRefPtr<CefListValue> extra_info)
+void MainApp::OnRenderThreadCreated(CefRefPtr<CefListValue> extra_info)
 {
     //THREAD TID_IO
 
     extra_info->SetSize(4);
-    extra_info->SetBool(0,Data->IsRecord);
+    extra_info->SetBool((size_t)0, (bool)Data->IsRecord);
     int BrowserToolboxId = -1;
     if(BrowserToolbox)
         BrowserToolboxId = BrowserToolbox->GetIdentifier();
-    extra_info->SetInt(1,BrowserToolboxId);
+    extra_info->SetInt((size_t)1, BrowserToolboxId);
 
     int BrowserScenarioId = -1;
     if(BrowserScenario)
         BrowserScenarioId = BrowserScenario->GetIdentifier();
-    extra_info->SetInt(2,BrowserScenarioId);
+    extra_info->SetInt((size_t)2, BrowserScenarioId);
 
     int BrowserCentralId = -1;
     if(BrowserCentral)
         BrowserCentralId = BrowserCentral->GetIdentifier();
-    extra_info->SetInt(3,BrowserCentralId);
+    extra_info->SetInt((size_t)3, BrowserCentralId);
 
-    extra_info->SetInt(4,Settings->Zoom());
-    extra_info->SetString(5,Lang);
+    extra_info->SetInt((size_t)4, Settings->Zoom());
+    extra_info->SetString((size_t)5, Lang);
 
     int TabId = -1;
     if(_HandlersManager->GetBrowser())
         TabId = _HandlersManager->FindTabIdByBrowserId(_HandlersManager->GetBrowser()->GetIdentifier());
 
     std::string Script;
-    extra_info->SetString(6,Script);
+    extra_info->SetString((size_t)6, Script);
 
-    extra_info->SetString(7,Data->_UniqueProcessId);
+    extra_info->SetString((size_t)7, Data->_UniqueProcessId);
 
 
-    extra_info->SetString(8,ApplicationEngineVersion);
-    extra_info->SetString(9,ScriptEngineVersion);
-    extra_info->SetString(10,InterfaceState);
+    extra_info->SetString((size_t)8, ApplicationEngineVersion);
+    extra_info->SetString((size_t)9, ScriptEngineVersion);
+    extra_info->SetString((size_t)10, InterfaceState);
 }
 
 
@@ -1438,7 +1438,7 @@ void MainApp::CreateTooboxBrowser()
     CefWindowInfo window_info;
 
     RECT r =  Layout->GetToolboxRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-    window_info.SetAsChild(Data->_MainWindowHandle,r);
+    window_info.SetAsChild(Data->_MainWindowHandle, CefRect(r.left, r.top, r.right - r.left, r.bottom - r.top));
 
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
@@ -1469,7 +1469,7 @@ void MainApp::CreateScenarioBrowser()
     CefWindowInfo window_info;
 
     RECT r =  Layout->GetDevToolsRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
-    window_info.SetAsChild(Data->_MainWindowHandle,r);
+    window_info.SetAsChild(Data->_MainWindowHandle, CefRect(r.left, r.top, r.right - r.left, r.bottom - r.top));
 
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
@@ -1501,7 +1501,7 @@ void MainApp::CreateDetectorBrowser()
 
     RECT r =  Layout->GetDevToolsRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll);
 
-    window_info.SetAsChild(Data->_MainWindowHandle,r);
+    window_info.SetAsChild(Data->_MainWindowHandle, CefRect(r.left, r.top, r.right - r.left, r.bottom - r.top));
 
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
@@ -1540,7 +1540,7 @@ void MainApp::CreateCentralBrowser()
 
     RECT r =  Layout->GetCentralRectangle(GetData()->WidthBrowser,GetData()->HeightBrowser,GetData()->WidthAll,GetData()->HeightAll,true);
 
-    window_info.SetAsChild(Data->_MainWindowHandle,r);
+    window_info.SetAsChild(Data->_MainWindowHandle, CefRect(r.left, r.top, r.right - r.left, r.bottom - r.top));
 
     CefBrowserSettings browser_settings;
     CefRequestContextSettings settings;
@@ -1601,10 +1601,10 @@ void MainApp::AfterReadyToCreateBrowser(bool Reload)
     else*/
     browser_settings.webgl = STATE_ENABLED;
 
-    browser_settings.plugins = STATE_ENABLED;
+        // settings.plugins removed in CEF118
 
     std::wstring wencoding = L"UTF-8";
-    cef_string_utf16_set(wencoding.data(),wencoding.size(),&browser_settings.default_encoding,true);
+    cef_string_utf16_set(reinterpret_cast<const char16_t*>(wencoding.data()),wencoding.size(),&browser_settings.default_encoding,true);
 
     CefRefPtr<CefRequestContext> Context = CefRequestContext::CreateContext(CefRequestContext::GetGlobalContext(),this);
 
@@ -1829,7 +1829,7 @@ CefRefPtr<CefResourceRequestHandler> MainApp::GetResourceRequestHandler(CefRefPt
 {
     //Never use default request handler for dev tools
     if(starts_with(request->GetURL().ToString(),"devtools:") || (browser && browser->GetMainFrame() && starts_with(browser->GetMainFrame()->GetURL().ToString(),"devtools:")))
-    return NULL;
+    return nullptr;
 
     int BrowserId = -1;
     if(!browser && _HandlersManager->GetBrowser())
@@ -1842,6 +1842,7 @@ CefRefPtr<CefResourceRequestHandler> MainApp::GetResourceRequestHandler(CefRefPt
         CefResourceRequestHandler * Res = _HandlersManager->GetHandlerForBrowserId(BrowserId);
         return Res;
     }
+    return nullptr;
 }
 
 

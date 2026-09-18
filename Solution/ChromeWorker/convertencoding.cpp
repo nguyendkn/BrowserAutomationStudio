@@ -26,7 +26,7 @@ ConverterResult convert(const std::string& text, const std::string& encoding_in,
     }
     while(true)
     {
-        int res = iconv(conv, &pscr, &lsrc, &pdst, &ldst);
+        char *pscr_mut = const_cast<char*>(pscr); int res = iconv(conv, &pscr_mut, &lsrc, &pdst, &ldst);
 
         //Failure
         if(res == -1)

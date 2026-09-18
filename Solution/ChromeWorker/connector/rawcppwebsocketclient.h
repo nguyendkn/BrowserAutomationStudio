@@ -2,6 +2,9 @@
 #define RAWCPPWEBSOCKETCLIENT_H
 
 #include "IWebSocketClient.h"
+#include <mutex>
+#include <vector>
+#include <chrono>
 #include "ixwebsocket/IXWebSocket.h"
 #include <memory>
 

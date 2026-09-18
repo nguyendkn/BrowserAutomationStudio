@@ -31,7 +31,7 @@ bool ResourceHandler::ProcessRequest(CefRefPtr<CefRequest> request, CefRefPtr<Ce
     request_copy->SetPostData(request->GetPostData());
     request_copy->SetURL(request->GetURL());
 
-    urlrequest = CefURLRequest::Create(request_copy,Client,NULL);
+    urlrequest = CefURLRequest::Create(request_copy,Client,CefRequestContext::GetGlobalContext());
     //urlrequest = CefURLRequest::Create(request,Client,NULL);
     return true;
 }

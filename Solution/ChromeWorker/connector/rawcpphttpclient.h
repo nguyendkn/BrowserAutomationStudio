@@ -2,6 +2,8 @@
 #define RAWCPPHTTPCLIENT_H
 
 #include "ISimpleHttpClient.h"
+#include <mutex>
+#include <vector>
 #include "ixwebsocket/IXHttpClient.h"
 
 class RawCppHttpClient : public ISimpleHttpClient

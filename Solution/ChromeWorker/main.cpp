@@ -1833,7 +1833,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         SetErrorMode(SetErrorMode(0) | SEM_NOGPFAULTERRORBOX);
     #endif
 
-    CefEnableHighDPISupport();
+    // CefEnableHighDpiSupport removed in CEF118
 
     {
         std::string CurrentProcessId = std::string("BASProcess") + std::to_string(GetCurrentProcessId());
@@ -2164,7 +2164,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     CefSettings settings;
     settings.background_color = CefColorSetARGB(255, 255, 255, 255);
     settings.no_sandbox = true;
-    settings.ignore_certificate_errors = true;
+    // settings.ignore_certificate_errors removed in CEF118 (use --ignore-certificate-errors)
 
     if(Data->IsRecord)
     {
@@ -2189,7 +2189,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     settings.persist_user_preferences = 0;
     settings.persist_session_cookies = 0;
     std::wstring cache = L"cache";
-    cef_string_utf16_set(cache.data(),cache.size(),&settings.user_data_path,true);
+    CefString(&settings.root_cache_path).FromWString(cache);
 
 
 

@@ -126,7 +126,7 @@ void HandlersManager::UpdateCurrent()
     {
         //WORKER_LOG("!!!!!CURRENT BROWSER ID CHANGED " + std::to_string(PrevBrowserId) + " -> " + std::to_string(CurrentBrowserId));
         Browser->GetHost()->WasHidden(false);
-        Browser->GetHost()->SendFocusEvent(true);
+        Browser->GetHost()->SetFocus(true);
         Browser->GetHost()->Invalidate(PET_VIEW);
         auto it = MapBrowserIdNextActivation.find(CurrentBrowserId);
         if(it != MapBrowserIdNextActivation.end())
@@ -269,12 +269,12 @@ void HandlersManager::Timer()
     auto i = HandlerUnits.begin();
     while (i != HandlerUnits.end())
     {
-        if(!(*i)->IsActive && (*i)->Handler->ref_count_.ref_count_ == 2 /*&& (*i)->Handler->GetResourceListLength() == 0*/)
+        if(!(*i)->IsActive && (*i)->Handler->HasOneRef() /*&& (*i)->Handler->GetResourceListLength() == 0*/)
         {
-            (*i)->Browser = 0;
+            (*i)->Browser = nullptr;
 
             MainHandler *h = (*i)->Handler.get();
-            (*i)->Handler = 0;
+            (*i)->Handler = nullptr;
             delete h;
 
             i = HandlerUnits.erase(i);
@@ -286,7 +286,7 @@ void HandlersManager::Timer()
         }else
         {
             /*MainHandler *h = (*i)->Handler.get();
-            CefPostTask(TID_IO, base::Bind(&MainHandler::CleanResourceHandlerList, h));*/
+            // CefPostTask disabled CEF118 compat: CefPostTask(TID_IO, base::BindOnce(&MainHandler::CleanResourceHandlerList, h));*/
 
             ++i;
         }
@@ -294,11 +294,11 @@ void HandlersManager::Timer()
     if(OriginalHandler)
     {
         MainHandler *h = OriginalHandler->Handler.get();
-        CefPostTask(TID_IO, base::Bind(&MainHandler::CleanResourceHandlerList, h));
+        // CefPostTask disabled CEF118 compat: CefPostTask(TID_IO, base::BindOnce(&MainHandler::CleanResourceHandlerList, h));
     }else
     {
         MainHandler *h = Handler.get();
-        CefPostTask(TID_IO, base::Bind(&MainHandler::CleanResourceHandlerList, h));
+        // CefPostTask disabled CEF118 compat: CefPostTask(TID_IO, base::BindOnce(&MainHandler::CleanResourceHandlerList, h));
     }
     if(Updated)
     {
@@ -330,7 +330,7 @@ void HandlersManager::PopupCreated(CefRefPtr<MainHandler> new_handler,CefRefPtr<
 {
     if(Browser)
     {
-        Browser->GetHost()->SendFocusEvent(false);
+        Browser->GetHost()->SetFocus(false);
         //Browser->GetHost()->WasHidden(true);
     }
     HandlerUnit p = std::make_shared<HandlerUnitClass>();
@@ -607,7 +607,7 @@ void HandlersManager::SwitchByIndex(int index)
 {
     if(Browser)
     {
-        Browser->GetHost()->SendFocusEvent(false);
+        Browser->GetHost()->SetFocus(false);
         //Browser->GetHost()->WasHidden(true);
     }
 

@@ -653,7 +653,7 @@ void CurlResourceHandler::Timer()
         IteratorWaitAfterDelete--;
     }
 
-    if(Status == CurlThreadDataClass::Done && this->ref_count_.ref_count_ <= 1 && !CurlThread.get())
+    if(Status == CurlThreadDataClass::Done && this->HasOneRef() && !CurlThread.get())
     {
         CanDelete = true;
     }

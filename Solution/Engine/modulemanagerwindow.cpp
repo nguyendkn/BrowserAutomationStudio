@@ -410,12 +410,12 @@ void ModuleManagerWindow::on_CreateNewModule_clicked()
         QList<EmbeddedLanguage> Languages;
         QList<EmbeddedModule> Modules;
         EmbeddedLanguageManager->ReadLanguageListLocal(Languages,Modules);
-        QString Path = ModuleCreator->CreateModule(ModuleInstalled, ModuleManager->GetIsRunning(), Languages, Modules,EmbeddedLanguageManager->GetEmbeddedCode());
+        { QList<EmbeddedCodeItem> _tmpCode = EmbeddedLanguageManager->GetEmbeddedCode(); QString Path = ModuleCreator->CreateModule(ModuleInstalled, ModuleManager->GetIsRunning(), Languages, Modules, _tmpCode);
         if(ModuleInstalled)
         {
             Reload();
         }
-        QDesktopServices::openUrl(QUrl::fromLocalFile(Path));
+        QDesktopServices::openUrl(QUrl::fromLocalFile(Path)); }
 
     }
 }

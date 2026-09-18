@@ -23,15 +23,15 @@
 ## Architecture
 - Final workspace layout (`rust/Cargo.toml` members): `bas-platform`, `bas-contracts`, `bas-browser-shell`, `bas-scheduling`, `bas-chromeworker`, `bas-engine-core`, `bas-engine-script`, `bas-engine-plugin`, `bas-modules`, `bas-fastexecute`, and optionally `bas-studio` if Studio/ShopViewer's decision (Key Insights) is to migrate.
 - Remaining C++ surface after this phase: `qt-ui-permanent` files from Phase 7's classification (Engine's wizard/config dialogs, called via CXX-Qt), Studio/ShopViewer (per this phase's decision), and any Module explicitly deferred in Phase 11.
-- CI workflow (`build-windows.yml` from Phase 1's supporting task, `build-macos.yml` from Phase 2) consolidated into its final shape: single Rust+Qt+MSVC(+mac toolchain) build, single combined test job running all characterization suites plus `cargo test`/`cargo tarpaulin` across the whole workspace.
+- CI workflow (`build-windows.yml` from Phase 1's Windows reference build, `build-macos.yml` from Phase 2 if it exists) consolidated into its final shape: single Rust+Qt+MSVC(+mac toolchain) build, single combined test job running all characterization suites plus `cargo test`/`cargo tarpaulin` across the whole workspace.
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/rust/Cargo.toml` — modify: finalize `[workspace] members`.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Solution.pro` — modify: remove qmake subdirs/targets for any module now fully superseded by Rust (if the module's C++ project is retired entirely, not just internally delegating to Rust).
-- `/Users/nguyendk/Documents/projects/me/bas/.github/workflows/build-windows.yml` — modify: consolidate into final single build+test job.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Studio/` and `/Users/nguyendk/Documents/projects/me/bas/Solution/ShopViewer/` — decision point: migrate (create `rust/bas-studio/`) or explicitly mark "stays C++ indefinitely" in `docs/system-architecture.md`.
-- `/Users/nguyendk/Documents/projects/me/bas/docs/engine-boundary-map.md` — superseded by, merge into `docs/system-architecture.md`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/docs/system-architecture.md` — final architecture record (per `workflows/documentation-management.md`'s doc set).
+- `rust/Cargo.toml` — modify: finalize `[workspace] members`.
+- `Solution/Solution.pro` — modify: remove qmake subdirs/targets for any module now fully superseded by Rust (if the module's C++ project is retired entirely, not just internally delegating to Rust).
+- `.github/workflows/build-windows.yml` — modify: consolidate into final single build+test job.
+- `Solution/Studio/` and `Solution/ShopViewer/` — decision point: migrate (create `rust/bas-studio/`) or explicitly mark "stays C++ indefinitely" in `docs/system-architecture.md`.
+- `docs/engine-boundary-map.md` — superseded by, merge into `docs/system-architecture.md`.
+- **Create:** `docs/system-architecture.md` — final architecture record (per `workflows/documentation-management.md`'s doc set).
 
 ## Implementation Steps
 1. Audit every `.pro` file across `Solution/` for `QMAKE_EXTRA_TARGETS`/`LIBS` rules pointing at Rust crates; confirm each is still needed (module fully migrated = keep only the thin shim + Rust link; module partially migrated per Phase 11's deferred list = document why it's still mixed).

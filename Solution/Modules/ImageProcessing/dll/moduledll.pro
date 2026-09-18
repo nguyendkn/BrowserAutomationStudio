@@ -5,8 +5,8 @@ SOURCES += moduledll.cpp
 
 HEADERS += moduledll.h
 
-INCLUDEPATH += $(BAS_PATH)/include
-LIBS += -L$(BAS_PATH)/lib
+INCLUDEPATH += $$(BAS_PATH)/include
+LIBS += -L$$(BAS_PATH)/lib
 
 win32:LIBS += -lopencv_core320 -lopencv_imgproc320 -lzlib
 

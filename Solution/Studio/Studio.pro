@@ -13,6 +13,7 @@ greaterThan(QT_MAJOR_VERSION, 4) {
 
 DEFINES += NO_BAS_DEBUG
 DEFINES += NO_PREMIUM
+DEFINES += CURL_STATICLIB
 
 #DEFINES += MEMORY_DEBUG
 #SOURCES += debug_memory/debug_new.cpp
@@ -95,5 +96,5 @@ win32:LIBS += -llibeay32 -lssleay32
 
 QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
 
-INCLUDEPATH += $(BAS_PATH)/include
-LIBS += -L$(BAS_PATH)/lib
+INCLUDEPATH += $$(BAS_PATH)/include
+LIBS += -L$$(BAS_PATH)/lib

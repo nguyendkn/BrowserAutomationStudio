@@ -27,13 +27,13 @@
 - If the mini-discovery (Key Insights) finds `scriptworker.cpp` needs sub-splitting, split INSIDE this crate as internal modules first — do not create additional top-level *library* crates for it (respects plan.md's committed 9-library-crate scope; the sole documented exception is `bas-fastexecute`, a `[[bin]]`-only 10th workspace member with zero reusable logic of its own, per Phase 11 — that exception does not license further crate-count growth here).
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Engine/scriptworker.cpp` — primary migration target (confirm exact path/name against current `Engine.pro` SOURCES at execution time — file may have moved/renamed since scout's inventory).
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Engine/` — other files classified `scripting` in `docs/engine-boundary-map.md`.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Engine/Engine.pro` — modify: extend the `QMAKE_EXTRA_TARGETS`/`LIBS` rule to include `bas-engine-script`.
-- `/Users/nguyendk/Documents/projects/me/bas/docs/engine-boundary-map.md` — read/update if the `scripting` boundary needs correction.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/rust/bas-engine-script/{Cargo.toml,src/lib.rs,src/parser.rs,src/executor.rs,src/runtime_state.rs,src/bridge.rs}`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/EngineScriptCharacterization/golden/` — script execution golden outputs across the representative corpus.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/EngineScriptCharacterization/corpus/` — the representative script-pattern test corpus itself (checked-in fixture scripts).
+- `Solution/Engine/scriptworker.cpp` — primary migration target (confirm exact path/name against current `Engine.pro` SOURCES at execution time — file may have moved/renamed since scout's inventory).
+- `Solution/Engine/` — other files classified `scripting` in `docs/engine-boundary-map.md`.
+- `Solution/Engine/Engine.pro` — modify: extend the `QMAKE_EXTRA_TARGETS`/`LIBS` rule to include `bas-engine-script`.
+- `docs/engine-boundary-map.md` — read/update if the `scripting` boundary needs correction.
+- **Create:** `rust/bas-engine-script/{Cargo.toml,src/lib.rs,src/parser.rs,src/executor.rs,src/runtime_state.rs,src/bridge.rs}`.
+- **Create:** `Solution/Tests/EngineScriptCharacterization/golden/` — script execution golden outputs across the representative corpus.
+- **Create:** `Solution/Tests/EngineScriptCharacterization/corpus/` — the representative script-pattern test corpus itself (checked-in fixture scripts).
 
 ## Implementation Steps
 1. Assemble a representative script corpus (in collaboration with whoever knows BAS's scripting DSL best — real user-pattern scripts, not synthetic trivial ones): control flow, resource access, browser-control calls, error/exception scripts, edge-case scripts (empty, malformed, deeply nested).

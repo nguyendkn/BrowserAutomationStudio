@@ -11,7 +11,7 @@ ConverterResult convert(const std::string& text, const std::string& encoding_in,
     ConverterResult Result = std::make_shared<ConverterResultClass>();
     Result->WasSuccess = false;
 
-    const char * pscr = vtext.data();
+    char * pscr = vtext.data();
     size_t lsrc = vtext.size();
     std::vector<char> sout;
     sout.resize(lsrc * 6);

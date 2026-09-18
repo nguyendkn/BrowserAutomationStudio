@@ -20,7 +20,7 @@
 ## Requirements
 - Functional: produce a file-level classification of all ~760 Engine files into: `core` (execution primitives, resource mgmt, DB connectivity, browser-control abstractions), `scripting` (compilation/execution pipeline), `plugin-registry` (script-function/extension registration), `qt-ui-permanent` (GUI widgets/dialogs, stays C++ indefinitely, future CXX-Qt candidate), `winapi-platform` (the 31 WinAPI files, classified by which of the above layers they support AND, per plan.md's cross-platform-first goal, a first-pass tag of "has cross-platform crate equivalent" vs "likely genuinely OS-specific" — feeds Phase 8's detailed triage directly instead of Phase 8 starting from zero).
 - Non-functional: the classification must be validated by actually attempting the C++-only extraction (step-by-step in Implementation Steps) — a spreadsheet guess without a compile-and-test checkpoint does not satisfy this phase's Success Criteria.
-- No behavior change: Engine must still build and pass Phase 2's baseline smoke test (and any Engine-touching characterization tests written so far) after the internal refactor.
+- No behavior change: Engine must still build and pass Phase 1's Windows reference build smoke test (and any Engine-touching characterization tests written so far) after the internal refactor.
 
 ## Architecture
 - Output artifact: `docs/engine-boundary-map.md` — the file-level classification table plus a description of each layer's public C++ interface (the seam that will later become the `cxx` bridge surface in Phases 7-9).
@@ -28,15 +28,15 @@
 - No new build targets yet (Engine stays one `.pro` target) — the goal is internal modularity proven by interface + compile boundaries, not yet separate binaries/libraries.
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Engine/` — read/analyze all ~760 files; refactor (extract-interface only, no logic change) the subset identified as core/scripting/plugin-registry seams. Exact target files determined by this phase's own analysis (cannot be fully enumerated in advance — that is the point of the discovery phase).
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Engine/Engine.pro` — read; may gain internal source-grouping (e.g. `SOURCES += core/*.cpp scripting/*.cpp plugin/*.cpp`) without changing the build TARGET.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/docs/engine-boundary-map.md` — the classification deliverable.
+- `Solution/Engine/` — read/analyze all ~760 files; refactor (extract-interface only, no logic change) the subset identified as core/scripting/plugin-registry seams. Exact target files determined by this phase's own analysis (cannot be fully enumerated in advance — that is the point of the discovery phase).
+- `Solution/Engine/Engine.pro` — read; may gain internal source-grouping (e.g. `SOURCES += core/*.cpp scripting/*.cpp plugin/*.cpp`) without changing the build TARGET.
+- **Create:** `docs/engine-boundary-map.md` — the classification deliverable.
 
 ## Implementation Steps
 1. Grep/inventory all ~760 Engine files by: Q_OBJECT/signals-slots presence, WinAPI usage, and file size/name heuristics (scriptworker*, *dialog*, *widget*, *resource*, *database*, *plugin*/*module*-registration) to produce a first-pass classification draft.
 2. Manually review the draft against actual `#include` graphs (which files include which) to catch misclassifications — a file named `resourcemanager.cpp` that also drives a Q_OBJECT dialog is a `core`+`qt-ui-permanent` split candidate, not a single bucket.
 3. For the `plugin-registry` seam specifically: trace exactly how the 40 Modules register today (scout: "registered with Engine at link time") — this is the most load-bearing seam (unblocks Modules in Phase 10-11) and must be validated by reading the actual registration code path, not inferred from file names.
-4. Extract a C++ interface for `plugin-registry` first (smallest, most load-bearing, already semi-isolated per step 3); move concrete registration logic behind it; rebuild Engine + a sample Module against the new interface; confirm no behavior change via Phase 2's smoke test.
+4. Extract a C++ interface for `plugin-registry` first (smallest, most load-bearing, already semi-isolated per step 3); move concrete registration logic behind it; rebuild Engine + a sample Module against the new interface; confirm no behavior change via Phase 1's Windows reference build smoke test.
 5. Extract a C++ interface for `core`; same rebuild-and-verify discipline.
 6. Extract a C++ interface for `scripting`; same discipline — expect this to be the largest/riskiest extraction given `scriptworker.cpp`'s size.
 7. Classify remaining `qt-ui-permanent` and `winapi-platform` files, cross-referencing which layer each WinAPI file supports (per researcher-01's file list) so Phases 7-9 know where WinAPI interop work lands.
@@ -54,7 +54,7 @@
 
 ## Success Criteria
 - `docs/engine-boundary-map.md` classifies all ~760 files with no "unclassified" bucket left over.
-- All three interface extractions (plugin-registry, core, scripting) compile and pass Phase 2's smoke test + any existing Engine characterization tests, proving the refactor is behavior-preserving.
+- All three interface extractions (plugin-registry, core, scripting) compile and pass Phase 1's Windows reference build smoke test + any existing Engine characterization tests, proving the refactor is behavior-preserving.
 - A sample Module (at least 1 of the 40) is rebuilt against the new `plugin-registry` interface and confirmed working — proof the seam is real, not just a document.
 
 ## Risk Assessment
@@ -67,8 +67,8 @@
 
 ## Test Strategy & Quality Gate
 Lane `high-risk`.
-- **Spec:** Goal — classify + C++-refactor Engine into 3 independently-buildable layers, zero behavior change. AC: Given the pre-refactor Engine binary and Phase 2's smoke test, When the same test runs against the post-refactor binary, Then results are identical; Given a sample Module, When rebuilt against the new plugin-registry interface, Then it loads and functions identically. I/O contract: N/A (internal refactor, no external interface changes). Out-of-scope: any Rust code, any behavior change, splitting `scriptworker.cpp` internally beyond what's needed to extract the scripting-layer interface.
-- **Pyramid:** ~100% integration/e2e — this phase's correctness IS "does Engine still build and behave identically," verified via Phase 2's smoke test + existing Engine test file (`Solution/Tests`, the 400 resource-copy cases) re-run after each extraction step.
+- **Spec:** Goal — classify + C++-refactor Engine into 3 independently-buildable layers, zero behavior change. AC: Given the pre-refactor Engine binary and Phase 1's Windows reference build smoke test, When the same test runs against the post-refactor binary, Then results are identical; Given a sample Module, When rebuilt against the new plugin-registry interface, Then it loads and functions identically. I/O contract: N/A (internal refactor, no external interface changes). Out-of-scope: any Rust code, any behavior change, splitting `scriptworker.cpp` internally beyond what's needed to extract the scripting-layer interface.
+- **Pyramid:** ~100% integration/e2e — this phase's correctness IS "does Engine still build and behave identically," verified via Phase 1's Windows reference build smoke test + existing Engine test file (`Solution/Tests`, the 400 resource-copy cases) re-run after each extraction step.
 - **E2E scenario:** full Engine build + smoke launch + existing Test-suite run, after each of the 3 interface extractions (steps 4-6), not just once at the end.
 - **Coverage target:** N/A (no new logic, pure structural refactor — coverage gate doesn't apply; behavior-preservation is proven via the existing test suite re-run, not a coverage number).
 - **Evidence commands:** CI build log for each extraction step, `Solution/Tests` suite run output (before/after diff = identical), the sample Module's functional smoke check output.

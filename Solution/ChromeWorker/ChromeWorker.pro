@@ -162,10 +162,10 @@ SOURCES += main.cpp \
     browserdirectcontrol.cpp \
     popup.cpp
 
-INCLUDEPATH += $(BAS_PATH_WORKER)/include
+INCLUDEPATH += $$(BAS_PATH_WORKER)/include
 
 
-LIBS += -L$(BAS_PATH_WORKER)/lib -llibiconv -llibcef -llibcef_dll_wrapper -lAdvapi32 -luser32 -lPsapi -lshell32 -lDbgHelp -lComdlg32 -lgdi32 -llibcurl -llibeay32 -lssleay32 -lnetwork-uri
+LIBS += -L$$(BAS_PATH_WORKER)/lib -llibiconv -llibcef -llibcef_dll_wrapper -lAdvapi32 -luser32 -lPsapi -lshell32 -lDbgHelp -lComdlg32 -lgdi32 -llibcurl -llibeay32 -lssleay32 -lnetwork-uri
 win32:LIBS += -lMsimg32
 
 

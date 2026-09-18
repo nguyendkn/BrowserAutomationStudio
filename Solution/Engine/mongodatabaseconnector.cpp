@@ -186,7 +186,7 @@ namespace BrowserAutomationStudioFramework
                             if(obj.getField(column).type() == mongo::String)
                             {
                                 out<<"<Cell><Data ss:Type=\"String\">";
-                                out<<QString::fromUtf8(obj.getStringField(column)).replace("&","&amp;").replace(">","&gt;").replace("<","&lt;");
+                                out<<QString::fromStdString(obj.getStringField(column)).replace("&","&amp;").replace(">","&gt;").replace("<","&lt;");
                                 out<<"</Data></Cell>";
                             }
                             else
@@ -331,7 +331,7 @@ namespace BrowserAutomationStudioFramework
                     {
                         case DatabaseColumn::String:
                             if(obj.getField(column).type() == mongo::String)
-                                cell = QString::fromUtf8(obj.getStringField(column));
+                                cell = QString::fromStdString(obj.getStringField(column));
                             else
                                 cell = "";
                         break;
@@ -793,7 +793,7 @@ namespace BrowserAutomationStudioFramework
                     {
                         case DatabaseColumn::String:
                             if(obj.getField(column).type() == mongo::String)
-                                Res.Data[Column.Id] = QString::fromUtf8(obj.getStringField(column));
+                                Res.Data[Column.Id] = QString::fromStdString(obj.getStringField(column));
                             else
                                 Res.Data[Column.Id] = QString();
                         break;
@@ -903,7 +903,7 @@ namespace BrowserAutomationStudioFramework
                     {
                         case DatabaseColumn::String:
                             if(obj.getField(column).type() == mongo::String)
-                                Item.Data[Column.Id] = QString::fromUtf8(obj.getStringField(column));
+                                Item.Data[Column.Id] = QString::fromStdString(obj.getStringField(column));
                             else
                                 Item.Data[Column.Id] = QString();
                         break;
@@ -1225,9 +1225,9 @@ namespace BrowserAutomationStudioFramework
                //qDebug()<<obj.toString().c_str();
                DatabaseGroup group;
                group.IsNull = false;
-               group.Description = QString::fromUtf8(obj.getStringField("description"));
+               group.Description = QString::fromStdString(obj.getStringField("description"));
                group.Id = QString::fromStdString(obj.getField("_id").OID().toString());
-               group.Name = QString::fromUtf8(obj.getStringField("name"));
+               group.Name = QString::fromStdString(obj.getStringField("name"));
                res.append(group);
             }
 

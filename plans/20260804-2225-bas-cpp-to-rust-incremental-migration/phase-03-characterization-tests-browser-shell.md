@@ -2,7 +2,7 @@
 
 ## Context Links
 - `scout/scout-01-module-map.md` — WebInterfaceBrowser (~16 files) + SchedulerBrowser (~13 files): "genuinely isolated, no Qt... LOW/LOW-MEDIUM RISK... high-confidence migration"; Tests section: zero coverage for anything except Engine resources.
-- `phase-01-windows-dependency-inventory-classification.md` — this phase's tests run against the Windows CI reference build stood up there as a supporting task.
+- `phase-01-windows-dependency-inventory-classification.md` — this phase's tests run against the Windows reference build (Phase 1’s PRIMARY validation target) stood up there.
 - `phase-02-migrate-macos-blocking-call-sites.md` — WebInterfaceBrowser's 5 and SchedulerBrowser's 2 `windows.h`-blocking files were already fixed there (Tier 4); this phase characterizes the REST of their behavior before Phase 4's full logic migration.
 - `phase-04-workspace-bootstrap-browser-shell-migration.md` — consumes this phase's golden tests as the regression gate.
 
@@ -25,19 +25,19 @@
 - Screenshot comparisons use a tolerance threshold (not byte-exact) since CEF rendering can have minor non-deterministic pixel noise — document the chosen tolerance and rationale in the test harness README.
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/WebInterfaceBrowser/` — read-only, behavior under test (custom URL scheme handler, filesystem hooks, tray icon — exact file names to be confirmed against the `.pro` file's SOURCES list during execution).
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/WebInterfaceBrowser/WebInterfaceBrowser.pro` — read-only.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/SchedulerBrowser/` — read-only, behavior under test (screenshot/screencast handlers, tray icon).
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/SchedulerBrowser/SchedulerBrowser.pro` — read-only.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/BrowserShellCharacterization/` — new test harness directory (driver script/exe + `.pro` or CMake test target wired into CI).
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/BrowserShellCharacterization/golden/` — golden-file baselines (JSON responses, screenshot PNGs).
+- `Solution/WebInterfaceBrowser/` — read-only, behavior under test (custom URL scheme handler, filesystem hooks, tray icon — exact file names to be confirmed against the `.pro` file's SOURCES list during execution).
+- `Solution/WebInterfaceBrowser/WebInterfaceBrowser.pro` — read-only.
+- `Solution/SchedulerBrowser/` — read-only, behavior under test (screenshot/screencast handlers, tray icon).
+- `Solution/SchedulerBrowser/SchedulerBrowser.pro` — read-only.
+- **Create:** `Solution/Tests/BrowserShellCharacterization/` — new test harness directory (driver script/exe + `.pro` or CMake test target wired into CI).
+- **Create:** `Solution/Tests/BrowserShellCharacterization/golden/` — golden-file baselines (JSON responses, screenshot PNGs).
 
 ## Implementation Steps
 1. Inventory each module's externally observable behaviors by reading their `.pro` SOURCES lists and headers (URL scheme responses, file-hook responses, screenshot output format, tray icon state transitions).
 2. Design fixed test scenarios per behavior (e.g. 5-10 representative URLs for the custom scheme; 1-2 scheduled-task scenarios for screenshot capture).
 3. Build a driver harness that invokes the CURRENT unmodified binaries with these scenarios and captures raw output.
 4. Run the harness once against the Phase-1 Windows CI reference build, review output manually for sanity (garbage-in-garbage-out check — a golden file capturing a bug is still useful as a regression gate, but must be reviewed, not blindly trusted), then check in as the golden baseline.
-5. Wire the harness into the CI workflow from Phase 1/2 as a new job/step that runs on every push, diffing live output against the golden files.
+5. Wire the harness into the CI workflow from Phase 1 (Windows reference build) as a new job/step that runs on every push, diffing live output against the golden files.
 6. Document the tolerance strategy for screenshot diffs and how to intentionally update a golden file when a LATER phase's change is a deliberate, reviewed behavior change (not a regression).
 
 ## Todo List

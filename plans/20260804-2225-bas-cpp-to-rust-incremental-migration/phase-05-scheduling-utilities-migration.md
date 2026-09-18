@@ -29,11 +29,11 @@
 - Async runtime choice: tokio (single runtime instance shared across `scheduler`/`updater`/`remote_execute` within the crate — avoids the "many runtimes" anti-pattern).
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Scheduler/` — modify: HTTP server/task manager logic replaced with calls into `bas-scheduling::scheduler`; exact files confirmed against `Scheduler.pro` SOURCES during execution.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Updater/` — modify: download/ZIP logic replaced with calls into `bas-scheduling::updater`.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/RemoteExecuteScript/` — modify: HTTP dispatch replaced with calls into `bas-scheduling::remote_execute`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/rust/bas-scheduling/{Cargo.toml,src/lib.rs,src/scheduler.rs,src/updater.rs,src/remote_execute.rs,src/bridge.rs}`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/SchedulingCharacterization/golden/` — golden HTTP/ZIP/task-persistence fixtures.
+- `Solution/Scheduler/` — modify: HTTP server/task manager logic replaced with calls into `bas-scheduling::scheduler`; exact files confirmed against `Scheduler.pro` SOURCES during execution.
+- `Solution/Updater/` — modify: download/ZIP logic replaced with calls into `bas-scheduling::updater`.
+- `Solution/RemoteExecuteScript/` — modify: HTTP dispatch replaced with calls into `bas-scheduling::remote_execute`.
+- **Create:** `rust/bas-scheduling/{Cargo.toml,src/lib.rs,src/scheduler.rs,src/updater.rs,src/remote_execute.rs,src/bridge.rs}`.
+- **Create:** `Solution/Tests/SchedulingCharacterization/golden/` — golden HTTP/ZIP/task-persistence fixtures.
 - **Modify:** `Solution/Scheduler/Scheduler.pro`, `Solution/Updater/Updater.pro`, `Solution/RemoteExecuteScript/RemoteExecuteScript.pro` — `QMAKE_EXTRA_TARGETS` + `LIBS` per Phase 4's pattern.
 
 ## Implementation Steps

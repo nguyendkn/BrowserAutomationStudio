@@ -1091,7 +1091,7 @@ QString MainWindow::OpenFromFile(const QString& fileName)
         f.close();
     }
 
-    _EmbeddedLanguageManager->ReadLanguageList(true, false, false, _ModuleManager->GetAllEmbeddedLanguages(), _ModuleManager->GetAllEmbeddedModules());
+    { QList<EmbeddedLanguage> _tmpLang1 = _ModuleManager->GetAllEmbeddedLanguages(); QList<EmbeddedModule> _tmpMod1 = _ModuleManager->GetAllEmbeddedModules(); _EmbeddedLanguageManager->ReadLanguageList(true, false, false, _tmpLang1, _tmpMod1); }
     _EmbeddedLanguageManager->SetModuleCode(_ModuleManager->GetAllEmbeddedCodeItems());
 
 
@@ -1378,7 +1378,7 @@ void MainWindow::New()
             f.remove();
         }
 
-        _EmbeddedLanguageManager->ReadLanguageList(true, false, false, _ModuleManager->GetAllEmbeddedLanguages(), _ModuleManager->GetAllEmbeddedModules());
+        { QList<EmbeddedLanguage> _tmpLang2 = _ModuleManager->GetAllEmbeddedLanguages(); QList<EmbeddedModule> _tmpMod2 = _ModuleManager->GetAllEmbeddedModules(); _EmbeddedLanguageManager->ReadLanguageList(true, false, false, _tmpLang2, _tmpMod2); }
         _EmbeddedLanguageManager->SetModuleCode(QList<EmbeddedCodeItem>());
         _EmbeddedLanguageManager->ReadData("[]");
 
@@ -2076,7 +2076,7 @@ void MainWindow::Record()
     }
     IsRecordLast = true;
     _EmbeddedLanguageManager->Stop();
-    _EmbeddedLanguageManager->ReadLanguageList(true,false, false, _ModuleManager->GetAllEmbeddedLanguages(), _ModuleManager->GetAllEmbeddedModules());
+    { QList<EmbeddedLanguage> _tmpLang3 = _ModuleManager->GetAllEmbeddedLanguages(); QList<EmbeddedModule> _tmpMod3 = _ModuleManager->GetAllEmbeddedModules(); _EmbeddedLanguageManager->ReadLanguageList(true,false, false, _tmpLang3, _tmpMod3); }
     _EmbeddedLanguageManager->SetModuleCode(_ModuleManager->GetAllEmbeddedCodeItems());
     _EmbeddedLanguageManager->SetIsRecord(IsRecordLast || Settings->value("ForceEmbeddedLanguagesLog", false).toBool());
     _EmbeddedLanguageManager->Start();
@@ -2100,7 +2100,7 @@ void MainWindow::Run()
         ActiveModules.append(Module->Name);
     }
 
-    _EmbeddedLanguageManager->ReadLanguageList(true,false, false, _ModuleManager->GetAllEmbeddedLanguages(ActiveModules), _ModuleManager->GetAllEmbeddedModules(ActiveModules));
+    { QList<EmbeddedLanguage> _tmpLang4 = _ModuleManager->GetAllEmbeddedLanguages(ActiveModules); QList<EmbeddedModule> _tmpMod4 = _ModuleManager->GetAllEmbeddedModules(ActiveModules); _EmbeddedLanguageManager->ReadLanguageList(true,false, false, _tmpLang4, _tmpMod4); }
     _EmbeddedLanguageManager->SetModuleCode(_ModuleManager->GetAllEmbeddedCodeItems(ActiveModules));
     _EmbeddedLanguageManager->SetIsRecord(IsRecordLast || Settings->value("ForceEmbeddedLanguagesLog", false).toBool());
     _EmbeddedLanguageManager->Start();

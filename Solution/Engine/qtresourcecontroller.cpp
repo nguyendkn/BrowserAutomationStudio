@@ -1257,7 +1257,7 @@ namespace BrowserAutomationStudioFramework
 
             if(UseUIConstructor)
             {
-                WidgetUIConstructor->AddUnit(res->GetName(),w->GetSectionName(),w->GetMainWidget());
+                { MultiLanguageString _tmpSec = w->GetSectionName(); WidgetUIConstructor->AddUnit(res->GetName(),_tmpSec,w->GetMainWidget()); }
             }
 
 

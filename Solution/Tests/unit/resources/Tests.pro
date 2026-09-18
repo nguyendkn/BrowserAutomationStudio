@@ -38,5 +38,5 @@ unix{
     LIBS += -lqscintilla2
 }
 
-INCLUDEPATH += $(BAS_PATH)/include
-LIBS += -L$(BAS_PATH)/lib
+INCLUDEPATH += $$(BAS_PATH)/include
+LIBS += -L$$(BAS_PATH)/lib

@@ -9,8 +9,8 @@ DEFINES += QUAZIP_STATIC
 
 DEFINES += NOT_SILENT
 
-INCLUDEPATH += $(BAS_PATH)/include
-LIBS += -L$(BAS_PATH)/lib
+INCLUDEPATH += $$(BAS_PATH)/include
+LIBS += -L$$(BAS_PATH)/lib
 
 win32:RC_FILE = main.rc
 

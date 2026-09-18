@@ -18,6 +18,7 @@ TARGET = FastExecuteScript
 TEMPLATE = app
 
 DEFINES += NONE_X64 NO_BAS_DEBUG
+DEFINES += CURL_STATICLIB
 
 #DEFINES += MEMORY_DEBUG
 #SOURCES += debug_memory/debug_new.cpp
@@ -51,7 +52,7 @@ OTHER_FILES += \
     translate/ru.ts \
     translate/en.ts
 
-INCLUDEPATH += debug_memory
+INCLUDEPATH += $$PWD/debug_memory
 
 unix{
     INCLUDEPATH += /usr/include/libxml2
@@ -80,5 +81,5 @@ contains(DEFINES, ENIGMA_PROTECTED) {
 }
 
 
-INCLUDEPATH += $(BAS_PATH)/include
-LIBS += -L$(BAS_PATH)/lib
+INCLUDEPATH += $$(BAS_PATH)/include
+LIBS += -L$$(BAS_PATH)/lib

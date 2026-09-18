@@ -8,7 +8,7 @@
 - `plan.md` — workspace layout table.
 
 ## Overview
-- **Priority:** P1 — first FULL-MODULE Rust crate in the repo (`bas-platform`, Phase 2, was a narrow point-fix crate, not a module migration); validates the entire interop pattern every later module-migration phase reuses.
+- **Priority:** P1 — first FULL-MODULE Rust crate in the repo (and, under the Windows-first ordering, the workspace root’s creator — `bas-platform` Phase 2 is a deferred hardening track and may not exist yet, so count it as a point-fix crate, not a module migration); validates the entire interop pattern every later module-migration phase reuses.
 - **Status:** pending.
 - Scope: create the Cargo workspace, implement `bas-contracts` + `bas-browser-shell`, port WebInterfaceBrowser + SchedulerBrowser's CEF handler logic to Rust, wire qmake to link the resulting static lib, keep the C++ CEF/Qt shell (if any) as a thin caller.
 
@@ -22,24 +22,24 @@
 - Functional: WebInterfaceBrowser + SchedulerBrowser's custom-URL-scheme handling, filesystem hooks, screenshot/screencast, and tray-icon logic move to Rust (`bas-browser-shell`); the CEF/OS integration points that MUST stay native (CEF's own C++ object lifecycle, OS tray APIs if no safe Rust equivalent) stay as a thin C++ shim calling into Rust via `cxx`.
 - Non-functional: Phase 3's golden-file harness passes unchanged (proves behavior-preserving migration); build integrates into the Phase-1 qmake pipeline via `QMAKE_EXTRA_TARGETS`; every FFI boundary function has explicit panic handling.
 - Tray-icon/filesystem-hook logic uses a cross-platform crate (`tray-icon`, `std::fs`) rather than a 1:1 WinAPI wrap, per plan.md's Overview — even though this module isn't the plan's primary cross-platform blocker.
-- `bas-contracts` and `bas-browser-shell` build and unit-test on macOS + Linux in CI, alongside Windows — the SECOND cross-platform readiness checkpoint in the plan (`bas-platform`, Phase 2, was the first; plan.md Overview: "every new Rust crate adds a macOS + Linux CI leg").
+- `bas-contracts` and `bas-browser-shell` build and unit-test on macOS + Linux in CI, alongside Windows — a cross-platform readiness checkpoint in the plan (if `bas-platform` Phase 2 has already run it was the first; otherwise this is the first; plan.md Overview: "every new Rust crate adds a macOS + Linux CI leg").
 
 ## Architecture
-- **Workspace root:** `/Users/nguyendk/Documents/projects/me/bas/rust/Cargo.toml` (created in Phase 2 for `bas-platform`) — workspace members grow phase by phase; this phase adds `bas-contracts` and `bas-browser-shell`.
+- **Workspace root:** `rust/Cargo.toml` (created HERE — this phase owns `rust/Cargo.toml`; Phase 2 only creates it in the unlikely case it runs first) — workspace members grow phase by phase; this phase adds `bas-contracts` and `bas-browser-shell`.
 - **`bas-contracts`** (`rust/bas-contracts/`): plain serializable structs for URL-scheme request/response, screenshot metadata — no logic, no CEF/Qt deps. Depended on by `bas-browser-shell` and every later crate that needs to exchange data with it.
 - **`bas-browser-shell`** (`rust/bas-browser-shell/`): `crate-type = ["staticlib"]`; `cxx` bridge module defining `extern "Rust"` fns (URL-scheme handler entry points, screenshot-capture entry points) called from the remaining C++ CEF glue, and `unsafe extern "C++"` blocks for any CEF C++ types Rust must call back into (if unavoidable).
 - **Build integration:** `Solution/WebInterfaceBrowser/WebInterfaceBrowser.pro` and `Solution/SchedulerBrowser/SchedulerBrowser.pro` gain a `QMAKE_EXTRA_TARGETS` rule invoking `cargo build --release --manifest-path ../../rust/Cargo.toml -p bas-browser-shell`, then `LIBS += -L$$OUT_PWD/../../rust/target/release -lbas_browser_shell`.
 - **Panic safety:** every `extern "Rust"` fn exposed to C++ wraps its body in `std::panic::catch_unwind`, converting `Err` to a sentinel/result type defined in `bas-contracts`; document this as the mandatory pattern for all future crates (Phase 5+ reuse it, not reinvent it).
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/WebInterfaceBrowser/` — modify: replace ported logic with calls into `bas-browser-shell`; exact file list confirmed against `WebInterfaceBrowser.pro` SOURCES during execution.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/WebInterfaceBrowser/WebInterfaceBrowser.pro` — modify: add `QMAKE_EXTRA_TARGETS` + `LIBS`.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/SchedulerBrowser/` — modify: same pattern.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/SchedulerBrowser/SchedulerBrowser.pro` — modify: add `QMAKE_EXTRA_TARGETS` + `LIBS`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/rust/Cargo.toml` — workspace manifest.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/rust/bas-contracts/{Cargo.toml,src/lib.rs}`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/rust/bas-browser-shell/{Cargo.toml,src/lib.rs,src/bridge.rs,build.rs}`.
-- **Modify:** `/Users/nguyendk/Documents/projects/me/bas/.github/workflows/build-windows.yml` — add Rust toolchain install (`rustup`) + `cargo build` step before the qmake step.
+- `Solution/WebInterfaceBrowser/` — modify: replace ported logic with calls into `bas-browser-shell`; exact file list confirmed against `WebInterfaceBrowser.pro` SOURCES during execution.
+- `Solution/WebInterfaceBrowser/WebInterfaceBrowser.pro` — modify: add `QMAKE_EXTRA_TARGETS` + `LIBS`.
+- `Solution/SchedulerBrowser/` — modify: same pattern.
+- `Solution/SchedulerBrowser/SchedulerBrowser.pro` — modify: add `QMAKE_EXTRA_TARGETS` + `LIBS`.
+- **Create:** `rust/Cargo.toml` — workspace manifest.
+- **Create:** `rust/bas-contracts/{Cargo.toml,src/lib.rs}`.
+- **Create:** `rust/bas-browser-shell/{Cargo.toml,src/lib.rs,src/bridge.rs,build.rs}`.
+- **Modify:** `.github/workflows/build-windows.yml` — add Rust toolchain install (`rustup`) + `cargo build` step before the qmake step.
 
 ## Implementation Steps
 1. Create `rust/` workspace with `bas-contracts` (empty structs first) and `bas-browser-shell` (empty `staticlib` crate that compiles and links a no-op into the existing qmake build) — prove the BUILD INTEGRATION works before porting any real logic.

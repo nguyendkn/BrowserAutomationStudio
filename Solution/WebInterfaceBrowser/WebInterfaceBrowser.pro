@@ -14,9 +14,9 @@ SOURCES += main.cpp \
 
 QMAKE_LFLAGS += /LARGEADDRESSAWARE
 
-INCLUDEPATH += $(BAS_PATH_WORKER)/include
+INCLUDEPATH += $$(BAS_PATH_WORKER)/include
 
-LIBS += -L$(BAS_PATH_WORKER)/lib -llibcef -llibcef_dll_wrapper -lAdvapi32 -luser32 -lPsapi -lshell32 -lDbgHelp -lgdi32 -llibiconv
+LIBS += -L$$(BAS_PATH_WORKER)/lib -llibcef -llibcef_dll_wrapper -lAdvapi32 -luser32 -lPsapi -lshell32 -lDbgHelp -lgdi32 -llibiconv
 
 QMAKE_CXXFLAGS_RELEASE += /MT
 

@@ -138,12 +138,12 @@ void ModuleCreateWizard::Init()
 
     for(QString& Name:FunctionNames)
     {
-        QCheckBox *Сheck = new QCheckBox(ui->FunctionScrollContent);
-        Сheck->setText(Name);
-        Сheck->setProperty("name",Name);
-        Сheck->setChecked(!ExcludedFunctions.contains(Name));
-        connect(Сheck,SIGNAL(toggled(bool)),this,SLOT(CheckSkipAvailable()));
-        ui->FunctionScrollContent->layout()->addWidget(Сheck);
+        QCheckBox *Check = new QCheckBox(ui->FunctionScrollContent);
+        Check->setText(Name);
+        Check->setProperty("name",Name);
+        Check->setChecked(!ExcludedFunctions.contains(Name));
+        connect(Check,SIGNAL(toggled(bool)),this,SLOT(CheckSkipAvailable()));
+        ui->FunctionScrollContent->layout()->addWidget(Check);
     }
 
     ui->NoFunctionsLabel->setVisible(FunctionNames.isEmpty());

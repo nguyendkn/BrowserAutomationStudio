@@ -1,0 +1,20 @@
+# versions.lock — basbuild pinned versions
+
+# Format: name | version | source URL | sha256 (fill after fetch) | notes
+
+Qt|5.15.2|https://download.qt.io/official_releases/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz| | msvc2019_64 via aqtinstall; fallback 5.15.14 if mirror gone
+CEF|118.4.13+gcocb589+chromium-118.0.5993.117|https://cef-builds.spotifycdn.com/cef_binary_118.4.13%2Bgcocb589%2Bchromium-118.0.5993.117_windows64.tar.bz2| | Standard Distribution; libcef_dll_wrapper built with /MT
+Boost|1.82.0|https://archives.boost.io/release/1.82.0/source/boost_1_82_0.zip| | b2 toolset=msvc-14.3 runtime-link=static link=static threading=multi
+MongoLegacy|legacy-1.1.2|https://github.com/mongodb/mongo-cxx-driver/archive/legacy-1.1.2.tar.gz| | scons --c++11 --ssl --sharedclient; highest risk
+OpenSSL|1.1.1w|https://www.openssl.org/source/openssl-1.1.1w.tar.gz| | VC-WIN64A no-shared; shim libeay32/ssleay32
+OpenCV|3.2.0|https://github.com/opencv/opencv/archive/3.2.0.zip| | BUILD_SHARED_LIBS=OFF, MSVC_RUNTIME=MultiThreaded
+QScintilla|2.13.4|https://www.riverbankcomputing.com/static/Downloads/QScintilla/2.13.4/QScintilla_src-2.13.4.zip| | qmake with same Qt
+QuaZip|1.4|https://github.com/stachenov/quazip/archive/v1.4.tar.gz| | QUAZIP_STATIC
+libcurl|7.88.1|https://curl.se/download/curl-7.88.1.tar.gz| | CURL_STATICLIB, WITH_SSL=static WITH_ZLIB=static
+zlib|1.3.1|https://zlib.net/zlib-1.3.1.tar.gz| | win32/Makefile.msc
+libiconv|1.17|https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.17.tar.gz| | provide both libiconv.lib and iconv.lib
+libxml2|2.10.4|https://download.gnome.org/sources/libxml2/2.10/libxml2-2.10.4.tar.xz| | cmake BUILD_SHARED_LIBS=OFF
+libmimetic|0.9.8|https://sourceforge.net/projects/mimetic/files/mimetic/0.9.8/mimetic-0.9.8.tar.gz| | libmimetic + libmimetic_d
+ixwebsocket|11.4.3|https://github.com/machinezone/IXWebSocket/archive/v11.4.3.tar.gz| | cmake static /MT
+network-uri|1.0.0|https://github.com/cpp-netlib/uri/archive/master.tar.gz| | cmake
+Enigma|stub| | | commercial Enigma Protector — empty enigma.lib stub; only when ENIGMA_PROTECTED

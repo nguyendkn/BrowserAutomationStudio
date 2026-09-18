@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <fstream>
+#include <sstream>
 #include <streambuf>
 #include <regex>
 #include <QTextCodec>

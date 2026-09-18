@@ -1,5 +1,7 @@
 #include "browserlistitem.h"
 #include <QDebug>
+#include <QIcon>
+#include <QStyle>
 #include <QSizePolicy>
 #include "ui_browserlistitem.h"
 

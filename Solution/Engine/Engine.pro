@@ -903,8 +903,9 @@ win32:LIBS += -lws2_32 -liconv -llibcurl -lzlib -lShell32 -luser32 -lAdvapi32 -l
 
 QMAKE_LFLAGS_WINDOWS = /SUBSYSTEM:WINDOWS,5.01
 
-INCLUDEPATH += $(BAS_PATH)/include
-LIBS += -L$(BAS_PATH)/lib
+INCLUDEPATH += $$(BAS_PATH)/include
+LIBS += -L$$(BAS_PATH)/lib
 
 DISTFILES += \
     oauth/o2.pri
+DEFINES += LIBXML_STATIC CURL_STATICLIB

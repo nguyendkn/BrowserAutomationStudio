@@ -36,3 +36,15 @@ Solution/ChromeWorker/html/**/*_prepared.html
 not_first_run\.txt
 SchedulerDebug
 Solution/Private
+# basbuild reconstructed bundle (keep README + versions.lock)
+third_party/basbuild/BAS_PATH/
+third_party/basbuild/BAS_PATH_WORKER/
+third_party/basbuild/Qt/
+third_party/basbuild/_cache/
+third_party/basbuild/logs/
+third_party/basbuild/*.log
+third_party/basbuild/openssl_stage/
+third_party/basbuild/boost_stage/
+third_party/basbuild/mongo_stage/
+Solution/aqtinstall.log
+third_party/basbuild/build-probe/

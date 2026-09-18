@@ -445,7 +445,7 @@ void MainWindow::Start()
             ActiveModules.append(Module->Name);
     }
 
-    _EmbeddedLanguageManager->ReadLanguageList(false, IsSilent, false, _ModuleManager->GetAllEmbeddedLanguages(ActiveModules), _ModuleManager->GetAllEmbeddedModules(ActiveModules));
+    { QList<EmbeddedLanguage> _tmpLangF1 = _ModuleManager->GetAllEmbeddedLanguages(ActiveModules); QList<EmbeddedModule> _tmpModF1 = _ModuleManager->GetAllEmbeddedModules(ActiveModules); _EmbeddedLanguageManager->ReadLanguageList(false, IsSilent, false, _tmpLangF1, _tmpModF1); }
     _EmbeddedLanguageManager->SetModuleCode(_ModuleManager->GetAllEmbeddedCodeItems(ActiveModules));
 
     if(!DataBaseConnectorPreserved)

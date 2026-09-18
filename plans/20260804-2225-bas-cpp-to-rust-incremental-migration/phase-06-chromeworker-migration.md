@@ -27,17 +27,17 @@
 
 ## Architecture
 - **`bas-chromeworker`** (`rust/bas-chromeworker/`): single cohesive crate (scout: "self-contained... isolated from rest of codebase"; researcher-04: fingerprinting and browser control are "tightly coupled," high cohesion — splitting would cut a cohesive unit for no coupling benefit). Internal modules: `cdp` (DevTools Protocol client), `fingerprint`, `browser_control` (tabs/input), `capture` (screenshot/screencast, PNG encode), `protocol_handlers`.
-- Depends on `bas-contracts` for shared DTOs (fingerprint result shape, CDP message types if shared with other crates later) AND on `bas-platform` (Phase 2) for cross-platform process/export-macro/OS-specific-trait primitives — this crate does NOT reimplement those; it calls `bas-platform`'s existing trait implementations.
+- Depends on `bas-contracts` for shared DTOs (fingerprint result shape, CDP message types if shared with other crates later) AND on `bas-platform` if Phase 2 has already run (otherwise this crate owns its own `platform` submodule and Phase 2 consolidates the duplication) for cross-platform process/export-macro/OS-specific-trait primitives — this crate does NOT reimplement those; it calls `bas-platform`'s existing trait implementations.
 - `platform` submodule (this crate's OWN, distinct from `bas-platform`): a THIN adapter layer for ChromeWorker-specific OS-touching capabilities `bas-platform` doesn't already cover (e.g. any fingerprint-specific signal not already generalized into `bas-platform`'s trait set) — extends `bas-platform`'s `#[cfg(target_os = "windows")]` pattern rather than inventing a parallel one. All `unsafe` confined here, never leaking into `fingerprint`/`browser_control` logic.
 - PNG encode/decode via the `image` or `png` crate, behind a thin adapter matching `lodepng`'s current call sites — swap verified via golden screenshot tests before removing `lodepng.cpp`.
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/ChromeWorker/` — modify: CDP/fingerprint/browser-control/capture logic replaced with calls into `bas-chromeworker`; exact files confirmed against `ChromeWorker.pro` SOURCES during execution.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/ChromeWorker/ChromeWorker.pro` — modify: `QMAKE_EXTRA_TARGETS` + `LIBS` per Phase 4's pattern.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/ChromeWorker/png/lodepng.cpp` (and `png/lodepng.h`) — candidate for retirement (replaced by Rust `image`/`png` crate), removed only after byte-compatibility verified.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/rust/bas-chromeworker/{Cargo.toml,src/lib.rs,src/cdp.rs,src/fingerprint.rs,src/browser_control.rs,src/capture.rs,src/protocol_handlers.rs,src/platform.rs,src/bridge.rs}`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/ChromeWorkerCharacterization/golden/fingerprint/` — fingerprint output snapshots across a representative device/OS/browser-version matrix.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/ChromeWorkerCharacterization/golden/screenshots/` — screenshot golden files for PNG-codec-swap verification.
+- `Solution/ChromeWorker/` — modify: CDP/fingerprint/browser-control/capture logic replaced with calls into `bas-chromeworker`; exact files confirmed against `ChromeWorker.pro` SOURCES during execution.
+- `Solution/ChromeWorker/ChromeWorker.pro` — modify: `QMAKE_EXTRA_TARGETS` + `LIBS` per Phase 4's pattern.
+- `Solution/ChromeWorker/png/lodepng.cpp` (and `png/lodepng.h`) — candidate for retirement (replaced by Rust `image`/`png` crate), removed only after byte-compatibility verified.
+- **Create:** `rust/bas-chromeworker/{Cargo.toml,src/lib.rs,src/cdp.rs,src/fingerprint.rs,src/browser_control.rs,src/capture.rs,src/protocol_handlers.rs,src/platform.rs,src/bridge.rs}`.
+- **Create:** `Solution/Tests/ChromeWorkerCharacterization/golden/fingerprint/` — fingerprint output snapshots across a representative device/OS/browser-version matrix.
+- **Create:** `Solution/Tests/ChromeWorkerCharacterization/golden/screenshots/` — screenshot golden files for PNG-codec-swap verification.
 
 ## Implementation Steps
 1. Write fingerprint golden-snapshot tests FIRST, across a representative matrix (multiple OS/browser-version/device profiles the current binary supports) — this is the module's highest-value regression gate and must exist before any other porting step.
@@ -48,7 +48,7 @@
 6. Port tab/input control logic, golden-test after.
 7. Port screenshot/screencast capture with the new PNG crate behind the `capture` adapter; run screenshot golden tests to verify byte/structural compatibility before removing `lodepng.cpp`.
 8. Port custom protocol handlers, golden-test after.
-9. Integrate Phase 2's already-fixed 36 call sites into `bas-chromeworker`'s proper module structure (they were point-patched via `bas-platform` calls from still-C++ code; now the SURROUNDING logic is Rust too, so route through `bas-platform` directly instead of via the old FFI point-fix). Triage any ADDITIONAL WinAPI usage discovered during the full port that Phase 1's scan missed (per-file classification, same a/b/c categories). Audit no `unsafe` leaks outside `platform`/`bas-platform`.
+9. If Phase 2 already fixed ChromeWorker’s 36 call sites via `bas-platform`, integrate them into `bas-chromeworker`’s proper module structure — they were point-patched via `bas-platform` calls from still-C++ code; now the surrounding logic is Rust too, so route through `bas-platform` directly. (If Phase 2 hasn’t run, this sub-step is skipped — the Rust port handles those call sites natively.) Triage any ADDITIONAL WinAPI usage discovered during the full port that Phase 1’s scan missed (per-file classification, same a/b/c categories). Audit no `unsafe` leaks outside `platform`/`bas-platform`.
 10. Build `bas-chromeworker` (minus the Windows-only trait arms) on macOS + Linux in CI; fix any non-Windows compile/test failure in the cross-platform-equivalent code before proceeding.
 11. Remove dead ported C++ source (including `png/lodepng.cpp` once verified); run full characterization suite on Windows + the new macOS/Linux unit-test legs.
 

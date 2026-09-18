@@ -163,7 +163,7 @@ void CCrashHandler::CreateMiniDump(EXCEPTION_POINTERS* pExcPtrs)
     MINIDUMP_CALLBACK_INFORMATION mci;
 
     // Load dbghelp.dll
-    hDbgHelp = LoadLibraryA(_T("dbghelp.dll"));
+    hDbgHelp = LoadLibrary(_T("dbghelp.dll"));
     if(hDbgHelp==NULL)
     {
         // Error - couldn't load dbghelp.dll
@@ -171,7 +171,7 @@ void CCrashHandler::CreateMiniDump(EXCEPTION_POINTERS* pExcPtrs)
     }
 
     // Create the minidump file
-    hFile = CreateFileA(
+    hFile = CreateFile(
         _T("crashdump_bas.dmp"),
         GENERIC_WRITE,
         0,

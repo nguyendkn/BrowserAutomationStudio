@@ -9,8 +9,8 @@ DEFINES += QUAZIP_STATIC
 
 win32:RC_FILE = main.rc
 
-INCLUDEPATH += $(BAS_PATH)/include
-LIBS += -L$(BAS_PATH)/lib
+INCLUDEPATH += $$(BAS_PATH)/include
+LIBS += -L$$(BAS_PATH)/lib
 
 SOURCES += main.cpp\
     oldversionremover.cpp \

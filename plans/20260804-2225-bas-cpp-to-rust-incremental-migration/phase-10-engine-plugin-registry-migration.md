@@ -28,11 +28,11 @@
 - Dispatch layer is function-signature-agnostic where possible (generic marshalling via `bas-contracts` DTOs) so Phase 11 can migrate Modules one at a time without changing the registry itself per-Module.
 
 ## Related Code Files
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Engine/` — files classified `plugin-registry` in `docs/engine-boundary-map.md` (the interface Phase 7 already extracted and validated against a sample Module).
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Engine/Engine.pro` — modify: extend `QMAKE_EXTRA_TARGETS`/`LIBS` for `bas-engine-plugin`.
-- `/Users/nguyendk/Documents/projects/me/bas/Solution/Modules/` — read-only reference during testing (the 40 existing DLLs are the registration-compatibility test corpus; not modified in this phase — that's Phase 11).
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/rust/bas-engine-plugin/{Cargo.toml,src/lib.rs,src/registry.rs,src/dispatch.rs,src/bridge.rs,src/c_abi.rs,cbindgen.toml}`.
-- **Create:** `/Users/nguyendk/Documents/projects/me/bas/Solution/Tests/EnginePluginCharacterization/golden/` — registration/dispatch golden fixtures using real Module function signatures.
+- `Solution/Engine/` — files classified `plugin-registry` in `docs/engine-boundary-map.md` (the interface Phase 7 already extracted and validated against a sample Module).
+- `Solution/Engine/Engine.pro` — modify: extend `QMAKE_EXTRA_TARGETS`/`LIBS` for `bas-engine-plugin`.
+- `Solution/Modules/` — read-only reference during testing (the 40 existing DLLs are the registration-compatibility test corpus; not modified in this phase — that's Phase 11).
+- **Create:** `rust/bas-engine-plugin/{Cargo.toml,src/lib.rs,src/registry.rs,src/dispatch.rs,src/bridge.rs,src/c_abi.rs,cbindgen.toml}`.
+- **Create:** `Solution/Tests/EnginePluginCharacterization/golden/` — registration/dispatch golden fixtures using real Module function signatures.
 
 ## Implementation Steps
 1. Re-verify Phase 7's sample-Module validation still holds (re-run it against current `main`).

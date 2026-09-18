@@ -1,0 +1,10 @@
+QT -= gui
+QT += network websockets sql xml
+CONFIG += c++17 staticlib
+TARGET = bascore
+TEMPLATE = lib
+DEFINES += QT_DEPRECATED_WARNINGS
+INCLUDEPATH += $$PWD
+DEPENDPATH += $$PWD
+HEADERS += $$PWD/version.h $$PWD/taskstore.h $$PWD/ipcchannel.h
+SOURCES += $$PWD/taskstore.cpp $$PWD/ipcchannel.cpp

@@ -1,0 +1,1 @@
+#include "ipcchannel.h"

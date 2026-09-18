@@ -54,3 +54,8 @@ _worker.obj
 _mini_worker.obj
 /Worker/
 /Worker.1/
+# BAS server
+server/build/
+server/*/release/
+server/*/debug/
+bas-server.ini

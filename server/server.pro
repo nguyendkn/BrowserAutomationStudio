@@ -1,0 +1,10 @@
+TEMPLATE = subdirs
+CONFIG += ordered
+SUBDIRS += core api worker scheduler
+core.file = core/corelib.pro
+api.file = api/api.pro
+worker.file = worker/worker.pro
+scheduler.file = scheduler/scheduler.pro
+api.depends = core
+worker.depends = core
+scheduler.depends = core

@@ -1,0 +1,13 @@
+QT -= gui
+QT += network sql
+CONFIG += c++17 console
+CONFIG -= app_bundle
+TARGET = basscheduler
+TEMPLATE = app
+DEFINES += QT_DEPRECATED_WARNINGS
+INCLUDEPATH += $$PWD $$PWD/../core
+DEPENDPATH += $$PWD $$PWD/../core
+HEADERS += $$PWD/cronscheduler.h
+SOURCES += $$PWD/main.cpp $$PWD/cronscheduler.cpp
+LIBS += -L$$OUT_PWD/../core/release -lbascore
+win32:CONFIG(debug,debug|release): LIBS += -L$$OUT_PWD/../core/debug -lbascore

@@ -1,8 +1,23 @@
 #pragma once
 #include <QObject>
 #include <QTimer>
-class CronScheduler : public QObject{ Q_OBJECT
-public: explicit CronScheduler(QObject*p=nullptr):QObject(p){t.setInterval(60000);connect(&t,&QTimer::timeout,this,&CronScheduler::tick);} void start(){t.start();}
-private slots: void tick(){}
-private: QTimer t;
+#include <QSqlDatabase>
+
+class CronScheduler : public QObject {
+    Q_OBJECT
+public:
+    explicit CronScheduler(QObject *p=nullptr);
+    void setApiBase(const QString &base){ apiBase_=base; }
+    void setIntervalMs(int ms){ timer_.setInterval(ms); }
+    void start();
+    void stop();
+signals:
+    void ticked(int enqueued);
+private slots:
+    void tick();
+private:
+    QTimer timer_;
+    QString apiBase_ = "http://127.0.0.1:18080";
+    QString dbPath_;
+    bool ensureDb();
 };

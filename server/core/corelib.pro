@@ -6,5 +6,5 @@ TEMPLATE = lib
 DEFINES += QT_DEPRECATED_WARNINGS
 INCLUDEPATH += $$PWD
 DEPENDPATH += $$PWD
-HEADERS += $$PWD/version.h $$PWD/taskstore.h $$PWD/ipcchannel.h
-SOURCES += $$PWD/taskstore.cpp $$PWD/ipcchannel.cpp
+HEADERS += $$PWD/version.h $$PWD/taskstore.h $$PWD/runstore.h $$PWD/ipcchannel.h
+SOURCES += $$PWD/taskstore.cpp $$PWD/runstore.cpp $$PWD/ipcchannel.cpp

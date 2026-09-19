@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>BAS Server Dashboard</title>
+<style>
+*{box-sizing:border-box}body{font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:#0f172a;color:#e2e8f0}
+header{background:#1e293b;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #334155}
+header h1{margin:0;font-size:18px}header .status{font-size:12px;padding:4px 10px;border-radius:12px;background:#334155}
+main{padding:24px;max-width:960px;margin:auto}
+.card{background:#1e293b;border:1px solid #334155;border-radius:10px;padding:16px;margin-bottom:16px}
+.card h2{margin:0 0 12px;font-size:15px;color:#94a3b8}
+table{width:100%;border-collapse:collapse;font-size:13px}th{text-align:left;color:#64748b;padding:6px 8px;border-bottom:1px solid #334155}td{padding:8px;border-bottom:1px solid #1e293b}
+.badge{padding:2px 8px;border-radius:10px;font-size:11px;background:#334155} .badge.done{background:#14532d;color:#86efac} .badge.running{background:#78350f;color:#fde68a} .badge.queued{background:#334155}
+button{background:#3b82f6;color:#fff;border:0;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px}button:disabled{opacity:.5}
+input{padding:8px 10px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:#e2e8f0;width:100%}
+.row{display:flex;gap:12px;align-items:end}
+pre{background:#0f172a;padding:12px;border-radius:8px;overflow:auto;max-height:240px;font-size:11px;border:1px solid #334155}
+</style>
+</head><body>
+<header><h1>BAS Server Dashboard</h1><span id="health" class="status">checking...</span></header>
+<main>
+<div class="card">
+  <h2>Create Task</h2>
+  <div class="row"><div style="flex:1"><label style="font-size:12px;color:#94a3b8">URL or script</label><input id="urlIn" placeholder="https://example.com"/></div><button id="createBtn" onclick="createTask()">Create</button></div>
+  <pre id="createOut" style="display:none"></pre>
+</div>
+<div class="card"><h2>Tasks</h2><div style="margin-bottom:8px"><button onclick="loadTasks()">Refresh</button></div><table><thead><tr><th>ID</th><th>URL</th><th>Status</th><th>Result</th><th>Actions</th></tr></thead><tbody id="tasksBody"><tr><td colspan="5" style="text-align:center;color:#64748b">loading...</td></tr></tbody></table></div>
+<div class="card"><h2>Runs</h2><button onclick="loadRuns()">Refresh runs</button><table style="margin-top:8px"><thead><tr><th>ID</th><th>Task</th><th>Status</th><th>Log</th></tr></thead><tbody id="runsBody"></tbody></table></div>
+<div class="card"><h2>Events (WS :port+1)</h2><pre id="events"></pre></div>
+</main>
+<script>
+const api = location.origin; // same origin when served via api static controller
+const healthEl=document.getElementById('health');
+function badge(s){return `<span class="badge ${s}">${s}</span>`}
+async function checkHealth(){
+  try{const r=await fetch(api+'/health');const j=await r.json();healthEl.textContent=j.status+ ' '+j.version;healthEl.style.background='#14532d'}catch(e){healthEl.textContent='offline';healthEl.style.background='#7f1d1d'}
+}
+async function loadTasks(){
+  const r=await fetch(api+'/tasks');const j=await r.json();
+  const body=document.getElementById('tasksBody');
+  if(!j.tasks||!j.tasks.length){body.innerHTML='<tr><td colspan="5" style="text-align:center;color:#64748b">empty</td></tr>';return}
+  body.innerHTML=j.tasks.map(t=>`<tr><td><code>${t.id}</code></td><td style="max-width:260px;overflow:hidden;text-overflow:ellipsis">${t.url||''}</td><td>${badge(t.status)}</td><td>${t.result||''}</td><td><button onclick="runTask('${t.id}')">Run</button> <button onclick="delTask('${t.id}')" style="background:#475569">Del</button></td></tr>`).join('');
+}
+async function loadRuns(){
+  const r=await fetch(api+'/runs');const j=await r.json();
+  const body=document.getElementById('runsBody');
+  body.innerHTML=(j.runs||[]).map(x=>`<tr><td><code>${x.id}</code></td><td><code>${x.taskId}</code></td><td>${badge(x.status)}</td><td style="max-width:260px;overflow:hidden">${x.log||''}</td></tr>`).join('')||'<tr><td colspan="4" style="text-align:center;color:#64748b">empty</td></tr>';
+}
+async function createTask(){
+  const url=document.getElementById('urlIn').value.trim()||'https://example.com';
+  const r=await fetch(api+'/tasks',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url})});
+  const j=await r.json();document.getElementById('createOut').style.display='block';document.getElementById('createOut').textContent=JSON.stringify(j,null,2);loadTasks();
+}
+async function runTask(id){await fetch(api+'/tasks/'+id+'/run',{method:'POST'});setTimeout(loadTasks,900);setTimeout(loadRuns,1000)}
+async function delTask(id){await fetch(api+'/tasks/'+id,{method:'DELETE'});loadTasks()}
+checkHealth();loadTasks();loadRuns();setInterval(checkHealth,8000);
+(function(){
+  try{const ws=new WebSocket((location.protocol==='https:'?'wss://':'ws://')+location.hostname+':'+(parseInt(location.port||'18080')+1));
+  const pre=document.getElementById('events');
+  ws.onmessage=e=>{pre.textContent=(e.data+'\n'+pre.textContent).slice(0,4000)};
+  ws.onerror=()=>{pre.textContent='ws offline (is api running? port+1)\n'+pre.textContent}
+  }catch(e){}
+})();
+</script>
+</body></html>
